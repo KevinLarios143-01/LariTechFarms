@@ -9,11 +9,11 @@ export interface CompaniesSummaryType {
 }
 
 export const CompaniesSummaryData: CompaniesSummaryType[] = [
-    {id: 1, name: 'Abcd Pvt Ltd', img: './assets/images/files/company/img1.png', caption: '12-01-2021', email: 'julia@gmail.com', status: 'success', statusText: 'Active'},
-    {id: 2, name: 'Croport Pvt Ltd', img: './assets/images/files/company/img2.png', caption: '05-02-2021', email: 'daine@gmail.com', status: 'success', statusText: 'Active'},
-    {id: 3, name: 'kolit Pvt Ltd', img: './assets/images/files/company/img4.png', caption: '21-01-2021', email: 'gabrielle@gmail.com', status: 'success', statusText: 'Active'},
-    {id: 4, name: 'Movck Pvt Ltd', img: './assets/images/files/company/img5.png', caption: '16-11-2020', email: 'ryan@gmail.com', status: 'success', statusText: 'Active'},
-    {id: 5, name: 'Loki Pvt Ltd', img: './assets/images/files/company/img6.png', caption: '25-06-2021', email: 'lisa@gmail.com', status: 'success', statusText: 'Active'},
+    {id: 1, name: 'Abcd Pvt Ltd', img: './assets/images/files/company/img1.png', caption: '12-01-2021', email: 'julia&#64;gmail.com', status: 'success', statusText: 'Active'},
+    {id: 2, name: 'Croport Pvt Ltd', img: './assets/images/files/company/img2.png', caption: '05-02-2021', email: 'daine&#64;gmail.com', status: 'success', statusText: 'Active'},
+    {id: 3, name: 'kolit Pvt Ltd', img: './assets/images/files/company/img4.png', caption: '21-01-2021', email: 'gabrielle&#64;gmail.com', status: 'success', statusText: 'Active'},
+    {id: 4, name: 'Movck Pvt Ltd', img: './assets/images/files/company/img5.png', caption: '16-11-2020', email: 'ryan&#64;gmail.com', status: 'success', statusText: 'Active'},
+    {id: 5, name: 'Loki Pvt Ltd', img: './assets/images/files/company/img6.png', caption: '25-06-2021', email: 'lisa&#64;gmail.com', status: 'success', statusText: 'Active'},
 ]
 
 export interface InactiveCompaniesType {
@@ -27,9 +27,9 @@ export interface InactiveCompaniesType {
 }
 
 export const InactiveCompaniesData: InactiveCompaniesType[] = [
-    {id: 1, name: 'Kloki Pvt Ltd', img: './assets/images/files/company/img6.png', caption: '21-08-2021', email: 'james@gmail.com', status: 'danger', statusText: 'Inactive'},
-    {id: 2, name: 'frecho Pvt Ltd', img: './assets/images/files/company/img7.png', caption: '16-02-2021', email: 'pippa@gmail.com', status: 'danger', statusText: 'Active'},
-    {id: 3, name: 'Mooke Pvt Ltd', img: './assets/images/files/company/img8.png', caption: '21-05-2021', email: 'samgray@gmail.com', status: 'danger', statusText: 'Active'},
-    {id: 4, name: 'Foklali Pvt Ltd', img: './assets/images/files/company/img2.png', caption: '21-08-2020', email: 'samgray@gmail.com', status: 'danger', statusText: 'Active'},
-    {id: 5, name: 'Gomalik Pvt Ltd', img: './assets/images/files/company/img5.png', caption: '25-06-2020', email: 'lisa@gmail.com', status: 'danger', statusText: 'Active'},
+    {id: 1, name: 'Kloki Pvt Ltd', img: './assets/images/files/company/img6.png', caption: '21-08-2021', email: 'james&#64;gmail.com', status: 'danger', statusText: 'Inactive'},
+    {id: 2, name: 'frecho Pvt Ltd', img: './assets/images/files/company/img7.png', caption: '16-02-2021', email: 'pippa&#64;gmail.com', status: 'danger', statusText: 'Active'},
+    {id: 3, name: 'Mooke Pvt Ltd', img: './assets/images/files/company/img8.png', caption: '21-05-2021', email: 'samgray&#64;gmail.com', status: 'danger', statusText: 'Active'},
+    {id: 4, name: 'Foklali Pvt Ltd', img: './assets/images/files/company/img2.png', caption: '21-08-2020', email: 'samgray&#64;gmail.com', status: 'danger', statusText: 'Active'},
+    {id: 5, name: 'Gomalik Pvt Ltd', img: './assets/images/files/company/img5.png', caption: '25-06-2020', email: 'lisa&#64;gmail.com', status: 'danger', statusText: 'Active'},
 ]

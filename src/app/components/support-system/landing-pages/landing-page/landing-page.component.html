@@ -753,11 +753,16 @@
             </div>
             <div aria-multiselectable="true" class="accordion suuport-accordion" id="accordion" role="tablist">
                 <div class="row">
-
                     <div class="col-md-9 d-block mx-auto">
-                        <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-                            <ngb-panel title="1. Nemo enim ipsam voluptatem quia voluptas sit aspernatur?">
-                              <ng-template ngbPanelContent>
+                      <div ngbAccordion>
+                        <!-- Panel 1 - Abierto por defecto -->
+                        <div ngbAccordionItem [collapsed]="false">
+                          <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>1. Nemo enim ipsam voluptatem quia voluptas sit aspernatur?</button>
+                          </h2>
+                          <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                              <ng-template>
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
                                 richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
                                 brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
@@ -767,9 +772,19 @@
                                 farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
                                 accusamus labore sustainable VHS.
                               </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="2. I will give you a complete account of the system, and expound the actual ?">
-                              <ng-template ngbPanelContent>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Panel 2 -->
+                        <div ngbAccordionItem>
+                          <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>2. I will give you a complete account of the system, and expound the actual?</button>
+                          </h2>
+                          <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                              <ng-template>
+                                <!-- Contenido del panel 2 -->
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
                                 richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
                                 brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
@@ -779,9 +794,19 @@
                                 farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
                                 accusamus labore sustainable VHS.
                               </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="3. Which is the same as saying through shrinking from toil and pain ?">
-                              <ng-template ngbPanelContent>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Panel 3 -->
+                        <div ngbAccordionItem>
+                          <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>3. Which is the same as saying through shrinking from toil and pain?</button>
+                          </h2>
+                          <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                              <ng-template>
+                                <!-- Contenido del panel 3 -->
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
                                 richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
                                 brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
@@ -791,9 +816,19 @@
                                 farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
                                 accusamus labore sustainable VHS.
                               </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title=" 4. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet ? ">
-                              <ng-template ngbPanelContent>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Panel 4 -->
+                        <div ngbAccordionItem>
+                          <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>4. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet?</button>
+                          </h2>
+                          <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                              <ng-template>
+                                <!-- Contenido del panel 4 -->
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
                                 richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
                                 brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
@@ -803,10 +838,21 @@
                                 farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
                                 accusamus labore sustainable VHS.
                               </ng-template>
-                            </ngb-panel>
-                            <ngb-panel title="5. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam
-                            nihil?">
-                              <ng-template ngbPanelContent>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Panel 5 -->
+                        <div ngbAccordionItem>
+                          <h2 ngbAccordionHeader>
+                            <button ngbAccordionButton>
+                              5. Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil?
+                            </button>
+                          </h2>
+                          <div ngbAccordionCollapse>
+                            <div ngbAccordionBody>
+                              <ng-template>
+                                <!-- Contenido del panel 5 -->
                                 Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
                                 richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
                                 brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
@@ -816,8 +862,10 @@
                                 farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them
                                 accusamus labore sustainable VHS.
                               </ng-template>
-                            </ngb-panel>
-                          </ngb-accordion>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -896,7 +944,7 @@
                                 <a href="javascript:;"><i class="fa fa-home me-3"></i> New York, NY 10012, US-52014</a>
                             </li>
                             <li>
-                                <a href="javascript:;"><i class="fa fa-envelope me-3 fs-12"></i> info12323@example.com</a>
+                                <a href="javascript:;"><i class="fa fa-envelope me-3 fs-12"></i> info12323&#64;example.com</a>
                             </li>
                             <li>
                                 <a href="javascript:;"><i class="fa fa-phone me-3"></i> <span>+ 01 234 567 88</span> , <span>+ 01 234 567 88</span> </a>
@@ -918,7 +966,7 @@
                         </div>
                         <h6 class="mb-2 mt-5">Social Icons</h6>
                         <ul class="social-icons mb-0 mt-3">
-                            <li class="me-2"> 
+                            <li class="me-2">
                                 <a class="social-icon" href="javascript:;"><i class="fa fa-facebook"></i></a>
                             </li>
                             <li class="me-2">

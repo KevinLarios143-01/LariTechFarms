@@ -6,13 +6,15 @@ import { Blog01Component } from './blog01/blog01.component';
 import { Blog03Component } from './blog03/blog03.component';
 import { Blog02Component } from './blog02/blog02.component';
 import { BlogStylesComponent } from './blog-styles/blog-styles.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { DropzoneModule, DropzoneConfigInterface, DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+//import { NgxDropzoneCdkModule } from '@ngx-dropzone/cdk';
+//import { NgxDropzoneMaterialModule } from '@ngx-dropzone/material';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '../../../shared/shared.module';
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   // Change this to your upload POST address:
@@ -40,10 +42,10 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
     HttpClientModule
   ],
   providers:[
-    
+
     {
       provide: DROPZONE_CONFIG,
-      useValue: DEFAULT_DROPZONE_CONFIG 
+      useValue: DEFAULT_DROPZONE_CONFIG
     },
   ]
 })

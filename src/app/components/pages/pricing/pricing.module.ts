@@ -4,7 +4,7 @@ import { PricingRoutingModule } from './pricing-routing.module';
 import { Pricing01Component } from './pricing01/pricing01.component';
 import { Pricing02Component } from './pricing02/pricing02.component';
 import { Pricing03Component } from './pricing03/pricing03.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

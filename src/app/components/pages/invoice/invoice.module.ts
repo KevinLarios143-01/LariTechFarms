@@ -8,8 +8,8 @@ import { Invoice02Component } from './invoice02/invoice02.component';
 import { Invoice03Component } from './invoice03/invoice03.component';
 import { AddInvoiceComponent } from './add-invoice/add-invoice.component';
 import { EditInvoiceComponent } from './edit-invoice/edit-invoice.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

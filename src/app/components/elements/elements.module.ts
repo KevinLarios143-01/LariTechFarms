@@ -25,7 +25,6 @@ import { ProgressComponent } from './progress/progress.component';
 import { TabsComponent } from './tabs/tabs.component';
 import { TagsComponent } from './tags/tags.component';
 import { TooltipsComponent } from './tooltips/tooltips.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MaterialTabsComponent } from './tabs/material-tabs/material-tabs.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +38,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -72,7 +72,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     ElementsRoutingModule,
     SharedModule,
     NgbModule,
-    NgImageSliderModule,  
+    NgImageSliderModule,
     FormsModule, ReactiveFormsModule,
     MatIconModule, MatButtonModule, MatButtonToggleModule, MatProgressBarModule, MatRadioModule, MatCardModule, MatSliderModule, MatTabsModule,
     NgSelectModule

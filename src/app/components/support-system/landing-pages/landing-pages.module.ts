@@ -7,7 +7,7 @@ import { KnowledgePageComponent } from './knowledge-page/knowledge-page.componen
 import { KnowledgeViewComponent } from './knowledge-view/knowledge-view.component';
 import { SupportOpenTicketComponent } from './support-open-ticket/support-open-ticket.component';
 import { SupportContactComponent } from './support-contact/support-contact.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 
@@ -23,7 +23,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
     CommonModule,
     LandingPagesRoutingModule,
     NgbModule,
-    NgSelectModule
+    NgSelectModule,
+    NgbAccordionModule
   ]
 })
 export class LandingPagesModule { }

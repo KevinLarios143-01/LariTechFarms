@@ -12,7 +12,6 @@ import { ProfileModule } from './profile/profile.module';
 import { BlogModule } from './blog/blog.module';
 import { EmailModule } from './email/email.module';
 import { InvoiceModule } from './invoice/invoice.module';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AboutComponent } from './about/about.component';
@@ -21,6 +20,7 @@ import { NotifyListComponent } from './notify-list/notify-list.component';
 import { LightboxModule } from 'ng-gallery/lightbox';
 import { GalleryModule } from 'ng-gallery';
 import { PricingModule } from './pricing/pricing.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -45,9 +45,11 @@ import { PricingModule } from './pricing/pricing.module';
     PricingModule,
     InvoiceModule,
     SharedModule,
+    /*
     GalleryModule.withConfig({
       // thumbView: 'contain',
     }),
+    */
     LightboxModule,
   ]
 })

@@ -10,7 +10,7 @@ import { Moment } from 'moment'
 export class ModalComponent implements OnInit {
   public selectedDate;
   public datePickerConfig;
-  
+
   model!: NgbDateStruct;
   selected!: {startDate: Moment, endDate: Moment};
 

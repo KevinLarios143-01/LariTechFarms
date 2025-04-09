@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { DlDateTimePickerChange } from 'angular-bootstrap-datetimepicker';
+
+import { NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+
+import * as moment from 'moment'; // or date-fns
 import * as data from './clientDashboardChatData'
 @Component({
   selector: 'app-dashboard',
@@ -16,16 +19,41 @@ export class DashboardComponent implements OnInit {
   showCalendar = true;
   startView = 'day';
   views = ['minute', 'hour', 'day', 'month', 'year'];
+  selectedDate1!: NgbDateStruct;
+  selectedTime1!: NgbTimeStruct;
+  minuteStep1 = 15; // Set your minute step here
+
+  // Convert to Date object when needed
+  get combinedDateTime(): Date | null {
+    if (this.selectedDate1 && this.selectedTime1) {
+      return new Date(
+        this.selectedDate1.year,
+        this.selectedDate1.month - 1,
+        this.selectedDate1.day,
+        this.selectedTime1.hour,
+        this.selectedTime1.minute
+      );
+    }
+    return null;
+  }
+
+  // If you need to handle changes
+  onDateTimeChange() {
+    console.log(this.combinedDateTime);
+    // Your change logic here
+  }
+
+
 
   /**
    * Sample implementation of a `change` event handler.
    * @param event
    *  The change event.
    */
-
+/*
   onCustomDateChange(event: DlDateTimePickerChange<Date>) {
     console.log(event.value);
-  }
+  }*/
 
   /**
    * Determines whether or not the specified `minView` option is disabled (valid)
@@ -34,7 +62,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isMinViewDisabled(view) {
+  isMinViewDisabled(view: any) {
     return (
       this.views.indexOf(view) > this.views.indexOf(this.startView) ||
       this.views.indexOf(view) > this.views.indexOf(this.maxView)
@@ -48,7 +76,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isMaxViewDisabled(view) {
+  isMaxViewDisabled(view: any) {
     return (
       this.views.indexOf(view) < this.views.indexOf(this.startView) ||
       this.views.indexOf(view) < this.views.indexOf(this.minView)
@@ -62,7 +90,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isStartViewDisabled(view) {
+  isStartViewDisabled(view: any) {
     return (
       this.views.indexOf(this.minView) > this.views.indexOf(view) ||
       this.views.indexOf(this.maxView) < this.views.indexOf(view)
@@ -95,7 +123,7 @@ export class DashboardComponent implements OnInit {
   public MultipleChartOptions = data.lineChartOptions
   public MultipleChartData = data.lineChartData
   public MultipleChartType = data.lineChartType
-  
+
   public donutData = data.DonutChartData;
 
   images = [

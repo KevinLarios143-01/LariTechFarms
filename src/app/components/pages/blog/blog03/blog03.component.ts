@@ -19,21 +19,21 @@ export class Blog03Component implements OnInit {
   filesDisabled: File[] = [];
   disable = true;
 
-  onSelect(event) {
+  onSelect(event: any) {
     // console.log(event);
     this.files.push(...event.addedFiles);
   }
 
-  onRemove(event) {
+  onRemove(event: any) {
     // console.log(event);
     this.files.splice(this.files.indexOf(event), 1);
   }
-  onPreviewFileSelect(event) {
+  onPreviewFileSelect(event: any) {
     // console.log(event);
     this.filesPreview.push(...event.addedFiles);
   }
 
-  onPreviewFileRemove(event) {
+  onPreviewFileRemove(event : any) {
     // console.log(event);
     this.filesPreview.splice(this.filesPreview.indexOf(event), 1);
   }

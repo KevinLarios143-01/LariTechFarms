@@ -26,7 +26,7 @@ import { TaskDashboardPageHeaderComponent } from './layout-components/page-heade
 import { TaskDashboardPageHeaderModalComponent } from './layout-components/page-headers/task-dashboard-page-header-modal/task-dashboard-page-header-modal.component';
 import { JobDashboardPageHeaderComponent } from './layout-components/page-headers/job-dashboard-page-header/job-dashboard-page-header.component';
 import { JobDashboardPageHeaderModalComponent } from './layout-components/page-headers/job-dashboard-page-header-modal/job-dashboard-page-header-modal.component';
-import { SortableHeader } from './directives/sortable.directive';
+//import { SortableHeader } from './directives/sortable.directive';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { HoverEffectSidebarDirective } from './directives/hover-effect-sidebar.directive';
 import { SidemenuToggleDirective } from './directives/sidemenuToggle';
@@ -65,7 +65,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     TaskDashboardPageHeaderModalComponent,
     JobDashboardPageHeaderComponent,
     JobDashboardPageHeaderModalComponent,
-    SortableHeader,
+    //SortableHeader,
     LoaderComponent
   ],
   imports: [
@@ -91,7 +91,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     TaskDashboardPageHeaderComponent,
     JobDashboardPageHeaderComponent,
     PageHeaderComponent,
-    SortableHeader,
+    //SortableHeader,
     SwitcherComponent
   ],
 })

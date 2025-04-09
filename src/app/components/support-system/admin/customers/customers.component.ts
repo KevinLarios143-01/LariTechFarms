@@ -13,7 +13,7 @@ export class CustomersComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  open(content) {
+  open(content:any) {
     this.modalService.open(content);
   }
 

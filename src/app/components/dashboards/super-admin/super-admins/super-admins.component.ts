@@ -15,13 +15,13 @@ interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {id: 1, img: './assets/images/users/3.jpg', name:'Super Admin', email: 'superadmin@gmail.com', registeredBy:'12-01-2021', statusText: 'Active', status: 'success'},
-  {id: 2, img: './assets/images/users/10.jpg', name:'Admin', email: 'admin@gmail.com', registeredBy:'15-06-2021', statusText: 'Active', status: 'success'},
-  {id: 3, img: './assets/images/users/4.jpg', name:'Admin2', email: 'admin123@gmail.com', registeredBy:'25-08-2020', statusText: 'InActive', status: 'danger'},
-  {id: 4, img: './assets/images/users/11.jpg', name:'Admin3', email: 'admin456@gmail.com',  registeredBy:'16-10-2020', statusText: 'Active', status: 'success'},
-  {id: 5, img: './assets/images/users/5.jpg', name:'Admin4', email: 'admin156@gmail.com', registeredBy:'21-12-2020', statusText: 'Active', status: 'success'},
-  {id: 6, img: './assets/images/users/12.jpg',name:'Admin5', email: 'admin957@gmail.com', registeredBy:'11-01-2020', statusText: 'Active', status: 'success' },
-  {id: 7, img: './assets/images/users/13.jpg', name:'Admin6', email: 'admin209@gmail.com', registeredBy:'18-02-2020', statusText: 'Active', status: 'success'}
+  {id: 1, img: './assets/images/users/3.jpg', name:'Super Admin', email: 'superadmin&#64;gmail.com', registeredBy:'12-01-2021', statusText: 'Active', status: 'success'},
+  {id: 2, img: './assets/images/users/10.jpg', name:'Admin', email: 'admin&#64;gmail.com', registeredBy:'15-06-2021', statusText: 'Active', status: 'success'},
+  {id: 3, img: './assets/images/users/4.jpg', name:'Admin2', email: 'admin123&#64;gmail.com', registeredBy:'25-08-2020', statusText: 'InActive', status: 'danger'},
+  {id: 4, img: './assets/images/users/11.jpg', name:'Admin3', email: 'admin456&#64;gmail.com',  registeredBy:'16-10-2020', statusText: 'Active', status: 'success'},
+  {id: 5, img: './assets/images/users/5.jpg', name:'Admin4', email: 'admin156&#64;gmail.com', registeredBy:'21-12-2020', statusText: 'Active', status: 'success'},
+  {id: 6, img: './assets/images/users/12.jpg',name:'Admin5', email: 'admin957&#64;gmail.com', registeredBy:'11-01-2020', statusText: 'Active', status: 'success' },
+  {id: 7, img: './assets/images/users/13.jpg', name:'Admin6', email: 'admin209&#64;gmail.com', registeredBy:'18-02-2020', statusText: 'Active', status: 'success'}
 ];
 
 @Component({
@@ -62,7 +62,7 @@ export class SuperAdminsComponent implements OnInit {
         this.dataSource.data.splice(ind, 1)
         this.dataSource._updateChangeSubscription();
       }
-    })    
+    })
   }
 
   open(content:any) {

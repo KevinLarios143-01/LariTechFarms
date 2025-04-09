@@ -3,10 +3,10 @@ export declare type SingleLineLabel = string;
 export declare type MultiLineLabel = string[];
 export declare type Label = SingleLineLabel | MultiLineLabel;
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
-  
+
 // //BarChart1
 export const barChartOptions: ChartConfiguration['options'] = {
-    
+
     responsive: true,
     maintainAspectRatio: false,
     layout: {
@@ -19,7 +19,7 @@ export const barChartOptions: ChartConfiguration['options'] = {
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-        
+
         y: {
             beginAtZero: true,
             grid: {
@@ -30,7 +30,7 @@ export const barChartOptions: ChartConfiguration['options'] = {
             ticks: {
                 color: "#8492a6",
             },
-            
+
         },
         x: {
             stacked: false,
@@ -60,7 +60,7 @@ export const barChartOptions: ChartConfiguration['options'] = {
   export const barChartData: ChartData<'bar'> = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
-      { 
+      {
         barPercentage: 0.8,
 				label: 'Total Open Tickets',
 				categoryPercentage: 0.4,
@@ -88,7 +88,7 @@ export const barChartOptions: ChartConfiguration['options'] = {
 
 // //BarChart2
 export const barChartOptions1: ChartConfiguration['options'] = {
-    
+
     responsive: true,
     maintainAspectRatio: false,
     layout: {
@@ -101,7 +101,7 @@ export const barChartOptions1: ChartConfiguration['options'] = {
     },
     // We use these empty structures as placeholders for dynamic theming.
     scales: {
-        
+
         y: {
             beginAtZero: true,
             grid: {
@@ -112,7 +112,7 @@ export const barChartOptions1: ChartConfiguration['options'] = {
             ticks: {
                 color: "#8492a6",
             },
-            
+
         },
         x: {
             stacked: true,
@@ -142,7 +142,7 @@ export const barChartOptions1: ChartConfiguration['options'] = {
   export const barChartData1: ChartData<'bar'> = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     datasets: [
-      { 
+      {
         barPercentage: 0.8,
         label: 'Total Assigned Tickets',
 				categoryPercentage: 0.2,
@@ -154,7 +154,7 @@ export const barChartOptions1: ChartConfiguration['options'] = {
         borderColor: '#3366ff',
         hoverBorderColor: '#3366ff',
     },
-      { 
+      {
         label: 'Total Closed Tickets',
 				categoryPercentage: 0.2,
 				barPercentage: 0.8,
@@ -181,8 +181,8 @@ export const barChartOptions1: ChartConfiguration['options'] = {
      }
     ]
   };
-  
-  
+
+
 
   export let DonutChartData: any = {
     pieseries: [64, 45],

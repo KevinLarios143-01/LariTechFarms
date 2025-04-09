@@ -17,20 +17,20 @@ interface PeriodicElement {
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {id: 1, position: '	Senior PHP Developer', name:'Faith Harris', email: 'faith@gmail.com', phoneNumber: 9685*21475, AppliedOn:'25-01-2021', submittedBy:'Austin Bell', statusText: 'Pending', status: 'warning'},
-  {id: 2, position: '	Fresher Web Designer', name:'Austin Bell', email: 'austin@gmail.com', phoneNumber: 865321*950, AppliedOn:'20-02-2021', submittedBy:'Austin Bell', statusText: 'Selected', status: 'primary'},
-  {id: 3, position: '	Senior Web Developer', name:'Maria Bower', email: 'maria@gmail.com', phoneNumber: 95632*8417, AppliedOn:'28-02-2021', submittedBy:'Maria Bower', statusText: 'Rejected', status: 'danger'},
-  {id: 4, position: '	Fresher UI Designer', name:'Peter Hill', email: 'peter@gmail.com', phoneNumber: 85*3249751, AppliedOn:'19-01-2021', submittedBy:'Peter Hill', statusText: 'Selected', status: 'primary'},
-  {id: 5, position: 'SEO Specialist', name:'Victoria Lyman', email: 'victoria@gmail.com', phoneNumber: 96358*6432, AppliedOn:'19-03-2021', submittedBy:'Victoria Lyman', statusText: 'Pending', status: 'warning'},
-  {id: 6, position: 'Senior Worpress Developer',name:'	Adam Quinn', email: 'adam@gmail.com', phoneNumber: 96**231572, AppliedOn:'17-01-2021', submittedBy:'Adam Quinn', statusText: 'Selected', status: 'primary' },
-  {id: 7, position: '	Senior Accountant', name:'	Melanie Coleman', email: 'melanie@gmail.com', phoneNumber: 863529*470, AppliedOn:'21-02-2021  ', submittedBy:'Melanie Coleman', statusText: 'Selected', status: 'primary'},
-  {id: 8, position: 'Fresher Angular Developer',name:'Max Wilson', email: 'max@gmail.com', phoneNumber: 998635*240, AppliedOn:'30-03-2021', submittedBy:'Max Wilson', statusText: 'Selected', status: 'primary' },
-  {id: 9, position: '	Senior Angular Developer',name:'Amelia Russell', email: 'amelia@gmail.com', phoneNumber: 935698**72, AppliedOn:'04-04-2021', submittedBy:'Amelia Russell', statusText: 'Pending', status: 'warning' },
-  {id: 10, position: 'Fresher Web Designer',name:'Justin Metcalfe', email: 'justin@gmail.com', phoneNumber: 968**21475, AppliedOn:'17-02-2021', submittedBy:'Justin Metcalfe', statusText: 'Rejected', status: 'danger' },
-  {id: 11, position: 'Senior Web Developer',name:'Sophie Anderson', email: 'sophie@gmail.com', phoneNumber: 86742*1566, AppliedOn:'	22-02-2021', submittedBy:'Sophie Anderson', statusText: 'Selected', status: 'primary' },
-  {id: 12, position: 'Senior Worpress Developer',name:'Ryan Young', email: 'ryan@gmail.com', phoneNumber: 968532*475, AppliedOn:'18-03-2021', submittedBy:'Ryan Young', statusText: 'Pending', status: 'warning' },
-  {id: 13, position: 'Fresher Angular Developer',name:'Jennifer Hardacre', email: 'jennifer@gmail.com', phoneNumber: 96358**432, AppliedOn:'19-03-2021', submittedBy:'Jennifer Hardacre', statusText: 'Rejected', status: 'danger' },
-  {id: 14, position: 'Senior PHP Developer',name:'Justin Parr', email: 'justin@gmail.com', phoneNumber: 9*85321475, AppliedOn:'20-03-2021', submittedBy:'Justin Parr', statusText: 'Selected', status: 'primary' }
+  {id: 1, position: '	Senior PHP Developer', name:'Faith Harris', email: 'faith&#64;gmail.com', phoneNumber: 9685*21475, AppliedOn:'25-01-2021', submittedBy:'Austin Bell', statusText: 'Pending', status: 'warning'},
+  {id: 2, position: '	Fresher Web Designer', name:'Austin Bell', email: 'austin&#64;gmail.com', phoneNumber: 865321*950, AppliedOn:'20-02-2021', submittedBy:'Austin Bell', statusText: 'Selected', status: 'primary'},
+  {id: 3, position: '	Senior Web Developer', name:'Maria Bower', email: 'maria&#64;gmail.com', phoneNumber: 95632*8417, AppliedOn:'28-02-2021', submittedBy:'Maria Bower', statusText: 'Rejected', status: 'danger'},
+  {id: 4, position: '	Fresher UI Designer', name:'Peter Hill', email: 'peter&#64;gmail.com', phoneNumber: 85*3249751, AppliedOn:'19-01-2021', submittedBy:'Peter Hill', statusText: 'Selected', status: 'primary'},
+  {id: 5, position: 'SEO Specialist', name:'Victoria Lyman', email: 'victoria&#64;gmail.com', phoneNumber: 96358*6432, AppliedOn:'19-03-2021', submittedBy:'Victoria Lyman', statusText: 'Pending', status: 'warning'},
+  {id: 6, position: 'Senior Worpress Developer',name:'	Adam Quinn', email: 'adam&#64;gmail.com', phoneNumber: 96**231572, AppliedOn:'17-01-2021', submittedBy:'Adam Quinn', statusText: 'Selected', status: 'primary' },
+  {id: 7, position: '	Senior Accountant', name:'	Melanie Coleman', email: 'melanie&#64;gmail.com', phoneNumber: 863529*470, AppliedOn:'21-02-2021  ', submittedBy:'Melanie Coleman', statusText: 'Selected', status: 'primary'},
+  {id: 8, position: 'Fresher Angular Developer',name:'Max Wilson', email: 'max&#64;gmail.com', phoneNumber: 998635*240, AppliedOn:'30-03-2021', submittedBy:'Max Wilson', statusText: 'Selected', status: 'primary' },
+  {id: 9, position: '	Senior Angular Developer',name:'Amelia Russell', email: 'amelia&#64;gmail.com', phoneNumber: 935698**72, AppliedOn:'04-04-2021', submittedBy:'Amelia Russell', statusText: 'Pending', status: 'warning' },
+  {id: 10, position: 'Fresher Web Designer',name:'Justin Metcalfe', email: 'justin&#64;gmail.com', phoneNumber: 968**21475, AppliedOn:'17-02-2021', submittedBy:'Justin Metcalfe', statusText: 'Rejected', status: 'danger' },
+  {id: 11, position: 'Senior Web Developer',name:'Sophie Anderson', email: 'sophie&#64;gmail.com', phoneNumber: 86742*1566, AppliedOn:'	22-02-2021', submittedBy:'Sophie Anderson', statusText: 'Selected', status: 'primary' },
+  {id: 12, position: 'Senior Worpress Developer',name:'Ryan Young', email: 'ryan&#64;gmail.com', phoneNumber: 968532*475, AppliedOn:'18-03-2021', submittedBy:'Ryan Young', statusText: 'Pending', status: 'warning' },
+  {id: 13, position: 'Fresher Angular Developer',name:'Jennifer Hardacre', email: 'jennifer&#64;gmail.com', phoneNumber: 96358**432, AppliedOn:'19-03-2021', submittedBy:'Jennifer Hardacre', statusText: 'Rejected', status: 'danger' },
+  {id: 14, position: 'Senior PHP Developer',name:'Justin Parr', email: 'justin&#64;gmail.com', phoneNumber: 9*85321475, AppliedOn:'20-03-2021', submittedBy:'Justin Parr', statusText: 'Selected', status: 'primary' }
 ];
 
 @Component({
@@ -72,7 +72,7 @@ export class JobApplicationsComponent implements OnInit {
         this.dataSource.data.splice(ind, 1)
         this.dataSource._updateChangeSubscription();
       }
-    })    
+    })
   }
   edit(editContent:any) {
     this.modalService.open(editContent, {backdrop : 'static' , windowClass : 'modalCusSty' })

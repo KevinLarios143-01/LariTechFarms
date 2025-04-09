@@ -11,7 +11,7 @@ import { MarginComponent } from './margin/margin.component';
 import { PaddingComponent } from './padding/padding.component';
 import { TyphographyComponent } from './typhography/typhography.component';
 import { WidthComponent } from './width/width.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

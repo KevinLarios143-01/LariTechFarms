@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-accordion',
@@ -8,11 +8,13 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AccordionComponent implements OnInit {
   disabled = false;
+
+  panels = "";
   constructor() { }
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   public isFirstGradient = false;
   public isSecondGradient = false;
-   
+
   FirstGradient() {
     this.isFirstGradient = !this.isFirstGradient;
     if (this.isFirstGradient == true) {
@@ -30,14 +32,5 @@ export class AccordionComponent implements OnInit {
     }
   }
 
-  public beforeChange($event: NgbPanelChangeEvent) {
 
-    if ($event.panelId === 'preventchange-2') {
-      $event.preventDefault();
-    }
-
-    if ($event.panelId === 'preventchange-3' && $event.nextState === false) {
-      $event.preventDefault();
-    }
-  }
 }
