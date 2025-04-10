@@ -20,7 +20,6 @@ import { FileManagerModule } from './file-manager/file-manager.module';
 import { TodoListModule } from './todo-list/todo-list.module';
 import { UserListModule } from './user-list/user-list.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -47,6 +46,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 };
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -91,7 +91,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     }),
     ImageCropperModule,
     NgSelectModule
-  ], 
+  ],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

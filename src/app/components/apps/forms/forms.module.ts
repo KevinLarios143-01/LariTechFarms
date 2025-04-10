@@ -8,7 +8,6 @@ import { FormsWizardsComponent } from './forms-wizards/forms-wizards.component';
 import { FormEditorComponent } from './form-editor/form-editor.component';
 import { FormElementSizesComponent } from './form-element-sizes/form-element-sizes.component';
 import { FormTreeviewComponent } from './form-treeview/form-treeview.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -17,7 +16,7 @@ import { FormElementsService } from './form-elements/form-elements.service';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { FileuploadService } from './advanced-elements/fileupload.service';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+//import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { AngularDualListBoxModule } from 'angular-dual-listbox';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
@@ -28,7 +27,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { ArchwizardModule } from 'angular-archwizard';
+import { SharedModule } from '../../../shared/shared.module';
+import { CdkStepperModule } from '@angular/cdk/stepper';
+import { NgStepperModule } from 'angular-ng-stepper';
 
 @NgModule({
   declarations: [
@@ -48,9 +49,6 @@ import { ArchwizardModule } from 'angular-archwizard';
     FormsModule, ReactiveFormsModule,
     NgbModule,
     NgxDropzoneModule,
-    NgxIntlTelInputModule,
-    AngularDualListBoxModule,
-    NgxMaterialTimepickerModule,
     NgxDaterangepickerMd.forRoot(),
     ColorPickerModule,
     QuillModule.forRoot(),
@@ -61,7 +59,12 @@ import { ArchwizardModule } from 'angular-archwizard';
         timeOut: 1000
       }
     ),
-    ArchwizardModule,
+    //NgxIntlTelInputModule,
+    //NgxMaterialTimepickerModule,
+    //AngularDualListBoxModule,
+    //BreadcrumbService,
+    NgStepperModule,
+    CdkStepperModule
   ],
   providers: [
     FormElementsService,

@@ -62,13 +62,13 @@ export class InvoicesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  removeData(item) {
+  removeData(item : any) {
     this.dataSource.data.map((el,ind) =>{
       if(el.id == item){
         this.dataSource.data.splice(ind, 1)
         this.dataSource._updateChangeSubscription();
       }
-    })    
+    })
   }
 
 }

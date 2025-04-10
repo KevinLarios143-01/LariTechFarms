@@ -67,10 +67,12 @@ import { SharedModule } from '../../../shared/shared.module';
     NgChartsModule,
     NgApexchartsModule,
     FlatpickrModule.forRoot(),
+    /*
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    */
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

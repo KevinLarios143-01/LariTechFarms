@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { productsType } from 'src/app/components/e-commerce/products/products.modal';
+import { productsType } from '../../../components/e-commerce/products/products.modal';
 
 @Injectable({
   providedIn: 'root',

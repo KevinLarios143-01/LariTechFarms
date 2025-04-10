@@ -49,7 +49,7 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private modalService: NgbModal, config: NgbRatingConfig) {
     // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA); 
+    this.dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
     // customize default values of ratings used by this component tree
     config.max = 5;
@@ -71,13 +71,13 @@ export class UserProfileComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  removeData(item) {
+  removeData(item : any) {
     this.dataSource.data.map((el,ind) =>{
       if(el.No == item){
         this.dataSource.data.splice(ind, 1)
         this.dataSource._updateChangeSubscription();
       }
-    })    
+    })
   }
   edit(editContent:any) {
     this.modalService.open(editContent, {backdrop : 'static' , windowClass : 'modalCusSty' })

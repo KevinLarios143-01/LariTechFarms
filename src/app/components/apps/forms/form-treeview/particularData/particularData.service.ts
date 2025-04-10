@@ -5,7 +5,7 @@ const LOAD_MORE = 'LOAD_MORE';
 
 /** Flat node with expandable and level information */
 export class LoadmoreFlatNode {
-  constructor(public item,
+  constructor(public item : any,
               public level = 1,
               public expandable2 = false,
               public loadMoreParentItem: string | null = null) { }

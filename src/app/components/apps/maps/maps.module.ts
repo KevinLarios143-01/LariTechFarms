@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 
 import { MapsRoutingModule } from './maps-routing.module';
 import { LeafletComponent } from './leaflet/leaflet.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

@@ -5,10 +5,10 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { GeneralSettingsComponent } from './general-settings/general-settings.component';
 import { ApiSettingsComponent } from './api-settings/api-settings.component';
 import { RoleAccessComponent } from './role-access/role-access.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({
@@ -21,7 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     AdminRoutingModule,
     SharedModule,
-    NgbModule, 
+    NgbModule,
     NgSelectModule,
     FormsModule, ReactiveFormsModule
   ]

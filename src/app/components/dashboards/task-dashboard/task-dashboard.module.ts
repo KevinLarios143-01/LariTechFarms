@@ -12,7 +12,6 @@ import { OverviewCalendarComponent } from './overview-calendar/overview-calendar
 import { TaskBoardComponent } from './task-board/task-board.component';
 import { NewTasksComponent } from './new-tasks/new-tasks.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,9 +19,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { DragulaModule } from 'ng2-dragula';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
@@ -32,11 +28,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { HttpClientModule } from '@angular/common/http';
+import { SharedModule } from '../../../shared/shared.module';
 
-const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-  suppressScrollX: true,
-  wheelPropagation: false
-};
 
 
 @NgModule({
@@ -61,22 +54,17 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgSelectModule,
     FormsModule, ReactiveFormsModule,
     MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule,
-    PerfectScrollbarModule,
-    DragulaModule.forRoot(),
     NgApexchartsModule,
     NgChartsModule,
     FlatpickrModule.forRoot(),
+    /*
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    }),
-    AngularEditorModule
+      }),
+      */
+     AngularEditorModule,
+     DragulaModule.forRoot(),
   ],
-  providers:[
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    }
-  ]
 })
 export class TaskDashboardModule { }

@@ -93,10 +93,10 @@ export class ViewProjectComponent implements OnInit {
 
   constructor(private modalService: NgbModal) {
     // Assign the data to the data source for the table to render
-    this.dataSourceTasks = new MatTableDataSource<TasksType>(Tasks_Data); 
-    this.dataSourceFiles = new MatTableDataSource<filesType>(Files_Data); 
-    this.dataSourceMileStone = new MatTableDataSource<mileStonesType>(MileStones_Data); 
-    this.dataSourceInvoive = new MatTableDataSource<InvoiveType>(Invoive_Data); 
+    this.dataSourceTasks = new MatTableDataSource<TasksType>(Tasks_Data);
+    this.dataSourceFiles = new MatTableDataSource<filesType>(Files_Data);
+    this.dataSourceMileStone = new MatTableDataSource<mileStonesType>(MileStones_Data);
+    this.dataSourceInvoive = new MatTableDataSource<InvoiveType>(Invoive_Data);
   }
 
   ngOnInit(): void {
@@ -148,37 +148,37 @@ export class ViewProjectComponent implements OnInit {
       this.dataSourceInvoive.paginator.firstPage();
     }
   }
-  removeData(item) {
+  removeData(item : any) {
     this.dataSourceMileStone.data.map((el,ind) =>{
       if(el.No == item){
         this.dataSourceMileStone.data.splice(ind, 1)
         this.dataSourceMileStone._updateChangeSubscription();
       }
-    })    
+    })
   }
-  removeFilesData(item) {
+  removeFilesData(item : any) {
     this.dataSourceFiles.data.map((el,ind) =>{
       if(el.No == item){
         this.dataSourceFiles.data.splice(ind, 1)
         this.dataSourceFiles._updateChangeSubscription();
       }
-    })    
+    })
   }
-  removeMileStoneData(item) {
+  removeMileStoneData(item : any) {
     this.dataSourceMileStone.data.map((el,ind) =>{
       if(el.No == item){
         this.dataSourceMileStone.data.splice(ind, 1)
         this.dataSourceMileStone._updateChangeSubscription();
       }
-    })    
+    })
   }
-  removeInvoiceData(item) {
+  removeInvoiceData(item : any) {
     this.dataSourceInvoive.data.map((el,ind) =>{
       if(el.id == item){
         this.dataSourceInvoive.data.splice(ind, 1)
         this.dataSourceInvoive._updateChangeSubscription();
       }
-    })    
+    })
   }
   edit(editContent:any) {
     this.modalService.open(editContent, {backdrop : 'static' , windowClass : 'modalCusSty' })

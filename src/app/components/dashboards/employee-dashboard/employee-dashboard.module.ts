@@ -8,7 +8,6 @@ import { ApplyLeavesComponent } from './apply-leaves/apply-leaves.component';
 import { MyLeavesComponent } from './my-leaves/my-leaves.component';
 import { PayslipsComponent } from './payslips/payslips.component';
 import { ExpensesComponent } from './expenses/expenses.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgChartsModule } from 'ng2-charts';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -39,8 +38,6 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
     NgSelectModule,
     MatFormFieldModule, MatPaginatorModule, MatTableModule, MatInputModule, MatSortModule,
     NgChartsModule, NgApexchartsModule,
-    DlDateTimeDateModule,
-    DlDateTimePickerModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

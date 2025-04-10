@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isMinViewDisabled(view) {
+  isMinViewDisabled(view: any) {
     return (
       this.views.indexOf(view) > this.views.indexOf(this.startView) ||
       this.views.indexOf(view) > this.views.indexOf(this.maxView)
@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isMaxViewDisabled(view) {
+  isMaxViewDisabled(view: any) {
     return (
       this.views.indexOf(view) < this.views.indexOf(this.startView) ||
       this.views.indexOf(view) < this.views.indexOf(this.minView)
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit {
    * the target view value.
    */
 
-  isStartViewDisabled(view) {
+  isStartViewDisabled(view : any) {
     return (
       this.views.indexOf(this.minView) > this.views.indexOf(view) ||
       this.views.indexOf(this.maxView) < this.views.indexOf(view)
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit {
   constructor(){}
   ngOnInit(): void {
   }
-  
+
   //Line Chart
   public MultipleChartOptions = data.lineChartOptions
   public MultipleChartData = data.lineChartData

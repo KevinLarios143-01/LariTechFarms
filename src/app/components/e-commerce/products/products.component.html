@@ -194,7 +194,7 @@
                     <div class="card-body text-center">
                         <a class="shop-title">{{list.title}}</a>
                         <div class="mb-1 fs-13 mt-2">
-                            <ngb-rating [max]="5" rate={{list.starText}}></ngb-rating>
+                            <ngb-rating [max]="5" [rate]="list.starText??0"></ngb-rating>
                             <a href="javascript:;" class="text-muted fs-13"> ({{list.review}})</a>
                         </div>
                         <div class="cardprice">

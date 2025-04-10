@@ -16,7 +16,7 @@ export class ShoppingCartComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  remove(listId){
+  remove(listId: any){
     this.shoppingCartList.map((el,ind)=>{
       if(el.id == listId){
         this.shoppingCartList.splice(ind, 1)

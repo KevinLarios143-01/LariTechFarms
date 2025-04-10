@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { TablesRoutingModule } from './tables-routing.module';
 import { DataTablesComponent } from './data-tables/data-tables.component';
 import { DefaultTablesComponent } from './default-tables/default-tables.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -22,6 +21,7 @@ import { SortingFilterPaginationTableComponent } from './data_table_components/s
 import { StickyheaderComponent } from './data_table_components/stickyheader/stickyheader.component';
 import { SelectionTableComponent } from './data_table_components/selection-table/selection-table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../../shared/shared.module';
 
 @NgModule({
   declarations: [

@@ -7,7 +7,7 @@ import { ProductsDetailsComponent } from './products-details/products-details.co
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 
 @NgModule({

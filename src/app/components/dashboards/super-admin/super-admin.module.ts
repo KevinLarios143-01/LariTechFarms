@@ -9,7 +9,6 @@ import { InvoicesComponent } from './invoices/invoices.component';
 import { SuperAdminsComponent } from './super-admins/super-admins.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RoleAccessComponent } from './role-access/role-access.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -18,6 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSortModule } from '@angular/material/sort';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgChartsModule } from 'ng2-charts';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

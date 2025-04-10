@@ -298,7 +298,7 @@
                                 <div class="table-responsive">
                                     <a href="javascript:;" class="btn btn-primary btn-tableview">Add Task</a>
 
-                                <mat-form-field appearance="standard" >
+                                <mat-form-field appearance="fill" >
                                     <mat-label>Filter</mat-label>
                                     <input matInput (keyup)="applyTasksFilter($event)" placeholder="Ex. Search" #input>
                                 </mat-form-field>
@@ -408,9 +408,9 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <a href="javascript:;" class="btn btn-primary btn-tableview">Upload Files</a>
-                                    <mat-form-field appearance="standard" >
+                                    <mat-form-field appearance="fill" >
                                         <mat-label>Filter</mat-label>
-                                        <input matInput (keyup)="applyFilterFilter($event)" placeholder="Ex. Search" #input>
+                                        <input matInput (keyup)="applyFilesFilter($event)" placeholder="Ex. Search" #input>
                                     </mat-form-field>
 
                                       <div class="">
@@ -478,7 +478,7 @@
                                 <div class="table-responsive">
                                     <a href="javascript:;" class="btn btn-primary btn-tableview" data-bs-toggle="modal"
                                         data-bs-target="#addmilemodal">Add Milestone</a>
-                                    <mat-form-field appearance="standard" >
+                                    <mat-form-field appearance="fill" >
                                         <mat-label>Filter</mat-label>
                                         <input matInput (keyup)="applyMileStoneFilter($event)" placeholder="Ex. Search" #input>
                                     </mat-form-field>
@@ -666,7 +666,7 @@
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <a href="javascript:;" class="btn btn-primary btn-tableview">Add Invoice</a>
-                                   <mat-form-field appearance="standard" >
+                                   <mat-form-field appearance="fill" >
                                         <mat-label>Filter</mat-label>
                                         <input matInput (keyup)="applyInvoiceFilter($event)" placeholder="Ex. Search" #input>
                                     </mat-form-field>

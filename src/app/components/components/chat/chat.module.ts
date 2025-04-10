@@ -5,11 +5,11 @@ import { ChatRoutingModule } from './chat-routing.module';
 import { Chat01Component } from './chat01/chat01.component';
 import { Chat02Component } from './chat02/chat02.component';
 import { Chat03Component } from './chat03/chat03.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SharedModule } from '../../../shared/shared.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -29,7 +29,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     SharedModule,
     PerfectScrollbarModule,
     NgbModule
-  ], 
+  ],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

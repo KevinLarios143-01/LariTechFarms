@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ShopServiceService } from 'src/app/shared/services/e-commerce/shop-service.service';
 import { productsType } from './products.modal';
+import { ShopServiceService } from '../../../shared/services/e-commerce/shop-service.service';
 
 @Component({
   selector: 'app-products',

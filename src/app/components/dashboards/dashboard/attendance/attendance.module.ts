@@ -10,7 +10,6 @@ import { OverviewCalendarComponent } from './overview-calendar/overview-calendar
 import { LeaveSettingsComponent } from './leave-settings/leave-settings.component';
 import { LeaveApplicationsComponent } from './leave-applications/leave-applications.component';
 import { RecentLeavesComponent } from './recent-leaves/recent-leaves.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgCircleProgressModule } from 'ng-circle-progress';
@@ -27,6 +26,7 @@ import { AttendanceByUserService } from './attendence-by-user/attendence-by-user
 import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     NgbModule,
     NgSelectModule,
     NgCircleProgressModule.forRoot({"responsive": true}),
-    NgxMaterialTimepickerModule,
     FormsModule, ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -58,10 +57,13 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     MatSortModule,
     MatTableModule,
     FlatpickrModule.forRoot(),
+    //NgxMaterialTimepickerModule,
+    /*
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    */
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [

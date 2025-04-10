@@ -6,12 +6,12 @@ import { ApexChartsComponent } from './apex-charts/apex-charts.component';
 import { EchartsComponent } from './echarts/echarts.component';
 import { ChartistComponent } from './chartist/chartist.component';
 import { ChartjsComponent } from './chartjs/chartjs.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ChartistModule } from 'ng-chartist';
 import { NgChartsModule } from 'ng2-charts';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

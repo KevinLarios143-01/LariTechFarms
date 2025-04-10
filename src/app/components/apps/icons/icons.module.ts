@@ -13,7 +13,7 @@ import { ThemifyIconsComponent } from './themify-icons/themify-icons.component';
 import { TypiconsIconsComponent } from './typicons-icons/typicons-icons.component';
 import { WeatherIconsComponent } from './weather-icons/weather-icons.component';
 import { MaterialIconsComponent } from './material-icons/material-icons.component';
-import { SharedModule } from 'src/app/shared/shared.module';
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({

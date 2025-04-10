@@ -5,11 +5,11 @@ import { MatSort } from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { DataService, Person } from 'src/app/shared/services/hr-dashboard/holidaysSelectDropdown.service';
 import { HolidayDialogComponent } from './holiday-dialog/holiday-dialog.component';
 import { holiday, holidayList } from './holidayTableData';
 import { Subject } from 'rxjs';
 import { CalendarEvent, CalendarEventTimesChangedEvent, CalendarView} from 'angular-calendar';
+import { DataService, Person } from '../../../../shared/services/hr-dashboard/holidaysSelectDropdown.service';
 const colors: any = {
   red: {
     primary: '#ad2121',
@@ -82,7 +82,7 @@ export class HolidaysComponent implements OnInit {
     this.dataSource._updateChangeSubscription();   // <-- Refresh the datasource
   }
 
- 
+
   @Input() locale: string = 'en';
 
   @Output() viewChange = new EventEmitter();

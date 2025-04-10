@@ -5,7 +5,6 @@ import { EmployessRoutingModule } from './employess-routing.module';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
 import { ViewEmployeeComponent } from './view-employee/view-employee.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { SharedModule } from '../../../../shared/shared.module';
 
 
 @NgModule({

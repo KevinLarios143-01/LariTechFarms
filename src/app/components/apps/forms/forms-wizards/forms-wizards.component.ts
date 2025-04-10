@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { MustMatch } from 'src/app/shared/validators/passwordMatch'
+import { MustMatch } from '../../../../shared/validators/passwordMatch';
 
 @Component({
   selector: 'app-forms-wizards',
@@ -10,14 +10,14 @@ import { MustMatch } from 'src/app/shared/validators/passwordMatch'
 })
 export class FormsWizardsComponent implements OnInit {
 
- 
+
    //Archwizard Content
    firstFormGroup!: FormGroup;
    secondFormGroup!: FormGroup;
    thirdFormGroup!: FormGroup;
    fourthFormGroup!: FormGroup;
    maxDate!: Date | any;
- 
+
    //verticalform wizard
    detailForm!: FormGroup;
    contactForm!: FormGroup;

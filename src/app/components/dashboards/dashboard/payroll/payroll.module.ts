@@ -5,10 +5,10 @@ import { PayrollRoutingModule } from './payroll-routing.module';
 import { EmployeeSalaryComponent } from './employee-salary/employee-salary.component';
 import { AddPayrollComponent } from './add-payroll/add-payroll.component';
 import { EditPayrollComponent } from './edit-payroll/edit-payroll.component';
-import { SharedModule } from 'src/app/shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../../../../shared/shared.module';
 
 
 @NgModule({
@@ -20,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     PayrollRoutingModule,
-    SharedModule,
+    SharedModule ,
     NgbModule,
     NgSelectModule,
     FormsModule, ReactiveFormsModule
