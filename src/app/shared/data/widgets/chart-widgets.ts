@@ -1,4 +1,5 @@
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+
 export interface Color {
     backgroundColor?: string | string[];
     borderWidth?: number | number[];
@@ -25,158 +26,453 @@ export interface Color {
 
 export let ApexSparklines1 = {
     series: [{
-        data: [2, 4, 3, 4, 5, 4,5,3,4,5,2,4,5,4,3,5,4,3,4,5,4,5,4,3,5,4,3,4,5]
-    }],
-    colors: ['#fa057a'],
-    chart: {
+        data: [1, 4, 2, 4, 5, 4,5,2,4,5,1,4,5,4,2,5,4,2,4,5,4,5,4,2,5,4,2,4,5]
+      }],
+        chart: {
         type: 'bar',
-        width: 350,
-        height: 50,
+        width: 380,
+        height: 40,
         sparkline: {
-            enabled: true,
-        },
-        
-    },
-    plotOptions: {
+          enabled: true
+        }
+      },
+      plotOptions: {
         bar: {
-            columnWidth: '50%',
-        }  
+          columnWidth: '38%'
+        }
+      },
+      fill: {
+        opacity: 1
     },
-
-    tooltip: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      xaxis: {
+        crosshairs: {
+          width: 1
+        },
+      },
+      colors: ['#fa057a'],
+      tooltip: {
         fixed: {
-            enabled: false
+          enabled: false
         },
         x: {
-            show: false
+          show: false
         },
         y: {
-            title: {
-                formatter: function (seriesName:any) {
-                    return "";
-                }
+          title: {
+            formatter: function () {
+              return ''
             }
+          }
         },
         marker: {
-            show: true
+          show: false
         }
+      }
     }
-}
+
 export let ApexSparklines2 = {
     series: [{
-        data: [3, 5, 4, 4, 5, 4,5,3,4,5,3,4,5,4,3,5,4,3,4,5,4,5,4,3,5,4,3,4,5]
-    }],
-    colors: ['#f7346b'],
-    chart: {
+        data: [1, 4, 2, 4, 5, 4,5,2,4,5,1,4,5,4,2,5,4,2,4,5,4,5,4,2,5,4,2,4,5]
+      }],
+        chart: {
         type: 'bar',
-        width: 350,
-        height: 50,
+        width: 380,
+        height: 40,
         sparkline: {
-            enabled: true
+          enabled: true
         }
-    },
-    plotOptions: {
+      },
+      plotOptions: {
         bar: {
-            columnWidth: '50%',
+          columnWidth: '38%'
         }
+      },
+      fill: {
+        opacity: 1
     },
-
-    tooltip: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      xaxis: {
+        crosshairs: {
+          width: 1
+        },
+      },
+      colors: ['#f7346b'],
+      tooltip: {
         fixed: {
-            enabled: false
+          enabled: false
         },
         x: {
-            show: false
+          show: false
         },
         y: {
-            title: {
-                formatter: function (seriesName:any) {
-                    return "";
-                }
+          title: {
+            formatter: function () {
+              return ''
             }
+          }
         },
         marker: {
-            show: true
+          show: false
         }
-    }
+      }
 }
 export let ApexSparklines3 = {
     series: [{
-        data: [3, 5, 4, 4, 5, 4,5,3,4,5,3,4,5,4,3,5,4,3,4,5,4,5,4,3,5,4,3,4,5]
-    }],
-    colors: ['#2dce89'],
-    chart: {
+        data: [1, 4, 2, 4, 5, 4,5,2,4,5,1,4,5,4,2,5,4,2,4,5,4,5,4,2,5,4,2,4,5]
+      }],
+        chart: {
         type: 'bar',
-        width: 350,
-        height: 50,
+        width: 380,
+        height: 40,
         sparkline: {
-            enabled: true
+          enabled: true
         }
-    },
-    plotOptions: {
+      },
+      plotOptions: {
         bar: {
-            columnWidth: '50%',
+          columnWidth: '38%'
         }
+      },
+      fill: {
+        opacity: 1
     },
-
-    tooltip: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      xaxis: {
+        crosshairs: {
+          width: 1
+        },
+      },
+      colors: ['#2dce89'],
+      tooltip: {
         fixed: {
-            enabled: false
+          enabled: false
         },
         x: {
-            show: false
+          show: false
         },
         y: {
-            title: {
-                formatter: function (seriesName:any) {
-                    return "";
-                }
+          title: {
+            formatter: function () {
+              return ''
             }
+          }
         },
         marker: {
-            show: true
+          show: false
         }
-    }
+      }
 }  
 export let ApexSparklines4 = {
     series: [{
-        data: [3, 5, 4, 4, 5, 4,5,3,4,5,3,4,5,4,3,5,4,3,4,5,4,5,4,3,5,4,3,4,5]
-    }],
-    colors: ['#45aaf2'],
-    chart: {
+        data: [1, 4, 2, 4, 5, 4,5,2,4,5,1,4,5,4,2,5,4,2,4,5,4,5,4,2,5,4,2,4,5]
+      }],
+        chart: {
         type: 'bar',
-        width: 350,
-        height: 50,
+        width: 380,
+        height: 40,
         sparkline: {
-            enabled: true
+          enabled: true
         }
-    },
-    plotOptions: {
+      },
+      plotOptions: {
         bar: {
-            columnWidth: '50%',
+          columnWidth: '38%'
         }
+      },
+      fill: {
+        opacity: 1
     },
-
-    tooltip: {
+      labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      xaxis: {
+        crosshairs: {
+          width: 1
+        },
+      },
+      colors: ['#45aaf2'],
+      tooltip: {
         fixed: {
-            enabled: false
+          enabled: false
         },
         x: {
-            show: false
+          show: false
         },
         y: {
-            title: {
-                formatter: function (seriesName:any) {
-                    return "";
-                }
+          title: {
+            formatter: function () {
+              return ''
             }
+          }
         },
         marker: {
-            show: true
+          show: false
         }
-    }
+      }
 }
+export let chartOptions:any = {
+    chart: {
+        type: "area",
+        height: 70,
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          top: 0,
+          left: 0,
+          blur: 1,
+          color: "#fff",
+          opacity: 0.05,
+        },
+      },
+      stroke: {
+        show: true,
+        curve: "smooth",
+        lineCap: "butt",
+        colors: undefined,
+        width: 2.5,
+        ltcArray: 0,
+      },
+      fill: {
+        gradient: {
+          enabled: false,
+        },
+      },
+      series: [
+        {
+          name: "Value",
+          data: [80, 60, 77, 64, 71, 64],
+        },
+      ],
+      yaxis: {
+        min: 0,
+        show: false,
+        axisBorder: {
+            show: false,
+          },
+      },
+      xaxis: {
+        axisBorder: {
+          show: false,
+        },
+      },
+    
+      colors: ["rgba(51, 102, 255,0.6)"],
+}
+export let chartOptions222:any = {
+  chart: {
+      height: 170,
+      width: 100,
+      type: "radialBar",
+  },
 
+  series: [85],
+  colors: ["rgba(51, 102, 255, 1)"],
+  plotOptions: {
+      radialBar: {
+          hollow: {
+              margin: 0,
+              size: "45%",
+          },
+          dataLabels: {
+              name: {
+                  offsetY: -10,
+                  color: "#4b9bfa",
+                  fontSize: ".625rem",
+                  show: false
+              },
+              value: {
+                  offsetY: 8,
+                  color: "#4b9bfa",
+                  fontSize: "1.25rem",
+                  show: true,
+                  fontFamily: "Roboto",
+                  fontWeight: 400
+              }
+          }
+      }
+  },
+  states: {
+  normal: {
+    filter: {
+      type: 'none',
+    }
+  },
+  hover: {
+    filter: {
+      type: 'none',
+    }
+  },
+  active: {
+    filter: {
+      type: 'none',
+    }
+  },
+},
+  grid: {
+      padding: {
+        bottom: -8,
+        top: -15,
+      },
+  },
+  stroke: {
+      lineCap: "round"
+  },
+  labels: ["Status"]
+}
+export let chartOptions1:any = {
+    chart: {
+        type: "area",
+        height: 70,
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          top: 0,
+          left: 0,
+          blur: 1,
+          color: "#fff",
+          opacity: 0.05,
+        },
+      },
+      stroke: {
+        show: true,
+        curve: "smooth",
+        lineCap: "butt",
+        colors: undefined,
+        width: 2.5,
+        ltcArray: 0,
+      },
+      fill: {
+        gradient: {
+          enabled: false,
+        },
+      },
+      series: [
+        {
+          name: "Value",
+          data: [58, 67, 50, 67, 85, 67, 85],
+        },
+      ],
+      yaxis: {
+        min: 0,
+        show: false,
+        axisBorder: {
+            show: false,
+          },
+      },
+      xaxis: {
+        axisBorder: {
+          show: false,
+        },
+      },
+      colors: ["rgba(51, 102, 255,0.6)"],
+}
+export let chartOptions2:any = {
+    chart: {
+        type: "area",
+        height: 70,
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          top: 0,
+          left: 0,
+          blur: 1,
+          color: "#fff",
+          opacity: 0.05,
+        },
+      },
+      stroke: {
+        show: true,
+        curve: "smooth",
+        lineCap: "butt",
+        colors: undefined,
+        width: 2.5,
+        ltcArray: 0,
+      },
+      fill: {
+        gradient: {
+          enabled: false,
+        },
+      },
+      series: [
+        {
+          name: "Value",
+          data: [70, 77, 60, 77, 56, 80, 60],
+        },
+      ],
+      yaxis: {
+        min: 0,
+        show: false,
+        axisBorder: {
+            show: false,
+          },
+      },
+      xaxis: {
+        axisBorder: {
+          show: false,
+        },
+      },
+    
+      colors: ["rgba(51, 102, 255,0.6)"],
+}
+export let chartOptions3:any = {
+    chart: {
+        type: "area",
+        height: 70,
+        sparkline: {
+          enabled: true,
+        },
+        dropShadow: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          top: 0,
+          left: 0,
+          blur: 1,
+          color: "#fff",
+          opacity: 0.05,
+        },
+      },
+      stroke: {
+        show: true,
+        curve: "smooth",
+        lineCap: "butt",
+        colors: undefined,
+        width: 2.5,
+        ltcArray: 0,
+      },
+      fill: {
+        gradient: {
+          enabled: false,
+        },
+      },
+      series: [
+        {
+          name: "Value",
+          data: [64, 72, 80, 64, 75, 60, 77],
+        },
+      ],
+      yaxis: {
+        min: 0,
+        show: false,
+        axisBorder: {
+            show: false,
+          },
+      },
+      xaxis: {
+        axisBorder: {
+          show: false,
+        },
+      },
+      
+      colors: ["rgba(51, 102, 255,0.6)"],
+}
 export let ApexData1 = {
     chart: {
         type: 'area',
@@ -247,7 +543,7 @@ export let ApexData2 = {
       yaxis: {
         min: 0
       },
-      colors: ['#664dc9'],
+      colors: ['#2dce89'],
 }
 export let ApexData3 = {
     chart: {

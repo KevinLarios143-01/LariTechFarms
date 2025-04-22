@@ -1,7 +1,6 @@
-import { Country } from "src/app/components/apps/tables/table-modal/countreies.modal";
 
 
-export const COUNTRIES: Country[] = [
+export const COUNTRIES: any[] = [
   {
     id: 1,
     name: 'Russia',
