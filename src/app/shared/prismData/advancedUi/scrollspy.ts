@@ -1,5 +1,5 @@
-export let 
-scrollspy1 =`<div class="bd-example">
+export let
+  scrollspy1 = `<div class="bd-example">
 <div class="row">
     <div class="col-md-2 col-12">
         <div id="list-example" class="list-group">
@@ -76,7 +76,7 @@ scrollspy1 =`<div class="bd-example">
     </div>
 </div>
 </div>`,
-scrollspy2 =` <div class="row">
+  scrollspy2 = ` <div class="row">
 <div class="col-md-3 col-sm-4">
     <nav  [ngbScrollSpyMenu]="spy1" id="navbar-example3"
         class="navbar bg-light flex-column align-items-stretch p-3">
@@ -209,7 +209,7 @@ scrollspy2 =` <div class="row">
     </div>
 </div>
 </div>`,
-scrollspy3 =`<nav id="navbar-example2" class="navbar navbar-light bg-light px-3 mb-3">
+  scrollspy3 = `<nav id="navbar-example2" class="navbar navbar-light bg-light px-3 mb-3">
 <ul [ngbScrollSpyMenu]="s" class="nav nav-pills d-sm-flex d-block">
     <li class="nav-item">
         <a class="nav-link" ngbScrollSpyItem="basic-1">First</a>
@@ -371,7 +371,7 @@ data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" tabindex="0">
     blanditiis!
 </p>
 </div>`,
-scrollspy4 =`<div class="bd-example">
+  scrollspy4 = `<div class="bd-example">
 <div class="row">
     <div class="col-md-2 col-12">
         <div id="simple-list-example"

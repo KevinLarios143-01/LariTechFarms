@@ -1,5 +1,5 @@
-export let 
-accordion1 = `<div ngbAccordion id="accordionExample">
+export let
+  accordion1 = `<div ngbAccordion id="accordionExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
@@ -87,7 +87,7 @@ accordion1 = `<div ngbAccordion id="accordionExample">
     </div>
 </div>
 </div>`,
-accordion2 = `<div ngbAccordion id="accordionPanelsStayOpenExample">
+  accordion2 = `<div ngbAccordion id="accordionPanelsStayOpenExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="panelsStayOpen-headingOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -164,7 +164,7 @@ accordion2 = `<div ngbAccordion id="accordionPanelsStayOpenExample">
     </div>
 </div>
 </div>`,
-accordion3 = `<div ngbAccordion id="accordionFlushExample">
+  accordion3 = `<div ngbAccordion id="accordionFlushExample">
 <div ngbAccordionItem>
     <h2 ngbAccordionHeader id="flush-headingOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -230,7 +230,7 @@ accordion3 = `<div ngbAccordion id="accordionFlushExample">
     </div>
 </div>
 </div>`,
-accordion4 = `<div ngbAccordion class="accordion-primary" id="accordionPrimaryExample">
+  accordion4 = `<div ngbAccordion class="accordion-primary" id="accordionPrimaryExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingPrimaryOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -295,7 +295,7 @@ accordion4 = `<div ngbAccordion class="accordion-primary" id="accordionPrimaryEx
     </div>
 </div>
 </div>`,
-accordion5 = `<div ngbAccordion class="accordion-secondary" id="accordionSecondaryExample">
+  accordion5 = `<div ngbAccordion class="accordion-secondary" id="accordionSecondaryExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingSecondaryOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -360,7 +360,7 @@ accordion5 = `<div ngbAccordion class="accordion-secondary" id="accordionSeconda
     </div>
 </div>
 </div>`,
-accordion6= `<div ngbAccordion class="accordion-solid-primary" id="accordionPrimarySolidExample">
+  accordion6 = `<div ngbAccordion class="accordion-solid-primary" id="accordionPrimarySolidExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingPrimarySolidOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -425,7 +425,7 @@ accordion6= `<div ngbAccordion class="accordion-solid-primary" id="accordionPrim
     </div>
 </div>
 </div>`,
-accordion7 = `<div ngbAccordion class=" accordion-solid-secondary" id="accordionSecondarySolidExample">
+  accordion7 = `<div ngbAccordion class=" accordion-solid-secondary" id="accordionSecondarySolidExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingSecondarySolidOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -490,7 +490,7 @@ accordion7 = `<div ngbAccordion class=" accordion-solid-secondary" id="accordion
     </div>
 </div>
 </div>`,
-accordion8 = `<div ngbAccordion class=" accordion-border-primary accordions-items-seperate"
+  accordion8 = `<div ngbAccordion class=" accordion-border-primary accordions-items-seperate"
 id="accordionprimaryborderExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingborderprimaryOne">
@@ -554,7 +554,7 @@ id="accordionprimaryborderExample">
     </div>
 </div>
 </div>`,
-accordion9 = `<div ngbAccordion class=" accordion-border-success accordions-items-seperate"
+  accordion9 = `<div ngbAccordion class=" accordion-border-success accordions-items-seperate"
 id="accordionsuccessborderExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingbordersuccessOne">
@@ -618,7 +618,7 @@ id="accordionsuccessborderExample">
     </div>
 </div>
 </div>`,
-accordion10 = `<p class="mb-0">
+  accordion10 = `<p class="mb-0">
 <a class="btn btn-primary collapsed mb-2 me-1" (click)="collapse.toggle()" data-bs-toggle="collapse"
     role="button" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
     Link with href
@@ -638,7 +638,7 @@ accordion10 = `<p class="mb-0">
     trigger.
 </div>
 </div>`,
-accordion11 = `<p class="mb-0">
+  accordion11 = `<p class="mb-0">
 <a class="btn btn-primary mb-2 me-1" (click)="isCollapsed1 = !isCollapsed1" role="button"
     [attr.aria-expanded]="!isCollapsed1" [attr.aria-controls]="'multiCollapseExample1'">Toggle
     first element</a>
@@ -671,7 +671,7 @@ accordion11 = `<p class="mb-0">
     </div>
 </div>
 </div>`,
-accordion12 = `<div ngbAccordion class=" accordion-customicon1 accordions-items-seperate" id="accordioncustomicon1Example">
+  accordion12 = `<div ngbAccordion class=" accordion-customicon1 accordions-items-seperate" id="accordioncustomicon1Example">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingcustomicon1One">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -736,7 +736,7 @@ accordion12 = `<div ngbAccordion class=" accordion-customicon1 accordions-items-
     </div>
 </div>
 </div>`,
-accordion13 = `<div ngbAccordion class=" customized-accordion accordions-items-seperate" id="customizedAccordion">
+  accordion13 = `<div ngbAccordion class=" customized-accordion accordions-items-seperate" id="customizedAccordion">
 <div ngbAccordionItem [collapsed]="false" class="custom-accordion-primary">
     <h2 ngbAccordionHeader id="customizedAccordionOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -801,7 +801,7 @@ accordion13 = `<div ngbAccordion class=" customized-accordion accordions-items-s
     </div>
 </div>
 </div>`,
-accordion14 = `<div ngbAccordion class=" accordionicon-left accordions-items-seperate" id="accordioniconLeftExample">
+  accordion14 = `<div ngbAccordion class=" accordionicon-left accordions-items-seperate" id="accordioniconLeftExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingleftOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -865,7 +865,7 @@ accordion14 = `<div ngbAccordion class=" accordionicon-left accordions-items-sep
     </div>
 </div>
 </div>`,
-accordion15 = `<div ngbAccordion class=" accordionicon-none accordions-items-seperate" id="accordioniconnoIconExample">
+  accordion15 = `<div ngbAccordion class=" accordionicon-none accordions-items-seperate" id="accordioniconnoIconExample">
 <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader id="headingnoIconOne">
         <button ngbAccordionButton type="button" data-bs-toggle="collapse"
@@ -930,7 +930,7 @@ accordion15 = `<div ngbAccordion class=" accordionicon-none accordions-items-sep
     </div>
 </div>
 </div>`,
-accordion16 = `<p>
+  accordion16 = `<p>
 <button class="btn btn-primary" type="button" data-bs-toggle="collapse" (click)="collapse.toggle()"
     data-bs-target="#collapseWidthExample" [attr.aria-expanded]="!isCollapsed"
     aria-controls="collapseWidthExample">

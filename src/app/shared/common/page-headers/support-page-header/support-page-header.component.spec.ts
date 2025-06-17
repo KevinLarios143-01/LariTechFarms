@@ -10,7 +10,7 @@ describe('SupportPageHeaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SupportPageHeaderComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SupportPageHeaderComponent);
     component = fixture.componentInstance;

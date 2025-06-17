@@ -1,5 +1,5 @@
 export let
-floatlabels1 = `<div class="form-floating mb-3">
+  floatlabels1 = `<div class="form-floating mb-3">
 <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
 <label for="floatingInput">Email address</label>
 </div>
@@ -7,7 +7,7 @@ floatlabels1 = `<div class="form-floating mb-3">
 <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
 <label for="floatingPassword">Password</label>
 </div>`,
-floatlabels2 = `<div class="form-floating mb-3">
+  floatlabels2 = `<div class="form-floating mb-3">
 <input type="email" readonly class="form-control-plaintext" id="floatingEmptyPlaintextInput"
     placeholder="name@example.com">
 <label for="floatingEmptyPlaintextInput">Empty input</label>
@@ -17,7 +17,7 @@ floatlabels2 = `<div class="form-floating mb-3">
     placeholder="name@example.com" value="name@example.com">
 <label for="floatingPlaintextInput">Input with value</label>
 </div>`,
-floatlabels3 = `<form class="form-floating my-3">
+  floatlabels3 = `<form class="form-floating my-3">
 <input type="email" class="form-control" id="floatingInputValue" placeholder="name@example.com"
     value="test@example.com">
 <label for="floatingInputValue">Input with value</label>
@@ -27,7 +27,7 @@ floatlabels3 = `<form class="form-floating my-3">
     placeholder="name@example.com" value="test@example.com">
 <label for="floatingInputInvalid">Invalid input</label>
 </form>`,
-floatlabels4 = `<div class="form-floating mb-4">
+  floatlabels4 = `<div class="form-floating mb-4">
 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 <label for="floatingTextarea">Description</label>
 </div>
@@ -36,7 +36,7 @@ floatlabels4 = `<div class="form-floating mb-4">
     disabled=""></textarea>
 <label for="floatingTextarea2">Disabled</label>
 </div>`,
-floatlabels5 = `<div class="form-floating">
+  floatlabels5 = `<div class="form-floating">
 <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
     <option selected>Open this select menu</option>
     <option value="1">One</option>
@@ -45,7 +45,7 @@ floatlabels5 = `<div class="form-floating">
 </select>
 <label for="floatingSelect">Works with selects</label>
 </div>`,
-floatlabels6 = `<div class="row g-2">
+  floatlabels6 = `<div class="row g-2">
 <div class="col-md">
     <div class="form-floating">
         <input type="email" class="form-control" id="floatingInputGrid" placeholder="name@example.com"
@@ -65,7 +65,7 @@ floatlabels6 = `<div class="row g-2">
     </div>
 </div>
 </div>`,
-floatlabels7 = `<div class="row gy-4">
+  floatlabels7 = `<div class="row gy-4">
 <div class="col-xl-4">
     <div class="form-floating mb-4 floating-primary">
         <input type="email" class="form-control" id="floatingInputprimary"

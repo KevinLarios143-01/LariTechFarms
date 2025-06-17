@@ -122,8 +122,8 @@ Profile
     <span class="visually-hidden">New alerts</span>
 </span>
 </span>`;
-export let badgeTS11 = 
-` <div class="d-flex align-items-center gap-5 flex-wrap">
+export let badgeTS11 =
+  ` <div class="d-flex align-items-center gap-5 flex-wrap">
 <div>
     <span
         class="badge bg-outline-secondary custom-badge fs-15 d-inline-flex align-items-center"><i

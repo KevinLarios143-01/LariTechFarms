@@ -1,5 +1,5 @@
-export let 
-model1 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="open(content)"
+export let
+  model1 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="open(content)"
 data-bs-target="#exampleModal">
 Launch demo modal
 </button>
@@ -27,7 +27,7 @@ aria-hidden="true">
     </div>
 </div>
 </div>`,
-model2 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="open(content1)"
+  model2 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="open(content1)"
 data-bs-target="#staticBackdrop">
 Launch static backdrop modal
 </button>
@@ -56,7 +56,7 @@ aria-labelledby="staticBackdropLabel" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model3 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+  model3 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 (click)="openScrollableContent(longContent)" data-bs-target="#exampleModalScrollable">
 Scrolling long content
 </button>
@@ -139,7 +139,7 @@ data-bs-keyboard="false" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model4 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal"
+  model4 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal"
 (click)="openVerticallyCentered(Content2)" data-bs-target="#exampleModalScrollable2">
 Vertically centered modal
 </button>
@@ -172,7 +172,7 @@ data-bs-keyboard="false" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model5 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="VerticallyScrol(Content3)"
+  model5 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="VerticallyScrol(Content3)"
 data-bs-target="#exampleModalScrollable3">
 Vertically centered scrollable modal
 </button>
@@ -236,7 +236,7 @@ data-bs-keyboard="false" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model6 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="Tooltippopover(Content4)"
+  model6 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="Tooltippopover(Content4)"
 data-bs-target="#exampleModalScrollable4">
 Launch demo modal
 </button>
@@ -277,7 +277,7 @@ data-bs-keyboard="false" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model7 =`<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="UsingGrid(Content5)"
+  model7 = `<button type="button" class="btn btn-primary" data-bs-toggle="modal" (click)="UsingGrid(Content5)"
 data-bs-target="#exampleModalScrollable5">
 Launch demo modal
 </button>
@@ -335,7 +335,7 @@ data-bs-keyboard="false" aria-hidden="true">
     </div>
 </div>
 </div>`,
-model8 =`<a class="btn btn-primary" data-bs-toggle="modal" (click)=" ToggleModals(Content6)" role="button">Open
+  model8 = `<a class="btn btn-primary" data-bs-toggle="modal" (click)=" ToggleModals(Content6)" role="button">Open
 first modal
 </a>
 <div class="modal fade" id="exampleModalToggle" aria-labelledby="exampleModalToggleLabel" tabindex="-1"
@@ -383,7 +383,7 @@ aria-hidden="true" style="display: none;">
     </div>
 </div>
 </div>`,
-model9 =`<button type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#exampleModalXl"
+  model9 = `<button type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#exampleModalXl"
 (click)="openXl(Content7)">Extra large modal</button>
 <button type="button" class="btn btn-secondary m-1" data-bs-toggle="modal" data-bs-target="#exampleModalLg"
 (click)="openLg(Content10)">Large modal</button>
@@ -443,7 +443,7 @@ aria-hidden="true">
     </div>
 </div>
 </div>`,
-model10 =`<div class="bd-example">
+  model10 = `<div class="bd-example">
 <button type="button" class="btn btn-primary mb-1 me-1" data-bs-toggle="modal"
     data-bs-target="#exampleModalFullscreen" (click)="Fullscreen(Content11)">Full screen</button>
 <button type="button" class="btn btn-secondary mb-1 me-1" data-bs-toggle="modal"
@@ -602,7 +602,7 @@ aria-labelledby="exampleModalFullscreenXxlLabel" aria-hidden="true" style="displ
     </ng-template>
 </div>
 </div>`,
-model11 =`<button type="button" class="btn btn-primary mb-1 me-1" data-bs-toggle="modal" (click)="openMdo(Content17)"
+  model11 = `<button type="button" class="btn btn-primary mb-1 me-1" data-bs-toggle="modal" (click)="openMdo(Content17)"
 data-bs-target="#formmodal" data-bs-whatever="@mdo">Open modal for
 mdo</button>
 <button type="button" class="btn btn-secondary mb-1 me-1" data-bs-toggle="modal"
@@ -706,7 +706,7 @@ getbootstrap</button>
     </ng-template>
 </div>
 </div>`,
-model12 =`<div class="row ">
+  model12 = `<div class="row ">
 <div class="col-sm-6 col-md-4 col-xl-3">
     <a class="modal-effect btn btn-primary d-grid mb-3" data-bs-effect="effect-scale"
         data-bs-toggle="modal" (click)="openScale(scale)">Scale</a>
@@ -967,9 +967,9 @@ model12 =`<div class="row ">
 </div>
 
 </div>`,
-model13 =` <button type="button" class="btn-close" aria-label="Close"></button>`,
-model14 =`<button type="button" class="btn-close" disabled aria-label="Close"></button>`,
-model15 =` <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+  model13 = ` <button type="button" class="btn-close" aria-label="Close"></button>`,
+  model14 = `<button type="button" class="btn-close" disabled aria-label="Close"></button>`,
+  model15 = ` <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
 <button type="button" class="btn-close btn-close-white" disabled aria-label="Close"></button>
 
 //card-body class = "bg-black"`;

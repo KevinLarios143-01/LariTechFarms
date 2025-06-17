@@ -1,4 +1,4 @@
-export let formselectTS=`
+export let formselectTS = `
 <select class="form-select" aria-label="Default select example">
 <option selected>Open this select menu
 </option>
@@ -7,7 +7,7 @@ export let formselectTS=`
 <option value="3">Three</option>
 </select>
 `
-export let formselectTS1=`
+export let formselectTS1 = `
 <select class="form-select" aria-label="Disabled select example" disabled="">
 <option selected="">Open this select menu</option>
 <option value="1">One</option>
@@ -15,14 +15,14 @@ export let formselectTS1=`
 <option value="3">Three</option>
 </select>
 `
-export let formselectTS2=`   <select class="form-select rounded-pill" aria-label="Default select example">
+export let formselectTS2 = `   <select class="form-select rounded-pill" aria-label="Default select example">
 <option selected>Open this select menu
 </option>
 <option value="1">One</option>
 <option value="2">Two</option>
 <option value="3">Three</option>
 </select>`
-export let formselectTS3=`
+export let formselectTS3 = `
 <select class="form-select" multiple="" aria-label="multiple select example">
 <option selected="">Open this select menu</option>
 <option value="1">One</option>
@@ -30,7 +30,7 @@ export let formselectTS3=`
 <option value="3">Three</option>
 </select>
 `
-export let formselectTS4=`
+export let formselectTS4 = `
 <select class="form-select" size="4" aria-label="size 3 select example">
 <option selected="">Open this select menu</option>
 <option value="1">One</option>
@@ -40,7 +40,7 @@ export let formselectTS4=`
 <option value="5">Five</option>
 </select>
 `
-export let formselectTS5=`
+export let formselectTS5 = `
 <select class="form-select form-select-sm mb-3" aria-label=".form-select-sm example">
 <option selected="">Open this select menu</option>
 <option value="1">One</option>

@@ -58,7 +58,7 @@ export class SidebarComponent {
     if (WindowResize) {
       this.windowSubscribe$ = WindowResize.subscribe(() => {
         // to check and adjst the menu on screen size change
-    
+
       });
     }
 
@@ -75,24 +75,24 @@ export class SidebarComponent {
     }
     let html = document.documentElement;
     // if (html.getAttribute('data-nav-style') != "icon-hover" && html.getAttribute('data-nav-style') != "menu-hover") {
-      // if (!event?.ctrlKey) {
-      for (const item of menuData) {
-        if (item.path === currentPath) {
-          item.active = true;
-          item.selected = true;
-          this.setMenuAncestorsActive(item);
-        } else if (!item.active && !item.selected) {
-          item.active = false; // Set active to false for items not matching the target
-          item.selected = false; // Set active to false for items not matching the target
-        } else {
-          this.removeActiveOtherMenus(item);
-        }
-        if (item.children && item.children.length > 0) {
-          this.setNavActive(event, currentPath, item.children);
-        }
+    // if (!event?.ctrlKey) {
+    for (const item of menuData) {
+      if (item.path === currentPath) {
+        item.active = true;
+        item.selected = true;
+        this.setMenuAncestorsActive(item);
+      } else if (!item.active && !item.selected) {
+        item.active = false; // Set active to false for items not matching the target
+        item.selected = false; // Set active to false for items not matching the target
+      } else {
+        this.removeActiveOtherMenus(item);
       }
-      
-      // }
+      if (item.children && item.children.length > 0) {
+        this.setNavActive(event, currentPath, item.children);
+      }
+    }
+
+    // }
     // }
   }
   getParentObject(obj: any, childObject: Menu) {
@@ -159,7 +159,7 @@ export class SidebarComponent {
     } else {
       html?.removeAttribute('data-icon-text');
     }
-    if (html.getAttribute('data-nav-style') != "icon-hover" && html.getAttribute('data-nav-style') != "menu-hover"  || (window.innerWidth < 992) || (html.getAttribute('data-nav-layout')!= "horizontal") && (html.getAttribute('data-nav-style') != "icon-hover-closed" && html.getAttribute('data-nav-style') != "menu-hover-closed")) {
+    if (html.getAttribute('data-nav-style') != "icon-hover" && html.getAttribute('data-nav-style') != "menu-hover" || (window.innerWidth < 992) || (html.getAttribute('data-nav-layout') != "horizontal") && (html.getAttribute('data-nav-style') != "icon-hover-closed" && html.getAttribute('data-nav-style') != "menu-hover-closed")) {
       for (const item of menuData) {
         if (item === targetObject) {
           if (html.getAttribute('data-vertical-style') == 'doublemenu' && item.active) { return }
@@ -309,7 +309,7 @@ export class SidebarComponent {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
     this.setNavActive(null, this.router.url);
-      this.cd.detectChanges();
+    this.cd.detectChanges();
   }
   ngOnDestroy() {
     this.menuitemsSubscribe$.unsubscribe();
@@ -320,7 +320,7 @@ export class SidebarComponent {
 
 
   leftArrowFn() {
-    // Used to move the slide of the menu in Horizontal and also remove the arrows after click  if there was no space 
+    // Used to move the slide of the menu in Horizontal and also remove the arrows after click  if there was no space
     // Used to Slide the menu to Left side
     let slideLeft = document.querySelector('.slide-left') as HTMLElement;
     let slideRight = document.querySelector('.slide-right') as HTMLElement;
@@ -357,7 +357,7 @@ export class SidebarComponent {
     }
   }
   rightArrowFn() {
-    // Used to move the slide of the menu in Horizontal and also remove the arrows after click  if there was no space 
+    // Used to move the slide of the menu in Horizontal and also remove the arrows after click  if there was no space
     // Used to Slide the menu to Right side
     let slideLeft = document.querySelector('.slide-left') as HTMLElement;
     let slideRight = document.querySelector('.slide-right') as HTMLElement;

@@ -10,8 +10,8 @@ describe('CustomHeaderComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CustomHeaderComponent]
     })
-    .compileComponents();
-    
+      .compileComponents();
+
     fixture = TestBed.createComponent(CustomHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

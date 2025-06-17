@@ -1,5 +1,5 @@
-export let 
-content = `<ng-template #content let-offcanvas>
+export let
+  content = `<ng-template #content let-offcanvas>
 <div class="offcanvas-header border-bottom border-block-end-dashed">
     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Notifications</h5>
     <button (click)="offcanvas.dismiss('Cross click')" type="button" class="btn-close" data-bs-dismiss="offcanvas"
@@ -255,7 +255,7 @@ content = `<ng-template #content let-offcanvas>
     </div>
 </div>
 </ng-template>`,
-offcanvas1 =`<a class="btn btn-primary mb-1 me-1" data-bs-toggle="offcanvas" (click)="open(content)" role="button"
+  offcanvas1 = `<a class="btn btn-primary mb-1 me-1" data-bs-toggle="offcanvas" (click)="open(content)" role="button"
                     aria-controls="offcanvasExample">
                     Link with href
                 </a>
@@ -271,11 +271,11 @@ offcanvas1 =`<a class="btn btn-primary mb-1 me-1" data-bs-toggle="offcanvas" (cl
                     </div>
 
                 </div>
-                
+
                 //content
-                
+
                 ${content}
-                
+
                 //ts
                 open(content: any) {
                     this.offcanvasService
@@ -300,7 +300,7 @@ offcanvas1 =`<a class="btn btn-primary mb-1 me-1" data-bs-toggle="offcanvas" (cl
                     }
                   }
                 `,
-offcanvas2 =` <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+  offcanvas2 = ` <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
 (click)="openNoBackdrop(content)" data-bs-target="#offcanvasScrolling"
 aria-controls="offcanvasScrolling">Enable
 body scrolling
@@ -315,7 +315,7 @@ id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
 </div>
 
 //content
-                
+
 ${content}
 
 //ts
@@ -324,7 +324,7 @@ openNoBackdrop(content: any) {
 }
 
 `,
-offcanvas3 =`
+  offcanvas3 = `
 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                     (click)="openStaticBackdrop(content)" data-bs-target="#staticBackdrop"
                     aria-controls="staticBackdrop">
@@ -342,13 +342,13 @@ offcanvas3 =`
 
 ${content}
 
-//ts 
+//ts
 
 openStaticBackdrop(content:any) {
     this.offcanvasService.open(content, { backdrop: 'static' });
   }
 `,
-offcanvas4 =`
+  offcanvas4 = `
 <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
                     (click)="EnableBackdrop(content)" data-bs-target="#offcanvasWithBothOptions"
                     aria-controls="offcanvasWithBothOptions">Enable both scrolling &amp;
@@ -601,7 +601,7 @@ EnableBackdrop(content: any) {
 }
 
 `,
-offcanvas5 =`
+  offcanvas5 = `
 <button class="btn btn-primary mb-1 me-1" type="button" data-bs-toggle="offcanvas"
                     (click)="openTop(content1)" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Toggle top
                     offcanvas</button>
@@ -625,7 +625,7 @@ offcanvas5 =`
                     aria-controls="offcanvasBottom">Toggle
                     bottom
                     offcanvas</button>
-                   
+
 //content
 
 ${content}

@@ -36,37 +36,37 @@ import { SupportPageHeaderComponent } from './page-headers/support-page-header/s
 import { LiveChatComponent } from './live-chat/live-chat.component';
 
 @NgModule({
-    declarations: [
-        PageHeaderComponent,
-        SidebarComponent,
-        MainLayoutComponent, AuthenticationLayoutComponent, SwitcherComponent, HeaderComponent, TapToTopComponent,
-        FooterComponent, CustomHeaderComponent, HrDashboardPageHeaderComponent,
-        HrDashboardPageHeaderModalComponent,
-        TaskDashboardPageHeaderComponent,
-        JobDashboardPageHeaderComponent,
-        JobDashboardPageHeaderModalComponent,SupportSystemComponent,SupportHeaderComponent,SupportSwitcherComponent,RightSidebarComponent,
-        SupportFooterComponent,SupportSidebarComponent,SupportPageHeaderComponent,LiveChatComponent
-    ],
-    exports: [
-        PageHeaderComponent,
-        SidebarComponent, SwitcherComponent, HeaderComponent, FooterComponent, CustomHeaderComponent, TapToTopComponent, HrDashboardPageHeaderComponent,RightSidebarComponent,
-        HrDashboardPageHeaderModalComponent,
-        TaskDashboardPageHeaderComponent,
-        JobDashboardPageHeaderComponent,
-        JobDashboardPageHeaderModalComponent,SupportSystemComponent,SupportSwitcherComponent,SupportFooterComponent,SupportSidebarComponent,SupportPageHeaderComponent,LiveChatComponent
-    ],
-    imports: [
-        CommonModule,
-        NgbModule,
-        OverlayscrollbarsModule,
-        ColorPickerModule,
-        FormsModule, ReactiveFormsModule,
-        RouterModule, FullscreenDirective,
-        HoverEffectSidebarDirective, DropdownPositionDirective,MaterialModuleModule,NgSelectModule,FormsModule,FlatpickrModule,NgxColorsModule,
-        
-    ],
-    providers: [
-        FlatpickrDefaults,
-      ],
+  declarations: [
+    PageHeaderComponent,
+    SidebarComponent,
+    MainLayoutComponent, AuthenticationLayoutComponent, SwitcherComponent, HeaderComponent, TapToTopComponent,
+    FooterComponent, CustomHeaderComponent, HrDashboardPageHeaderComponent,
+    HrDashboardPageHeaderModalComponent,
+    TaskDashboardPageHeaderComponent,
+    JobDashboardPageHeaderComponent,
+    JobDashboardPageHeaderModalComponent, SupportSystemComponent, SupportHeaderComponent, SupportSwitcherComponent, RightSidebarComponent,
+    SupportFooterComponent, SupportSidebarComponent, SupportPageHeaderComponent, LiveChatComponent
+  ],
+  exports: [
+    PageHeaderComponent,
+    SidebarComponent, SwitcherComponent, HeaderComponent, FooterComponent, CustomHeaderComponent, TapToTopComponent, HrDashboardPageHeaderComponent, RightSidebarComponent,
+    HrDashboardPageHeaderModalComponent,
+    TaskDashboardPageHeaderComponent,
+    JobDashboardPageHeaderComponent,
+    JobDashboardPageHeaderModalComponent, SupportSystemComponent, SupportSwitcherComponent, SupportFooterComponent, SupportSidebarComponent, SupportPageHeaderComponent, LiveChatComponent
+  ],
+  imports: [
+    CommonModule,
+    NgbModule,
+    OverlayscrollbarsModule,
+    ColorPickerModule,
+    FormsModule, ReactiveFormsModule,
+    RouterModule, FullscreenDirective,
+    HoverEffectSidebarDirective, DropdownPositionDirective, MaterialModuleModule, NgSelectModule, FormsModule, FlatpickrModule, NgxColorsModule,
+
+  ],
+  providers: [
+    FlatpickrDefaults,
+  ],
 })
 export class SharedModule { }

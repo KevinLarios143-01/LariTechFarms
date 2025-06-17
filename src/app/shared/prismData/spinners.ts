@@ -1,10 +1,10 @@
 export let spinners1 = `<div class="spinner-border" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners2 = `<div class="spinner-grow" role="status">
+  spinners2 = `<div class="spinner-grow" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners3 = `<div class="spinner-border text-primary" role="status">
+  spinners3 = `<div class="spinner-border text-primary" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>
 <div class="spinner-border text-secondary" role="status">
@@ -28,7 +28,7 @@ spinners3 = `<div class="spinner-border text-primary" role="status">
 <div class="spinner-border text-dark" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners4 = `<div class="spinner-grow text-primary" role="status">
+  spinners4 = `<div class="spinner-grow text-primary" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>
 <div class="spinner-grow text-secondary" role="status">
@@ -52,7 +52,7 @@ spinners4 = `<div class="spinner-grow text-primary" role="status">
 <div class="spinner-grow text-dark" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners5 = ` <div class="d-flex justify-content-center mb-4">
+  spinners5 = ` <div class="d-flex justify-content-center mb-4">
 <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
 </div>
@@ -61,7 +61,7 @@ spinners5 = ` <div class="d-flex justify-content-center mb-4">
 <strong>Loading...</strong>
 <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
 </div>`,
-spinners6 = ` <div class="clearfix mb-4">
+  spinners6 = ` <div class="clearfix mb-4">
 <div class="spinner-border float-end" role="status">
     <span class="visually-hidden">Loading...</span>
 </div>
@@ -71,12 +71,12 @@ spinners6 = ` <div class="clearfix mb-4">
     <span class="visually-hidden">Loading...</span>
 </div>
 </div>`,
-spinners7 = `<div class="text-center">
+  spinners7 = `<div class="text-center">
 <div class="spinner-border" role="status">
     <span class="visually-hidden">Loading...</span>
 </div>
 </div>`,
-spinners8 = `<div class="spinner-border spinner-border-sm me-4" role="status">
+  spinners8 = `<div class="spinner-border spinner-border-sm me-4" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>
 <div class="spinner-grow spinner-grow-sm me-4" role="status">
@@ -88,10 +88,10 @@ spinners8 = `<div class="spinner-border spinner-border-sm me-4" role="status">
 <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners9 = `<div class="spinner-border m-5" role="status">
+  spinners9 = `<div class="spinner-border m-5" role="status">
 <span class="visually-hidden">Loading...</span>
 </div>`,
-spinners10 = `<div class="btn-list">
+  spinners10 = `<div class="btn-list">
 <button class="btn btn-primary-light" type="button" disabled>
     <span class="spinner-border spinner-border-sm align-middle" role="status" aria-hidden="true"></span>
     <span class="visually-hidden">Loading...</span>

@@ -1,4 +1,4 @@
-export let validationTS=` 
+export let validationTS = `
 <form class="row g-3 needs-validation" novalidate>
 <div class="col-md-4">
     <label for="validationCustom01" class="form-label">First name</label>
@@ -67,7 +67,7 @@ export let validationTS=`
     <button class="btn btn-primary" type="submit">Submit form</button>
 </div>
 </form>`
-export let validationTS1=` 
+export let validationTS1 = `
 <form class="row g-3">
 <div class="col-md-4">
     <label for="validationDefault01" class="form-label">First name</label>
@@ -115,7 +115,7 @@ export let validationTS1=`
     <button class="btn btn-primary" type="submit">Submit form</button>
 </div>
 </form>`
-export let validationTS2=` 
+export let validationTS2 = `
 <form class="row g-3">
 <div class="col-md-4">
     <label for="validationServer01" class="form-label">First
@@ -197,7 +197,7 @@ export let validationTS2=`
         form</button>
 </div>
 </form> `
-export let validationTS3=` 
+export let validationTS3 = `
 <form class="row g-3 needs-validation" novalidate>
 <div class="col-md-4 position-relative">
     <label for="validationTooltip01" class="form-label">First
@@ -263,7 +263,7 @@ export let validationTS3=`
         form</button>
 </div>
 </form> `
-export let validationTS4=`
+export let validationTS4 = `
 <form class="was-validated">
                             <div class="mb-3">
                                 <label for="validationTextarea" class="form-label">Textarea</label>

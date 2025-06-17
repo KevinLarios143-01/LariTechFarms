@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 export class PageHeaderComponent {
   @Input() title!: string;
-  @Input() title1!:string;
+  @Input() title1!: string;
   @Input() activeTitle!: string;
 }

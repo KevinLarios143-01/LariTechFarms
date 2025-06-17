@@ -6,7 +6,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
     <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
 </ul>
 </nav>`,
- pagination2 = ` <nav aria-label="Page navigation">
+  pagination2 = ` <nav aria-label="Page navigation">
  <ul class="pagination mb-0">
      <li class="page-item">
          <a class="page-link" href="javascript:void(0);" aria-label="Previous">
@@ -23,7 +23,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination3 = `<nav aria-label="...">
+  pagination3 = `<nav aria-label="...">
  <ul class="pagination pagination-sm mb-0">
      <li class="page-item active" aria-current="page">
          <span class="page-link">1</span>
@@ -50,7 +50,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
  </ul>
 </nav>`,
- pagination4 = `<nav aria-label="Page navigation">
+  pagination4 = `<nav aria-label="Page navigation">
  <ul class="pagination justify-content-center">
      <li class="page-item disabled">
          <a class="page-link">Previous</a>
@@ -76,7 +76,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination5 = `<nav aria-label="..." class="me-3">
+  pagination5 = `<nav aria-label="..." class="me-3">
  <ul class="pagination">
      <li class="page-item disabled">
          <a class="page-link">Previous</a>
@@ -104,7 +104,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination6 = `<nav aria-label="Page navigation" class="pagination-style-1">
+  pagination6 = `<nav aria-label="Page navigation" class="pagination-style-1">
  <ul class="pagination mb-0 flex-wrap">
      <li class="page-item disabled">
          <a class="page-link" href="javascript:void(0);">
@@ -126,7 +126,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination7 = ` <nav aria-label="Page navigation" class="pagination-style-2">
+  pagination7 = ` <nav aria-label="Page navigation" class="pagination-style-2">
  <ul class="pagination mb-0 flex-wrap">
      <li class="page-item disabled">
          <a class="page-link" href="javascript:void(0);">
@@ -148,7 +148,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination8 = `<nav aria-label="Page navigation" class="pagination-style-3">
+  pagination8 = `<nav aria-label="Page navigation" class="pagination-style-3">
  <ul class="pagination mb-0 flex-wrap">
      <li class="page-item disabled">
          <a class="page-link" href="javascript:void(0);">
@@ -170,7 +170,7 @@ export let pagination1 = `<nav aria-label="Page navigation">
      </li>
  </ul>
 </nav>`,
- pagination9 = `<nav aria-label="Page navigation" class="pagination-style-4">
+  pagination9 = `<nav aria-label="Page navigation" class="pagination-style-4">
  <ul class="pagination mb-0 flex-wrap">
      <li class="page-item disabled">
          <a class="page-link" href="javascript:void(0);">

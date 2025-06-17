@@ -8,15 +8,15 @@ import { NavigationEnd, Router } from '@angular/router';
 })
 export class SupportPageHeaderComponent {
   @Input() title!: string;
-  
+
   @Input() title2!: string;
   @Input() title1!: string;
-  routerEvents:any[]=[]
+  routerEvents: any[] = []
   constructor(private router: Router) {
     this.router.events.subscribe((event: any) => {
       if (event instanceof NavigationEnd) {
         this.routerEvents = event.url.split('/').filter((e: string) => e != '');
       }
     })
-  } 
+  }
 }

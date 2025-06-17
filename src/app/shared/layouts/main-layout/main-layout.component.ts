@@ -11,20 +11,20 @@ import { NavigationEnd, NavigationStart, Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainLayoutComponent {
-  menuItems!:Menu[];
+  menuItems!: Menu[];
   currentPath: string = '';
-  menuitemsSubscribe$!:Subscription
+  menuitemsSubscribe$!: Subscription
   constructor(
     private navServices: NavService,
-    private elementRef: ElementRef,private renderer:Renderer2, 
+    private elementRef: ElementRef, private renderer: Renderer2,
     private router: Router) {
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe(() => {
-        window.scrollTo(0, 0);
-      });
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo(0, 0);
+    });
     const htmlElement =
-    this.elementRef.nativeElement.ownerDocument.documentElement;
+      this.elementRef.nativeElement.ownerDocument.documentElement;
     let html = document.querySelector('html');
 
     if (window.innerWidth <= 992) {
@@ -33,7 +33,7 @@ export class MainLayoutComponent {
         html?.getAttribute('data-toggled') == 'close' ? 'close' : 'close'
       );
     }
-  
+
   }
   ngOnInit() {
     this.menuitemsSubscribe$ = this.navServices.items.subscribe((items: any) => {
@@ -64,11 +64,11 @@ export class MainLayoutComponent {
     this.menuItem.active = !this.menuItem.active;
     const navStyle = document.documentElement.getAttribute('data-nav-style');
 
-    if(html.getAttribute('data-nav-layout') =='horizontal' && window.innerWidth >= 992){this.clearNavDropdown();} else
-    if (navStyle === 'menu-click' || navStyle === 'menu-hover' || navStyle === 'icon-click' || navStyle === 'icon-hover') {
-      document.querySelector('.double-menu-active')?.setAttribute('style', 'display: none;');
-    }   
-    
+    if (html.getAttribute('data-nav-layout') == 'horizontal' && window.innerWidth >= 992) { this.clearNavDropdown(); } else
+      if (navStyle === 'menu-click' || navStyle === 'menu-hover' || navStyle === 'icon-click' || navStyle === 'icon-hover') {
+        document.querySelector('.double-menu-active')?.setAttribute('style', 'display: none;');
+      }
+
   }
   menuItem = {
     active: false,
@@ -79,8 +79,8 @@ export class MainLayoutComponent {
   }
   clearToggle() {
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
-   
+
     document.querySelector('#responsive-overlay')?.classList.remove('active');
   }
-  
+
 }

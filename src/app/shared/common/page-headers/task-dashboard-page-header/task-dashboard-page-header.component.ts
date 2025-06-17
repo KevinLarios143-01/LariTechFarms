@@ -10,13 +10,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class TaskDashboardPageHeaderComponent implements OnInit {
 
   @Input() title!: string;
-  
+
   @Input() title2!: string;
   @Input() title3!: string;
 
-  constructor(public dialog: MatDialog,private modalService:NgbModal) {}
+  constructor(public dialog: MatDialog, private modalService: NgbModal) { }
   open(content: any) {
-    this.modalService.open(content,{size:'lg' });
+    this.modalService.open(content, { size: 'lg' });
   }
 
 

@@ -47,29 +47,29 @@ export class DropdownPositionDirective {
     }
     if (dropdownElement.classList.contains('open')) {
       let dropdownElementUl = dropdownElement.querySelector('ul') as HTMLElement;
-      if(dropdownElementUl){
-      var dropdownRect = dropdownElement.getBoundingClientRect();
-      var dropdownWidth = dropdownElementUl.getBoundingClientRect().width;
+      if (dropdownElementUl) {
+        var dropdownRect = dropdownElement.getBoundingClientRect();
+        var dropdownWidth = dropdownElementUl.getBoundingClientRect().width;
 
-      // Calculate the right edge position
-      var rightEdge = dropdownRect.right + dropdownWidth;
-      var leftEdge = dropdownRect.left - dropdownWidth;
-      if (rightEdge > window.innerWidth) {
-        dropdownElementUl.classList.add('force-left');
-      } else {
-        if (dropdownElement.closest('ul')?.classList.contains('force-left') && leftEdge > 0) {
+        // Calculate the right edge position
+        var rightEdge = dropdownRect.right + dropdownWidth;
+        var leftEdge = dropdownRect.left - dropdownWidth;
+        if (rightEdge > window.innerWidth) {
           dropdownElementUl.classList.add('force-left');
-        }
-        // Check if moving out to the left
-        else if (leftEdge < 0) {
-          dropdownElementUl.classList.remove('force-left');
         } else {
-          // Reset classes and position if not moving out
-          dropdownElementUl.classList.remove('force-left');
+          if (dropdownElement.closest('ul')?.classList.contains('force-left') && leftEdge > 0) {
+            dropdownElementUl.classList.add('force-left');
+          }
+          // Check if moving out to the left
+          else if (leftEdge < 0) {
+            dropdownElementUl.classList.remove('force-left');
+          } else {
+            // Reset classes and position if not moving out
+            dropdownElementUl.classList.remove('force-left');
+          }
         }
       }
     }
-  }
   }
 
   ngOnDestroy() {

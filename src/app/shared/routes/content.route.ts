@@ -1,6 +1,15 @@
 import { NgModule } from '@angular/core';
-import {  RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { hrmdashboardRoutingModule } from '../../../app/componets/dashbord/hrmdashboards/hrmdashboards.routes';
+import { ClientDashboardRoutingModule } from '../../componets/dashbord/client-dashboard/client-dashboard.routes';
+import { EmployeeDashboardRoutingModule } from '../../componets/dashbord/employee-dashboard/employee-dashboard.routes';
+import { EmployessRoutingModule } from '../../componets/dashbord/hrmdashboards/employess/employess.routes';
+import { AttendanceRoutingModule } from '../../componets/dashbord/hrmdashboards/attendance/attendance.routes';
+import { PayrollRoutingModule } from '../../componets/dashbord/hrmdashboards/payroll/payroll.routes';
+import { TaskDashboardRoutingModule } from '../../componets/dashbord/task-dashboard/task-dashboard.routes';
+import { ProjectDashboardRoutingModule } from '../../componets/dashbord/project-dashboard/project-dashboard.routes';
+import { JobDashboardRoutingModule } from '../../componets/dashbord/job-dashboard/job-dashboard.routes';
+import { SuperAdminRoutingModule } from '../../componets/dashbord/super-admin/super-admin.routes';
 
 
 
@@ -9,12 +18,22 @@ import { hrmdashboardRoutingModule } from '../../../app/componets/dashbord/hrmda
 
 export const content: Routes = [
 
-  { path: '', children: [
-    ...hrmdashboardRoutingModule.routes,
-    
-  ]}
+  {
+    path: '', children: [
+      ...hrmdashboardRoutingModule.routes,
+      ...ClientDashboardRoutingModule.routes,
+      ...EmployessRoutingModule.routes,
+      ...AttendanceRoutingModule.routes,
+      ...PayrollRoutingModule.routes,
+      ...EmployeeDashboardRoutingModule.routes,
+      ...TaskDashboardRoutingModule.routes,
+      ...ProjectDashboardRoutingModule.routes,
+      ...JobDashboardRoutingModule.routes,
+      ...SuperAdminRoutingModule.routes,
+    ]
+  }
 
-  
+
 ];
 
 @NgModule({

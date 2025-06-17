@@ -37,12 +37,14 @@
   .dark-mode {
     app-hr-dashboard-page-header {
       .mat-form-field-appearance-fill .mat-form-field-flex {
-        background-color: rgba(0,0,0,0.2) !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
         color: #fff;
       }
+
       .mat-form-field-label {
         color: rgb(255 255 255 / 60%);
-    }
+      }
+
       .mat-datepicker-toggle,
       .mat-datepicker-content .mat-calendar-next-button,
       .mat-datepicker-content .mat-calendar-previous-button {
@@ -50,17 +52,20 @@
       }
 
     }
-    
+
   }
+
   .transparent-mode {
     app-hr-dashboard-page-header {
       .mat-form-field-appearance-fill .mat-form-field-flex {
-        background-color: rgba(0,0,0,0.2) !important;
+        background-color: rgba(0, 0, 0, 0.2) !important;
         color: #fff;
       }
+
       .mat-form-field-label {
         color: rgb(255 255 255 / 60%);
-    }
+      }
+
       .mat-datepicker-toggle,
       .mat-datepicker-content .mat-calendar-next-button,
       .mat-datepicker-content .mat-calendar-previous-button {
@@ -68,6 +73,6 @@
       }
 
     }
-    
+
   }
 }

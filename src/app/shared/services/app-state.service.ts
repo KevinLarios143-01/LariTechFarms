@@ -45,7 +45,7 @@ export class AppStateService {
     const initialState: StateType = this.getInitialStateFromLocalStorage();
     this.initializeState();
     this.stateSubject.next(initialState);
- 
+
 
   }
 
@@ -138,7 +138,7 @@ export class AppStateService {
       case 'default':
         html?.setAttribute('data-vertical-style', 'overlay');
         html?.setAttribute('data-toggled', '');
-        
+
 
         break;
       case 'closed':
@@ -215,15 +215,15 @@ export class AppStateService {
 
     const checkedElement1 = document.querySelector('[name="theme-background"]:checked') as HTMLInputElement | null;
     if (checkedElement1) {
-        checkedElement1.checked = false;
+      checkedElement1.checked = false;
     }
-  
+
 
   }
 
   private updateStateAndEmit(state: any) {
-    // Conditional logic based on direction changes        
-    const currentState = this.stateSubject.getValue(); // Get current state    
+    // Conditional logic based on direction changes
+    const currentState = this.stateSubject.getValue(); // Get current state
     // Conditional logic based on theme changes
     if (state['theme']) {
       this.applythemeSpecificChanges(state['theme']);

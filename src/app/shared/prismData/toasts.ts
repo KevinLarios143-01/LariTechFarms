@@ -25,7 +25,7 @@ aria-label="Close"
 </ngb-toast>
 }
 </div>`,
-toasts2 = `@if (show6){
+  toasts2 = `@if (show6){
     <ngb-toast  class="toast align-items-center text-bg-primary  border-0 fade show  mb-4" [autohide]="false">
         <div
           class="align-items-center show"
@@ -125,7 +125,7 @@ toasts2 = `@if (show6){
         </div>
       </ngb-toast>
    }`,
-toasts3 = `@if (show) {
+  toasts3 = `@if (show) {
     <ngb-toast [autohide]="false" (hidden)="show = false">
         <ng-template ngbToastHeader>
             <div class="me-auto">
@@ -137,7 +137,7 @@ toasts3 = `@if (show) {
         Hello, world! This is a toast message.
     </ngb-toast>
 }`,
-toasts4 = `<div class="toast-container position-static">
+  toasts4 = `<div class="toast-container position-static">
 @if (show1) {
     <ngb-toast [autohide]="false" (hidden)="show1 = false">
         <ng-template ngbToastHeader>
@@ -164,7 +164,7 @@ toasts4 = `<div class="toast-container position-static">
 }
 
 </div>`,
-toasts5 = `@if (show3) {
+  toasts5 = `@if (show3) {
     <ngb-toast [autohide]="false" (hidden)="show3 = false">
         <ng-template ngbToastHeader>
             <div class="me-auto">
@@ -176,7 +176,7 @@ toasts5 = `@if (show3) {
         Hello, world! This is a toast message.
     </ngb-toast>
 }`,
-toasts6 = ` @if (show10){
+  toasts6 = ` @if (show10){
     <ngb-toast  class="toast align-items-center  mb-2 fade show" [autohide]="false">
         <div
           class="align-items-center show"
@@ -233,7 +233,7 @@ aria-atomic="true"
 </div>
 </ngb-toast>
 }`,
-toasts7 = `<div class="btn-list">
+  toasts7 = `<div class="btn-list">
 <button type="button" class="btn btn-primary-light me-2 btn-wave" id="primaryToastBtn" data-bs-dismiss="toast"
                             aria-label="Close"  (click)="showToastprimary()" >Primary</button>
 <button type="button" class="btn btn-secondary-light me-2 btn-wave" id="secondaryToastBtn" (click)="showToastseconday()"
@@ -249,7 +249,7 @@ toasts7 = `<div class="btn-list">
 </div>
 <div class="toast-container position-fixed top-0 end-0 p-3">
 @for (toast of toasts1; track toasts1) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastprimary(toast)"  [class.bg-primary-transparent]="!toast.autohide">
 <div class="toast-header bg-primary text-fixed-white">
 <img
@@ -271,7 +271,7 @@ aria-label="Close"
 </ngb-toast>
 }
 @for (toast of toasts2; track toasts2) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastsecondary(toast)"  [class.bg-secondary-transparent]="!toast.autohide">
 <div class="toast-header bg-secondary text-fixed-white">
 <img
@@ -293,7 +293,7 @@ aria-label="Close"
 </ngb-toast>
 }
 @for (toast of toasts3; track toasts3) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastwarning(toast)"  [class.bg-warning-transparent]="!toast.autohide">
 <div class="toast-header bg-warning text-fixed-white">
 <img
@@ -316,7 +316,7 @@ aria-label="Close"
 }
 
 @for (toast of toasts4; track toasts4) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastinfo(toast)"  [class.bg-info-transparent]="!toast.autohide">
 <div class="toast-header bg-info text-fixed-white">
 <img
@@ -339,7 +339,7 @@ aria-label="Close"
 }
 
 @for (toast of toasts5; track toasts5) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastsuccess(toast)"  [class.bg-success-transparent]="!toast.autohide">
 <div class="toast-header bg-success text-fixed-white">
 <img
@@ -361,7 +361,7 @@ aria-label="Close"
 </ngb-toast>
 }
 @for (toast of toasts6; track toasts6) {
-    <ngb-toast 
+    <ngb-toast
 [delay]="5000"  [autohide]="toast.autohide"  (hide)="hideToastdanger(toast)"  [class.bg-danger-transparent]="!toast.autohide">
 <div class="toast-header bg-danger text-fixed-white">
 <img
@@ -383,7 +383,7 @@ aria-label="Close"
 </ngb-toast>
 }
 </div>`,
-toasts8 = `<div class="btn-list">
+  toasts8 = `<div class="btn-list">
 <button type="button" class="btn btn-primary me-2 btn-wave" id="solidprimaryToastBtn"  (click)="SolidToastprimary()">Primary</button>
 <button type="button" class="btn btn-secondary me-2 btn-wave" id="solidsecondaryToastBtn"  (click)="SolidToastsecondary()">secondary</button>
 <button type="button" class="btn btn-warning me-2 btn-wave" id="solidwarningToastBtn"  (click)="SolidToastwarning()">warning</button>
@@ -530,7 +530,7 @@ aria-label="Close"
 </ngb-toast>
 }
 </div>`,
-toasts9 = `<div class="btn-list">
+  toasts9 = `<div class="btn-list">
 <button type="button" class="btn btn-outline-primary me-2 btn-wave" id="topleftToastBtn" (click)="TopLeft()">Top Left</button>
 <button type="button" class="btn btn-outline-primary me-2 btn-wave" id="topcenterToastBtn" (click)="TopCenter()">Top Center</button>
 <button type="button" class="btn btn-outline-primary me-2 btn-wave" id="toprightToastBtn" (click)="TopRight()">Top Right</button>
@@ -757,10 +757,10 @@ aria-label="Close"
 </ngb-toast>
 }
 </div>`,
-toasts10 = `<div class="bd-example bg-light bd-example-toasts d-flex p-0">
+  toasts10 = `<div class="bd-example bg-light bd-example-toasts d-flex p-0">
 <div aria-live="polite" aria-atomic="true"
     class="d-flex justify-content-center align-items-center w-100">
-    
+
         @if (show5) {
             <ngb-toast class="shadow-lg fade" [autohide]="false" (hidden)="show5 = false">
                 <ng-template ngbToastHeader>

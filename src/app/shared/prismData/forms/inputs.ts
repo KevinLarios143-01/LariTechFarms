@@ -1,5 +1,5 @@
-export  let 
-inputs1 = `<div class="row gy-4">
+export let
+  inputs1 = `<div class="row gy-4">
 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
     <p class="mb-2 text-muted">Basic Input:</p>
     <input type="text" class="form-control" id="input">
@@ -138,7 +138,7 @@ inputs1 = `<div class="row gy-4">
     </datalist>
 </div>
 </div>`,
-inputs2 = `<div class="row gy-3">
+  inputs2 = `<div class="row gy-3">
 <div class="col-xl-12">
     <label for="input-noradius" class="form-label">Input With No Radius</label>
     <input type="text" class="form-control rounded-0" id="input-noradius" placeholder="No Radius">
@@ -152,7 +152,7 @@ inputs2 = `<div class="row gy-3">
     <input type="text" class="form-control rounded-pill" id="input-rounded-pill" placeholder="Rounded">
 </div>
 </div>`,
-inputs3 = `<div class="row gy-3">
+  inputs3 = `<div class="row gy-3">
 <div class="col-xl-12">
     <label for="input-rounded1" class="form-label">Default</label>
     <input type="text" class="form-control" id="input-rounded1" placeholder="Default">
@@ -166,12 +166,12 @@ inputs3 = `<div class="row gy-3">
     <input type="text" class="form-control border-dashed" id="input-rounded3" placeholder="Dashed">
 </div>
 </div>`,
-inputs4 = `<input class="form-control form-control-sm mb-3" type="text" placeholder=".form-control-sm"
+  inputs4 = `<input class="form-control form-control-sm mb-3" type="text" placeholder=".form-control-sm"
 aria-label=".form-control-sm example">
 <input class="form-control mb-3" type="text" placeholder="Default input" aria-label="default input example">
 <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg"
 aria-label=".form-control-lg example">`,
-inputs5 = `<form>
+  inputs5 = `<form>
 <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">Email
         address</label>
@@ -192,7 +192,7 @@ inputs5 = `<form>
 </div>
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>`,
-inputs6 = `<label for="inputPassword5" class="form-label">Password</label>
+  inputs6 = `<label for="inputPassword5" class="form-label">Password</label>
 <input type="password" id="inputPassword5" class="form-control"
     aria-describedby="passwordHelpBlock">
 <div id="passwordHelpBlock" class="form-text">
@@ -201,7 +201,7 @@ inputs6 = `<label for="inputPassword5" class="form-label">Password</label>
     and
     must not contain spaces, special characters, or emoji.
 </div>`,
-inputs7 = `<div class="row g-3 align-items-center">
+  inputs7 = `<div class="row g-3 align-items-center">
 <div class="col-auto">
     <label for="inputPassword6" class="col-form-label">Password</label>
 </div>
@@ -215,7 +215,7 @@ inputs7 = `<div class="row g-3 align-items-center">
     </span>
 </div>
 </div>`,
-inputs8 = `<form>
+  inputs8 = `<form>
 <fieldset disabled="">
     <legend>Disabled fieldset example</legend>
     <div class="mb-3">

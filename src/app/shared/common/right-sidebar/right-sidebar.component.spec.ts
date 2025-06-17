@@ -10,7 +10,7 @@ describe('RightSidebarComponent', () => {
     await TestBed.configureTestingModule({
       imports: [RightSidebarComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(RightSidebarComponent);
     component = fixture.componentInstance;

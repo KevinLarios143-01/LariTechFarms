@@ -5,23 +5,23 @@ export let typographt1 = `<h1 class="mb-3">h1. Bootstrap heading</h1>
 <h4 class="mb-3">h4. Bootstrap heading</h4>
 <h5 class="mb-3">h5. Bootstrap heading</h5>
 <h6 class="mb-0">h6. Bootstrap heading</h6>`,
-typographt2 = `<p class="h1 mb-3">h1. Bootstrap heading</p>
+  typographt2 = `<p class="h1 mb-3">h1. Bootstrap heading</p>
 <p class="h2 mb-3">h2. Bootstrap heading</p>
 <p class="h3 mb-3">h3. Bootstrap heading</p>
 <p class="h4 mb-3">h4. Bootstrap heading</p>
 <p class="h5 mb-3">h5. Bootstrap heading</p>
 <p class="h6 mb-0">h6. Bootstrap heading</p>`,
-typographt3 = `<h1 class="display-1">Display 1</h1>
+  typographt3 = `<h1 class="display-1">Display 1</h1>
 <h1 class="display-2">Display 2</h1>
 <h1 class="display-3">Display 3</h1>
 <h1 class="display-4">Display 4</h1>
 <h1 class="display-5">Display 5</h1>
 <h1 class="display-6">Display 6</h1>`,
-typographt4 = `<h3>
+  typographt4 = `<h3>
 Fancy display heading
 <small class="text-muted">With faded secondary text</small>
 </h3>`,
-typographt5 = `<p>You can use the mark tag to <mark>highlight</mark> text.</p>
+  typographt5 = `<p>You can use the mark tag to <mark>highlight</mark> text.</p>
 <p><del>This line of text is meant to be treated as deleted text.</del>
 </p>
 <p><s>This line of text is meant to be treated as no longer
@@ -35,19 +35,19 @@ typographt5 = `<p>You can use the mark tag to <mark>highlight</mark> text.</p>
 </p>
 <p><strong>This line rendered as bold text.</strong></p>
 <p class="mb-0"><em>This line rendered as italicized text.</em></p>`,
-typographt6 = `<p class="fs-1 mb-2">.fs-1 text</p>
+  typographt6 = `<p class="fs-1 mb-2">.fs-1 text</p>
 <p class="fs-2 mb-2">.fs-2 text</p>
 <p class="fs-3 mb-2">.fs-3 text</p>
 <p class="fs-4 mb-2">.fs-4 text</p>
 <p class="fs-5 mb-2">.fs-5 text</p>
 <p class="fs-6 mb-0">.fs-6 text</p>`,
-typographt7 = ` <p class="lead mb-0">
+  typographt7 = ` <p class="lead mb-0">
 <b>This is a lead paragraph. It stands out from regular paragraphs</b>.There are many variations of
 passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected
 humour, or randomised words which don't look even slightly believable. If you are going to use a passage
 of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.
 </p>`,
-typographt8 = `<figure class="blockquote-container">
+  typographt8 = `<figure class="blockquote-container">
 <blockquote class="blockquote mb-2">
     <h6>The greatest glory in living lies not in never falling, but in rising every time we fall.</h6>
 </blockquote>
@@ -55,7 +55,7 @@ typographt8 = `<figure class="blockquote-container">
         Mandela</cite>
 </figcaption>
 </figure>`,
-typographt9 = `<figure class="blockquote-container text-end">
+  typographt9 = `<figure class="blockquote-container text-end">
 <blockquote class="blockquote mb-2">
     <h6>The greatest glory in living lies not in never falling, but in rising every time we fall.</h6>
 </blockquote>
@@ -63,43 +63,43 @@ typographt9 = `<figure class="blockquote-container text-end">
         Mandela</cite>
 </figcaption>
 </figure>`,
-typographt10 = `<blockquote class="blockquote custom-blockquote primary mb-0 text-center">
+  typographt10 = `<blockquote class="blockquote custom-blockquote primary mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt11 = `<blockquote class="blockquote custom-blockquote secondary mb-0 text-center">
+  typographt11 = `<blockquote class="blockquote custom-blockquote secondary mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt12 = `<blockquote class="blockquote custom-blockquote warning mb-0 text-center">
+  typographt12 = `<blockquote class="blockquote custom-blockquote warning mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt13 = `<blockquote class="blockquote custom-blockquote success mb-0 text-center">
+  typographt13 = `<blockquote class="blockquote custom-blockquote success mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt14 = `<blockquote class="blockquote custom-blockquote info mb-0 text-center">
+  typographt14 = `<blockquote class="blockquote custom-blockquote info mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt15 = `<blockquote class="blockquote custom-blockquote danger mb-0 text-center">
+  typographt15 = `<blockquote class="blockquote custom-blockquote danger mb-0 text-center">
 <h6>The future belongs to those who believe in the beauty of their dreams..</h6>
 <footer class="blockquote-footer mt-3 fs-14 text-muted op-7 mb-0">Someone famous as <cite
         title="Source Title">-Eleanor Roosevelt</cite></footer>
 <span class="quote-icon"><i class="ri-information-line"></i></span>
 </blockquote>`,
-typographt16 = `<dl class="row mb-0">
+  typographt16 = `<dl class="row mb-0">
 <dt class="col-sm-3">Description lists</dt>
 <dd class="col-sm-9">A description list is perfect for defining terms.</dd>
 
@@ -127,7 +127,7 @@ typographt16 = `<dl class="row mb-0">
     </dl>
 </dd>
 </dl>`,
-typographt17 = `<ul class="list-unstyled">
+  typographt17 = `<ul class="list-unstyled">
 <li>This is a list.</li>
 <li>It appears completely unstyled.</li>
 <li>Structurally, it's still a list.</li>
@@ -141,14 +141,14 @@ typographt17 = `<ul class="list-unstyled">
 </li>
 <li>This may still come in handy in some situations.</li>
 </ul>`,
-typographt18 = `<p><abbr title="attribute">attr</abbr></p>
+  typographt18 = `<p><abbr title="attribute">attr</abbr></p>
 <p class="mb-0"><abbr title="HyperText Markup Language" class="initialism">HTML</abbr></p>`,
-typographt19 = `<ul class="list-inline mb-0">
+  typographt19 = `<ul class="list-inline mb-0">
 <li class="list-inline-item">This is a list item.</li>
 <li class="list-inline-item">And another one.</li>
 <li class="list-inline-item">But they're displayed inline.</li>
 </ul>`,
-typographt20 = `<p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum dolorem fuga iste obcaecati
+  typographt20 = `<p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum dolorem fuga iste obcaecati
 natus eos officiis adipisci voluptatibus ipsum, architecto veniam delectus vel dolor magni a vero sunt
 ut harum.</p>
 <div class="text-success">
@@ -161,10 +161,10 @@ quos perferendis nulla magnam odit amet excepturi quisquam provident.</p>
 <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus aliquid consequatur aut
 doloremque assumenda voluptatem, id qui vero adipisci! Nostrum ipsam praesentium!</p>
 <hr class="border-primary border-3 opacity-75">`,
-typographt21 = `<p class="text-lowercase">Lowercased text.</p>
+  typographt21 = `<p class="text-lowercase">Lowercased text.</p>
 <p class="text-uppercase">Uppercased text.</p>
 <p class="text-capitalize mb-0">CapiTaliZed text.</p>`,
-typographt22 = `<p class="text-decoration-underline">This text has a line underneath it.
+  typographt22 = `<p class="text-decoration-underline">This text has a line underneath it.
 </p>
 <p class="text-decoration-line-through">This text has a line going
     through
@@ -174,7 +174,7 @@ typographt22 = `<p class="text-decoration-underline">This text has a line undern
     decoration
     removed
 </a>`,
-typographt23 = `<p class="fw-bold">Bold text.</p>
+  typographt23 = `<p class="fw-bold">Bold text.</p>
 <p class="fw-bolder">Bolder weight text (relative to the parent element).</p>
 <p class="fw-medium">Semibold weight text.</p>
 <p class="fw-normal">Normal weight text.</p>
@@ -182,7 +182,7 @@ typographt23 = `<p class="fw-bold">Bold text.</p>
 <p class="fw-lighter">Lighter weight text (relative to the parent element).</p>
 <p class="fst-italic">Italic text.</p>
 <p class="fst-normal mb-0">Text with normal font style</p>`,
-typographt24 = `<p class="lh-1">This is a long paragraph written to show how the line-height of
+  typographt24 = `<p class="lh-1">This is a long paragraph written to show how the line-height of
 an
 element is affected by our utilities. Classes are applied to the element
 itself
@@ -213,14 +213,14 @@ or sometimes the parent element. These classes can be customized as needed
 with
 our utility API.
 </p>`,
-typographt25 = `<p class="font-monospace mb-0">This is in monospace</p>`,
-typographt26 = `<p class="text-muted mb-0">
+  typographt25 = `<p class="font-monospace mb-0">This is in monospace</p>`,
+  typographt26 = `<p class="text-muted mb-0">
 Muted text with a <a href="javascript:void(0);"
     class="text-reset text-decoration-underline text-dark">reset link</a>.
 </p>`,
-typographt27 = `<p class="visible mb-0">This is visible text</p>`,
-typographt28 = `<p class="invisible mb-0">This is invisible text</p>`,
-typographt29 = `<p class="text-start">Start aligned text on all viewport sizes.</p>
+  typographt27 = `<p class="visible mb-0">This is visible text</p>`,
+  typographt28 = `<p class="invisible mb-0">This is invisible text</p>`,
+  typographt29 = `<p class="text-start">Start aligned text on all viewport sizes.</p>
 <p class="text-center">Center aligned text on all viewport sizes.</p>
 <p class="text-end">End aligned text on all viewport sizes.</p>
 
@@ -236,13 +236,13 @@ typographt29 = `<p class="text-start">Start aligned text on all viewport sizes.<
 <p class="text-xl-start">Start aligned text on viewports sized XL (extra-large)
     or
     wider.</p>`,
-typographt30 = ` <div class="badge bg-primary text-wrap mb-3" style="width: 6rem;">
+  typographt30 = ` <div class="badge bg-primary text-wrap mb-3" style="width: 6rem;">
 This text should wrap.
 </div>
 <p class="text-muted mb-2"> use class <code>.text-nowrap</code> to prevent text from wrapping</p>
 <div class="text-nowrap bg-light border" style="width: 8rem;">
 This text should overflow the parent.
 </div>`,
-typographt31 = ` <p class="text-break mb-0">
+  typographt31 = ` <p class="text-break mb-0">
 mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 </p>`;

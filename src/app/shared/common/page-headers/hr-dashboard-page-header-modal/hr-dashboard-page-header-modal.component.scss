@@ -1,22 +1,26 @@
-.btn-close{
-    border: none;
+.btn-close {
+  border: none;
 }
 
-.modal-header{
-    position: relative;
+.modal-header {
+  position: relative;
 }
+
 .size_md {
-    font-size: 30px;
+  font-size: 30px;
 }
+
 .countdowntimer {
-    text-align: center;
-    margin-top: 0.75rem;
+  text-align: center;
+  margin-top: 0.75rem;
 }
-.modal-footer{
-    padding: 0;
+
+.modal-footer {
+  padding: 0;
 }
-::ng-deep{
-    .cdk-overlay-pane{
-        min-width: 20vw;
-    }    
+
+::ng-deep {
+  .cdk-overlay-pane {
+    min-width: 20vw;
+  }
 }

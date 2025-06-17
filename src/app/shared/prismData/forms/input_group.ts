@@ -1,5 +1,5 @@
 export let
-inputgroup1 = `<div class="input-group mb-3">
+  inputgroup1 = `<div class="input-group mb-3">
 <span class="input-group-text" id="basic-addon1"></span>
 <input type="text" class="form-control" placeholder="Username"
     aria-label="Username" aria-describedby="basic-addon1">
@@ -33,12 +33,12 @@ inputgroup1 = `<div class="input-group mb-3">
 <span class="input-group-text">With textarea</span>
 <textarea class="form-control" aria-label="With textarea"></textarea>
 </div>`,
-inputgroup2 = `<div class="input-group">
+  inputgroup2 = `<div class="input-group">
 <span class="input-group-text">First and last name</span>
 <input type="text" aria-label="First name" class="form-control">
 <input type="text" aria-label="Last name" class="form-control">
 </div>`,
-inputgroup3 = `<div class="input-group mb-3">
+  inputgroup3 = `<div class="input-group mb-3">
 <div class="input-group-text">
     <input class="form-check-input mt-0" type="checkbox" value=""
         aria-label="Checkbox for following text input">
@@ -54,7 +54,7 @@ inputgroup3 = `<div class="input-group mb-3">
 <input type="text" class="form-control"
     aria-label="Text input with radio button">
 </div>`,
-inputgroup4 = `<div class="input-group mb-3">
+  inputgroup4 = `<div class="input-group mb-3">
 <div class="input-group-text">
     <input class="form-check-input mt-0" type="checkbox" value=""
         aria-label="Checkbox for following text input">
@@ -70,7 +70,7 @@ inputgroup4 = `<div class="input-group mb-3">
 <input type="text" class="form-control"
     aria-label="Text input with radio button">
 </div>`,
-inputgroup5 = `<div class="input-group mb-3">
+  inputgroup5 = `<div class="input-group mb-3">
 <button type="button" class="btn btn-primary">Action</button>
 <button type="button"
     class="btn btn-primary dropdown-toggle dropdown-toggle-split"
@@ -108,7 +108,7 @@ inputgroup5 = `<div class="input-group mb-3">
     <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
 </ul>
 </div>`,
-inputgroup6 = `<div class="input-group mb-3">
+  inputgroup6 = `<div class="input-group mb-3">
 <label class="input-group-text" for="inputGroupSelect01">Options</label>
 <select class="form-select" id="inputGroupSelect01">
     <option selected>Choose...</option>
@@ -146,7 +146,7 @@ inputgroup6 = `<div class="input-group mb-3">
 </select>
 <button class="btn btn-primary" type="button">Button</button>
 </div>`,
-inputgroup7 = `<div class="input-group input-group-sm mb-3">
+  inputgroup7 = `<div class="input-group input-group-sm mb-3">
 <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
 <input type="text" class="form-control"
     aria-label="Sizing example input"
@@ -165,7 +165,7 @@ inputgroup7 = `<div class="input-group input-group-sm mb-3">
     aria-label="Sizing example input"
     aria-describedby="inputGroup-sizing-lg">
 </div>`,
-inputgroup8 = `<div class="input-group mb-3">
+  inputgroup8 = `<div class="input-group mb-3">
 <button class="btn btn-primary" type="button"
     id="button-addon1">Button</button>
 <input type="text" class="form-control" placeholder=""
@@ -190,7 +190,7 @@ inputgroup8 = `<div class="input-group mb-3">
 <button class="btn btn-primary" type="button">Button</button>
 <button class="btn btn-primary" type="button">Button</button>
 </div>`,
-inputgroup9 = `<div class="input-group mb-3">
+  inputgroup9 = `<div class="input-group mb-3">
 <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Dropdown</button>
 <ul class="dropdown-menu">
     <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
@@ -242,7 +242,7 @@ inputgroup9 = `<div class="input-group mb-3">
     <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
 </ul>
 </div>`,
-inputgroup10 = `<div class="input-group mb-3">
+  inputgroup10 = `<div class="input-group mb-3">
 <label class="input-group-text" for="inputGroupFile01">Upload</label>
 <input type="file" class="form-control" id="inputGroupFile01">
 </div>
@@ -265,7 +265,7 @@ inputgroup10 = `<div class="input-group mb-3">
 <button class="btn btn-primary" type="button"
     id="inputGroupFileAddon04">Button</button>
 </div>`,
-inputgroup11 = `<div class="input-group flex-nowrap">
+  inputgroup11 = `<div class="input-group flex-nowrap">
 <span class="input-group-text" id="addon-wrapping"></span>
 <input type="text" class="form-control" placeholder="Username"
     aria-label="Username" aria-describedby="addon-wrapping">

@@ -1,5 +1,5 @@
-export let 
-checkradio1 = `<div class="form-check">
+export let
+  checkradio1 = `<div class="form-check">
 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 <label class="form-check-label" for="flexCheckDefault">
     Default checkbox
@@ -12,7 +12,7 @@ checkradio1 = `<div class="form-check">
     Checked checkbox
 </label>
 </div>`,
-checkradio2 = `<div class="form-check">
+  checkradio2 = `<div class="form-check">
 <input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled"
     disabled="">
 <label class="form-check-label" for="flexCheckDisabled">
@@ -26,7 +26,7 @@ checkradio2 = `<div class="form-check">
     Disabled checked checkbox
 </label>
 </div>`,
-checkradio3 = `<div class="form-check">
+  checkradio3 = `<div class="form-check">
 <input class="form-check-input" type="radio" name="flexRadioDefault"
     id="flexRadioDefault1">
 <label class="form-check-label" for="flexRadioDefault1">
@@ -40,7 +40,7 @@ checkradio3 = `<div class="form-check">
     Default checked radio
 </label>
 </div>`,
-checkradio4 = ` <div class="form-check">
+  checkradio4 = ` <div class="form-check">
 <input class="form-check-input" type="radio" name="flexRadioDisabled"
     id="flexRadioDisabled" disabled="">
 <label class="form-check-label" for="flexRadioDisabled">
@@ -54,7 +54,7 @@ checkradio4 = ` <div class="form-check">
     Disabled checked radio
 </label>
 </div>`,
-checkradio5 = `<div class="form-check">
+  checkradio5 = `<div class="form-check">
 <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
 <label class="form-check-label" for="defaultCheck1">
     Default checkbox
@@ -81,7 +81,7 @@ checkradio5 = `<div class="form-check">
     Disabled radio
 </label>
 </div>`,
-checkradio6 = `<div class="form-check form-switch">
+  checkradio6 = `<div class="form-check form-switch">
 <input class="form-check-input" type="checkbox" role="switch"
     id="flexSwitchCheckDefault">
 <label class="form-check-label" for="flexSwitchCheckDefault">Default switch
@@ -106,7 +106,7 @@ checkradio6 = `<div class="form-check form-switch">
 <label class="form-check-label" for="flexSwitchCheckCheckedDisabled">Disabled
     checked switch checkbox input</label>
 </div>`,
-checkradio7 = `<div class="form-check">
+  checkradio7 = `<div class="form-check">
 <input class="form-check-input" type="checkbox" value="" id="checkebox-sm" checked="">
 <label class="form-check-label" for="checkebox-sm">
     Default
@@ -124,7 +124,7 @@ checkradio7 = `<div class="form-check">
     Large
 </label>
 </div>`,
-checkradio8 = `<div class="form-check">
+  checkradio8 = `<div class="form-check">
 <input class="form-check-input" type="radio" name="Radio" id="Radio-sm">
 <label class="form-check-label" for="Radio-sm">
     default
@@ -142,7 +142,7 @@ checkradio8 = `<div class="form-check">
     Large
 </label>
 </div>`,
-checkradio9 = `<div class="form-check form-switch">
+  checkradio9 = `<div class="form-check form-switch">
 <input class="form-check-input" type="checkbox" role="switch"
     id="switch-sm">
 <label class="form-check-label" for="switch-sm">Default</label>
@@ -157,7 +157,7 @@ checkradio9 = `<div class="form-check form-switch">
     id="switch-lg">
 <label class="form-check-label" for="switch-lg">Large</label>
 </div>`,
-checkradio10 = `<div class="form-check form-check-inline">
+  checkradio10 = `<div class="form-check form-check-inline">
 <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
     value="option1">
 <label class="form-check-label" for="inlineCheckbox1">1</label>
@@ -187,7 +187,7 @@ checkradio10 = `<div class="form-check form-check-inline">
     id="inlineRadio3" value="option3" disabled>
 <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
 </div>`,
-checkradio11 = `<span class="me-3">
+  checkradio11 = `<span class="me-3">
 <input class="form-check-input" type="checkbox" id="checkboxNoLabel" value=""
     aria-label="...">
 </span>
@@ -195,7 +195,7 @@ checkradio11 = `<span class="me-3">
 <input class="form-check-input" type="radio" name="radioNoLabel"
     id="radioNoLabel1" value="" aria-label="...">
 </span>`,
-checkradio12 = `<div class="form-check form-check-reverse mb-3">
+  checkradio12 = `<div class="form-check form-check-reverse mb-3">
 <input class="form-check-input" type="checkbox" value=""
     id="reverseCheck1">
 <label class="form-check-label" for="reverseCheck1">
@@ -217,7 +217,7 @@ checkradio12 = `<div class="form-check form-check-reverse mb-3">
     switch
     checkbox input</label>
 </div>`,
-checkradio13 = `<input type="checkbox" class="btn-check" id="btn-check-outlined">
+  checkradio13 = `<input type="checkbox" class="btn-check" id="btn-check-outlined">
 <label class="btn btn-outline-primary mb-3" for="btn-check-outlined">Single
     toggle</label><br>
 
@@ -234,7 +234,7 @@ checkradio13 = `<input type="checkbox" class="btn-check" id="btn-check-outlined"
 <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined"
    >
 <label class="btn btn-outline-danger m-1" for="danger-outlined">Danger radio</label>`,
-checkradio14 = `<input type="radio" class="btn-check" name="options" id="option1"
+  checkradio14 = `<input type="radio" class="btn-check" name="options" id="option1"
 checked="">
 <label class="btn btn-primary m-1" for="option1">Checked</label>
 
@@ -249,7 +249,7 @@ disabled="">
 <input type="radio" class="btn-check" name="options" id="option4"
 >
 <label class="btn btn-primary m-1" for="option4">Radio</label>`,
-checkradio15 = `<input type="checkbox" class="btn-check" id="btn-check">
+  checkradio15 = `<input type="checkbox" class="btn-check" id="btn-check">
 <label class="btn btn-primary m-1" for="btn-check">Single toggle</label>
 <input type="checkbox" class="btn-check" id="btn-check-2" checked
    >
@@ -257,7 +257,7 @@ checkradio15 = `<input type="checkbox" class="btn-check" id="btn-check">
 <input type="checkbox" class="btn-check" id="btn-check-3"
     disabled>
 <label class="btn btn-primary m-1" for="btn-check-3">Disabled</label>`,
-checkradio16 = `<div class="form-check mb-2">
+  checkradio16 = `<div class="form-check mb-2">
 <input class="form-check-input" type="checkbox" value="" id="primaryChecked" checked="">
 <label class="form-check-label" for="primaryChecked">
     Primary
@@ -299,7 +299,7 @@ checkradio16 = `<div class="form-check mb-2">
     Dark
 </label>
 </div>`,
-checkradio17 = `<div class="form-check mb-2">
+  checkradio17 = `<div class="form-check mb-2">
 <input class="form-check-input form-checked-outline" type="checkbox" value="" id="primaryoutlineChecked" checked="">
 <label class="form-check-label" for="primaryoutlineChecked">
     Primary
@@ -341,7 +341,7 @@ checkradio17 = `<div class="form-check mb-2">
     Dark
 </label>
 </div>`,
-checkradio18 = `<div class="form-check mb-2">
+  checkradio18 = `<div class="form-check mb-2">
 <input class="form-check-input" type="radio" name="primaryRadio" id="primaryRadio" checked="">
 <label class="form-check-label" for="primaryRadio">
     Primary
@@ -383,7 +383,7 @@ checkradio18 = `<div class="form-check mb-2">
     Dark
 </label>
 </div>`,
-checkradio19 = `<div class="form-check mb-2">
+  checkradio19 = `<div class="form-check mb-2">
 <input class="form-check-input form-checked-outline" type="radio" name="primaryoutlineRadio" id="primaryoutlineRadio" checked="">
 <label class="form-check-label" for="primaryoutlineRadio">
     Primary
@@ -425,7 +425,7 @@ checkradio19 = `<div class="form-check mb-2">
     Dark
 </label>
 </div>`,
-checkradio20 = `<div class="form-check form-switch mb-2">
+  checkradio20 = `<div class="form-check form-switch mb-2">
 <input class="form-check-input" type="checkbox" role="switch"
     id="switch-primary" checked="">
 <label class="form-check-label" for="switch-primary">Primary</label>
@@ -460,7 +460,7 @@ checkradio20 = `<div class="form-check form-switch mb-2">
     id="switch-dark" checked="">
 <label class="form-check-label" for="switch-dark">Dark</label>
 </div>`,
-checkradio21 = `<div class="row gy-1">
+  checkradio21 = `<div class="row gy-1">
 <div class="col-xl-4">
     <div class="toggle toggle-primary on mb-0" appToggleBtn>
         <span></span>
@@ -502,7 +502,7 @@ checkradio21 = `<div class="row gy-1">
     </div>
 </div>
 </div>`,
-checkradio22 = `<div class="row gy-1">
+  checkradio22 = `<div class="row gy-1">
 <div class="col-xl-4">
     <div class="custom-toggle-switch d-flex align-items-center mb-4">
         <input id="toggleswitchPrimary" name="toggleswitch001" type="checkbox" checked="">
@@ -552,7 +552,7 @@ checkradio22 = `<div class="row gy-1">
     </div>
 </div>
 </div>`,
-checkradio23 = `<div class="d-flex align-items-center flex-wrap mb-3">
+  checkradio23 = `<div class="d-flex align-items-center flex-wrap mb-3">
 <div class=""> <p class="text-muted m-0">Small size toggle switch <code>toggle-sm</code></p>
 </div>
 <!-- <div class="toggle toggle-sm on mb-0">
@@ -573,7 +573,7 @@ checkradio23 = `<div class="d-flex align-items-center flex-wrap mb-3">
     <span></span>
 </div>
 </div>`,
-checkradio24 = `<div class="d-flex align-items-center flex-wrap mb-4">
+  checkradio24 = `<div class="d-flex align-items-center flex-wrap mb-4">
 <div class=""><p class="text-muted m-0">Small size toggle switch <code>toggle-sm</code></p></div>
 <div class="custom-toggle-switch toggle-sm ms-2">
     <input id="size-sm" name="toggleswitchsize" type="checkbox" checked="">

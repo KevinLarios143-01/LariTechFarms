@@ -1,5 +1,5 @@
-export let buttonsTS = 
-`<div class="btn-list">
+export let buttonsTS =
+  `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary btn-wave">Secondary</button>
 <button type="button" class="btn btn-success btn-wave">Success</button>
@@ -10,8 +10,8 @@ export let buttonsTS =
 <button type="button" class="btn btn-dark btn-wave text-white">Dark</button>
 <button type="button" class="btn btn-link btn-wave">Link</button>
 </div>`;
-export let buttonsTS1 = 
-` <div class="btn-list">
+export let buttonsTS1 =
+  ` <div class="btn-list">
 <button type="button" class="btn btn-primary rounded-pill btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary rounded-pill btn-wave">Secondary</button>
 <button type="button" class="btn btn-success rounded-pill btn-wave">Success</button>
@@ -22,8 +22,8 @@ export let buttonsTS1 =
 <button type="button" class="btn btn-dark rounded-pill btn-wave text-white">Dark</button>
 <button type="button" class="btn btn-link rounded-pill btn-wave">Link</button>
 </div>`;
-export let buttonsTS2 = 
-`  <div class="btn-list">
+export let buttonsTS2 =
+  `  <div class="btn-list">
 <button type="button" class="btn btn-primary-light btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary-light btn-wave">Secondary</button>
 <button type="button" class="btn btn-success-light btn-wave">Success</button>
@@ -34,8 +34,8 @@ export let buttonsTS2 =
 <button type="button" class="btn btn-teal-light btn-wave">teal</button>
 <button type="button" class="btn btn-orange-light btn-wave">orange</button>
 </div>`;
-export let buttonsTS3 = 
-`  <div class="btn-list">
+export let buttonsTS3 =
+  `  <div class="btn-list">
 <button type="button" class="btn btn-primary-light rounded-pill btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary-light rounded-pill btn-wave">Secondary</button>
 <button type="button" class="btn btn-success-light rounded-pill btn-wave">Success</button>
@@ -46,8 +46,8 @@ export let buttonsTS3 =
 <button type="button" class="btn btn-teal-light rounded-pill btn-wave">teal</button>
 <button type="button" class="btn btn-orange-light rounded-pill btn-wave">orange</button>
 </div>`;
-export let buttonsTS4 = 
-`<div class="btn-list">
+export let buttonsTS4 =
+  `<div class="btn-list">
                 <button type="button" class="btn btn-outline-primary btn-wave">Primary</button>
                 <button type="button" class="btn btn-outline-secondary btn-wave">Secondary</button>
                 <button type="button" class="btn btn-outline-success btn-wave">Success</button>
@@ -57,8 +57,8 @@ export let buttonsTS4 =
                 <button type="button" class="btn btn-outline-light btn-wave">Light</button>
                 <button type="button" class="btn btn-outline-dark btn-wave">Dark</button>
             </div>`;
-export let buttonsTS5 = 
-` <div class="btn-list">
+export let buttonsTS5 =
+  ` <div class="btn-list">
 <button type="button" class="btn btn-outline-primary rounded-pill btn-wave">Primary</button>
 <button type="button" class="btn btn-outline-secondary rounded-pill btn-wave">Secondary</button>
 <button type="button" class="btn btn-outline-success rounded-pill btn-wave">Success</button>
@@ -68,8 +68,8 @@ export let buttonsTS5 =
 <button type="button" class="btn btn-outline-light rounded-pill btn-wave">Light</button>
 <button type="button" class="btn btn-outline-dark rounded-pill btn-wave">Dark</button>
 </div>`;
- export let buttonsTS6 = 
-` <div class="btn-list">
+export let buttonsTS6 =
+  ` <div class="btn-list">
 <button type="button" class="btn btn-primary-gradient btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary-gradient btn-wave">Secondary</button>
 <button type="button" class="btn btn-success-gradient btn-wave">Success</button>
@@ -80,8 +80,8 @@ export let buttonsTS5 =
 <button type="button" class="btn btn-purple-gradient btn-wave">Purple</button>
 <button type="button" class="btn btn-teal-gradient btn-wave">Teal</button>
 </div>`;
- export let buttonsTS7 = 
-            `  <div class="btn-list">
+export let buttonsTS7 =
+  `  <div class="btn-list">
             <button type="button" class="btn btn-primary-gradient rounded-pill btn-wave">Primary</button>
             <button type="button" class="btn btn-secondary-gradient rounded-pill btn-wave">Secondary</button>
             <button type="button" class="btn btn-success-gradient rounded-pill btn-wave">Success</button>
@@ -92,8 +92,8 @@ export let buttonsTS5 =
             <button type="button" class="btn btn-purple-gradient rounded-pill btn-wave">Purple</button>
             <button type="button" class="btn btn-teal-gradient rounded-pill btn-wave">Teal</button>
         </div>`;
-export let buttonsTS8 = 
-`<div class="btn-list">
+export let buttonsTS8 =
+  `<div class="btn-list">
 <button type="button" class="btn btn-primary-ghost btn-wave">Primary</button>
 <button type="button" class="btn btn-secondary-ghost btn-wave">Secondary</button>
 <button type="button" class="btn btn-success-ghost btn-wave">Success</button>
@@ -104,16 +104,16 @@ export let buttonsTS8 =
 <button type="button" class="btn btn-purple-ghost btn-wave">Purple</button>
 <button type="button" class="btn btn-teal-ghost btn-wave">Teal</button>
 </div>`;
-export let buttonsTS9 = 
-`<div class="btn-list">
+export let buttonsTS9 =
+  `<div class="btn-list">
 <a class="btn btn-primary btn-wave" href="javascript:void(0);" role="button">Link</a>
 <button class="btn btn-secondary btn-wave" type="submit">Button</button>
 <input class="btn btn-info" type="button" value="Input">
 <input class="btn btn-warning" type="submit" value="Submit">
 <input class="btn btn-success" type="reset" value="Reset">
 </div>`;
-export let buttonsTS10 = 
-`<div class="btn-list">
+export let buttonsTS10 =
+  `<div class="btn-list">
 <div class="mb-4">
     <button type="button" class="btn btn-primary" disabled="">Primary
         button</button>
@@ -129,8 +129,8 @@ export let buttonsTS10 =
     <a class="btn btn-secondary disabled" role="button" aria-disabled="true">Link</a>
 </div>
 </div>`;
-export let buttonsTS11 = 
-` <div class="btn-list">
+export let buttonsTS11 =
+  ` <div class="btn-list">
 <div class="mb-4">
     <button type="button" class="btn btn-primary btn-wave" data-bs-toggle="button">Toggle
         button</button>
@@ -150,14 +150,14 @@ export let buttonsTS11 =
         data-bs-toggle="button">Disabled toggle link</a>
 </div>
 </div>`;
-export let buttonsTS12 = 
-` <div class="btn-list">
+export let buttonsTS12 =
+  ` <div class="btn-list">
 <a class="btn btn-primary disabled" tabindex="-1" role="button" aria-disabled="true">Primary
     link</a>
 <a class="btn btn-secondary disabled" tabindex="-1" role="button" aria-disabled="true">Link</a>
 </div>`;
-export let buttonsTS13 = 
-` <div class="btn-list d-md-flex flex-wrap">
+export let buttonsTS13 =
+  ` <div class="btn-list d-md-flex flex-wrap">
 <button class="btn btn-primary btn-loader">
     <span class="me-2">Loading</span>
     <span class="loading"><i class="ri-loader-2-fill fs-16"></i></span>
@@ -179,8 +179,8 @@ export let buttonsTS13 =
     <span class="loading"><i class="ri-refresh-line fs-16"></i></span>
 </button>
 </div>`;
-export let buttonsTS14 = 
-`<div class="btn-list d-md-flex d-block">
+export let buttonsTS14 =
+  `<div class="btn-list d-md-flex d-block">
 <div class="mb-md-0 mb-2">
     <button class="btn btn-icon btn-primary btn-wave">
         <i class="ri-bank-fill"></i>
@@ -224,8 +224,8 @@ export let buttonsTS14 =
     </button>
 </div>
 </div>`;
-export let buttonsTS15 = 
-` <div class="btn-list d-md-flex d-block gap-5">
+export let buttonsTS15 =
+  ` <div class="btn-list d-md-flex d-block gap-5">
 <div class="mb-md-0 mb-2">
     <button class="btn btn-sm btn-icon btn-primary btn-wave">
         <i class="ri-bank-fill"></i>
@@ -260,8 +260,8 @@ export let buttonsTS15 =
     </button>
 </div>
 </div>`;
-export let buttonsTS16 = 
-`<div class="btn-list">
+export let buttonsTS16 =
+  `<div class="btn-list">
 <button class="btn btn-icon btn-facebook btn-wave">
     <i class="ri-facebook-line"></i>
 </button>
@@ -281,8 +281,8 @@ export let buttonsTS16 =
     <i class="ri-google-line"></i>
 </button>
 </div>`;
-export let buttonsTS17 = 
-`<div class="btn-list">
+export let buttonsTS17 =
+  `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-sm btn-wave">Small
     button</button>
 <button type="button" class="btn btn-secondary btn-wave">Default
@@ -290,15 +290,15 @@ export let buttonsTS17 =
 <button type="button" class="btn btn-success btn-lg btn-wave">Large
     button</button>
 </div>`;
-export let buttonsTS18 = 
-`<div class="btn-list">
+export let buttonsTS18 =
+  `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-w-xs btn-wave">XS</button>
 <button type="button" class="btn btn-secondary btn-w-sm btn-wave">SM</button>
 <button type="button" class="btn btn-warning btn-w-md btn-wave">MD</button>
 <button type="button" class="btn btn-info btn-w-lg btn-wave">LG</button>
 </div>`;
-export let buttonsTS19 = 
-`<div class="btn-list d-flex">
+export let buttonsTS19 =
+  `<div class="btn-list d-flex">
 <div class="me-5">
     <button class="btn btn-primary shadow-sm btn-wave">Button</button>
     <button class="btn btn-primary shadow btn-wave">Button</button>
@@ -310,8 +310,8 @@ export let buttonsTS19 =
     <button class="btn btn-lg btn-success shadow-lg btn-wave">Button</button>
 </div>
 </div>`;
-export let buttonsTS20 = 
-`<div class="btn-list">
+export let buttonsTS20 =
+  `<div class="btn-list">
 <button class="btn btn-primary shadow-primary btn-wave">Button</button>
 <button class="btn btn-secondary shadow-secondary btn-wave">Button</button>
 <button class="btn btn-success shadow-success btn-wave">Button</button>
@@ -321,8 +321,8 @@ export let buttonsTS20 =
 <button class="btn btn-purple shadow-purple btn-wave">Button</button>
 <button class="btn btn-orange shadow-orange btn-wave">Button</button>
 </div>`;
-export let buttonsTS21 = 
-`<div class="btn-list">
+export let buttonsTS21 =
+  `<div class="btn-list">
 <button class="btn btn-primary btn-raised-shadow btn-wave">Button</button>
 <button class="btn btn-secondary btn-raised-shadow btn-wave">Button</button>
 <button class="btn btn-success btn-raised-shadow btn-wave">Button</button>
@@ -332,8 +332,8 @@ export let buttonsTS21 =
 <button class="btn btn-purple btn-raised-shadow btn-wave">Button</button>
 <button class="btn btn-orange btn-raised-shadow btn-wave">Button</button>
 </div>`;
-export let buttonsTS22 = 
-`<div class="btn-list">
+export let buttonsTS22 =
+  `<div class="btn-list">
 <button class="btn btn-primary label-btn">
     <i class="ri-chat-smile-line label-btn-icon me-2"></i>
     Primary
@@ -359,8 +359,8 @@ export let buttonsTS22 =
     <i class="ri-close-line label-btn-icon ms-2 rounded-pill"></i>
 </button>
 </div>`;
-export let buttonsTS23 = 
-` <div class="btn-list">
+export let buttonsTS23 =
+  ` <div class="btn-list">
 <button class="btn btn-info custom-button rounded-pill">
     <span class="custom-btn-icons"><i class="ri-twitter-x-line text-info"></i></span>
     Twitter
@@ -374,8 +374,8 @@ export let buttonsTS23 =
 <button class="btn btn-success btn-darken-hover">Hover</button>
 <button class="btn btn-orange btn-custom-border">Hover</button>
 </div>`;
-export let buttonsTS24 = 
-` <div class="btn-list">
+export let buttonsTS24 =
+  ` <div class="btn-list">
 <div class="d-grid gap-2 mb-4">
     <button class="btn btn-primary btn-wave" type="button">Button</button>
     <button class="btn btn-secondary btn-wave" type="button">Button</button>

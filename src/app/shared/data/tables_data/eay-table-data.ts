@@ -1,7 +1,7 @@
 import { Columns } from 'ngx-easy-table';
 
 /* eslint-disable max-lines, id-blacklist */
-export interface Company {}
+export interface Company { }
 
 export const columns: Columns[] = [
   { key: 'phone', title: 'Phone' },

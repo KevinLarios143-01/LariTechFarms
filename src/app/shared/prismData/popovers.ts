@@ -17,7 +17,7 @@ export let popover1 = `<div class="btn-list">
     ngbPopover="And here's some amazing content. It's very engaging. Right?">Popover
     Left</a>
 </div>`,
-popover2 = `<div class="btn-list">
+  popover2 = `<div class="btn-list">
 <button type="button" class="btn btn-outline-primary btn-wave" data-bs-toggle="popover"
     data-bs-placement="top" popoverClass="header-primary" popoverTitle="Color Header"
     ngbPopover="Popover with primary header.">
@@ -46,7 +46,7 @@ popover2 = `<div class="btn-list">
     Header Danger
 </button>
 </div>`,
-popover3 = `<div class="btn-list">
+  popover3 = `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-wave" placement="top" popoverClass="popover-primary"
     popoverTitle="Color Background" ngbPopover="Popover with primary background.">
     Primary
@@ -87,7 +87,7 @@ popover3 = `<div class="btn-list">
     Purple
 </button>
 </div>`,
-popover4 = `<div class="btn-list">
+  popover4 = `<div class="btn-list">
 <button type="button" class="btn btn-primary-light btn-wave" data-bs-toggle="popover" placement="top"
     popoverClass="popover-primary-light" popoverTitle="Light Background"
     ngbPopover="Popover with light primary background.">
@@ -129,7 +129,7 @@ popover4 = `<div class="btn-list">
     Purple
 </button>
 </div>`,
-popover5 = `<a tabindex="0" class="btn btn-primary m-1" role="button" data-bs-toggle="popover" triggers="focus"
+  popover5 = `<a tabindex="0" class="btn btn-primary m-1" role="button" data-bs-toggle="popover" triggers="focus"
 placement="top" popoverTitle="Dismissible popover"
 ngbPopover="And here's some amazing content. It's very engaging. Right?">Popover Dismiss
 </a>
@@ -145,12 +145,12 @@ ngbPopover="And here's some amazing content. It's very engaging. Right?">Popover
 placement="start" popoverTitle="Dismissible popover"
 ngbPopover="And here's some amazing content. It's very engaging. Right?">Popover Dismiss
 </a>`,
-popover6 = `<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" triggers="hover focus" placement="end"
+  popover6 = `<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" triggers="hover focus" placement="end"
 ngbPopover="Disabled popover">
 <button class="btn btn-primary" type="button" disabled>Disabled
     button</button>
 </span>`,
-popover7 = `<a class="me-4 svg-primary" href="javascript:void(0)" data-bs-toggle="popover" placement="top"
+  popover7 = `<a class="me-4 svg-primary" href="javascript:void(0)" data-bs-toggle="popover" placement="top"
 popoverClass="popover-primary only-body"
 ngbPopover="This popover is used to provide details about this icon.">
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">

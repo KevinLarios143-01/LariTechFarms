@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, TemplateRef, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HrDashboardPageHeaderModalComponent } from '../hr-dashboard-page-header-modal/hr-dashboard-page-header-modal.component';
-import {NgbDateStruct, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateStruct, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import flatpickr from 'flatpickr';
-import {  Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -24,8 +24,8 @@ export class HrDashboardPageHeaderComponent implements OnInit {
   model!: NgbDateStruct;
   currentPath: string = '';
   // private routerSubscription: Subscription;
-content: any;
-  constructor(public dialog: MatDialog,private router: Router) {
+  content: any;
+  constructor(public dialog: MatDialog, private router: Router) {
     this.currentPath = router.url
     // this.routerSubscription = this.router.events.pipe(
     //   filter(event => event instanceof NavigationEnd)
@@ -36,13 +36,13 @@ content: any;
   }
 
 
-  
+
   inlineDatePicker: boolean = false;
   weekNumbers!: true
-  // selectedDate: Date | null = null; 
+  // selectedDate: Date | null = null;
   flatpickrOptions: any = {
     inline: true,
-   
+
   };
   // flatpickrOptions: FlatpickrOptions;
 
@@ -55,17 +55,17 @@ content: any;
 
     flatpickr('#inlinetime', this.flatpickrOptions);
 
-      this.flatpickrOptions = {
-        enableTime: true,
-        dateFormat: 'Y-m-d H:i', // Specify the format you want
-        defaultDate: '2023-11-07 14:30', // Set the default/preloaded time (adjust this to your desired time)
-      };
+    this.flatpickrOptions = {
+      enableTime: true,
+      dateFormat: 'Y-m-d H:i', // Specify the format you want
+      defaultDate: '2023-11-07 14:30', // Set the default/preloaded time (adjust this to your desired time)
+    };
 
-      flatpickr('#pretime', this.flatpickrOptions);
+    flatpickr('#pretime', this.flatpickrOptions);
   }
 
   private modalService = inject(NgbModal);
-    openModal(content: TemplateRef<any>) {
-      this.modalService.open(content, { centered: true,size:'lg' });
-    }
+  openModal(content: TemplateRef<any>) {
+    this.modalService.open(content, { centered: true, size: 'lg' });
+  }
 }

@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class Error404Component implements OnInit {
 
-  constructor(private elementRef:ElementRef) { 
+  constructor(private elementRef: ElementRef) {
     document.body.classList.add('error-1');
   }
 
@@ -19,7 +19,7 @@ export class Error404Component implements OnInit {
 
   ngOnDestroy(): void {
     const htmlElement =
-  this.elementRef.nativeElement.ownerDocument.documentElement;
-    document.body.classList.remove('error-1');    
+      this.elementRef.nativeElement.ownerDocument.documentElement;
+    document.body.classList.remove('error-1');
   }
 }

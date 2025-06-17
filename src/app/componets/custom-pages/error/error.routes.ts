@@ -6,13 +6,13 @@ const routes: Routes = [
     path: 'error-page',
     children: [
 
-{
-  path: 'error404',
-  loadComponent: () =>
-    import('./error404/error404.component').then((m) => m.Error404Component),  
-},
+      {
+        path: 'error404',
+        loadComponent: () =>
+          import('./error404/error404.component').then((m) => m.Error404Component),
+      },
 
-      
+
     ]
   }
 ];
@@ -24,4 +24,4 @@ const routes: Routes = [
 export class ErrorRoutingModule {
   static routes = routes;
 
- }
+}

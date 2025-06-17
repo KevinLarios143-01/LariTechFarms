@@ -113,7 +113,7 @@ export let listgroupTS1 = `      <ul class="list-group">
     </div>
 </li>
 </ul>`
-export let listgroupTS2= `
+export let listgroupTS2 = `
 <ul class="list-group">
 <li class="list-group-item disabled" aria-disabled="true">A disabled item meant to be disabled
 </li>

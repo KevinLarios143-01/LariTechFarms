@@ -6,11 +6,11 @@ export let imgFigTS1 = `<p class="card-title mb-3">Use <code>.rounded</code> cla
 <div class="text-center">
     <img src="./assets/images/media/media-49.jpg" class="img-fluid rounded" alt="...">
 </div>`;
-export let imgFigTS2= `<p class="card-title mb-3">Use <code>.rounded-pill</code> class to <code>img</code> tag to get rounded image.</p>
+export let imgFigTS2 = `<p class="card-title mb-3">Use <code>.rounded-pill</code> class to <code>img</code> tag to get rounded image.</p>
 <div class="text-center">
     <img src="./assets/images/media/media-50.jpg" class="img-fluid rounded-pill" alt="...">
 </div>`;
-export let imgFigTS3= `<img class="rounded float-start" src="./assets/images/media/media-53.jpg" alt="...">`;
+export let imgFigTS3 = `<img class="rounded float-start" src="./assets/images/media/media-53.jpg" alt="...">`;
 export let imgFigTS4 = `<img class="rounded mx-auto d-block" src="./assets/images/media/media-55.jpg" alt="...">`;
 export let imgFigTS5 = `<img class="rounded float-end" src="./assets/images/media/media-54.jpg" alt="...">`;
 export let imgFigTS6 = `<figure class="figure">

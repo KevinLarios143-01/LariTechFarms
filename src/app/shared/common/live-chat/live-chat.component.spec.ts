@@ -10,7 +10,7 @@ describe('LiveChatComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LiveChatComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(LiveChatComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,5 @@
 export
-let tooltips1 = `<div class="btn-list">
+  let tooltips1 = `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-wave" data-bs-toggle="tooltip" placement="top"
     ngbTooltip="Tooltip on top">
     Tooltip on top
@@ -17,7 +17,7 @@ let tooltips1 = `<div class="btn-list">
     Tooltip on left
 </button>
 </div>`,
-tooltips2 = `<div class="btn-list">
+  tooltips2 = `<div class="btn-list">
 <button type="button" class="btn btn-primary btn-wave" data-bs-toggle="tooltip"
     tooltipClass="tooltip-primary" placement="top" ngbTooltip="Primary Tooltip">
     Primary Tooltip
@@ -52,11 +52,11 @@ tooltips2 = `<div class="btn-list">
     Dark Tooltip
 </button>
 </div>`,
-tooltips3 = ` <p class="text-muted mb-0">
+  tooltips3 = ` <p class="text-muted mb-0">
 Hover on the link to view the <a href="javascript:void(0);" data-bs-toggle="tooltip"
     tooltipClass="tooltip-primary" ngbTooltip="Link Tooltip" class="text-primary">Tooltip</a>
 </p>`,
-tooltips4 = `<a href="javascript:void(0);" data-bs-toggle="tooltip" ngbTooltip="Home" tooltipClass="tooltip-primary"
+  tooltips4 = `<a href="javascript:void(0);" data-bs-toggle="tooltip" ngbTooltip="Home" tooltipClass="tooltip-primary"
 class="me-3 svg-primary">
 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
     <path d="M0 0h24v24H0V0z" fill="none" />
@@ -100,12 +100,12 @@ class="me-3 svg-success">
         d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
 </svg>
 </a>`,
-tooltips5 = `<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" ngbTooltip="Disabled tooltip">
+  tooltips5 = `<span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" ngbTooltip="Disabled tooltip">
 <button class="btn btn-primary" type="button" disabled="">Disabled
     button
 </button>
 </span>`,
-tooltips6 = `<a href="javascript:void(0);" data-bs-toggle="tooltip" ngbTooltip="Alex Carey"
+  tooltips6 = `<a href="javascript:void(0);" data-bs-toggle="tooltip" ngbTooltip="Alex Carey"
 tooltipClass="tooltip-primary" class="avatar avatar-md me-2 online avatar-rounded">
 <img src="./assets/images/faces/12.jpg" alt="img">
 </a>

@@ -7,7 +7,7 @@ export let avatars1 = `<span class="avatar me-2 avatar-radius-0">
 <span class="avatar me-2 avatar-rounded">
 <img src="./assets/images/faces/3.jpg" alt="img">
 </span>`,
-avatars2 = ` <span class="avatar avatar-xs me-2">
+  avatars2 = ` <span class="avatar avatar-xs me-2">
 <img src="./assets/images/faces/4.jpg" alt="img">
 </span>
 <span class="avatar avatar-sm me-2">
@@ -25,7 +25,7 @@ avatars2 = ` <span class="avatar avatar-xs me-2">
 <span class="avatar avatar-xxl me-2">
 <img src="./assets/images/faces/9.jpg" alt="img">
 </span>`,
-avatars3 = `<span class="avatar avatar-xs me-2 avatar-rounded">
+  avatars3 = `<span class="avatar avatar-xs me-2 avatar-rounded">
 <img src="./assets/images/faces/2.jpg" alt="img">
 <a href="javascript:void(0);" class="badge bg-success rounded-pill avatar-badge"><i class="fe fe-camera"></i></a>
 </span>
@@ -49,7 +49,7 @@ avatars3 = `<span class="avatar avatar-xs me-2 avatar-rounded">
 <img src="./assets/images/faces/9.jpg" alt="img">
 <a href="javascript:void(0);" class="badge rounded-pill bg-danger avatar-badge"><i class="fe fe-plus"></i></a>
 </span>`,
-avatars4 = `<span class="avatar avatar-xs me-2 online avatar-rounded">
+  avatars4 = `<span class="avatar avatar-xs me-2 online avatar-rounded">
 <img src="./assets/images/faces/8.jpg" alt="img">
 </span>
 <span class="avatar avatar-sm online me-2 avatar-rounded">
@@ -67,7 +67,7 @@ avatars4 = `<span class="avatar avatar-xs me-2 online avatar-rounded">
 <span class="avatar avatar-xxl me-2 online avatar-rounded">
 <img src="./assets/images/faces/15.jpg" alt="img">
 </span>`,
-avatars5 = `<span class="avatar avatar-xs me-2 offline avatar-rounded">
+  avatars5 = `<span class="avatar avatar-xs me-2 offline avatar-rounded">
 <img src="./assets/images/faces/2.jpg" alt="img">
 </span>
 <span class="avatar avatar-sm offline me-2 avatar-rounded">
@@ -85,7 +85,7 @@ avatars5 = `<span class="avatar avatar-xs me-2 offline avatar-rounded">
 <span class="avatar avatar-xxl me-2 offline avatar-rounded">
 <img src="./assets/images/faces/7.jpg" alt="img">
 </span>`,
-avatars6 = `<span class="avatar avatar-xs me-2 avatar-rounded">
+  avatars6 = `<span class="avatar avatar-xs me-2 avatar-rounded">
 <img src="./assets/images/faces/2.jpg" alt="img">
 <span class="badge rounded-pill bg-primary avatar-badge">2</span>
 </span>
@@ -109,7 +109,7 @@ avatars6 = `<span class="avatar avatar-xs me-2 avatar-rounded">
 <img src="./assets/images/faces/9.jpg" alt="img">
 <span class="badge rounded-pill bg-danger avatar-badge">9</span>
 </span>`,
-avatars7 = `<span class="avatar avatar-xs m-2 bg-primary">
+  avatars7 = `<span class="avatar avatar-xs m-2 bg-primary">
 xs
 </span>
 <span class="avatar avatar-sm m-2 bg-secondary">
@@ -127,7 +127,7 @@ XL
 <span class="avatar avatar-xxl m-2 bg-info">
 XXL
 </span>`,
-avatars8 = ` <div class="avatar-list-stacked">
+  avatars8 = ` <div class="avatar-list-stacked">
 <span class="avatar">
     <img src="./assets/images/faces/2.jpg" alt="img">
 </span>
@@ -150,7 +150,7 @@ avatars8 = ` <div class="avatar-list-stacked">
     +8
 </a>
 </div>`,
-avatars9 = ` <div class="avatar-list-stacked">
+  avatars9 = ` <div class="avatar-list-stacked">
 <span class="avatar avatar-rounded">
     <img src="./assets/images/faces/2.jpg" alt="img">
 </span>

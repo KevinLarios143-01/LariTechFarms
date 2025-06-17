@@ -8,8 +8,8 @@ interface MenuItem {
   routerLink: string;
   icon?: string;
   children?: MenuItem[];
-  hasSub?: boolean; 
-  active?: boolean; 
+  hasSub?: boolean;
+  active?: boolean;
 }
 @Component({
   selector: 'app-support-sidebar',
@@ -20,20 +20,20 @@ export class SupportSidebarComponent {
   currentPath: string = '';
 
   private routerSubscription!: Subscription;
-  
+
   private modalService = inject(NgbModal);
 
   constructor(private router: Router) {
     this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(() => {
-      this.currentPath = this.router.url;
-      this.updateActiveState();
-    });
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        this.currentPath = this.router.url;
+        this.updateActiveState();
+      });
   }
   ngOnInit(): void {
     this.currentPath = this.router.url;
-    console.log('Current Path:', this.currentPath); 
+    console.log('Current Path:', this.currentPath);
   }
   ngOnDestroy(): void {
     // Unsubscribe from the router events when component is destroyed
@@ -41,10 +41,10 @@ export class SupportSidebarComponent {
       this.routerSubscription.unsubscribe();
     }
   }
-  
+
   searchOpen(searchContent: TemplateRef<any>) {
-		this.modalService.open(searchContent, { size: 'lg' });
-	}
+    this.modalService.open(searchContent, { size: 'lg' });
+  }
 
   menuItems: MenuItem[] = [
     { label: 'Home', routerLink: '/apps/ecommerce/customer/landing-page' },
@@ -121,7 +121,7 @@ export class SupportSidebarComponent {
     return this.activeItem === label;
   }
 
-  
+
   isSubmenuActive(label: string): boolean {
     return this.activeSubmenu === label;
   }

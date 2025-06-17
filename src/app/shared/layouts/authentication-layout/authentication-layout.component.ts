@@ -10,7 +10,7 @@ import { Renderer2 } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthenticationLayoutComponent {
-  constructor(private router: Router,public renderer: Renderer2,private elementRef:ElementRef) {
+  constructor(private router: Router, public renderer: Renderer2, private elementRef: ElementRef) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         // Show loading indicator
@@ -19,7 +19,7 @@ export class AuthenticationLayoutComponent {
       }
     });
     const htmlElement =
-    this.elementRef.nativeElement.ownerDocument.documentElement;
+      this.elementRef.nativeElement.ownerDocument.documentElement;
     this.renderer.removeAttribute(htmlElement, 'data-vertical-style');
 
   }

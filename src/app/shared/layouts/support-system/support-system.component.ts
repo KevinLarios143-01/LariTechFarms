@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
-import { Subscription, filter, fromEvent } from 'rxjs';
+import { Subscription, filter } from 'rxjs';
 import { Menu, NavService } from '../../services/navservice';
 
 @Component({
@@ -11,16 +11,16 @@ import { Menu, NavService } from '../../services/navservice';
 })
 export class SupportSystemComponent implements OnInit {
 
-  menuItems!:Menu[];
-  menuitemsSubscribe$!:Subscription
+  menuItems!: Menu[];
+  menuitemsSubscribe$!: Subscription
   constructor(
-    private router:Router, 
-    private navServices: NavService, public renderer: Renderer2,
-    private el: ElementRef,
-    private elementRef: ElementRef){
+    private readonly router: Router,
+    private readonly navServices: NavService, public renderer: Renderer2,
+    private readonly el: ElementRef,
+    private readonly elementRef: ElementRef) {
     document.body.classList.add('landing-body');
     const htmlElement =
-    this.elementRef.nativeElement.ownerDocument.documentElement;
+      this.elementRef.nativeElement.ownerDocument.documentElement;
     this.renderer.setAttribute(htmlElement, 'data-nav-layout', 'horizontal');
     this.renderer.setAttribute(htmlElement, 'data-nav-style', 'menu-hover');
     this.renderer.setAttribute(htmlElement, 'data-menu-position', 'fixed');
@@ -41,16 +41,17 @@ export class SupportSystemComponent implements OnInit {
     ).subscribe(() => {
       window.scrollTo(0, 0);
     });
-       this.navServices.items.subscribe((menuItems: any) => {
-     this.menuItems = menuItems;
-   });
-   this.router.events.subscribe(event => {
-    if (event instanceof NavigationStart) {
-      // Show loading indicator
-    } else if (event instanceof NavigationEnd) {
-      // Hide loading indicator
-    }
-  });
+    this.navServices.items.subscribe((menuItems: any) => {
+      this.menuItems = menuItems;
+    });
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // Show loading indicator
+      } else if (event instanceof NavigationEnd) {
+        console.log('Navigation ended');
+        // Hide loading indicator
+      }
+    });
   }
 
   ngOnInit() {
@@ -58,7 +59,7 @@ export class SupportSystemComponent implements OnInit {
     this.menuitemsSubscribe$ = this.navServices.items.subscribe((items: any) => {
       this.menuItems = items;
     });
- 
+
   }
 
 
@@ -69,19 +70,19 @@ export class SupportSystemComponent implements OnInit {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
       this.scrolled = true
     }
-    else{
+    else {
       this.scrolled = false
     }
   }
 
-  ngOnDestroy(){
- 
-      document.body.classList.remove('landing-body');   
-      const htmlElement =
+  ngOnDestroy() {
+
+    document.body.classList.remove('landing-body');
+    const htmlElement =
       this.elementRef.nativeElement.ownerDocument.documentElement;
-      this.renderer.setAttribute(htmlElement, 'data-nav-layout', 'vertical');
-      this.renderer.setAttribute(htmlElement, 'data-menu-styles', 'dark');
-      this.renderer.removeAttribute(htmlElement, 'data-nav-style')
+    this.renderer.setAttribute(htmlElement, 'data-nav-layout', 'vertical');
+    this.renderer.setAttribute(htmlElement, 'data-menu-styles', 'dark');
+    this.renderer.removeAttribute(htmlElement, 'data-nav-style')
   }
   expande = false;
   expande1 = false;

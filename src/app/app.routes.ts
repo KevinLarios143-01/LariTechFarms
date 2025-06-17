@@ -9,7 +9,7 @@ import { SupportSystemComponent } from './shared/layouts/support-system/support-
 
 export const App_Route: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
-  { path: 'auth/login', loadComponent: () => import('../app/authentication/login/login.component').then((m) => m.LoginComponent)},
+  { path: 'auth/login', loadComponent: () => import('../app/authentication/login/login.component').then((m) => m.LoginComponent) },
   { path: '', component: MainLayoutComponent, children: content },
   { path: '', component: AuthenticationLayoutComponent, children: authen },
 ];

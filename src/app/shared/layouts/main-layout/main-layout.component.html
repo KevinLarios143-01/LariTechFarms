@@ -1,17 +1,16 @@
-
 <div class="page">
-    <app-header></app-header>
-    <app-sidebar appHoverEffectSidebar></app-sidebar>
+  <app-header></app-header>
+  <app-sidebar appHoverEffectSidebar></app-sidebar>
 
-    <!-- Start::app-content -->
-    <div class="main-content app-content" (click)="clickOnBody()" >
-            <div class="container-fluid">
-                <router-outlet></router-outlet>
-            </div>
-        <!-- } -->
+  <!-- Start::app-content -->
+  <div class="main-content app-content" (click)="clickOnBody()">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
     </div>
-    <app-footer class="mt-auto"></app-footer>
-    
+    <!-- } -->
+  </div>
+  <app-footer class="mt-auto"></app-footer>
+
 </div>
 <!-- <app-live-chat></app-live-chat> -->
 <app-tap-to-top></app-tap-to-top>

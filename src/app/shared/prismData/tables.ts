@@ -1,5 +1,5 @@
-export let 
-table1 = `<div class="table-responsive">
+export let
+  table1 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead>
         <tr>
@@ -37,7 +37,7 @@ table1 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table2 = `<div class="table-responsive">
+  table2 = `<div class="table-responsive">
 <table class="table text-nowrap table-bordered">
     <thead>
         <tr>
@@ -127,7 +127,7 @@ table2 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table3 = `<div class="table-responsive">
+  table3 = `<div class="table-responsive">
 <table class="table text-nowrap table-bordered border-primary">
     <thead>
         <tr>
@@ -190,7 +190,7 @@ table3 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table4 = `<div class="table-responsive">
+  table4 = `<div class="table-responsive">
 <table class="table text-nowrap table-bordered border-success">
     <thead>
         <tr>
@@ -252,7 +252,7 @@ table4 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table5 = `<div class="table-responsive">
+  table5 = `<div class="table-responsive">
 <table class="table text-nowrap table-bordered border-warning">
     <thead>
         <tr>
@@ -314,7 +314,7 @@ table5 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table6 = `<div class="table-responsive">
+  table6 = `<div class="table-responsive">
 <table class="table text-nowrap table-borderless">
     <thead>
         <tr>
@@ -352,7 +352,7 @@ table6 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table7 = `<div class="table-responsive">
+  table7 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead>
         <tr>
@@ -394,7 +394,7 @@ table7 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table8 = ` <div class="table-responsive">
+  table8 = ` <div class="table-responsive">
 <table class="table text-nowrap table-striped">
     <thead>
         <tr>
@@ -448,7 +448,7 @@ table8 = ` <div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table9 = `<div class="table-responsive">
+  table9 = `<div class="table-responsive">
 <table class="table text-nowrap table-striped-columns">
     <thead>
         <tr>
@@ -502,7 +502,7 @@ table9 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table10 = `<div class="table-responsive">
+  table10 = `<div class="table-responsive">
 <table class="table text-nowrap table-primary">
     <thead>
         <tr>
@@ -534,7 +534,7 @@ table10 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table11 = `<div class="table-responsive">
+  table11 = `<div class="table-responsive">
 <table class="table text-nowrap table-secondary">
     <thead>
         <tr>
@@ -566,7 +566,7 @@ table11 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table12 = `<div class="table-responsive">
+  table12 = `<div class="table-responsive">
 <table class="table text-nowrap table-warning">
     <thead>
         <tr>
@@ -598,7 +598,7 @@ table12 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table13 = `<div class="table-responsive">
+  table13 = `<div class="table-responsive">
 <table class="table text-nowrap table-danger">
     <thead>
         <tr>
@@ -630,7 +630,7 @@ table13 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table14 = ` <div class="table-responsive">
+  table14 = ` <div class="table-responsive">
 <table class="table text-nowrap table-dark">
     <thead>
         <tr>
@@ -662,7 +662,7 @@ table14 = ` <div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table15 = `<div class="table-responsive">
+  table15 = `<div class="table-responsive">
 <table class="table text-nowrap table-success table-striped">
     <thead>
         <tr>
@@ -694,7 +694,7 @@ table15 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table16 = `<div class="table-responsive">
+  table16 = `<div class="table-responsive">
 <table class="table text-nowrap table-hover">
     <thead>
         <tr>
@@ -870,7 +870,7 @@ table16 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table17 = `<div class="table-responsive">
+  table17 = `<div class="table-responsive">
 <table class="table text-nowrap table-striped table-hover">
     <thead>
         <tr>
@@ -970,7 +970,7 @@ table17 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table18 = `<div class="table-responsive">
+  table18 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-primary">
         <tr>
@@ -1056,7 +1056,7 @@ table18 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table19 = `<div class="table-responsive">
+  table19 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-warning">
         <tr>
@@ -1102,7 +1102,7 @@ table19 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table20 = `<div class="table-responsive">
+  table20 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-success">
         <tr>
@@ -1148,7 +1148,7 @@ table20 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table21 = `<div class="table-responsive">
+  table21 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-info">
         <tr>
@@ -1194,7 +1194,7 @@ table21 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table22 = `<div class="table-responsive">
+  table22 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-secondary">
         <tr>
@@ -1240,7 +1240,7 @@ table22 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table23 = `<div class="table-responsive">
+  table23 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-danger">
         <tr>
@@ -1286,7 +1286,7 @@ table23 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table24 = `<div class="table-responsive">
+  table24 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead class="table-primary">
         <tr>
@@ -1352,7 +1352,7 @@ table24 = `<div class="table-responsive">
     </tfoot>
 </table>
 </div>`,
-table25 = `<div class="table-responsive">
+  table25 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <caption>Top 3 Countries</caption>
     <thead>
@@ -1385,7 +1385,7 @@ table25 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table26 = `<div class="table-responsive">
+  table26 = `<div class="table-responsive">
 <table class="table text-nowrap caption-top">
     <caption>Top IT Companies</caption>
     <thead>
@@ -1418,7 +1418,7 @@ table26 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table27 = `<div class="table-responsive">
+  table27 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead>
         <tr>
@@ -1456,7 +1456,7 @@ table27 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table28 = `<div class="table-responsive">
+  table28 = `<div class="table-responsive">
 <table class="table text-nowrap table-sm">
     <thead>
         <tr>
@@ -1571,7 +1571,7 @@ table28 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table29 = `<div class="table-responsive">
+  table29 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead>
         <tr>
@@ -1650,7 +1650,7 @@ table29 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table30 = `<div class="table-responsive">
+  table30 = `<div class="table-responsive">
 <table class="table text-nowrap table-striped table-bordered">
     <thead>
         <tr>
@@ -1718,7 +1718,7 @@ table30 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table31 = `<div class="table-responsive">
+  table31 = `<div class="table-responsive">
 <table class="table text-nowrap">
     <thead>
         <tr>
@@ -1926,7 +1926,7 @@ table31 = `<div class="table-responsive">
     </tbody>
 </table>
 </div>`,
-table32 = `<div class="table-responsive">
+  table32 = `<div class="table-responsive">
 <table class="table align-middle">
     <thead>
         <tr>

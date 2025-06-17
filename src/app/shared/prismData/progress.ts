@@ -18,7 +18,7 @@ aria-valuemin="0" aria-valuemax="100">
 aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar" style="width: 100%"></div>
 </div>`,
-progress2 = `<div class="progress mb-3" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+  progress2 = `<div class="progress mb-3" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-secondary" style="width: 20%"></div>
 </div>
 <div class="progress mb-3" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
@@ -33,7 +33,7 @@ progress2 = `<div class="progress mb-3" role="progressbar" aria-valuenow="20" ar
 <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-danger" style="width: 100%"></div>
 </div>`,
-progress3 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+  progress3 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar progress-bar-striped" style="width: 10%">
 </div>
 </div>
@@ -52,7 +52,7 @@ progress3 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" ar
 <div class="progress" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar progress-bar-striped bg-warning" style="width: 100%"></div>
 </div>`,
-progress4 = `<div class="progress progress-xs mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+  progress4 = `<div class="progress progress-xs mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0"
 aria-valuemax="100">
 <div class="progress-bar bg-primary" style="width: 10%">
 </div>
@@ -75,7 +75,7 @@ aria-valuemax="100">
 aria-valuemax="100">
 <div class="progress-bar bg-primary" style="width: 100%"></div>
 </div>`,
-progress5 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+  progress5 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar" style="width: 10%;">10%</div>
 </div>
 <div class="progress mb-3" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -90,7 +90,7 @@ progress5 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" ar
 <div class="progress mb-0" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-warning" style="width: 80%;">80%</div>
 </div>`,
-progress6 = `<div class="progress-stacked progress-xs mb-3">
+  progress6 = `<div class="progress-stacked progress-xs mb-3">
 <div class="progress-bar" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0"
     aria-valuemax="100"></div>
 <div class="progress-bar bg-secondary" role="progressbar" style="width: 10%" aria-valuenow="10"
@@ -130,7 +130,7 @@ progress6 = `<div class="progress-stacked progress-xs mb-3">
 <div class="progress-bar bg-warning" role="progressbar" style="width: 35%" aria-valuenow="35"
     aria-valuemin="0" aria-valuemax="100"></div>
 </div>`,
-progress7 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+  progress7 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 10%"></div>
 </div>
 <div class="progress mb-3" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -149,7 +149,7 @@ progress7 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" ar
 <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" style="width: 80%">
 </div>
 </div>`,
-progress8 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+  progress8 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-primary-gradient" style="width: 10%"></div>
 </div>
 <div class="progress mb-3" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
@@ -164,7 +164,7 @@ progress8 = `<div class="progress mb-3" role="progressbar" aria-valuenow="10" ar
 <div class="progress" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-warning-gradient" style="width: 80%"></div>
 </div>`,
-progress9 = `<div class="progress mb-3 progress-animate" role="progressbar" aria-valuenow="10" aria-valuemin="0"
+  progress9 = `<div class="progress mb-3 progress-animate" role="progressbar" aria-valuenow="10" aria-valuemin="0"
 aria-valuemax="100">
 <div class="progress-bar bg-primary-gradient" style="width: 10%"></div>
 </div>
@@ -184,7 +184,7 @@ aria-valuemax="100">
 aria-valuemax="100">
 <div class="progress-bar bg-warning-gradient" style="width: 80%"></div>
 </div>`,
-progress10 = `<div class="progress progress-sm progress-custom mb-5 progress-animate" role="progressbar"
+  progress10 = `<div class="progress progress-sm progress-custom mb-5 progress-animate" role="progressbar"
 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
 <h6 class="progress-bar-title">Mobiles</h6>
 <div class="progress-bar" style="width: 50%">
@@ -205,7 +205,7 @@ aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
     <div class="progress-bar-value bg-success">70%</div>
 </div>
 </div>`,
-progress11 = `<div class="progress progress-sm mb-4" role="progressbar" aria-valuenow="50" aria-valuemin="0"
+  progress11 = `<div class="progress progress-sm mb-4" role="progressbar" aria-valuenow="50" aria-valuemin="0"
 aria-valuemax="100">
 <div class="progress-item-1 bg-primary"></div>
 <div class="progress-item-2"></div>
@@ -240,7 +240,7 @@ aria-valuemax="100">
 <div class="progress-item-3 bg-warning"></div>
 <div class="progress-bar bg-warning" style="width: 90%"></div>
 </div>`,
-progress12 = `<div class="progress progress-lg mb-5 custom-progress-3 progress-animate" role="progressbar"
+  progress12 = `<div class="progress progress-lg mb-5 custom-progress-3 progress-animate" role="progressbar"
 aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar" style="width: 50%">
     <div class="progress-bar-value">50%</div>
@@ -258,7 +258,7 @@ aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
     <div class="progress-bar-value success">70%</div>
 </div>
 </div>`,
-progress13 = `<div class="progress progress-xl mb-3 progress-animate custom-progress-4" role="progressbar"
+  progress13 = `<div class="progress progress-xl mb-3 progress-animate custom-progress-4" role="progressbar"
 aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-primary-gradient" style="width: 10%"></div>
 <div class="progress-bar-label">10%</div>
@@ -288,7 +288,7 @@ aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
 <div class="progress-bar bg-danger-gradient" style="width: 90%"></div>
 <div class="progress-bar-label">90%</div>
 </div>`,
-progress14 = ` <h6 class="fw-medium mb-2">Project Dependencies</h6>
+  progress14 = ` <h6 class="fw-medium mb-2">Project Dependencies</h6>
 <div class="progress-stacked progress-xl mb-5">
     <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
         aria-valuemin="0" aria-valuemax="100">25%</div>

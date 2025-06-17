@@ -6,15 +6,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./hr-dashboard-page-header-modal.component.scss']
 })
 export class HrDashboardPageHeaderModalComponent implements OnInit {
-  Time:any;
+  Time: any;
   constructor() { }
 
   ngOnInit(): void {
-    
-    setInterval(()=>{
+
+    setInterval(() => {
       this.Time = new Date()
     }, 1000)
   }
-  
+
 
 }

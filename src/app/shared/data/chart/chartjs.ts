@@ -10,7 +10,7 @@ export declare type Label = SingleLineLabel | MultiLineLabel;
 export const lineChartData: ChartConfiguration['data'] = {
   datasets: [
     {
-      data: [ 65, 59, 80, 81, 56, 55, 40 ],
+      data: [65, 59, 80, 81, 56, 55, 40],
       label: 'Series A',
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
@@ -21,7 +21,7 @@ export const lineChartData: ChartConfiguration['data'] = {
       fill: 'origin',
     }
   ],
-  labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ]
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July']
 };
 
 export const lineChartOptions: ChartConfiguration['options'] | any = {
@@ -35,9 +35,9 @@ export const lineChartOptions: ChartConfiguration['options'] | any = {
     // We use this empty structure as a placeholder for dynamic theming.
     x: {},
     'y-axis-0':
-      {
-        position: 'left',
-      },
+    {
+      position: 'left',
+    },
     'y-axis-1': {
       position: 'right',
       grid: {
@@ -80,7 +80,7 @@ export const lineChartType: ChartType = 'line';
 export const multipleChartData: ChartConfiguration['data'] = {
   datasets: [
     {
-      data: [ 65, 59, 80, 81, 56, 55, 40 ],
+      data: [65, 59, 80, 81, 56, 55, 40],
       label: 'Series A',
       backgroundColor: 'rgba(148,159,177,0.2)',
       borderColor: 'rgba(148,159,177,1)',
@@ -91,7 +91,7 @@ export const multipleChartData: ChartConfiguration['data'] = {
       fill: 'origin',
     },
     {
-      data: [ 28, 48, 40, 19, 86, 27, 90 ],
+      data: [28, 48, 40, 19, 86, 27, 90],
       label: 'Series B',
       backgroundColor: 'rgba(77,83,96,0.2)',
       borderColor: 'rgba(77,83,96,1)',
@@ -102,7 +102,7 @@ export const multipleChartData: ChartConfiguration['data'] = {
       fill: 'origin',
     },
     {
-      data: [ 180, 480, 770, 90, 1000, 270, 400 ],
+      data: [180, 480, 770, 90, 1000, 270, 400],
       label: 'Series C',
       yAxisID: 'y-axis-1',
       backgroundColor: 'rgba(255,0,0,0.3)',
@@ -114,7 +114,7 @@ export const multipleChartData: ChartConfiguration['data'] = {
       fill: 'origin',
     }
   ],
-  labels: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July' ]
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July']
 };
 
 export const multipleChartOptions: ChartConfiguration['options'] | any = {
@@ -129,9 +129,9 @@ export const multipleChartOptions: ChartConfiguration['options'] | any = {
     // We use this empty structure as a placeholder for dynamic theming.
     x: {},
     'y-axis-0':
-      {
-        position: 'left',
-      },
+    {
+      position: 'left',
+    },
     'y-axis-1': {
       position: 'right',
       grid: {
@@ -193,10 +193,10 @@ export const barChartPlugins = [
   DataLabelsPlugin
 ];
 export const barChartData: ChartData<'bar'> = {
-  labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
+  labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
   datasets: [
-    { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Series A'},
-    { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Series B' }
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' }
   ],
 };
 
@@ -205,47 +205,47 @@ export const barChartData: ChartData<'bar'> = {
 
 // //DoughNut Chart and Pie chart data
 // Doughnut
-  export const doughnutChartLabels: string[] = [ 'Download Sales', 'In-Store Sales', 'Mail-Order Sales' ];
-  export const doughnutChartData: ChartData<'doughnut'> = {
-    labels: doughnutChartLabels,
-    datasets: [
-      { data: [ 350, 450, 100 ] },
-      { data: [ 50, 150, 120 ] },
-      { data: [ 250, 130, 70 ] }
-    ]
-  };
-  export const doughnutChartType: ChartType = 'doughnut';
-  
- export const doughnutChartOptions: ChartConfiguration['options'] = {
+export const doughnutChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail-Order Sales'];
+export const doughnutChartData: ChartData<'doughnut'> = {
+  labels: doughnutChartLabels,
+  datasets: [
+    { data: [350, 450, 100] },
+    { data: [50, 150, 120] },
+    { data: [250, 130, 70] }
+  ]
+};
+export const doughnutChartType: ChartType = 'doughnut';
+
+export const doughnutChartOptions: ChartConfiguration['options'] = {
   responsive: true,
   maintainAspectRatio: false,
 };
-   // Pie
-   export const pieChartOptions: ChartConfiguration['options'] = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
+// Pie
+export const pieChartOptions: ChartConfiguration['options'] = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      display: true,
+      position: 'top',
+    },
+    datalabels: {
+      formatter: (value, ctx) => {
+        if (ctx.chart.data.labels) {
+          return ctx.chart.data.labels[ctx.dataIndex];
+        }
       },
-      datalabels: {
-        formatter: (value, ctx) => {
-          if (ctx.chart.data.labels) {
-            return ctx.chart.data.labels[ctx.dataIndex];
-          }
-        },
-      },
-    }
-  };
-  export const pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ],
-    datasets: [ {
-      data: [ 300, 500, 100 ]
-    } ]
-  };
-  export const pieChartType: ChartType = 'pie';
-  export const pieChartPlugins = [ DatalabelsPlugin ];
+    },
+  }
+};
+export const pieChartData: ChartData<'pie', number[], string | string[]> = {
+  labels: [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'],
+  datasets: [{
+    data: [300, 500, 100]
+  }]
+};
+export const pieChartType: ChartType = 'pie';
+export const pieChartPlugins = [DatalabelsPlugin];
 
 
 
@@ -254,31 +254,30 @@ export const radarChartOptions: ChartConfiguration['options'] = {
   responsive: true,
   maintainAspectRatio: false,
 };
-export const radarChartLabels: string[] = [ 'Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running' ];
+export const radarChartLabels: string[] = ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'];
 
 export const radarChartData: ChartData<'radar'> = {
   labels: radarChartLabels,
   datasets: [
-    { data: [ 65, 59, 90, 81, 56, 55, 40 ], label: 'Series A' },
-    { data: [ 28, 48, 40, 19, 96, 27, 100 ], label: 'Series B' }
+    { data: [65, 59, 90, 81, 56, 55, 40], label: 'Series A' },
+    { data: [28, 48, 40, 19, 96, 27, 100], label: 'Series B' }
   ]
 };
 export const radarChartType: ChartType = 'radar';
 
- // PolarArea
- export const polarAreaChartLabels: string[] = [ 'Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales' ];
- export const polarAreaChartData: ChartData<'polarArea'> = {
-   labels: polarAreaChartLabels,
-   datasets: [ {
-     data: [ 300, 500, 100, 40, 120 ],
-     label: 'Series 1'
-   } ]
- };
- export const polarChartOptions: ChartConfiguration['options'] = {
+// PolarArea
+export const polarAreaChartLabels: string[] = ['Download Sales', 'In-Store Sales', 'Mail Sales', 'Telesales', 'Corporate Sales'];
+export const polarAreaChartData: ChartData<'polarArea'> = {
+  labels: polarAreaChartLabels,
+  datasets: [{
+    data: [300, 500, 100, 40, 120],
+    label: 'Series 1'
+  }]
+};
+export const polarChartOptions: ChartConfiguration['options'] = {
   responsive: true,
   maintainAspectRatio: false,
 };
- export const polarAreaLegend = true;
+export const polarAreaLegend = true;
 
- export const polarAreaChartType: ChartType = 'polarArea';
- 
+export const polarAreaChartType: ChartType = 'polarArea';

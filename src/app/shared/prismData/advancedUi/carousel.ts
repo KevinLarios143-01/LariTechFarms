@@ -1,5 +1,5 @@
-export let 
-carousel1 =`<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+export let
+  carousel1 = `<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
 @if(images5){
 <ngb-carousel class="carousel-inner" [interval]="3000" [showNavigationArrows]="false"
     [showNavigationIndicators]="false">
@@ -12,7 +12,7 @@ carousel1 =`<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-r
 </ngb-carousel>
 }
 </div>`,
-carousel2 =`<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  carousel2 = `<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
 
 @if(images6){
 <ngb-carousel class="carousel-inner" [interval]="3000" [showNavigationArrows]="true"
@@ -26,7 +26,7 @@ carousel2 =`<div id="carouselExampleControls" class="carousel slide" data-bs-rid
 }
 
 </div>`,
-carousel3 =`@if (images2) {
+  carousel3 = `@if (images2) {
     <ngb-carousel>
         <ng-template ngbSlide>
             <div class="picsum-img-wrapper">
@@ -47,7 +47,7 @@ carousel3 =`@if (images2) {
         </ng-template>
     </ngb-carousel>
     }`,
-carousel4 =`@if (images4) {
+  carousel4 = `@if (images4) {
     <ngb-carousel>
         <ng-template ngbSlide>
             <div class="picsum-img-wrapper">
@@ -78,7 +78,7 @@ carousel4 =`@if (images4) {
         </ng-template>
     </ngb-carousel>
     }`,
-carousel5 =`<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  carousel5 = `<div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
 
 @if (images7) {
 <ngb-carousel class="carousel-inner" [interval]="3000" [showNavigationArrows]="true"
@@ -91,7 +91,7 @@ carousel5 =`<div id="carouselExampleFade" class="carousel slide carousel-fade" d
 </ngb-carousel>
 }
 </div>`,
-carousel6 =` <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+  carousel6 = ` <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
 <ngb-carousel class="carousel-inner" [interval]="2800" [showNavigationArrows]="true"
     [showNavigationIndicators]="false">
     <ng-template ngbSlide class="carousel-item">
@@ -106,7 +106,7 @@ carousel6 =` <div id="carouselExampleInterval" class="carousel slide" data-bs-ri
 </ngb-carousel>
 
 </div>`,
-carousel7 =`<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false"
+  carousel7 = `<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false"
 data-bs-interval="false">
 
 @if (images8) {
@@ -121,7 +121,7 @@ data-bs-interval="false">
 }
 
 </div>`,
-carousel8 =`<div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
+  carousel8 = `<div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
 <ngb-carousel class="carousel-inner" [showNavigationArrows]="true"
     [showNavigationIndicators]="true">
     <ng-template ngbSlide class="carousel-item">

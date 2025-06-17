@@ -61,11 +61,11 @@ export class SwitcherComponent {
       setTimeout(() => {
         const mainContentElement = document.querySelector(".main-content") as HTMLElement | null;
         if (mainContentElement) {
-            mainContentElement.click();
+          mainContentElement.click();
         }
-    }, 100);
-    } else if(navigationStyles == 'vertical'){
-      this.appStateService.updateState({ navigationStyles,menuStyles: '', layoutStyles: 'default'});
+      }, 100);
+    } else if (navigationStyles == 'vertical') {
+      this.appStateService.updateState({ navigationStyles, menuStyles: '', layoutStyles: 'default' });
     }
   }
   private checkMenuElement(menuStyles: string) {
@@ -86,8 +86,8 @@ export class SwitcherComponent {
       if (menuElement) {
         menuElement.checked = true;
       }
-      else{
-            const menuclickclosed = document.getElementById(
+      else {
+        const menuclickclosed = document.getElementById(
           'switcher-menu-click'
         ) as HTMLInputElement;
         menuclickclosed.checked = true;
@@ -96,20 +96,20 @@ export class SwitcherComponent {
   }
   updatemenuStyle(menuStyles: string) {
     this.appStateService.updateState({ menuStyles, layoutStyles: '' });
-      const navStyle = document.documentElement.getAttribute('data-nav-style');
-      if(navStyle === 'icon-hover'){
-        document.querySelector('.double-menu-active')?.setAttribute('style', 'display: none;');
-      }
+    const navStyle = document.documentElement.getAttribute('data-nav-style');
+    if (navStyle === 'icon-hover') {
+      document.querySelector('.double-menu-active')?.setAttribute('style', 'display: none;');
+    }
   }
 
   updatelayoutStyles(layoutStyles: string) {
-    this.appStateService.updateState({ layoutStyles, menuStyles: '',navigationStyles:'' });
+    this.appStateService.updateState({ layoutStyles, menuStyles: '', navigationStyles: '' });
     if (document.querySelector('html')?.getAttribute('data-vertical-style') == 'doublemenu') {
       document.querySelector('.slide-menu')?.classList.add('double-menu-active');
-       }
-       else{
-        document.querySelector('.slide-menu')?.classList.remove('double-menu-active');
-       }
+    }
+    else {
+      document.querySelector('.slide-menu')?.classList.remove('double-menu-active');
+    }
   }
   setAttr(key: string, value: string): void {
     const htmlElement = this.elementRef.nativeElement.ownerDocument.documentElement;
@@ -143,7 +143,7 @@ export class SwitcherComponent {
     this.appStateService.updateState({ themePrimary });
   }
   updateBackground(themeBackground: any) {
-    this.appStateService.updateState({ themeBackground, menuColor: 'dark', theme:"dark",headerColor:"dark" });
+    this.appStateService.updateState({ themeBackground, menuColor: 'dark', theme: "dark", headerColor: "dark" });
   }
   updateBgImage(backgroundImage: string) {
     this.appStateService.updateState({ backgroundImage, });
@@ -185,13 +185,14 @@ export class SwitcherComponent {
     bg2Update[0] = Number(bg2Update[0]) + 14;
     bg2Update[1] = Number(bg2Update[1]) + 14;
     bg2Update[2] = Number(bg2Update[2]) + 14;
-    let bgColor = { main: bg1Update, secondary: bg2Update.join(', '),
+    let bgColor = {
+      main: bg1Update, secondary: bg2Update.join(', '),
       accent: bg2Update.join(', '), overlay: 'rgba(255,255,255,0.1)',
       theme: 'dark',
     }
     this.updateBackground(bgColor);
   }
-  
+
   reset() {
     this.appStateService.applyReset();
     let html = document.querySelector('html');
@@ -200,4 +201,4 @@ export class SwitcherComponent {
   }
 }
 
- 
+

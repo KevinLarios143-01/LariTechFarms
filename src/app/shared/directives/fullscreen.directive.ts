@@ -11,7 +11,7 @@ export class FullscreenDirective {
   public fullScreen = false;
   public elem: any;
 
-  constructor(@Inject(DOCUMENT) private document: any) {}
+  constructor(@Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
     this.elem = document.documentElement;
@@ -32,7 +32,7 @@ export class FullscreenDirective {
       } else if (this.elem.msRequestFullscreen) {
         /* IE/Edge */
         this.elem.msRequestFullscreen();
-      } 
+      }
     } else {
       if (!this.document.exitFullscreen) {
         this.document.exitFullscreen();

@@ -22,5 +22,5 @@ export class RightSidebarComponent {
     // Prevent the click event from propagating to the container
     event.stopPropagation();
   }
- 
+
 }

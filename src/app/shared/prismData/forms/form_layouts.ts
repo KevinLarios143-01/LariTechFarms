@@ -1,5 +1,5 @@
 export let
-formlayouts1 = `<div class="mb-3">
+  formlayouts1 = `<div class="mb-3">
 <label for="form-text" class="form-label fs-14 text-dark">Enter name</label>
 <input type="text" class="form-control" id="form-text" placeholder="full name">
 </div>
@@ -16,7 +16,7 @@ formlayouts1 = `<div class="mb-3">
 </label>
 </div>
 <button class="btn btn-primary" type="submit">Submit</button>`,
-formlayouts2 = `<form>
+  formlayouts2 = `<form>
 <div class="row mb-3">
     <label for="inputEmail3"
         class="col-sm-2 col-form-label">Email</label>
@@ -61,7 +61,7 @@ formlayouts2 = `<form>
 </fieldset>
 <button type="submit" class="btn btn-primary">Sign in</button>
 </form>`,
-formlayouts3 = `<div class="mb-3">
+  formlayouts3 = `<div class="mb-3">
 <label for="form-text1" class="form-label fs-14 text-dark">Enter name</label>
 <div class="input-group">
     <div class="input-group-text"><i class="ri-user-line"></i></div>
@@ -84,7 +84,7 @@ formlayouts3 = `<div class="mb-3">
 </label>
 </div>
 <button class="btn btn-primary" type="submit">Submit</button>`,
-formlayouts4 = `<form>
+  formlayouts4 = `<form>
 <div class="row mb-3">
     <label for="inputEmail1"
         class="col-sm-2 col-form-label">Email</label>
@@ -139,7 +139,7 @@ formlayouts4 = `<form>
 </fieldset>
 <button type="submit" class="btn btn-primary">Sign in</button>
 </form>`,
-formlayouts5 = ` <form class="row row-cols-lg-auto g-3 align-items-center">
+  formlayouts5 = ` <form class="row row-cols-lg-auto g-3 align-items-center">
 <div class="col-12">
     <label class="visually-hidden"
         for="inlineFormInputGroupUsername">Username</label>
@@ -173,7 +173,7 @@ formlayouts5 = ` <form class="row row-cols-lg-auto g-3 align-items-center">
     <button type="submit" class="btn btn-primary">Submit</button>
 </div>
 </form>`,
-formlayouts6 = `<div class="row g-3">
+  formlayouts6 = `<div class="row g-3">
 <div class="col-sm-7">
     <input type="text" class="form-control" placeholder="City"
         aria-label="City">
@@ -187,7 +187,7 @@ formlayouts6 = `<div class="row g-3">
         aria-label="Zip">
 </div>
 </div>`,
-formlayouts7 = `<div class="mb-3">
+  formlayouts7 = `<div class="mb-3">
 <label for="formGroupExampleInput" class="form-label">Example label</label>
 <input type="text" class="form-control" id="formGroupExampleInput"
     placeholder="Example input placeholder">
@@ -197,7 +197,7 @@ formlayouts7 = `<div class="mb-3">
 <input type="text" class="form-control" id="formGroupExampleInput2"
     placeholder="Another input placeholder">
 </div>`,
-formlayouts8 = `<div class="row mb-3">
+  formlayouts8 = `<div class="row mb-3">
 <label for="colFormLabelSm"
     class="col-sm-2 col-form-label col-form-label-sm">Email</label>
 <div class="col-sm-10">
@@ -220,7 +220,7 @@ formlayouts8 = `<div class="row mb-3">
         id="colFormLabelLg" placeholder="col-form-label-lg">
 </div>
 </div>`,
-formlayouts9 = `<form class="row gy-2 gx-3 align-items-center mb-4">
+  formlayouts9 = `<form class="row gy-2 gx-3 align-items-center mb-4">
 <div class="col-auto">
     <label class="visually-hidden" for="autoSizingInput">Name</label>
     <input type="text" class="form-control" id="autoSizingInput"
@@ -299,7 +299,7 @@ classes.</span>
     <button type="submit" class="btn btn-primary">Submit</button>
 </div>
 </form>`,
-formlayouts10 = `<div class="row">
+  formlayouts10 = `<div class="row">
 <div class="col-md-6 mb-3">
     <label class="form-label">First Name</label>
     <input type="text" class="form-control" placeholder="First name"
@@ -403,7 +403,7 @@ formlayouts10 = `<div class="row">
     <button type="submit" class="btn btn-primary">Sign in</button>
 </div>
 </div>`,
-formlayouts11 = `<form class="row g-3 mt-0">
+  formlayouts11 = `<form class="row g-3 mt-0">
 <div class="col-md-6">
     <label class="form-label">First Name</label>
     <input type="text" class="form-control" placeholder="First name"
