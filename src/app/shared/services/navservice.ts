@@ -99,7 +99,7 @@ export class NavService implements OnDestroy {
       active: false,
       children: [
         {
-          title: 'HR Dashboard',
+          title: 'RH Dashboard',
           dirchange: false,
           type: 'sub',
           active: false,
@@ -157,7 +157,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Employee Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', active: false, selected: false, children: [
+          title: 'Empleados Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', active: false, selected: false, children: [
             { path: '/dashboard/employee-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/employee-dashboard/attendance', title: 'Asistencia', type: 'link', selected: false },
             { path: '/dashboard/employee-dashboard/apply-leaves', title: 'Solicitar Permisos', type: 'link', selected: false },
@@ -167,7 +167,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Task Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
+          title: 'Tareas Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
             { path: '/dashboard/task-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/task-dashboard/task-list', title: 'Lista de Tareas', type: 'link', selected: false },
             { path: '/dashboard/task-dashboard/running-tasks', title: 'Tareas en Progreso', type: 'link', selected: false },
@@ -181,7 +181,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Project Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
+          title: 'Proyectos Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
             { path: '/dashboard/project-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/project-dashboard/project-list', title: 'Lista de Proyectos', type: 'link', selected: false },
             { path: '/dashboard/project-dashboard/view-project', title: 'Ver Proyecto', type: 'link', selected: false },
@@ -190,7 +190,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Client Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
+          title: 'Clientes Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
             { path: '/dashboard/client-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/client-dashboard/client-list', title: 'Lista de Clientes', type: 'link', selected: false },
             { path: '/dashboard/client-dashboard/view-client', title: 'Ver Cliente', type: 'link', selected: false },
@@ -199,7 +199,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Job Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
+          title: 'Trabajos Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
             { path: '/dashboard/job-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/job-dashboard/job-lists', title: 'Lista de Trabajos', type: 'link', selected: false },
             { path: '/dashboard/job-dashboard/job-view', title: 'Ver Trabajo', type: 'link', selected: false },
