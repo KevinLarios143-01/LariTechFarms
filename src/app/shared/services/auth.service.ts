@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { LoginResponse } from '../interfaces/login-response.interface';
 export interface User {
   uid: string;
   email: string;
@@ -21,11 +24,64 @@ export class AuthService {
   afs: any;
   public showLoader: boolean = false;
 
-  constructor(private afu: AngularFireAuth, private router: Router, public ngZone: NgZone, private cookieService: CookieService) {
+  // URL base del backend
+  private apiUrl = environment.apiUrl;
+
+  constructor(
+    private afu: AngularFireAuth,
+    private router: Router,
+    public ngZone: NgZone,
+    private cookieService: CookieService,
+    private http: HttpClient
+  ) {
     this.afu.authState.subscribe((auth: any) => {
       this.authState = auth;
     });
+  }
 
+  // --- Métodos para autenticación con el backend propio ---
+
+  /**
+   * Login usando el backend propio
+   * @param email Email del usuario
+   * @param password Contraseña
+   * @returns Observable con la respuesta del backend
+   */
+
+  backendLogin(email: string, password: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/v1/auth/login`, { email, password });
+  }
+
+  /**
+   * Registro usando el backend propio
+   * @param email Email del usuario
+   * @param password Contraseña
+   * @returns Observable con la respuesta del backend
+   */
+
+  backendRegister(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/v1/auth/register`, { email, password });
+  }
+
+  /**
+   * Guardar token en localStorage
+   */
+  saveToken(token: string) {
+    localStorage.setItem('auth_token', token);
+  }
+
+  /**
+   * Obtener token de localStorage
+   */
+  getToken(): string | null {
+    return localStorage.getItem('auth_token');
+  }
+
+  /**
+   * Eliminar token de localStorage
+   */
+  removeToken() {
+    localStorage.removeItem('auth_token');
   }
 
   // all firebase getdata functions
