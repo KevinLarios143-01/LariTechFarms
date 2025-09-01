@@ -20,11 +20,12 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthInterceptor } from './shared/services/auth-interceptor.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(App_Route),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([AuthInterceptor])),
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,
