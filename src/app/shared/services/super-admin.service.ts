@@ -3,47 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+import { Company, ApiResponse, TenantResponse } from '../interfaces/tenant';
+import { Plan, PlanResponse } from '../interfaces/plan';
 
-export interface Company {
-  id: number;
-  img: string;
-  name: string;
-  email: string;
-  package: string;
-  packageBadge: string;
-  registeredBy: string;
-  statusText: string;
-  status: string;
-  telefono?: string;
-  direccion?: string;
-  nit?: string;
-  activo?: boolean;
-}
 
-interface TenantResponse {
-  id_tenant: number;
-  nombre: string;
-  correo: string;
-  telefono: string;
-  fecha_registro: string;
-  direccion: string;
-  nit: string;
-  activo: boolean;
-}
 
-interface ApiResponse {
-  success: boolean;
-  data: {
-    data: TenantResponse[];
-    pagination: {
-      page: number;
-      limit: number;
-      total: number;
-      totalPages: number;
-    };
-  };
-  timestamp: string;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -95,5 +59,49 @@ export class SuperAdminService {
     return this.http.put<TenantResponse>(`${this.apiUrl}/tenants/${company.id}`, tenantData).pipe(
       map(tenant => this.mapTenantToCompany(tenant))
     );
+  }
+
+  createCompany(company: Partial<Company>): Observable<Company> {
+    const tenantData = {
+      nombre: company.name,
+      correo: company.email,
+      telefono: company.telefono,
+      direccion: company.direccion,
+      nit: company.nit,
+      activo: company.activo ?? true
+    };
+    return this.http.post<TenantResponse>(`${this.apiUrl}/tenants`, tenantData).pipe(
+      map(tenant => this.mapTenantToCompany(tenant))
+    );
+  }
+
+  getCompanyById(id: number): Observable<Company> {
+    return this.http.get<TenantResponse>(`${this.apiUrl}/tenants/${id}`).pipe(
+      map(tenant => this.mapTenantToCompany(tenant))
+    );
+  }
+
+  getPlans(): Observable<Plan[]> {
+    return this.http.get<PlanResponse>(`${this.apiUrl}/planes`).pipe(
+      map(response => response.data.data)
+    );
+  }
+
+  createPlan(plan: Partial<Plan>): Observable<Plan> {
+    return this.http.post<Plan>(`${this.apiUrl}/planes`, plan);
+  }
+
+  updatePlan(plan: Plan): Observable<Plan> {
+    return this.http.put<Plan>(`${this.apiUrl}/planes/${plan.id_plan}`, plan);
+  }
+
+  deletePlan(id: number): Observable<boolean> {
+    return this.http.delete<any>(`${this.apiUrl}/planes/${id}`).pipe(
+      map(() => true)
+    );
+  }
+
+  getPlanById(id: number): Observable<Plan> {
+    return this.http.get<Plan>(`${this.apiUrl}/planes/${id}`);
   }
 }

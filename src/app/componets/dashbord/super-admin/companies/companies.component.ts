@@ -7,13 +7,14 @@ import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModuleModule } from '../../../../material-module/material-module.module';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { SuperAdminService, Company } from '../../../../shared/services/super-admin.service';
+
+import { SuperAdminService } from '../../../../shared/services/super-admin.service';
+import { Company } from '../../../../shared/interfaces/tenant';
 
 @Component({
   selector: 'app-companies',
   standalone: true,
-  imports: [SharedModule,NgSelectModule,MaterialModuleModule,NgbModule,RouterModule,HttpClientModule],
+  imports: [SharedModule,NgSelectModule,MaterialModuleModule,NgbModule,RouterModule],
   templateUrl: './companies.component.html',
   styleUrls: ['./companies.component.scss']
 })
@@ -33,7 +34,7 @@ export class CompaniesComponent implements OnInit {
 
   openOffcanvas(content: any): NgbOffcanvasRef | null {
     try {
-      return this.offcanvasService.open(content, { 
+      return this.offcanvasService.open(content, {
         ariaLabelledBy: 'offcanvas-basic-title',
         position: 'end',
         panelClass: 'company-details'
@@ -67,15 +68,8 @@ export class CompaniesComponent implements OnInit {
     }
   }
   removeData(item: number): void {
-    this.superAdminService.deleteCompany(item).subscribe(success => {
-      if (success) {
-        const index = this.dataSource.data.findIndex(el => el.id === item);
-        if (index > -1) {
-          this.dataSource.data.splice(index, 1);
-          this.dataSource._updateChangeSubscription();
-        }
-      }
-    });
+    //cambiar estado a false
+    console.log('Inactivando company with ID:', item);
   }
   edit(editContent:any) {
     this.modalService.open(editContent, { windowClass : 'modalCusSty',size:'lg' })

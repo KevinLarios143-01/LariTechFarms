@@ -69,121 +69,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#01</td>
-                                <td>Free</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">All</td>
-                                <td class="text-center">All</td>
-                                <td>Limited</td>
-                                <td><span class="badge bg-danger">Disable</span></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <a  class="action-btns1" placement="top" ngbTooltip="View">
-                                            <i class="fe fe-eye text-primary"></i>
-                                        </a>
-                                        <a  class="action-btns1" (click)="open(content)" toggle="modal" target="#editmodal">
-                                            <i class="fe fe-edit-2  text-success" placement="top"
-                                                ngbTooltip="Edit"></i>
-                                        </a>
-                                        <a  class="action-btns1" placement="top"
-                                            ngbTooltip="Delete"><i class="fe fe-trash-2 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#02</td>
-                                <td>Basic</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">$19.00</td>
-                                <td class="text-center">00</td>
-                                <td class="text-center">05</td>
-                                <td>Limited</td>
-                                <td><span class="badge bg-success">Enable</span></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <a  class="action-btns1" placement="top" ngbTooltip="View">
-                                            <i class="fe fe-eye text-primary"></i>
-                                        </a>
-                                        <a (click)="open(content)"  class="action-btns1" toggle="modal" target="#editmodal">
-                                            <i class="fe fe-edit-2  text-success" placement="top"
-                                                ngbTooltip="Edit"></i>
-                                        </a>
-                                        <a  class="action-btns1" placement="top"
-                                            ngbTooltip="Delete"><i class="fe fe-trash-2 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#03</td>
-                                <td>Premium</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">$39.00</td>
-                                <td class="text-center">00</td>
-                                <td class="text-center">20</td>
-                                <td>Unlimited</td>
-                                <td><span class="badge bg-success">Enable</span></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <a  class="action-btns1" placement="top" ngbTooltip="View">
-                                            <i class="fe fe-eye text-primary"></i>
-                                        </a>
-                                        <a (click)="open(content)"  class="action-btns1" toggle="modal" target="#editmodal">
-                                            <i class="fe fe-edit-2  text-success" placement="top"
-                                                ngbTooltip="Edit"></i>
-                                        </a>
-                                        <a  class="action-btns1" placement="top"
-                                            ngbTooltip="Delete"><i class="fe fe-trash-2 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#04</td>
-                                <td>Advanced</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">$69.00</td>
-                                <td class="text-center">00</td>
-                                <td class="text-center">40</td>
-                                <td>Unlimited</td>
-                                <td><span class="badge bg-success">Enable</span></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <a  class="action-btns1" placement="top" ngbTooltip="View">
-                                            <i class="fe fe-eye text-primary"></i>
-                                        </a>
-                                        <a (click)="open(content)"  class="action-btns1" toggle="modal" target="#editmodal">
-                                            <i class="fe fe-edit-2  text-success" placement="top"
-                                                ngbTooltip="Edit"></i>
-                                        </a>
-                                        <a  class="action-btns1" placement="top"
-                                            ngbTooltip="Delete"><i class="fe fe-trash-2 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>#05</td>
-                                <td>Enterprise</td>
-                                <td class="text-center">$0.00</td>
-                                <td class="text-center">$139.00</td>
-                                <td class="text-center">80</td>
-                                <td class="text-center">Unlimited</td>
-                                <td>Unlimited</td>
-                                <td><span class="badge bg-success">Enable</span></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <a  class="action-btns1" placement="top" ngbTooltip="View">
-                                            <i class="fe fe-eye text-primary"></i>
-                                        </a>
-                                        <a (click)="open(content)"  class="action-btns1" toggle="modal" target="#editmodal">
-                                            <i class="fe fe-edit-2  text-success" placement="top"
-                                                ngbTooltip="Edit"></i>
-                                        </a>
-                                        <a  class="action-btns1" placement="top"
-                                            ngbTooltip="Delete"><i class="fe fe-trash-2 text-danger"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
+                            @for (plan of plans; track plan.id_plan; let i = $index) {
+                                <tr>
+                                    <td>#{{(i + 1).toString().padStart(2, '0')}}</td>
+                                    <td>{{plan.nombre}}</td>
+                                    <td class="text-center">${{plan.precio_mensual}}</td>
+                                    <td class="text-center">${{plan.precio_mensual}}</td>
+                                    <td class="text-center">{{plan.limite_usuarios}}</td>
+                                    <td class="text-center">{{plan.limite_aves}}</td>
+                                    <td>{{plan.limite_aves > 1000 ? 'Unlimited' : 'Limited'}}</td>
+                                    <td><span class="badge" [class]="'bg-' + (plan.nivel_prioridad > 0 ? 'success' : 'danger')">{{plan.nivel_prioridad > 0 ? 'Enable' : 'Disable'}}</span></td>
+                                    <td class="text-center">
+                                        <div class="d-flex">
+                                            <a class="action-btns1" placement="top" ngbTooltip="View">
+                                                <i class="fe fe-eye text-primary"></i>
+                                            </a>
+                                            <a class="action-btns1" (click)="open(content)" toggle="modal" target="#editmodal">
+                                                <i class="fe fe-edit-2 text-success" placement="top" ngbTooltip="Edit"></i>
+                                            </a>
+                                            <a class="action-btns1" placement="top" ngbTooltip="Delete" (click)="deletePlan(plan.id_plan)">
+                                                <i class="fe fe-trash-2 text-danger"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

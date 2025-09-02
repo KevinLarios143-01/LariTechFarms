@@ -10,8 +10,8 @@
           <img class="avatar avatar-xxl avatar-rounded rounded-circle" alt="img" src="./assets/images/users/1.jpg" />
         </div>
         <div class="pro-user mt-3">
-          <h5 class="pro-user-username text-dark mb-1 fs-16">Faith Harris</h5>
-          <h6 class="pro-user-desc text-muted fs-12 mb-1">Web Designer</h6>
+          <h5 class="pro-user-username text-dark mb-1 fs-16">{{empleado?.nombre}} {{empleado?.apellido}}</h5>
+          <h6 class="pro-user-desc text-muted fs-12 mb-1">{{empleado?.puesto}}</h6>
         </div>
         <!--Start:: employee ratings -->
         <ngb-rating [(rate)]="currentRate" class="text-warning"></ngb-rating>
@@ -22,7 +22,7 @@
           <div class="col-4 text-center py-3 border-end">
             <h5 class="fs-12 fw-medium mb-3">January</h5>
             <h5 class="mb-2">
-              <span class="fs-18 text-success">22</span>
+              <span class="fs-18 text-success">{{empleado?._count?.asistencias || 0}}</span>
               <span class="my-auto fs-9 fw-normal ms-1 me-1">/</span>
               <span class="fs-18 fw-medium text-dark">31</span>
             </h5>
@@ -122,11 +122,12 @@
                         <div class="row">
                           <div class="col-md-6">
                             <input type="text" class="form-control mb-md-0 mb-5" placeholder="First Name"
-                              value="Faith" />
+                              [(ngModel)]="empleado.nombre" />
                             <span class="text-muted"></span>
                           </div>
                           <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Last Name" value="Harris" />
+                            <input type="text" class="form-control" placeholder="Last Name"
+                              [(ngModel)]="empleado.apellido" />
                           </div>
                         </div>
                       </div>
@@ -141,11 +142,12 @@
                        <div class="row">
                           <div class="col-md-6">
                             <input type="text" class="form-control mb-md-0 mb-5" placeholder="First Name"
-                              value="Faith" />
+                              [(ngModel)]="empleado.apellido" />
                             <span class="text-muted"></span>
                           </div>
                           <div class="col-md-6">
-                            <input type="text" class="form-control" placeholder="Last Name" value="Harris" />
+                            <input type="text" class="form-control" placeholder="Last Name"
+                              [(ngModel)]="empleado.apellido" />
                           </div>
                         </div>
                       </div>
@@ -157,7 +159,8 @@
                         <label class="form-label mb-0 mt-2">Número de Contacto</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Phone Number" value="9685321475" />
+                        <input type="text" class="form-control" placeholder="Phone Number"
+                          [(ngModel)]="empleado?.telefono" />
                       </div>
                     </div>
                   </div>
@@ -167,7 +170,8 @@
                         <label class="form-label mb-0 mt-2">Número de contacto de emergencia 01</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Contact Number01" value="8695324712" />
+                        <input type="text" class="form-control" placeholder="Contact Number01"
+                          [(ngModel)]="empleado?.telefono_emergencia1" />
                       </div>
                     </div>
                   </div>
@@ -177,7 +181,8 @@
                         <label class="form-label mb-0 mt-2">Número de contacto de emergencia 02</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Contact Number02" value="9966583155" />
+                        <input type="text" class="form-control" placeholder="Contact Number02"
+                          [(ngModel)]="empleado?.telefono_emergencia2" />
                       </div>
                     </div>
                   </div>
@@ -262,7 +267,8 @@
                         <label class="form-label mb-0 mt-2">Email</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="email" value="faith@gmail.com" />
+                        <input type="text" class="form-control" placeholder="email"
+                          [(ngModel)]="empleado?.correo" />
                       </div>
                     </div>
                   </div>
@@ -272,9 +278,8 @@
                         <label class="form-label mb-0 mt-2">Dirección Actual</label>
                       </div>
                       <div class="col-md-9">
-                        <textarea rows="3" class="form-control" placeholder="Address1">
-                          4102 Masonic Hill Road Little Rock Arkansas-727212
-                        </textarea>
+                        <textarea rows="3" class="form-control" placeholder="Address1"
+                          [(ngModel)]="empleado?.direccion_actual"></textarea>
                       </div>
                     </div>
                   </div>
@@ -284,9 +289,8 @@
                         <label class="form-label mb-0 mt-2">Dirección Adicional</label>
                       </div>
                       <div class="col-md-9">
-                        <textarea rows="3" class="form-control" placeholder="Address2">
-                          4102 Masonic Hill Road Little Rock Arkansas-727212
-                        </textarea>
+                        <textarea rows="3" class="form-control" placeholder="Address2"
+                          [(ngModel)]="empleado?.direccion_adicional"></textarea>
                       </div>
                     </div>
                   </div>
@@ -310,7 +314,8 @@
                         <label class="form-label mb-0 mt-2">Email Empleado</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="employee email" value="faith@gmail.com" />
+                        <input type="text" class="form-control" placeholder="employee email"
+                          [(ngModel)]="empleado?.correo" />
                       </div>
                     </div>
                   </div>
@@ -332,7 +337,7 @@
                       <div class="col-md-9">
                         <div class="form-check form-check-md form-switch">
                           <input class="form-check-input" type="checkbox" role="switch" id="switch-md1" />
-                          <label class="form-check-label mt-0 custom-switch-description" for="switch-md">On/Off</label>
+                          <label class="form-check-label mt-0 custom-switch-description" for="switch-md1">On/Off</label>
                         </div>
                       </div>
                     </div>
@@ -352,7 +357,8 @@
                         <label class="form-label mb-0 mt-2">ID Empleado</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="#ID" value="#2987" />
+                        <input type="text" class="form-control" placeholder="#ID"
+                          value="#{{empleado?.id_empleado}}" readonly />
                       </div>
                     </div>
                   </div>
@@ -362,7 +368,8 @@
                         <label class="form-label mb-0 mt-2">Departamento</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Department" value="Designing Department" />
+                        <input type="text" class="form-control" placeholder="Department"
+                          [(ngModel)]="empleado?.departamento" />
                       </div>
                     </div>
                   </div>
@@ -372,7 +379,8 @@
                         <label class="form-label mb-0 mt-2">Puesto de trabajo</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Designation" value="Web Designer" />
+                        <input type="text" class="form-control" placeholder="Designation"
+                          [(ngModel)]="empleado?.puesto" />
                       </div>
                     </div>
                   </div>
@@ -383,7 +391,7 @@
                       </div>
                       <div class="col-md-9">
                         <input type="text" class="form-control fc-datepicker" placeholder="DD-MM-YYYY"
-                          value="05-05-2017" />
+                          [value]="empleado?.fecha_contratacion | date:'dd-MM-yyyy'" />
                       </div>
                     </div>
                   </div>
@@ -427,7 +435,8 @@
                         </label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="0" />
+                        <input type="text" class="form-control" placeholder="0"
+                          [(ngModel)]="empleado?.deuda_pendiente" />
                       </div>
                     </div>
                   </div>
@@ -451,7 +460,13 @@
                         <label class="form-label mb-0 mt-2">Salario</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="$Salary" value="$28000" />
+                        <input type="text" class="form-control" placeholder="$Salary"
+                          [(ngModel)]="empleado.salario" />
+                      </div>
+                    </div>
+                  </div>  <div class="col-md-9">
+                        <input type="text" class="form-control" placeholder="$Salary"
+                          [(ngModel)]="empleado.salario" />eado.salario" />
                       </div>
                     </div>
                   </div>
@@ -462,7 +477,8 @@
                       </div>
                       <div class="col-md-9">
                         <div class="form-check form-check-md form-switch">
-                          <input class="form-check-input" type="checkbox" role="switch" id="switch-md" checked="" />
+                          <input class="form-check-input" type="checkbox" role="switch" id="switch-md"
+                            [(ngModel)]="empleado?.activo" />
                           <label class="form-check-label mt-0 custom-switch-description"
                             for="switch-md">Active/Inactive</label>
                         </div>
@@ -484,7 +500,8 @@
                         <label class="form-label mb-0 mt-2">Nombre de Cuenta</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Name" value="Faith Harris" />
+                        <input type="text" class="form-control" placeholder="Name"
+                          [(ngModel)]="empleado.nombre_cuenta" />
                       </div>
                     </div>
                   </div>
@@ -494,7 +511,8 @@
                         <label class="form-label mb-0 mt-2">Número de Cuenta</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Number" value="36985214704" />
+                        <input type="text" class="form-control" placeholder="Number"
+                          [(ngModel)]="empleado.numero_cuenta" />
                       </div>
                     </div>
                   </div>
@@ -504,7 +522,8 @@
                         <label class="form-label mb-0 mt-2">Nombre del banco</label>
                       </div>
                       <div class="col-md-9">
-                        <input type="text" class="form-control" placeholder="Name" value="ABCD Bank" />
+                        <input type="text" class="form-control" placeholder="Name"
+                          [(ngModel)]="empleado.nombre_banco" />
                       </div>
                     </div>
                   </div>
@@ -643,7 +662,7 @@
     <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
       <div [ngbNavOutlet]="nav" class="tab-content"></div>
       <div class="panel-footer text-end">
-        <a href="javascript:;" class="me-2 btn btn-primary">Updated</a>
+        <a href="javascript:;" class="me-2 btn btn-primary" (click)="updateEmpleado()">Updated</a>
         <a href="javascript:;" class="btn btn-danger">Cancel</a>
       </div>
     </div>
