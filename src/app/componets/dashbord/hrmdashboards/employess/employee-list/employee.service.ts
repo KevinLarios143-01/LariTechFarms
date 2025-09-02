@@ -1,109 +1,143 @@
-// import {Injectable, PipeTransform} from '@angular/core';
+import {Injectable, PipeTransform} from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {DecimalPipe} from '@angular/common';
+import {debounceTime, delay, switchMap, tap, map, catchError} from 'rxjs/operators';
+import { SortDirection } from '@angular/material/sort';
+import { employeeSortColumn } from '../../../../../shared/directives/sortable.directive';
+import { Empleado, EmpleadoResponse } from '../../../../../shared/interfaces/empleado';
+import { environment } from '../../../../../../environments/environment';
 
-// import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+interface SearchResult {
+  employeeData: Empleado[];
+  total: number;
+}
 
-// import {DecimalPipe} from '@angular/common';
-// import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
-// import { SortDirection } from '@angular/material/sort';
-// import { employee, employeeList } from './employeeListTableData';
-// import { employeeSortColumn } from '../../../../../shared/directives/sortable.directive';
+interface State {
+  page: number;
+  pageSize: number;
+  searchTerm: string;
+  sortColumn: employeeSortColumn;
+  sortDirection: SortDirection;
+}
 
-// interface SearchResult {
-//   employeeData: employeeList[];
-//   total: number;
-// }
+const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-// interface State {
-//   page: number;
-//   pageSize: number;
-//   searchTerm: string;
-//   sortColumn: employeeSortColumn;
-//   sortDirection: SortDirection;
-// }
+function sort(employeeData: Empleado[], column: employeeSortColumn, direction: string): Empleado[] {
+  if (direction === '' || column === '') {
+    return employeeData;
+  } else {
+    return [...employeeData].sort((a:any, b:any) => {
+      const res = compare(a[column], b[column]);
+      return direction === 'asc' ? res : -res;
+    });
+  }
+}
 
-// const compare = (v1: string | number, v2: string | number) => v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+function matches(employee: Empleado, term: string, pipe: PipeTransform) {
+  return employee.nombre.toLowerCase().includes(term.toLowerCase())
+    || employee.apellido.toLowerCase().includes(term.toLowerCase())
+    || employee.id_empleado.toString().includes(term.toLowerCase())
+    || employee.departamento?.toLowerCase().includes(term.toLowerCase())
+    || employee.puesto?.toLowerCase().includes(term.toLowerCase())
+    || employee.telefono?.toLowerCase().includes(term.toLowerCase())
+    || employee.fecha_contratacion?.toLowerCase().includes(term.toLowerCase())
+    || employee.correo?.toLowerCase().includes(term.toLowerCase())
+}
 
-// function sort(employeeData: employeeList[], column: employeeSortColumn, direction: string): employeeList[] {
-//   if (direction === '' || column === '') {
-//     return employeeData;
-//   } else {
-//     return [...employeeData].sort((a:any, b:any) => {
-//       const res = compare(a[column], b[column]);
-//       return direction === 'asc' ? res : -res;
-//     });
-//   }
-// }
+@Injectable({providedIn: 'root'})
+export class EmployeeService {
+  private readonly apiUrl = `${environment.apiUrl}/v1/empleados`;
+  private readonly _loading$ = new BehaviorSubject<boolean>(true);
+  private readonly _search$ = new Subject<void>();
+  private readonly _employeeData$ = new BehaviorSubject<Empleado[]>([]);
+  private readonly _total$ = new BehaviorSubject<number>(0);
 
-// function matches(employee: employeeList, term: string, pipe: PipeTransform) {
-//   return employee.EmpName.toLowerCase().includes(term.toLowerCase())
-//     || employee.EmpID.toLowerCase().includes(term.toLowerCase())
-//     || employee.Department.toLowerCase().includes(term.toLowerCase())
-//     || employee.Designation.toLowerCase().includes(term.toLowerCase())
-//     || employee.PhoneNumber.toLowerCase().includes(term.toLowerCase())
-//     || employee.JoinDate.toLowerCase().includes(term.toLowerCase())
-//     || employee.AtWork.toLowerCase().includes(term.toLowerCase())
-// }
+  private readonly _state: State = {
+    page: 1,
+    pageSize: 10,
+    searchTerm: '',
+    sortColumn: '',
+    sortDirection: ''
+  };
 
-// @Injectable({providedIn: 'root'})
-// export class EmployeeService {
-//   private _loading$ = new BehaviorSubject<boolean>(true);
-//   private _search$ = new Subject<void>();
-//   private _employeeData$ = new BehaviorSubject<employeeList[]>([]);
-//   private _total$ = new BehaviorSubject<number>(0);
+  constructor(private readonly pipe: DecimalPipe, private readonly http: HttpClient) {
+    this._search$.pipe(
+      tap(() => this._loading$.next(true)),
+      debounceTime(200),
+      switchMap(() => this._search()),
+      delay(200),
+      tap(() => this._loading$.next(false))
+    ).subscribe(result => {
+      this._employeeData$.next(result.employeeData);
+      this._total$.next(result.total);
+    });
 
-//   private _state: State = {
-//     page: 1,
-//     pageSize: 10,
-//     searchTerm: '',
-//     sortColumn: '',
-//     sortDirection: ''
-//   };
+    this._search$.next();
+  }
 
-//   constructor(private pipe: DecimalPipe) {
-//     this._search$.pipe(
-//       tap(() => this._loading$.next(true)),
-//       debounceTime(200),
-//       switchMap(() => this._search()),
-//       delay(200),
-//       tap(() => this._loading$.next(false))
-//     ).subscribe(result => {
-//       this._employeeData$.next(result.employeeData);
-//       this._total$.next(result.total);
-//     });
+  get employeeData$() { return this._employeeData$.asObservable(); }
+  get total$() { return this._total$.asObservable(); }
+  get loading$() { return this._loading$.asObservable(); }
+  get page() { return this._state.page; }
+  get pageSize() { return this._state.pageSize; }
+  get searchTerm() { return this._state.searchTerm; }
 
-//     this._search$.next();
-//   }
+  getEmployeeStats(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/v1/empleados/stats`).pipe(
+      catchError(() => of({ total: 0, hombres: 0, mujeres: 0, nuevos: 0 }))
+    );
+  }
 
-//   get employeeData$() { return this._employeeData$.asObservable(); }
-//   get total$() { return this._total$.asObservable(); }
-//   get loading$() { return this._loading$.asObservable(); }
-//   get page() { return this._state.page; }
-//   get pageSize() { return this._state.pageSize; }
-//   get searchTerm() { return this._state.searchTerm; }
+  set page(page: number) { this._set({page}); }
+  set pageSize(pageSize: number) { this._set({pageSize}); }
+  set searchTerm(searchTerm: string) { this._set({searchTerm}); }
+  set sortColumn(sortColumn: employeeSortColumn) { this._set({sortColumn}); }
+  set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
 
-//   set page(page: number) { this._set({page}); }
-//   set pageSize(pageSize: number) { this._set({pageSize}); }
-//   set searchTerm(searchTerm: string) { this._set({searchTerm}); }
-//   set sortColumn(sortColumn: employeeSortColumn) { this._set({sortColumn}); }
-//   set sortDirection(sortDirection: SortDirection) { this._set({sortDirection}); }
+  private _set(patch: Partial<State>) {
+    Object.assign(this._state, patch);
+    this._search$.next();
+  }
 
-//   private _set(patch: Partial<State>) {
-//     Object.assign(this._state, patch);
-//     this._search$.next();
-//   }
+  private _search(): Observable<SearchResult> {
+    const {pageSize, page, searchTerm} = this._state;
 
-//   private _search(): Observable<SearchResult> {
-//     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', pageSize.toString());
 
-//     // 1. sort
-//     let employeeData = sort(employee, sortColumn, sortDirection);
+    if (searchTerm) {
+      params = params.set('search', searchTerm);
+    }
 
-//     // 2. filter
-//     employeeData = employeeData.filter(employee => matches(employee, searchTerm, this.pipe));
-//     const total = employeeData.length;
+    return this.http.get<EmpleadoResponse>(this.apiUrl, { params }).pipe(
+      map(response => {
+        const employeeData = this.mapEmpleadosToEmployeeList(response.data.data);
+        return {
+          employeeData,
+          total: response.data.pagination.total
+        };
+      }),
+      catchError(() => of({ employeeData: [], total: 0 }))
+    );
+  }
 
-//     // 3. paginate
-//     employeeData = employeeData.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
-//     return of({employeeData, total});
-//   }
-// }
+  private mapEmpleadosToEmployeeList(empleados: Empleado[]): Empleado[] {
+    return empleados.map(emp => ({
+      ...emp,
+      img: './assets/images/users/1.jpg',
+      tiempo_de_trabajo: this.calculateWorkTime(emp.fecha_contratacion)
+    }));
+  }
+
+  private calculateWorkTime(joinDate: string): string {
+    const start = new Date(joinDate);
+    const now = new Date();
+    const diff = now.getTime() - start.getTime();
+    const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+    const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+    return `${years} yrs ${months} mons ${days} days`;
+  }
+}

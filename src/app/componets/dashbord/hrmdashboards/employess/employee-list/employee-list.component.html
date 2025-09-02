@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Total Empleados</span>
-              <h3 class="mb-0 mt-1 text-success">5,678</h3>
+              <h3 class="mb-0 mt-1 text-success">{{(stats$ | async)?.total || 0}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -24,8 +24,8 @@
       <div class="card-body">
         <div class="row">
           <div class="col-7">
-            <div class="mt-0 text-start"> <span class="fw-medium">Total Empleados</span>
-              <h3 class="mb-0 mt-1 text-primary">3,876</h3>
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Hombres</span>
+              <h3 class="mb-0 mt-1 text-primary">{{(stats$ | async)?.hombres || 0}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -40,8 +40,8 @@
       <div class="card-body">
         <div class="row">
           <div class="col-7">
-            <div class="mt-0 text-start"> <span class="fw-medium">Total Empleadas</span>
-              <h3 class="mb-0 mt-1 text-secondary">1,396</h3>
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Mujeres</span>
+              <h3 class="mb-0 mt-1 text-secondary">{{(stats$ | async)?.mujeres || 0}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -56,8 +56,8 @@
       <div class="card-body">
         <div class="row">
           <div class="col-7">
-            <div class="mt-0 text-start"> <span class="fw-medium">Total Nuevos Empleados</span>
-              <h3 class="mb-0 mt-1 text-danger">398</h3>
+            <div class="mt-0 text-start"> <span class="fw-medium">Nuevos Empleados</span>
+              <h3 class="mb-0 mt-1 text-danger">{{(stats$ | async)?.nuevos || 0}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -119,37 +119,37 @@
               </tr>
             </thead>
             <tbody>
-              @for(emplist of lists;track $index){
+              @for(emplist of employeeList$ | async;track emplist.id_empleado){
 
               <tr class="border-bottom">
-                <th scope="row">{{emplist.id}}</th>
+                <th scope="row">{{emplist.id_empleado}}</th>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar me-2 avatar-rounded">
-                      <img [src]="emplist.src" alt="img">
+                      <img [src]="emplist.img" alt="img">
                     </div>
                     <div>
                       <div class="lh-1">
-                        <h6 class="mb-1">{{emplist.name}}</h6>
+                        <h6 class="mb-1">{{emplist.nombre}} {{emplist.apellido}}</h6>
                       </div>
                       <div class="lh-1">
-                        <span class="fs-12 text-muted">{{emplist.mail}}</span>
+                        <span class="fs-12 text-muted">{{emplist.correo}}</span>
                       </div>
                     </div>
                   </div>
                 </td>
-                <td>{{emplist.empid}}</td>
-                <td>{{emplist.dept}}</td>
-                <td> {{emplist.designation}}</td>
-                <td>{{emplist.phno}}</td>
-                <td>{{emplist.date}}</td>
-                <td>{{emplist.work}}</td>
-                <td><span class="badge bg-success">Active</span></td>
+                <td>#{{emplist.id_empleado}}</td>
+                <td>{{emplist.departamento}}</td>
+                <td>{{emplist.puesto}}</td>
+                <td>{{emplist.telefono}}</td>
+                <td>{{emplist.fecha_contratacion}}</td>
+                <td>{{emplist.tiempo_de_trabajo ? emplist.tiempo_de_trabajo : 'N/A'}}</td>
+                <td><span class="badge" [class]="emplist.activo ? 'bg-success' : 'bg-danger'">{{emplist.activo ? 'Active' : 'Inactive'}}</span></td>
                 <td>
                   <a class="btn btn-primary btn-icon" routerLink="/dashboard/hrmdashboards/employees/view-employee">
                     <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="View/Edit"></i>
                   </a>
-                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(emplist.id)"
+                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(emplist.id_empleado)"
                     data-original-title="Delete"><i class="fe fe-trash-2"></i></a>
                 </td>
               </tr>
