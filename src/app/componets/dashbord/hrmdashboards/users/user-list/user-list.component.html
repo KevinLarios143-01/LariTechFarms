@@ -1,0 +1,133 @@
+<app-hr-dashboard-page-header [title]="'Usuarios'" [title2]="'Agregar Nuevo Usuario'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/hrmdashboards/users/add-user'">
+</app-hr-dashboard-page-header>
+
+<!-- Start::row-1 -->
+@if (stats) {
+<div class="row">
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Usuarios</span>
+              <h3 class="mb-0 mt-1 text-success">{{stats.totalUsuarios || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> <i class="las la-users"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Usuarios Activos</span>
+              <h3 class="mb-0 mt-1 text-primary">{{stats.usuariosActivos || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-primary-transparent my-auto float-end"> <i class="las la-user-check"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Usuarios Inactivos</span>
+              <h3 class="mb-0 mt-1 text-secondary">{{stats.usuariosInactivos || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-secondary-transparent my-auto float-end"> <i class="las la-user-times"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Nuevos Usuarios</span>
+              <h3 class="mb-0 mt-1 text-danger">{{stats.usuariosNuevos || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-danger-transparent my-auto float-end"> <i class="las la-user-plus"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Start::row-2 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Lista de usuarios</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Rol</th>
+                <th>Último Acceso</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(user of userList$ | async; track user.id_usuario) {
+              <tr class="border-bottom">
+                <th scope="row">{{user.id_usuario}}</th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar me-2 avatar-rounded">
+                      <img [src]="user.img" alt="img">
+                    </div>
+                    <div>
+                      <div class="lh-1">
+                        <h6 class="mb-1">{{user.nombre}} {{user.apellido}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>{{user.email}}</td>
+                <td>{{user.telefono}}</td>
+                <td>{{user.rol}}</td>
+                <td>{{user.ultimo_acceso}}</td>
+                <td><span class="badge" [class]="user.activo ? 'bg-success' : 'bg-danger'">{{user.activo ? 'Activo' : 'Inactivo'}}</span></td>
+                <td>
+                  <a class="btn btn-primary btn-icon" routerLink="/dashboard/hrmdashboards/users/view-user">
+                    <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="Ver/Editar"></i>
+                  </a>
+                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(user.id_usuario)"
+                    data-original-title="Eliminar"><i class="fe fe-trash-2"></i></a>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

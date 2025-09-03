@@ -31,3 +31,30 @@ export interface EmpleadoResponse {
   };
   timestamp: string;
 }
+
+export interface EmpleadoResponse2 {
+  success: boolean;
+  data: EmpleadoStats;
+  timestamp: string;
+}
+
+export interface EmpleadoStats {
+  totalEmpleados: number;
+  empleadosActivos: number;
+  empleadosInactivos: number;
+  empleadosHombres: number;
+  empleadasMujeres: number;
+  empleadosNuevos: number;
+  empleadosPorPuesto: {
+    puesto: string;
+    _count: {
+      id_empleado: number;
+    };
+    _avg: {
+      salario: string;
+    };
+  }[];
+  salarioPromedio: string;
+  nominaTotal: string;
+}
+

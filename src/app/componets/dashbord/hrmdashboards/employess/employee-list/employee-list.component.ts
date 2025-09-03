@@ -6,7 +6,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { EmployeeService } from './employee.service';
-import { Empleado } from '../../../../../shared/interfaces/empleado';
+import { Empleado, EmpleadoResponse2 } from '../../../../../shared/interfaces/empleado';
 
 @Component({
   selector: 'app-employee-list',
@@ -22,7 +22,7 @@ export class EmployeeListComponent implements OnInit {
   employeeList$!: Observable<Empleado[]>;
   total$!: Observable<number>;
   loading$!: Observable<boolean>;
-  stats$!: Observable<any>;
+  stats$!: Observable<EmpleadoResponse2>;
 
   constructor(public empleadoService: EmployeeService) {
     this.employeeList$ = empleadoService.employeeData$;

@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Total Empleados</span>
-              <h3 class="mb-0 mt-1 text-success">{{(stats$ | async)?.total || 0}}</h3>
+              <h3 class="mb-0 mt-1 text-success">{{(stats$ | async)?.data?.totalEmpleados}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -25,7 +25,7 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Total Hombres</span>
-              <h3 class="mb-0 mt-1 text-primary">{{(stats$ | async)?.hombres || 0}}</h3>
+              <h3 class="mb-0 mt-1 text-primary">{{(stats$ | async)?.data?.empleadosHombres}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -41,7 +41,7 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Total Mujeres</span>
-              <h3 class="mb-0 mt-1 text-secondary">{{(stats$ | async)?.mujeres || 0}}</h3>
+              <h3 class="mb-0 mt-1 text-secondary">{{(stats$ | async)?.data?.empleadasMujeres || 0}}</h3>
             </div>
           </div>
           <div class="col-5">
@@ -57,7 +57,7 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Nuevos Empleados</span>
-              <h3 class="mb-0 mt-1 text-danger">{{(stats$ | async)?.nuevos || 0}}</h3>
+              <h3 class="mb-0 mt-1 text-danger">{{(stats$ | async)?.data?.empleadosNuevos}}</h3>
             </div>
           </div>
           <div class="col-5">

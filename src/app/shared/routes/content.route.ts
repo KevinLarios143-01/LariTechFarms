@@ -10,6 +10,7 @@ import { TaskDashboardRoutingModule } from '../../componets/dashbord/task-dashbo
 import { ProjectDashboardRoutingModule } from '../../componets/dashbord/project-dashboard/project-dashboard.routes';
 import { JobDashboardRoutingModule } from '../../componets/dashbord/job-dashboard/job-dashboard.routes';
 import { SuperAdminRoutingModule } from '../../componets/dashbord/super-admin/super-admin.routes';
+import { UsersRoutingModule } from '../../componets/dashbord/hrmdashboards/users/users.routes';
 
 
 
@@ -23,6 +24,7 @@ export const content: Routes = [
       ...hrmdashboardRoutingModule.routes,
       ...ClientDashboardRoutingModule.routes,
       ...EmployessRoutingModule.routes,
+      ...UsersRoutingModule.routes,
       ...AttendanceRoutingModule.routes,
       ...PayrollRoutingModule.routes,
       ...EmployeeDashboardRoutingModule.routes,

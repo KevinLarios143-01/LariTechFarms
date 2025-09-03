@@ -5,7 +5,7 @@ import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap, map, catchError} from 'rxjs/operators';
 import { SortDirection } from '@angular/material/sort';
 import { employeeSortColumn } from '../../../../../shared/directives/sortable.directive';
-import { Empleado, EmpleadoResponse } from '../../../../../shared/interfaces/empleado';
+import { Empleado, EmpleadoResponse, EmpleadoResponse2 } from '../../../../../shared/interfaces/empleado';
 import { environment } from '../../../../../../environments/environment';
 
 interface SearchResult {
@@ -83,10 +83,8 @@ export class EmployeeService {
   get pageSize() { return this._state.pageSize; }
   get searchTerm() { return this._state.searchTerm; }
 
-  getEmployeeStats(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/v1/empleados/stats`).pipe(
-      catchError(() => of({ total: 0, hombres: 0, mujeres: 0, nuevos: 0 }))
-    );
+  getEmployeeStats(): Observable<EmpleadoResponse2> {
+    return this.http.get<EmpleadoResponse2>(`${environment.apiUrl}/v1/empleados/stats`);
   }
 
   set page(page: number) { this._set({page}); }

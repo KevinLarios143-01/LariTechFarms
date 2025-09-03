@@ -1,0 +1,92 @@
+<app-hr-dashboard-page-header [title]="'Ver Usuario'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/hrmdashboards/users/user-list'">
+</app-hr-dashboard-page-header>
+
+@if (user) {
+<div class="row">
+  <div class="col-xl-4">
+    <div class="card custom-card">
+      <div class="card-body text-center">
+        <div class="avatar avatar-xxl mx-auto mb-3">
+          <img [src]="user.img" alt="Usuario" class="rounded-circle">
+        </div>
+        <h5 class="mb-1">{{user.nombre}} {{user.apellido}}</h5>
+        <p class="text-muted mb-3">{{user.rol}}</p>
+        <span class="badge" [class]="user.activo ? 'bg-success' : 'bg-danger'">
+          {{user.activo ? 'Activo' : 'Inactivo'}}
+        </span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-xl-8">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información del Usuario</h3>
+        <div class="card-options">
+          <button class="btn btn-primary btn-sm me-2" (click)="onEdit()">
+            <i class="fe fe-edit"></i> Editar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="onDelete()">
+            <i class="fe fe-trash-2"></i> Eliminar
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">ID Usuario:</label>
+              <p class="text-muted">{{user.id_usuario}}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email:</label>
+              <p class="text-muted">{{user.email}}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Teléfono:</label>
+              <p class="text-muted">{{user.telefono}}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Rol:</label>
+              <p class="text-muted">{{user.rol}}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Fecha de Creación:</label>
+              <p class="text-muted">{{user.fecha_creacion}}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Último Acceso:</label>
+              <p class="text-muted">{{user.ultimo_acceso}}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-12">
+            <button class="btn btn-secondary" (click)="onBack()">
+              <i class="fe fe-arrow-left"></i> Volver a la Lista
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
