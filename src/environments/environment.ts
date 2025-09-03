@@ -8,15 +8,27 @@ export const environment = {
   apiUrl: 'https://laritechfarmsbackendnode-production.up.railway.app/api',
   //apiUrl: 'http://localhost:3001/api',
 
+  // firebase: {
+  //   apiKey: "***************************************",
+  //   authDomain: "************************",
+  //   projectId: "***********************************",
+  //   storageBucket: "************************",
+  //   messagingSenderId: "*********************",
+  //   appId: "*******************************************",
+  //   measurementId: "*********************"
+  // },
   firebase: {
-    apiKey: "***************************************",
-    authDomain: "************************",
-    projectId: "***********************************",
-    storageBucket: "************************",
-    messagingSenderId: "*********************",
-    appId: "*******************************************",
+    apiKey: "AIzaSyDZtT9KF1lngCvtsyIGW4T532ojKJD9BIo",
+    authDomain: "fl-farms-gl.firebaseapp.com",
+    projectId: "fl-farms-gl",
+    storageBucket: "fl-farms-gl.firebasestorage.app",
+    messagingSenderId: "210556388433",
+    appId: "1:210556388433:web:be15faf02a843f70cf2470",
     measurementId: "*********************"
   },
+
+
+
 };
 /*
  * For easier debugging in development mode, you can import the following file
