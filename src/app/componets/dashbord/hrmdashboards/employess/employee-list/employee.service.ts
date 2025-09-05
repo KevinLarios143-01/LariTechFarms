@@ -124,11 +124,11 @@ export class EmployeeService {
     return empleados.map(emp => ({
       ...emp,
       img: './assets/images/users/1.jpg',
-      tiempo_de_trabajo: this.calculateWorkTime(emp.fechaContratacion)
+      tiempoTrabajo: this.calculateWorkTime(emp.fechaContratacion)
     }));
   }
 
-  private calculateWorkTime(joinDate: string): string {
+  public calculateWorkTime(joinDate: string): string {
     const start = new Date(joinDate);
     const now = new Date();
     const diff = now.getTime() - start.getTime();

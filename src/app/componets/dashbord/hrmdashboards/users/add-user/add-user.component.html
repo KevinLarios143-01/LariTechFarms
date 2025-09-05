@@ -53,7 +53,7 @@
                 <select class="form-control" formControlName="id_empleado">
                   <option value="">Seleccione un empleado (opcional)</option>
                   @for (empleado of empleados; track empleado.id) {
-                    <option [value]="empleado.id">{{empleado.nombre}} {{empleado.apellido}} - ID: {{empleado.id}}</option>
+                    <option [value]="empleado.id">{{empleado.nombre}} {{empleado.apellido}}</option>
                   }
                 </select>
               </div>

@@ -1,0 +1,112 @@
+<app-hr-dashboard-page-header [title]="'Editar Usuario'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/hrmdashboards/users/user-list'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Editar Información del Usuario</h3>
+      </div>
+      <div class="card-body">
+        @if (isLoading && !userForm.value.email) {
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        } @else {
+          <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Nombre *</label>
+                  <input type="text" class="form-control" formControlName="nombre" placeholder="Ingrese el nombre">
+                  @if (userForm.get('nombre')?.invalid && userForm.get('nombre')?.touched) {
+                    <div class="invalid-feedback">
+                      El nombre es requerido (mínimo 2 caracteres)
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Apellido *</label>
+                  <input type="text" class="form-control" formControlName="apellido" placeholder="Ingrese el apellido">
+                  @if (userForm.get('apellido')?.invalid && userForm.get('apellido')?.touched) {
+                    <div class="invalid-feedback">
+                      El apellido es requerido (mínimo 2 caracteres)
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Email *</label>
+                  <input type="email" class="form-control" formControlName="email" placeholder="usuario@ejemplo.com">
+                  @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                    <div class="invalid-feedback">
+                      Ingrese un email válido
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Empleado</label>
+                  <select class="form-control" formControlName="idEmpleado">
+                    <option value="">Seleccione un empleado (opcional)</option>
+                    @for (empleado of empleados; track empleado.id) {
+                      <option [value]="empleado.id">{{empleado.nombre}} {{empleado.apellido}}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-3">
+                  <label class="form-label">Rol *</label>
+                  <select class="form-control" formControlName="rol">
+                    <option value="">Seleccione un rol</option>
+                    <option value="superadmin">Super Administrador</option>
+                    <option value="admin">Administrador</option>
+                    <option value="gerente">Gerente</option>
+                    <option value="supervisor">Supervisor</option>
+                    <option value="operador">Operador</option>
+                  </select>
+                  @if (userForm.get('rol')?.invalid && userForm.get('rol')?.touched) {
+                    <div class="invalid-feedback">
+                      Seleccione un rol
+                    </div>
+                  }
+                </div>
+              </div>
+              <div class="col-md-6"></div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary me-2" [disabled]="userForm.invalid || isLoading">
+                  @if (isLoading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Actualizando...
+                  } @else {
+                    Actualizar Usuario
+                  }
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="onCancel()">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</div>

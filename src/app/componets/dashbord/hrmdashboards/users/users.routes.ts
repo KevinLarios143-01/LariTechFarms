@@ -23,6 +23,12 @@ const routes: Routes = [
           import('./add-user/add-user.component').then((m) => m.AddUserComponent),
 
       },
+      {
+        path: 'edit-user/:id',
+        loadComponent: () =>
+          import('./edit-user/edit-user.component').then((m) => m.EditUserComponent),
+
+      },
 
 
     ]
