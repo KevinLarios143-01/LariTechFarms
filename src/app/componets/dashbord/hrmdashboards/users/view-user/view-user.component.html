@@ -2,13 +2,13 @@
   [class1]="''" [path]="'/dashboard/hrmdashboards/users/user-list'">
 </app-hr-dashboard-page-header>
 
-@if (user) {
+@if (!loading && user) {
 <div class="row">
   <div class="col-xl-4">
     <div class="card custom-card">
       <div class="card-body text-center">
         <div class="avatar avatar-xxl mx-auto mb-3">
-          <img [src]="user.img" alt="Usuario" class="rounded-circle">
+          <img [src]="'./assets/images/users/1.jpg'" alt="Usuario" class="rounded-circle">
         </div>
         <h5 class="mb-1">{{user.nombre}} {{user.apellido}}</h5>
         <p class="text-muted mb-3">{{user.rol}}</p>
@@ -18,7 +18,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="col-xl-8">
     <div class="card custom-card">
       <div class="card-header">
@@ -36,48 +36,48 @@
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">ID Usuario:</label>
-              <p class="text-muted">{{user.id_usuario}}</p>
+              <label class="form-label fw-semibold" for="id">ID Usuario:</label>
+              <p class="text-muted">{{user.id}}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">Email:</label>
+              <label class="form-label fw-semibold" for="email">Email:</label>
               <p class="text-muted">{{user.email}}</p>
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">Teléfono:</label>
-              <p class="text-muted">{{user.telefono}}</p>
+              <label class="form-label fw-semibold" for="telefono">Teléfono:</label>
+              <p class="text-muted">4234-8511</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">Rol:</label>
+              <label class="form-label fw-semibold" for="rol">Rol:</label>
               <p class="text-muted">{{user.rol}}</p>
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">Fecha de Creación:</label>
-              <p class="text-muted">{{user.fecha_creacion}}</p>
+              <label class="form-label fw-semibold" for="fechaCreacion">Fecha de Creación:</label>
+              <p class="text-muted">{{user.fechaCreacion | date:'dd/MM/yyyy'}}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
-              <label class="form-label fw-semibold">Último Acceso:</label>
-              <p class="text-muted">{{user.ultimo_acceso}}</p>
+              <label class="form-label fw-semibold" for="ultimoLogin">Último Acceso:</label>
+              <p class="text-muted">{{user.ultimoLogin | date:'dd/MM/yyyy HH:mm'}}</p>
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-12">
             <button class="btn btn-secondary" (click)="onBack()">
@@ -85,6 +85,19 @@
             </button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+} @else if (loading) {
+<div class="row">
+  <div class="col-12">
+    <div class="card custom-card">
+      <div class="card-body text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-2">Cargando información del usuario...</p>
       </div>
     </div>
   </div>

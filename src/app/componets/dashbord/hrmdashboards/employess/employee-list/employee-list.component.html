@@ -106,23 +106,23 @@
           <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
             <thead>
               <tr class="border-bottom">
-                <th>No</th>
-                <th>Nombre Empleado</th>
-                <th>#ID Empleado</th>
-                <th>Departamento</th>
-                <th>Puesto de Trabajo</th>
-                <th>Número de teléfono</th>
-                <th>Fecha Inicio</th>
-                <th>Tiempo en el puesto</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th scope="col">No</th>
+                <th scope="col">Nombre Empleado</th>
+                <th scope="col">#ID Empleado</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">Puesto de Trabajo</th>
+                <th scope="col">Número de teléfono</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Tiempo en el puesto</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              @for(emplist of employeeList$ | async;track emplist.id_empleado){
+              @for(emplist of employeeList$ | async;track emplist.id){
 
               <tr class="border-bottom">
-                <th scope="row">{{emplist.id_empleado}}</th>
+                <th scope="row">{{emplist.id}}</th>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar me-2 avatar-rounded">
@@ -138,18 +138,18 @@
                     </div>
                   </div>
                 </td>
-                <td>#{{emplist.id_empleado}}</td>
+                <td>#{{emplist.id}}</td>
                 <td>{{emplist.departamento}}</td>
                 <td>{{emplist.puesto}}</td>
                 <td>{{emplist.telefono}}</td>
-                <td>{{emplist.fecha_contratacion}}</td>
-                <td>{{emplist.tiempo_de_trabajo ? emplist.tiempo_de_trabajo : 'N/A'}}</td>
+                <td>{{emplist.fechaContratacion}}</td>
+                <td>{{emplist.tiempoTrabajo ? emplist.tiempoTrabajo : 'N/A'}}</td>
                 <td><span class="badge" [class]="emplist.activo ? 'bg-success' : 'bg-danger'">{{emplist.activo ? 'Active' : 'Inactive'}}</span></td>
                 <td>
                   <a class="btn btn-primary btn-icon" routerLink="/dashboard/hrmdashboards/employees/view-employee">
                     <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="View/Edit"></i>
                   </a>
-                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(emplist.id_empleado)"
+                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(emplist.id)"
                     data-original-title="Delete"><i class="fe fe-trash-2"></i></a>
                 </td>
               </tr>

@@ -12,6 +12,9 @@ import { AppStateService } from '../../services/app-state.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { RightSidebarComponent } from '../right-sidebar/right-sidebar.component';
+import { ToastrService } from 'ngx-toastr';
+
+
 interface Item {
   id: number;
   name: string;
@@ -32,19 +35,21 @@ export class HeaderComponent implements OnInit {
   closeResult = '';
   themeType: string | undefined;
 
-  selectedItem: string | null = 'selectedItem'
+  selectedItem: string | null = 'selectedItem';
   isOpen: boolean = false;
   modal: any;
   constructor(
-    private appStateService: AppStateService,
+    private readonly appStateService: AppStateService,
     public navServices: NavService,
-    private elementRef: ElementRef,
+    private readonly elementRef: ElementRef,
     public renderer: Renderer2,
     public modalService: NgbModal,
-    private router: Router, private activatedRoute: ActivatedRoute
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly toastr: ToastrService
   ) { this.localStorageBackUp() }
 
-  private offcanvasService = inject(NgbOffcanvas);
+  private readonly offcanvasService = inject(NgbOffcanvas);
 
 
   toggleDropdown() {
@@ -370,4 +375,16 @@ export class HeaderComponent implements OnInit {
   toggleFullscreen() {
     this.isFullscreen = !this.isFullscreen;
   }
+
+  logout() {
+    this.toastr.info('Cerrando sesión...', 'Logout', {
+      timeOut: 2000,
+      positionClass: 'toast-top-right',
+    });
+    setTimeout(() => {
+      localStorage.clear();
+      this.router.navigate(['/auth/login']);
+    }, 2000);
+  }
+
 }

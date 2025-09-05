@@ -13,9 +13,9 @@ import { Plan, PlanResponse } from '../interfaces/plan';
   providedIn: 'root'
 })
 export class SuperAdminService {
-  private apiUrl = `${environment.apiUrl}/v1`;
+  private readonly apiUrl = `${environment.apiUrl}/v1`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getCompanies(): Observable<Company[]> {
     return this.http.get<ApiResponse>(`${this.apiUrl}/tenants`).pipe(

@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
+import firebase from 'firebase/compat/app';
 export interface User {
   uid: string;
   email: string;
@@ -64,6 +65,15 @@ export class AuthService {
   }
 
   /**
+   * Intercambiar Firebase token por backend token
+   */
+  exchangeFirebaseToken(firebaseToken: string): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/v1/auth/firebase-login`, { 
+      firebaseToken 
+    });
+  }
+
+  /**
    * Guardar token en localStorage
    */
   saveToken(token: string) {
@@ -82,6 +92,28 @@ export class AuthService {
    */
   removeToken() {
     localStorage.removeItem('auth_token');
+  }
+
+  /**
+   * Verificar si el usuario está autenticado (Firebase o Backend)
+   */
+  isAuthenticated(): boolean {
+    // Verificar si hay token del backend
+    const backendToken = this.getToken();
+    // Verificar si hay usuario de Firebase
+    const firebaseUser = this.isUserEmailLoggedIn;
+    
+    return !!(backendToken || firebaseUser);
+  }
+
+  /**
+   * Logout universal
+   */
+  universalLogout() {
+    // Cerrar sesión de Firebase
+    this.singout();
+    // Remover token del backend
+    this.removeToken();
   }
 
   // all firebase getdata functions
@@ -123,10 +155,33 @@ export class AuthService {
   }
 
   loginWithEmail(email: string, password: string) {
+    console.log('Firebase Auth instance:', this.afu);
+    
+    if (!this.afu) {
+      throw new Error('Firebase Auth no inicializado');
+    }
+    
     return this.afu
       .signInWithEmailAndPassword(email, password)
       .then((user: any) => {
         this.authState = user;
+        return user;
+      })
+      .catch((_error: any) => {
+        console.error('Firebase login error:', _error);
+        throw _error;
+      });
+  }
+
+  /**
+   * Login con Google
+   */
+  loginWithGoogle() {
+    return this.afu
+      .signInWithPopup(new firebase.auth.GoogleAuthProvider())
+      .then((user: any) => {
+        this.authState = user;
+        return user;
       })
       .catch((_error: any) => {
         console.log(_error);

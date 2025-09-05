@@ -9,9 +9,9 @@ import { Empleado, EmpleadoResponse } from '../interfaces/empleado';
   providedIn: 'root'
 })
 export class EmpleadoService {
-  private apiUrl = `${environment.apiUrl}/v1`;
+  private readonly apiUrl = `${environment.apiUrl}/v1`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getEmpleados(): Observable<Empleado[]> {
     return this.http.get<EmpleadoResponse>(`${this.apiUrl}/empleados`).pipe(
@@ -24,7 +24,7 @@ export class EmpleadoService {
   }
 
   updateEmpleado(empleado: Empleado): Observable<Empleado> {
-    return this.http.put<Empleado>(`${this.apiUrl}/empleados/${empleado.id_empleado}`, empleado);
+    return this.http.put<Empleado>(`${this.apiUrl}/empleados/${empleado.id}`, empleado);
   }
 
   deleteEmpleado(id: number): Observable<boolean> {

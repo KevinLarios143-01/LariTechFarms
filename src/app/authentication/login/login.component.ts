@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, ElementRef, Inject, Renderer2 } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
@@ -24,7 +24,7 @@ import { AppStateService } from '../../shared/services/app-state.service';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy {
   public showPassword: boolean = false;
 
   toggleClass = 'eye-off';
@@ -42,108 +42,135 @@ export class LoginComponent {
   public localdata: any = this.appStateService;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document, private elementRef: ElementRef,
-    private sanitizer: DomSanitizer,
-    public authservice: AuthService,
-    private router: Router,
-    private formBuilder: FormBuilder,
-    private renderer: Renderer2,
-    private firebaseService: FirebaseService,
-    private toastr: ToastrService,
-    private appStateService: AppStateService,
+    @Inject(DOCUMENT) private readonly document: Document, private readonly elementRef: ElementRef,
+    private readonly sanitizer: DomSanitizer,
+    public readonly authservice: AuthService,
+    private readonly router: Router,
+    private readonly formBuilder: FormBuilder,
+    private readonly renderer: Renderer2,
+    private readonly firebaseService: FirebaseService,
+    private readonly toastr: ToastrService,
+    private readonly appStateService: AppStateService,
   ) {
-    // AngularFireModule.initializeApp(environment.firebase);
-
     document.body.classList.add('error-1');
     const htmlElement =
       this.elementRef.nativeElement.ownerDocument.documentElement;
-    // htmlElement.removeAttribute('style');
-
-
   }
+
   ngOnInit(): void {
+    // Formulario para backend
     this.loginForm = this.formBuilder.group({
-      /*
-      username: ['spruko@admin.com', [Validators.required, Validators.email]],
-      password: ['sprukoadmin', Validators.required],
-      */
       username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+
+    // Formulario para Firebase
+    this.firebaseForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+    });
+
+    // Debug Firebase
+    console.log('Auth State:', this.authservice.authState);
   }
 
   ngOnDestroy(): void {
     const htmlElement =
       this.elementRef.nativeElement.ownerDocument.documentElement;
     document.body.classList.remove('error-1');
-
-
-
-
   }
-  firestoreModule = this.firebaseService.getFirestore();
-  databaseModule = this.firebaseService.getDatabase();
-  authModule = this.firebaseService.getAuth();
-  // firebase
-  //email = 'spruko@admin.com';
-  //password = 'sprukoadmin';
-  email = '';
-  password = '';
-  errorMessage = ''; // validation _error handle
-  _error: { name: string; message: string } = { name: '', message: '' }; // for firbase _error handle
+
+  // Firebase form
+  public firebaseForm!: FormGroup;
+  errorMessage = '';
+  _error: { name: string; message: string } = { name: '', message: '' };
 
   clearErrorMessage() {
     this.errorMessage = '';
     this._error = { name: '', message: '' };
   }
 
-  login() {
-    // this.disabled = "btn-loading"
+  /**
+   * Login con Firebase
+   */
+  loginWithFirebase() {
     this.clearErrorMessage();
-    if (this.validateForm(this.email, this.password)) {
+    const email = this.firebaseForm.controls['email'].value;
+    const password = this.firebaseForm.controls['password'].value;
+    console.log('Email:', email);
+    console.log('Password length:', password.length);
+
+    if (this.validateForm(email, password)) {
       this.authservice
-        .loginWithEmail(this.email, this.password)
-        .then(() => {
-          this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
-          console.clear();
-          this.toastr.success('login successful', 'dayone', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-          });
+        .loginWithEmail(email, password)
+        .then((userCredential: any) => {
+          // Validar con backend antes de mostrar éxito
+          console.log('Usuario Firebase:', userCredential.user);
+          this.validateBackendUser(userCredential.user);
         })
         .catch((_error: any) => {
           this._error = _error;
-          this.router.navigate(['/']);
-        });
+          let errorMsg = 'Error de autenticación';
 
-    }
-    else {
-      this.toastr.error('Invalid details', 'dayone', {
+          if (_error.code === 'auth/user-not-found') {
+            errorMsg = 'Usuario no encontrado. Verifica el email.';
+          } else if (_error.code === 'auth/wrong-password' || _error.code === 'auth/invalid-credential') {
+            errorMsg = 'Email o contraseña incorrectos.';
+          } else if (_error.code === 'auth/invalid-email') {
+            errorMsg = 'Email inválido.';
+          } else if (_error.message === 'INVALID_LOGIN_CREDENTIALS') {
+            errorMsg = 'Credenciales inválidas. Verifica email y contraseña.';
+          }
+
+          this.toastr.error(errorMsg, 'Firebase', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
+        });
+    } else {
+      this.toastr.error('Detalles inválidos', 'Firebase', {
         timeOut: 3000,
         positionClass: 'toast-top-right',
       });
     }
   }
 
+  /**
+   * Login con Google
+   */
+  loginWithGoogle() {
+    this.authservice
+      .loginWithGoogle()
+      .then((userCredential: any) => {
+        // Validar con backend antes de mostrar éxito
+        this.validateBackendUser(userCredential.user);
+      })
+      .catch((_error: any) => {
+        this.toastr.error(_error.message || 'Error de autenticación con Google', 'Google', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        });
+      });
+  }
+
   validateForm(email: string, password: string) {
     if (email.length === 0) {
-      this.errorMessage = 'please enter email id';
+      this.errorMessage = 'Por favor ingresa el email';
       return false;
     }
 
     if (password.length === 0) {
-      this.errorMessage = 'please enter password';
+      this.errorMessage = 'Por favor ingresa la contraseña';
       return false;
     }
 
     if (password.length < 6) {
-      this.errorMessage = 'password should be at least 6 char';
+      this.errorMessage = 'La contraseña debe tener al menos 6 caracteres';
       return false;
     }
 
     this.errorMessage = '';
     return true;
-
   }
 
   //angular
@@ -162,10 +189,8 @@ export class LoginComponent {
     const password = this.loginForm.controls['password'].value;
     this.authservice.backendLogin(email, password).subscribe({
       next: (res) => {
-        // Adaptado a la estructura real: res.data.token y res.data.user
         if (res && res.data && res.data.token) {
           this.authservice.saveToken(res.data.token);
-          // Si quieres guardar el usuario en algún lado, puedes hacerlo aquí: res.data.user
           this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
           this.toastr.success(res.message || 'Login exitoso', 'Backend', {
             timeOut: 3000,
@@ -188,28 +213,49 @@ export class LoginComponent {
   }
 
   /**
-   * Submit del formulario de login
-   * Puedes alternar entre loginWithBackend() y login() (Firebase) según tu lógica o UI
+   * Submit del formulario de login para backend
    */
-  Submit() {
-    // Para usar backend, descomenta la siguiente línea y comenta la lógica de Firebase si lo deseas
+  submitBackend() {
     this.loginWithBackend();
-    // Si quieres seguir usando la validación dummy o Firebase, puedes dejar la lógica anterior
-    // Ejemplo:
-    // if (
-    //   this.loginForm.controls['username'].value === 'spruko@admin.com' &&
-    //   this.loginForm.controls['password'].value === 'sprukoadmin'
-    // ) {
-    //   this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
-    //   this.toastr.success('login successful', 'dayone', {
-    //     timeOut: 3000,
-    //     positionClass: 'toast-top-right',
-    //   });
-    // } else {
-    //   this.toastr.error('Invalid details', 'dayone', {
-    //     timeOut: 3000,
-    //     positionClass: 'toast-top-right',
-    //   });
-    // }
+  }
+
+  /**
+   * Validar usuario con backend
+   */
+  private validateBackendUser(user: any) {
+    user.getIdToken().then((firebaseToken: string) => {
+      this.authservice.exchangeFirebaseToken(firebaseToken).subscribe({
+        next: (response: any) => {
+          if (response && response.data && response.data.token) {
+            this.authservice.saveToken(response.data.token);
+            this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
+            this.toastr.success('Login exitoso', 'Acceso Autorizado', {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            });
+          }
+        },
+        error: (err) => {
+          this.authservice.singout();
+          this.toastr.error('Usuario no autorizado en el sistema', 'Acceso Denegado', {
+            timeOut: 5000,
+            positionClass: 'toast-top-right',
+          });
+        }
+      });
+    });
+  }
+
+  /**
+   * Logout universal (Firebase y Backend)
+   */
+  logout() {
+    this.authservice.singout();
+    this.authservice.removeToken();
+    this.router.navigate(['/']);
+    this.toastr.info('Sesión cerrada', 'Logout', {
+      timeOut: 3000,
+      positionClass: 'toast-top-right',
+    });
   }
 }

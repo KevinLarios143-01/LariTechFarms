@@ -1,6 +1,13 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-image: url('../../../assets/images/laritechfarms/11.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 ::ng-deep {
-
-
   .firebase {
     width: 30px;
     height: 30px;
@@ -9,5 +16,4 @@
   .nav-tabs {
     border-color: none !important;
   }
-
 }
