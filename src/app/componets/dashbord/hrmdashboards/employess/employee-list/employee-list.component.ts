@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
@@ -11,7 +11,7 @@ import { Empleado, EmpleadoResponse2 } from '../../../../../shared/interfaces/em
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [SharedModule,RouterModule,RouterModule,NgSelectModule, AsyncPipe],
+  imports: [SharedModule,RouterModule,RouterModule,NgSelectModule, AsyncPipe, DatePipe],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
   providers: [EmployeeService, DecimalPipe]
@@ -43,5 +43,15 @@ export class EmployeeListComponent implements OnInit {
   get lists() {
     // Mantener compatibilidad con el template
     return [];
+  }
+
+    public calculateWorkTime(joinDate: string): string {
+    const start = new Date(joinDate);
+    const now = new Date();
+    const diff = now.getTime() - start.getTime();
+    const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+    const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+    const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+    return `${years} yrs ${months} mons ${days} days`;
   }
 }

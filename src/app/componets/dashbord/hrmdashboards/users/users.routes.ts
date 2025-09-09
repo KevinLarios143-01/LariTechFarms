@@ -12,7 +12,7 @@ const routes: Routes = [
 
       },
       {
-        path: 'view-user',
+        path: 'view-user/:id',
         loadComponent: () =>
           import('./view-user/view-user.component').then((m) => m.ViewUserComponent),
 
@@ -21,6 +21,12 @@ const routes: Routes = [
         path: 'add-user',
         loadComponent: () =>
           import('./add-user/add-user.component').then((m) => m.AddUserComponent),
+
+      },
+      {
+        path: 'edit-user/:id',
+        loadComponent: () =>
+          import('./edit-user/edit-user.component').then((m) => m.EditUserComponent),
 
       },
 

@@ -124,14 +124,14 @@ export class NavService implements OnDestroy {
             {
               title: 'Empleados', type: 'sub', active: false, selected: false, children: [
                 { path: '/dashboard/hrmdashboards/employees/employee-list', title: 'Lista de Empleados', type: 'link', selected: false },
-                { path: '/dashboard/hrmdashboards/employees/view-employee', title: 'Ver Empleado', type: 'link', selected: false },
-                { path: '/dashboard/hrmdashboards/employees/add-employee', title: 'Agregar Empleado', type: 'link', selected: false },
+                //{ path: '/dashboard/hrmdashboards/employees/view-employee', title: 'Ver Empleado', type: 'link', selected: false },
+                //{ path: '/dashboard/hrmdashboards/employees/add-employee', title: 'Agregar Empleado', type: 'link', selected: false },
               ]
             },
             {
               title: 'Usuarios', type: 'sub', active: false, selected: false, children: [
                 { path: '/dashboard/hrmdashboards/users/user-list', title: 'Lista de Usuarios', type: 'link', selected: false },
-                { path: '/dashboard/hrmdashboards/users/view-user', title: 'Ver Usuario', type: 'link', selected: false },
+                //{ path: '/dashboard/hrmdashboards/users/view-user', title: 'Ver Usuario', type: 'link', selected: false },
                 { path: '/dashboard/hrmdashboards/users/add-user', title: 'Agregar Usuario', type: 'link', selected: false },
               ]
             },

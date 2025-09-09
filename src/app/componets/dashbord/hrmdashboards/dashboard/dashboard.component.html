@@ -1,8 +1,9 @@
 <!-- Start::page header -->
 <div class="page-header d-xl-flex d-block">
   <div class="page-leftheader">
-    <div class="page-title">HR<span class="fw-normal text-muted ms-2">Dashboard</span></div>
+    <div class="page-title">Administrador<span class="fw-normal text-muted ms-2">Dashboard</span></div>
   </div>
+  <!--
   <div class="page-rightheader mt-2 mt-xl-0">
     <div class="d-md-flex align-items-center flex-wrap my-auto end-content breadcrumb-end">
       <div class="d-flex flex-wrap gap-2">
@@ -22,7 +23,30 @@
                 class="form-control input-small time-picker" placeholder="09:30am">
             </div>
           </div>
-        </div><!-- wd-150 -->
+        </div>
+      -->
+  <div class="page-rightheader mt-2 mt-xl-0">
+    <div class="d-md-flex align-items-center flex-wrap my-auto end-content breadcrumb-end">
+      <div class="d-flex flex-wrap gap-2">
+        <div class="header-datepicker">
+          <div class="form-group mb-0">
+            <div class="input-group">
+              <div class="input-group-text"> <i class="fe fe-calendar"></i> </div>
+              <div class="form-control choose-date">{{currentDate}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="header-datepicker me-2">
+          <div class="form-group mb-md-0">
+            <div class="input-group">
+              <div class="input-group-text"> <i class="fe fe-clock"></i> </div>
+              <div class="form-control input-small time-picker">{{currentTime}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- wd-150 -->
+        <!--
       </div>
       <div class="d-flex gap-2">
         <a type="button" class="btn btn-primary" (click)="open(content)" data-bs-toggle="modal"
@@ -37,8 +61,10 @@
     </div>
   </div>
 </div>
-<!-- End::page header -->
-<!-- Start::row-1 -->
+-->
+        <!-- End::page header -->
+        <!-- Start::row-1 -->
+        <!--
 <div class="row">
   <div class="col-xxl-9 col-md-12 col-lg-12">
     <div class="row">
@@ -201,7 +227,10 @@
       </div>
       <swiper [slidesPerView]="2" (swiper)="setThumbsSwiper($event)" [zoom]="true" [autoplay]="true"
         [watchSlidesProgress]="true" direction="vertical" class="swiper vertical upcoming-events-swiper mb-2">
+
+    -->
         <!-- <div class="swiper-wrapper"> -->
+        <!--
         @for (image of imageData7; track image) {
         @if(image.src){
 
@@ -246,16 +275,19 @@
         </ng-template>
         }
         }
-
+-->
         <!-- </div> -->
+        <!--
       </swiper>
 
     </div>
   </div>
 </div>
-<!--End::row-1 -->
+-->
+        <!--End::row-1 -->
 
-<!-- Start::row-2 -->
+        <!-- Start::row-2 -->
+        <!--
 <div class="row">
   <div class="col-xxl-4 col-md-12 col-lg-6">
     <div class="card custom-card">
@@ -346,9 +378,11 @@
     </div>
   </div>
 </div>
-<!-- End::row-2 -->
+-->
+        <!-- End::row-2 -->
 
-<!-- Start::row-3 -->
+        <!-- Start::row-3 -->
+        <!--
 <div class="row">
   <div class="col-xxl-6 col-lg-12 col-md-12">
     <div class="card custom-card overflow-hidden card-table">
@@ -368,7 +402,8 @@
       </div>
       <div class="tab-menu-heading table_tabs mt-2 p-0 ">
         <div class="tabs-menu1">
-          <!-- Tabs -->
+          -->
+        <!-- Tabs
           <ul ngbNav #nav="ngbNav" [activeId]="2" class="nav panel-tabs">
             <li [ngbNavItem]="1" class="ms-sm-3"><a ngbNavLink href="#tab5" class="ms-2" data-bs-toggle="tab">Job
                 Applications</a>
@@ -877,9 +912,11 @@
     </div>
   </div>
 </div>
-<!-- End::row-3 -->
+-->
+        <!-- End::row-3 -->
 
-<!-- Start:: clock-in -->
+        <!-- Start:: clock-in -->
+        <!-- Start:: clock-in
 <ng-template #content let-modal>
   <div class="modal-header">
     <h6 class="modal-title" id="exampleModalLabel1"><span class="fe fe-clock  me-1"></span>Clock In</h6>
@@ -899,4 +936,5 @@
     <button type="button" class="btn btn-primary">Clock In</button>
   </div>
 </ng-template>
-<!-- ENd:: clock-in -->
+-->
+        <!-- ENd:: clock-in -->

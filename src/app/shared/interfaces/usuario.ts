@@ -1,15 +1,13 @@
 export interface Usuario {
-  id_usuario: number;
-  id_tenant: number;
+  id: number;
   nombre: string;
   apellido: string;
   email: string;
-  telefono: string;
   rol: string;
   activo: boolean;
-  fecha_creacion: string;
-  ultimo_acceso: string;
-  img: string;
+  ultimoLogin: string;
+  fechaCreacion: string;
+  idEmpleado: any;
 }
 
 export interface UsuarioResponse {
@@ -52,3 +50,19 @@ export interface UsuarioStatsResponse {
   };
   timestamp: string;
 }
+
+export interface UsuarioCreate {
+  email: string;
+  password: string;
+  nombre: string;
+  apellido: string;
+  rol: string;
+  id_empleado: number | null;
+}
+export interface UsuarioByIdResponse {
+  success: boolean;
+  data: Usuario;
+  timestamp: string;
+}
+
+

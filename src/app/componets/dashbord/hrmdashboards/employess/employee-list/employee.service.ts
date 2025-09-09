@@ -37,11 +37,10 @@ function sort(employeeData: Empleado[], column: employeeSortColumn, direction: s
 function matches(employee: Empleado, term: string, pipe: PipeTransform) {
   return employee.nombre.toLowerCase().includes(term.toLowerCase())
     || employee.apellido.toLowerCase().includes(term.toLowerCase())
-    || employee.id_empleado.toString().includes(term.toLowerCase())
-    || employee.departamento?.toLowerCase().includes(term.toLowerCase())
+    || employee.id.toString().includes(term.toLowerCase())
     || employee.puesto?.toLowerCase().includes(term.toLowerCase())
     || employee.telefono?.toLowerCase().includes(term.toLowerCase())
-    || employee.fecha_contratacion?.toLowerCase().includes(term.toLowerCase())
+    || employee.fechaContratacion?.toLowerCase().includes(term.toLowerCase())
     || employee.correo?.toLowerCase().includes(term.toLowerCase())
 }
 
@@ -125,11 +124,11 @@ export class EmployeeService {
     return empleados.map(emp => ({
       ...emp,
       img: './assets/images/users/1.jpg',
-      tiempo_de_trabajo: this.calculateWorkTime(emp.fecha_contratacion)
+      tiempoTrabajo: this.calculateWorkTime(emp.fechaContratacion)
     }));
   }
 
-  private calculateWorkTime(joinDate: string): string {
+  public calculateWorkTime(joinDate: string): string {
     const start = new Date(joinDate);
     const now = new Date();
     const diff = now.getTime() - start.getTime();

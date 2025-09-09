@@ -84,24 +84,24 @@
           <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
             <thead>
               <tr class="border-bottom">
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Rol</th>
-                <th>Último Acceso</th>
-                <th>Estado</th>
-                <th>Acciones</th>
+                <th scope="col">ID</th>
+                <th scope="col">Usuario</th>
+                <th scope="col">Email</th>
+                <!--th scope="col">Teléfono</th-->
+                <th scope="col">Rol</th>
+                <th scope="col">Último Acceso</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              @for(user of userList$ | async; track user.id_usuario) {
+              @for(user of userList$ | async; track user.id) {
               <tr class="border-bottom">
-                <th scope="row">{{user.id_usuario}}</th>
+                <th scope="row">{{user.id}}</th>
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar me-2 avatar-rounded">
-                      <img [src]="user.img" alt="img">
+                      <img [src]="'./assets/images/users/1.jpg'" alt="img">
                     </div>
                     <div>
                       <div class="lh-1">
@@ -111,15 +111,15 @@
                   </div>
                 </td>
                 <td>{{user.email}}</td>
-                <td>{{user.telefono}}</td>
+                <!--<td>{{user.telefono}}</td>-->
                 <td>{{user.rol}}</td>
-                <td>{{user.ultimo_acceso}}</td>
+                <td>{{(user.ultimoLogin | date:'short') }}</td>
                 <td><span class="badge" [class]="user.activo ? 'bg-success' : 'bg-danger'">{{user.activo ? 'Activo' : 'Inactivo'}}</span></td>
                 <td>
-                  <a class="btn btn-primary btn-icon" routerLink="/dashboard/hrmdashboards/users/view-user">
+                  <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/hrmdashboards/users/view-user', user.id]">
                     <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="Ver/Editar"></i>
                   </a>
-                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(user.id_usuario)"
+                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(user.id)"
                     data-original-title="Eliminar"><i class="fe fe-trash-2"></i></a>
                 </td>
               </tr>

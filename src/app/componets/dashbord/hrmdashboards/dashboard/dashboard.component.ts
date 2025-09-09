@@ -40,6 +40,28 @@ SwiperCore.use([
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
+
+
+
+  currentDate: string = '';
+  currentTime: string = '';
+
+
+
+  updateDateTime() {
+    const now = new Date();
+    this.currentDate = now.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    this.currentTime = now.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
   chartOptions: any = {
     series: [{
       name: "Total Budget",
@@ -310,6 +332,8 @@ export class DashboardComponent {
 
 
   ngOnInit() {
+    this.updateDateTime();
+    setInterval(() => this.updateDateTime(), 1000);
     setInterval(() => {
       this.timerInterval = this.updateTimer();
     }, 1000);

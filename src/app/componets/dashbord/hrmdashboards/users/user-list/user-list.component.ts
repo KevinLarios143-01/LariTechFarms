@@ -1,20 +1,20 @@
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { UserService } from './user.service';
+import { UsuarioService } from '../../../../../shared/services/usuario.service';
 import { Usuario, UsuarioStats } from '../../../../../shared/interfaces/usuario';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [SharedModule, RouterModule, NgSelectModule, AsyncPipe],
+  imports: [SharedModule, RouterModule, NgSelectModule, AsyncPipe, DatePipe],
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
-  providers: [UserService, DecimalPipe]
+  providers: [UsuarioService, DecimalPipe]
 })
 export class UserListComponent implements OnInit {
   userList$!: Observable<Usuario[]>;
@@ -23,7 +23,7 @@ export class UserListComponent implements OnInit {
   stats$!: Observable<UsuarioStats>;
   stats: UsuarioStats | null = null;
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UsuarioService) {
     this.userList$ = userService.userData$;
     this.total$ = userService.total$;
     this.loading$ = userService.loading$;
@@ -31,7 +31,7 @@ export class UserListComponent implements OnInit {
   }
 
   obtenerStats() {
-    this.stats$ = this.userService.getUserStats().pipe(shareReplay(1));
+    this.stats$ = this.userService.getUserStats();
     this.stats$.subscribe({
       next: (stats: UsuarioStats) => {
         console.log('Stats received:', stats);
