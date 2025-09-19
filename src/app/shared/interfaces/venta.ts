@@ -7,6 +7,34 @@ export interface Venta {
   idTenant?: number;
   fechaCreacion?: string;
   fechaActualizacion?: string;
+  metodoPago?: string;
+  idUsuario?: number;
+  observaciones?: string;
+  cliente?: {
+    id: number;
+    nombre: string;
+    telefono: string;
+    correo: string;
+    direccion: string;
+    nit: string;
+  };
+  usuario?: {
+    nombre: string;
+    email: string;
+  };
+  detalleVentas?: {
+    id: number;
+    cantidad: number;
+    precioUnitario: string;
+    subtotal: string;
+    producto: {
+      id: number;
+      nombre: string;
+      tamanio: string;
+      precio: string;
+    };
+  }[];
+  tickets?: any[];
 }
 
 export interface VentaResponse {

@@ -38,8 +38,10 @@ export class SellListComponent implements OnInit {
   displayedColumns: string[] = ['ID', 'Cliente', 'Fecha', 'Total', 'Estado', 'Action'];
   dataSource: MatTableDataSource<VentaDisplay>;
   ventas: Venta[] = [];
+  filteredVentas: Venta[] = [];
   loading = false;
   editForm: FormGroup;
+  filterForm: FormGroup;
   selectedVenta: Venta | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -58,6 +60,12 @@ export class SellListComponent implements OnInit {
       fecha: ['', Validators.required],
       total: ['', [Validators.required, Validators.min(0)]],
       estado: ['', Validators.required]
+    });
+    
+    this.filterForm = this.fb.group({
+      fechaDesde: [''],
+      fechaHasta: [''],
+      estado: ['']
     });
   }
 
@@ -156,7 +164,8 @@ export class SellListComponent implements OnInit {
     this.ventaService.getVentas().subscribe({
       next: (ventas) => {
         this.ventas = ventas || [];
-        this.dataSource.data = this.mapVentasToDisplay(this.ventas);
+        this.filteredVentas = [...this.ventas];
+        this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
         this.loading = false;
       },
       error: (error) => {
@@ -188,6 +197,40 @@ export class SellListComponent implements OnInit {
     this.router.navigate(['/dashboard/business-dashboard/new-ticket'], {
       queryParams: { ventaId: ventaId }
     });
+  }
+
+  applyFilters(): void {
+    const { fechaDesde, fechaHasta, estado } = this.filterForm.value;
+    
+    this.filteredVentas = this.ventas.filter(venta => {
+      let matches = true;
+      
+      if (fechaDesde) {
+        const ventaFecha = new Date(venta.fecha);
+        const desde = new Date(fechaDesde);
+        matches = matches && ventaFecha >= desde;
+      }
+      
+      if (fechaHasta) {
+        const ventaFecha = new Date(venta.fecha);
+        const hasta = new Date(fechaHasta);
+        matches = matches && ventaFecha <= hasta;
+      }
+      
+      if (estado) {
+        matches = matches && venta.estado.toLowerCase() === estado.toLowerCase();
+      }
+      
+      return matches;
+    });
+    
+    this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
+  }
+  
+  clearFilters(): void {
+    this.filterForm.reset();
+    this.filteredVentas = [...this.ventas];
+    this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
   }
 
   private getStatusClass(estado: string): string {

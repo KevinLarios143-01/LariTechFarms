@@ -1,9 +1,56 @@
 <app-page-header [title]="'Nuevo Ticket'"></app-page-header>
 
 <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
-  <!-- Row -->
   <div class="row">
-    <div class="col-xl-12 col-md-12 col-lg-12">
+    @if (selectedVenta) {
+      <div class="col-xl-4 col-md-4 col-lg-4">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title mb-0">Información de la Venta</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-borderless">
+                <tbody>
+                  <tr>
+                    <td class="fw-semibold">ID Venta:</td>
+                    <td>{{selectedVenta.id}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Cliente:</td>
+                    <td>{{selectedVenta.cliente?.nombre || '#' + selectedVenta.idCliente}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Fecha:</td>
+                    <td>{{selectedVenta.fecha | date:'dd/MM/yyyy'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Total:</td>
+                    <td class="text-success fw-bold">Q{{selectedVenta.total | number:'1.2-2'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Estado:</td>
+                    <td>
+                      <span class="badge bg-{{selectedVenta.estado === 'Completada' ? 'success' : selectedVenta.estado === 'Pendiente' ? 'warning' : 'danger'}}">{{selectedVenta.estado}}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Observaciones:</td>
+                    <td>{{selectedVenta.observaciones || 'N/A'}}</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Usuario:</td>
+                    <td>{{selectedVenta.usuario?.nombre || 'N/A'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    
+    <div class="{{selectedVenta ? 'col-xl-8 col-md-8 col-lg-8' : 'col-xl-12 col-md-12 col-lg-12'}}">
       <div class="card">
         <div class="card-body">
           <h4 class="mb-5 fw-semibold">Detalles del Ticket:</h4>
@@ -16,8 +63,7 @@
                     Venta #{{venta.id}} - Cliente #{{venta.idCliente}} - Q{{venta.total | number:'1.2-2'}}
                   </ng-option>
                 </ng-select>
-                <div *ngIf="ticketForm.get('idVenta')?.invalid && ticketForm.get('idVenta')?.touched"
-                  class="text-danger">
+                <div *ngIf="ticketForm.get('idVenta')?.invalid && ticketForm.get('idVenta')?.touched" class="text-danger">
                   <small>Debe seleccionar una venta</small>
                 </div>
               </div>
@@ -30,13 +76,13 @@
                     {{lote.galera}}
                   </ng-option>
                 </ng-select>
-                <div *ngIf="ticketForm.get('idLote')?.invalid && ticketForm.get('idLote')?.touched"
-                  class="text-danger">
+                <div *ngIf="ticketForm.get('idLote')?.invalid && ticketForm.get('idLote')?.touched" class="text-danger">
                   <small>Debe seleccionar un lote</small>
                 </div>
               </div>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -46,8 +92,7 @@
                     {{producto.nombre}}
                   </ng-option>
                 </ng-select>
-                <div *ngIf="ticketForm.get('idProducto')?.invalid && ticketForm.get('idProducto')?.touched"
-                  class="text-danger">
+                <div *ngIf="ticketForm.get('idProducto')?.invalid && ticketForm.get('idProducto')?.touched" class="text-danger">
                   <small>Debe seleccionar un producto</small>
                 </div>
               </div>
@@ -96,8 +141,7 @@
           </div>
         </div>
         <div class="card-footer text-end">
-          <button type="button" class="btn btn-danger btn-lg me-2" (click)="onCancel()"
-            [disabled]="loading">Cerrar</button>
+          <button type="button" class="btn btn-danger btn-lg me-2" (click)="onCancel()" [disabled]="loading">Cerrar</button>
           <button type="submit" class="btn btn-success btn-lg" [disabled]="loading">
             <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
             {{ loading ? 'Guardando...' : 'Guardar' }}
@@ -106,5 +150,4 @@
       </div>
     </div>
   </div>
-  <!-- End Row-->
 </form>

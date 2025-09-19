@@ -32,54 +32,60 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12 col-lg-7">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Desde:</label>
+                <form [formGroup]="filterForm">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-7">
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-text text-muted">
-                                                <i class="ri-calendar-line"></i>
+                                        <label class="form-label">Desde:</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-text text-muted">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                                <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY" formControlName="fechaDesde">
                                             </div>
-                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Hasta:</label>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <div class="input-group-text text-muted">
+                                                    <i class="ri-calendar-line"></i>
+                                                </div>
+                                                <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY" formControlName="fechaHasta">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label">Hasta:</label>
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <div class="input-group-text text-muted">
-                                                <i class="ri-calendar-line"></i>
-                                            </div>
-                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
-                                        </div>
-                                    </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="form-label">Seleccionar Estado:</label>
+                                <ng-select class="form-control custom-select p-0" formControlName="estado" placeholder="Seleccionar Estado">
+                                    <ng-option value="">Todos</ng-option>
+                                    <ng-option value="pendiente">Pendiente</ng-option>
+                                    <ng-option value="completada">Completada</ng-option>
+                                    <ng-option value="cancelada">Cancelada</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mt-2">
+                                <label class="form-label"></label>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-primary" (click)="applyFilters()">Buscar</button>
+                                    <button type="button" class="btn btn-light" (click)="clearFilters()">Limpiar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label class="form-label">Seleccionar Estado:</label>
-                            <ng-select class="form-control custom-select p-0" data-trigger placeholder="Seleccionar Estado">
-                                <ng-option value="pendiente">Pendiente</ng-option>
-                                <ng-option value="completada">Completada</ng-option>
-                                <ng-option value="cancelada">Cancelada</ng-option>
-                            </ng-select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group mt-2">
-                            <label class="form-label"></label>
-                            <a href="javascript:void(0);" class="btn btn-primary d-grid">Buscar</a>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
             <div class="card-body border-top">
                 <div class="row">

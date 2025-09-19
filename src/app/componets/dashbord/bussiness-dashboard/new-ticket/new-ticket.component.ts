@@ -30,6 +30,7 @@ export class NewTicketComponent implements OnInit {
   ventas: Venta[] = [];
   lotes: Lote[] = [];
   productos: Producto[] = [];
+  selectedVentaData: Venta | null = null;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -146,7 +147,19 @@ export class NewTicketComponent implements OnInit {
   }
 
   private onVentaSelected(ventaId: number): void {
-    // Only set the ID, no auto-fill of other fields
+    this.ventaService.getVentaById(ventaId).subscribe({
+      next: (response) => {
+        this.selectedVentaData = response.data;
+      },
+      error: (error) => {
+        console.error('Error loading venta details:', error);
+        this.selectedVentaData = null;
+      }
+    });
+  }
+
+  get selectedVenta(): Venta | null {
+    return this.selectedVentaData;
   }
 
   private markFormGroupTouched(): void {
