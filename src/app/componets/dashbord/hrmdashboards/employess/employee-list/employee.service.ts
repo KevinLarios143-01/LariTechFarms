@@ -123,7 +123,7 @@ export class EmployeeService {
   private mapEmpleadosToEmployeeList(empleados: Empleado[]): Empleado[] {
     return empleados.map(emp => ({
       ...emp,
-      img: './assets/images/users/1.jpg',
+      img: './assets/images/laritechfarms/2.jpg',
       tiempoTrabajo: this.calculateWorkTime(emp.fechaContratacion)
     }));
   }

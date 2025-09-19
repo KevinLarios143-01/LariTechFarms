@@ -1,0 +1,110 @@
+<app-page-header [title]="'Nuevo Ticket'"></app-page-header>
+
+<form [formGroup]="ticketForm" (ngSubmit)="onSubmit()">
+  <!-- Row -->
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="mb-5 fw-semibold">Detalles del Ticket:</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Seleccionar Venta *</label>
+                <ng-select name="idVenta" class="form-control p-0 custom-select" placeholder="Seleccione una venta" formControlName="idVenta" bindLabel="displayText" bindValue="id">
+                  <ng-option *ngFor="let venta of ventas" [value]="venta.id">
+                    Venta #{{venta.id}} - Cliente #{{venta.idCliente}} - Q{{venta.total | number:'1.2-2'}}
+                  </ng-option>
+                </ng-select>
+                <div *ngIf="ticketForm.get('idVenta')?.invalid && ticketForm.get('idVenta')?.touched"
+                  class="text-danger">
+                  <small>Debe seleccionar una venta</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Lote *</label>
+                <ng-select name="idLote" class="form-control p-0 custom-select" placeholder="Seleccione un lote" formControlName="idLote" bindLabel="galera" bindValue="id">
+                  <ng-option *ngFor="let lote of lotes" [value]="lote.id">
+                    {{lote.galera}}
+                  </ng-option>
+                </ng-select>
+                <div *ngIf="ticketForm.get('idLote')?.invalid && ticketForm.get('idLote')?.touched"
+                  class="text-danger">
+                  <small>Debe seleccionar un lote</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Producto *</label>
+                <ng-select name="idProducto" class="form-control p-0 custom-select" placeholder="Seleccione un producto" formControlName="idProducto" bindLabel="nombre" bindValue="id">
+                  <ng-option *ngFor="let producto of productos" [value]="producto.id">
+                    {{producto.nombre}}
+                  </ng-option>
+                </ng-select>
+                <div *ngIf="ticketForm.get('idProducto')?.invalid && ticketForm.get('idProducto')?.touched"
+                  class="text-danger">
+                  <small>Debe seleccionar un producto</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Cantidad *</label>
+                <input class="form-control" type="number" placeholder="Ingrese la cantidad" formControlName="cantidad">
+                <div *ngIf="ticketForm.get('cantidad')?.invalid && ticketForm.get('cantidad')?.touched" class="text-danger">
+                  <small>La cantidad es requerida</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Fecha *</label>
+                <input class="form-control" type="date" formControlName="fecha">
+                <div *ngIf="ticketForm.get('fecha')?.invalid && ticketForm.get('fecha')?.touched" class="text-danger">
+                  <small>La fecha es requerida</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Estado *</label>
+                <ng-select name="estado" class="form-control p-0 custom-select" placeholder="Seleccione el estado" formControlName="estado">
+                  <ng-option value="Pendiente">Pendiente</ng-option>
+                  <ng-option value="Completado">Completado</ng-option>
+                  <ng-option value="Cancelado">Cancelado</ng-option>
+                </ng-select>
+                <div *ngIf="ticketForm.get('estado')?.invalid && ticketForm.get('estado')?.touched" class="text-danger">
+                  <small>El estado es requerido</small>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="form-label">Código de Autorización</label>
+                <input class="form-control" type="text" placeholder="Ingrese el código de autorización (opcional)" formControlName="codigoAutorizacion">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-end">
+          <button type="button" class="btn btn-danger btn-lg me-2" (click)="onCancel()"
+            [disabled]="loading">Cerrar</button>
+          <button type="submit" class="btn btn-success btn-lg" [disabled]="loading">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{ loading ? 'Guardando...' : 'Guardar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Row-->
+</form>

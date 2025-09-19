@@ -196,15 +196,22 @@ export class NavService implements OnDestroy {
         //     { path: '/dashboard/project-dashboard/new-project', title: 'Nuevo Proyecto', type: 'link', selected: false },
         //   ]
         // },
-        // {
-        //   title: 'Clientes Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
-        //     { path: '/dashboard/client-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
-        //     { path: '/dashboard/client-dashboard/client-list', title: 'Lista de Clientes', type: 'link', selected: false },
-        //     { path: '/dashboard/client-dashboard/view-client', title: 'Ver Cliente', type: 'link', selected: false },
-        //     { path: '/dashboard/client-dashboard/new-client', title: 'Nuevo Cliente', type: 'link', selected: false },
-        //     { path: '/dashboard/client-dashboard/user-profile', title: 'Perfil de Usuario', type: 'link', selected: false },
-        //   ]
-        // },
+        {
+          title: 'Clientes Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
+            //{ path: '/dashboard/client-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },
+            { path: '/dashboard/client-dashboard/client-list', title: 'Lista de Clientes', type: 'link', selected: false },
+            //{ path: '/dashboard/client-dashboard/view-client', title: 'Ver Cliente', type: 'link', selected: false },
+            { path: '/dashboard/client-dashboard/new-client', title: 'Nuevo Cliente', type: 'link', selected: false },
+            //{ path: '/dashboard/client-dashboard/user-profile', title: 'Perfil de Usuario', type: 'link', selected: false },
+          ]
+        },
+        {
+          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '3', selected: false, active: false, children: [
+            { path: '/dashboard/business-dashboard/ticket-list', title: 'Lista de Tickets', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/new-ticket', title: 'Nuevo Ticket', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas', type: 'link', selected: false },
+          ]
+        },
         // {
         //   title: 'Trabajos Dashboard', type: 'sub', badgeType: 'success', badgeValue: '2', selected: false, active: false, children: [
         //     { path: '/dashboard/job-dashboard/dashboard', title: 'Dashboard', type: 'link', selected: false },

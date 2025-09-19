@@ -48,7 +48,6 @@ export class AddUserComponent implements OnInit {
       this.isLoading = true;
       this.usuarioService.crearUsuario(this.userForm.value).subscribe({
         next: (response) => {
-          console.log('Usuario creado exitosamente:', response);
           this.toastr.success('Usuario creado exitosamente', 'Éxito', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
@@ -57,14 +56,39 @@ export class AddUserComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error al crear usuario:', error);
-          this.toastr.error('Error al crear usuario: ' + (error.error?.message || 'Error desconocido'), 'Error', {
+          let errorMessage = 'Error desconocido';
+          
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.error?.error) {
+            errorMessage = error.error.error;
+          } else if (error.message) {
+            errorMessage = error.message;
+          } else if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          }
+          
+          this.toastr.error('Error al crear usuario: ' + errorMessage, 'Error', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
           });
           this.isLoading = false;
         }
       });
+    } else {
+      this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia', {
+        timeOut: 3000,
+        positionClass: 'toast-top-right',
+      });
+      this.markFormGroupTouched();
     }
+  }
+
+  private markFormGroupTouched(): void {
+    Object.keys(this.userForm.controls).forEach(key => {
+      const control = this.userForm.get(key);
+      control?.markAsTouched();
+    });
   }
 
   loadEmpleados() {

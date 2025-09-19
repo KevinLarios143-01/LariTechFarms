@@ -1,5 +1,5 @@
 <app-hr-dashboard-page-header [title]="'Empleados'" [title2]="'Agregar Nuevo Empleado'" [class]="'btn btn-primary'"
-  [class1]="''" [path]="'/dashboard/hrmdashboards/employees/add-employee'">
+  [class1]="''" [path]="'/dashboard/hrmdashboards/employees/add-empleado'">
 </app-hr-dashboard-page-header>
 <!-- Start::row-1 -->
 <div class="row">
@@ -125,7 +125,7 @@
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar me-2 avatar-rounded">
-                      <img [src]="emplist.img" alt="img">
+                      <img [src]="emplist.img || './assets/images/laritechfarms/2.jpg'" alt="img">
                     </div>
                     <div>
                       <div class="lh-1">
@@ -142,18 +142,21 @@
                 <td>{{emplist.telefono}}</td>
                 <td>{{emplist.fechaContratacion | date: 'short'}}</td>
                 <td>{{calculateWorkTime(emplist.fechaContratacion)}}</td>
-                <td><span class="badge" [class]="emplist.activo ? 'bg-success' : 'bg-danger'">{{emplist.activo ? 'Active' : 'Inactive'}}</span></td>
+                <td><span class="badge" [class]="emplist.activo ? 'bg-success' : 'bg-danger'">{{emplist.activo ? 'Activo' : 'Inactivo'}}</span></td>
                 <td>
-                  <!--
-                  <i c--lass="ri-a-b"><
-                    /i><i class="ri-e-bike-2-line"></i>
-                  <a class="btn btn-primary btn-icon" routerLink="/dashboard/hrmdashboards/employees/view-employee">
-                    <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="View/Edit"></i>
-                  </a>
-                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(emplist.id)"
-                    data-original-title="Delete"><i class="fe fe-trash-2"></i>
-                  </a>
-                -->
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/hrmdashboards/employees/ver-empleado', emplist.id]" 
+                       data-bs-toggle="tooltip" title="Ver Empleado">
+                      <i class="fe fe-eye"></i>
+                    </a>
+                    <a class="btn btn-icon" 
+                       [class]="emplist.activo ? 'btn-warning' : 'btn-success'"
+                       (click)="toggleEmpleadoStatus(emplist)"
+                       data-bs-toggle="tooltip" 
+                       [title]="emplist.activo ? 'Desactivar' : 'Activar'">
+                      <i [class]="emplist.activo ? 'fe fe-user-x' : 'fe fe-user-check'"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
               }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
@@ -26,7 +26,8 @@ export class EditUserComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly usuarioService: UsuarioService,
     private readonly empleadoService: EmpleadoService,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -71,11 +72,13 @@ export class EditUserComponent implements OnInit {
           idEmpleado: user.idEmpleado
         });
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar usuario:', error);
         this.toastr.error('Error al cargar el usuario', 'Error');
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

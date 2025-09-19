@@ -33,7 +33,15 @@ export class EmpleadoService {
     );
   }
 
-  getEmpleadoById(id: number): Observable<Empleado> {
-    return this.http.get<Empleado>(`${this.apiUrl}/empleados/${id}`);
+  getEmpleadoById(id: number): Observable<{data: Empleado}> {
+    return this.http.get<{data: Empleado}>(`${this.apiUrl}/empleados/${id}`);
+  }
+
+  deactivateEmpleado(id: number): Observable<{data: Empleado}> {
+    return this.http.patch<{data: Empleado}>(`${this.apiUrl}/empleados/${id}/deactivate`, {});
+  }
+
+  activateEmpleado(id: number): Observable<{data: Empleado}> {
+    return this.http.patch<{data: Empleado}>(`${this.apiUrl}/empleados/${id}/activate`, {});
   }
 }

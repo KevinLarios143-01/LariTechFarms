@@ -59,14 +59,27 @@ export class UsuarioService {
 
   getUserStats(): Observable<UsuarioStats> {
     return this.http.get<UsuarioStatsResponse>(`${this.apiUrl}/stats`).pipe(
-      map(response => response.data.data),
-      catchError(() => of({
-        totalUsuarios: 0,
-        usuariosActivos: 0,
-        usuariosInactivos: 0,
-        usuariosPorRol: [],
-        usuariosNuevos: 0
-      } as UsuarioStats))
+      map(response => {
+        console.log('Stats API response:', response);
+        // Intentar diferentes estructuras de respuesta
+        if (response.data?.data) {
+          return response.data.data;
+        } else if (response.data) {
+          return response.data;
+        } else {
+          return response as any;
+        }
+      }),
+      catchError((error) => {
+        console.error('Error fetching user stats:', error);
+        return of({
+          totalUsuarios: 0,
+          usuariosActivos: 0,
+          usuariosInactivos: 0,
+          usuariosPorRol: [],
+          usuariosNuevos: 0
+        } as UsuarioStats);
+      })
     );
   }
 
@@ -107,7 +120,7 @@ export class UsuarioService {
   private mapUsuarios(usuarios: Usuario[]): Usuario[] {
     return usuarios.map(user => ({
       ...user,
-      img: './assets/images/users/1.jpg'
+      img: './assets/images/laritechfarms/2.jpg'
     }));
   }
 
@@ -141,14 +154,12 @@ export class UsuarioService {
     return this.http.patch(`${this.apiUrl}/${id}/reset-password`, {});
   }
 
-  // PATCH /usuarios/{id}/activar - Activar usuario
-  activarUsuario(id: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/activar`, {});
+  activateUsuario(id: number): Observable<Usuario> {
+    return this.http.patch<Usuario>(`${this.apiUrl}/${id}/activate`, {});
   }
 
-  // PATCH /usuarios/{id}/desactivar - Desactivar usuario
-  desactivarUsuario(id: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/desactivar`, {});
+  deactivateUsuario(id: number): Observable<Usuario> {
+    return this.http.patch<Usuario>(`${this.apiUrl}/${id}/deactivate`, {});
   }
 
   // GET /usuarios/stats - Obtener estadísticas de usuarios

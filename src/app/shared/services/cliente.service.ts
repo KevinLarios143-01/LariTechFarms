@@ -1,109 +1,77 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-
-export interface Cliente {
-  id?: number;
-  No?: string;
-  name: string;
-  img?: string;
-  email: string;
-  project?: number;
-  statusText?: string;
-  status?: string;
-  phone?: string;
-  address?: string;
-  company?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-}
-
-export interface ClienteResponse {
-  success: boolean;
-  data: Cliente[];
-  message?: string;
-  total?: number;
-}
-
-export interface ClienteFilter {
-  status?: string;
-  dateFrom?: string;
-  dateTo?: string;
-  search?: string;
-  page?: number;
-  limit?: number;
-}
+import { Cliente, ClienteResponse, CreateClienteRequest, UpdateClienteRequest, ClienteStats, ClienteVenta } from '../interfaces/cliente';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ClienteService {
-  private apiUrl = `${environment.apiUrl}/clientes`;
+  private readonly apiUrl = `${environment.apiUrl}/v1`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private readonly http: HttpClient) {}
 
-  // Obtener todos los clientes
-  getClientes(filters?: ClienteFilter): Observable<ClienteResponse> {
+  getClientes(search?: string, page?: number, limit?: number): Observable<Cliente[]> {
     let params = new HttpParams();
+    if (search) params = params.set('search', search);
+    if (page) params = params.set('page', page.toString());
+    if (limit) params = params.set('limit', limit.toString());
     
-    if (filters) {
-      if (filters.status) params = params.set('status', filters.status);
-      if (filters.dateFrom) params = params.set('dateFrom', filters.dateFrom);
-      if (filters.dateTo) params = params.set('dateTo', filters.dateTo);
-      if (filters.search) params = params.set('search', filters.search);
-      if (filters.page) params = params.set('page', filters.page.toString());
-      if (filters.limit) params = params.set('limit', filters.limit.toString());
-    }
-
-    return this.http.get<ClienteResponse>(this.apiUrl, { params });
+    return this.http.get<any>(`${this.apiUrl}/clientes`, { params }).pipe(
+      map(response => {
+        console.log('API Response:', response);
+        // Manejar diferentes estructuras de respuesta
+        if (response?.data?.data) {
+          return response.data.data;
+        } else if (response?.data && Array.isArray(response.data)) {
+          return response.data;
+        } else if (Array.isArray(response)) {
+          return response;
+        } else {
+          console.warn('Unexpected response structure:', response);
+          return [];
+        }
+      })
+    );
   }
 
-  // Obtener cliente por ID
-  getClienteById(id: number): Observable<{ success: boolean; data: Cliente; message?: string }> {
-    return this.http.get<{ success: boolean; data: Cliente; message?: string }>(`${this.apiUrl}/${id}`);
+  createCliente(cliente: CreateClienteRequest): Observable<Cliente> {
+    return this.http.post<Cliente>(`${this.apiUrl}/clientes`, cliente);
   }
 
-  // Crear nuevo cliente
-  createCliente(cliente: Cliente): Observable<{ success: boolean; data: Cliente; message?: string }> {
-    return this.http.post<{ success: boolean; data: Cliente; message?: string }>(this.apiUrl, cliente);
+  updateCliente(id: number, cliente: UpdateClienteRequest): Observable<Cliente> {
+    return this.http.put<Cliente>(`${this.apiUrl}/clientes/${id}`, cliente);
   }
 
-  // Actualizar cliente
-  updateCliente(id: number, cliente: Partial<Cliente>): Observable<{ success: boolean; data: Cliente; message?: string }> {
-    return this.http.put<{ success: boolean; data: Cliente; message?: string }>(`${this.apiUrl}/${id}`, cliente);
+  deleteCliente(id: number): Observable<boolean> {
+    return this.http.delete<any>(`${this.apiUrl}/clientes/${id}`).pipe(
+      map(() => true)
+    );
   }
 
-  // Eliminar cliente
-  deleteCliente(id: number): Observable<{ success: boolean; message?: string }> {
-    return this.http.delete<{ success: boolean; message?: string }>(`${this.apiUrl}/${id}`);
+  deactivateCliente(id: number): Observable<Cliente> {
+    return this.http.patch<Cliente>(`${this.apiUrl}/clientes/${id}/deactivate`, {});
   }
 
-  // Cambiar estado del cliente
-  changeStatus(id: number, status: string): Observable<{ success: boolean; data: Cliente; message?: string }> {
-    return this.http.patch<{ success: boolean; data: Cliente; message?: string }>(`${this.apiUrl}/${id}/status`, { status });
+  activateCliente(id: number): Observable<Cliente> {
+    return this.http.patch<Cliente>(`${this.apiUrl}/clientes/${id}/activate`, {});
   }
 
-  // Obtener estadísticas de clientes
-  getClienteStats(): Observable<{ success: boolean; data: any; message?: string }> {
-    return this.http.get<{ success: boolean; data: any; message?: string }>(`${this.apiUrl}/stats`);
+  getClienteById(id: number): Observable<Cliente> {
+    return this.http.get<Cliente>(`${this.apiUrl}/clientes/${id}`);
   }
 
-  // Buscar clientes
-  searchClientes(query: string): Observable<ClienteResponse> {
-    const params = new HttpParams().set('search', query);
-    return this.http.get<ClienteResponse>(`${this.apiUrl}/search`, { params });
+  getClienteVentas(id: number): Observable<ClienteVenta[]> {
+    return this.http.get<ClienteVenta[]>(`${this.apiUrl}/clientes/${id}/ventas`);
   }
 
-  // Obtener clientes activos
-  getActiveClientes(): Observable<ClienteResponse> {
-    const params = new HttpParams().set('status', 'active');
-    return this.http.get<ClienteResponse>(this.apiUrl, { params });
-  }
-
-  // Obtener clientes inactivos
-  getInactiveClientes(): Observable<ClienteResponse> {
-    const params = new HttpParams().set('status', 'inactive');
-    return this.http.get<ClienteResponse>(this.apiUrl, { params });
+  getClienteStats(fechaInicio?: string, fechaFin?: string): Observable<ClienteStats> {
+    let params = new HttpParams();
+    if (fechaInicio) params = params.set('fecha_inicio', fechaInicio);
+    if (fechaFin) params = params.set('fecha_fin', fechaFin);
+    
+    return this.http.get<ClienteStats>(`${this.apiUrl}/clientes/estadisticas`, { params });
   }
 }

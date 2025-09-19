@@ -101,7 +101,7 @@
                 <td>
                   <div class="d-flex align-items-center">
                     <div class="avatar me-2 avatar-rounded">
-                      <img [src]="'./assets/images/users/1.jpg'" alt="img">
+                      <img [src]="'./assets/images/laritechfarms/2.jpg'" alt="img">
                     </div>
                     <div>
                       <div class="lh-1">
@@ -116,11 +116,19 @@
                 <td>{{(user.ultimoLogin | date:'short') }}</td>
                 <td><span class="badge" [class]="user.activo ? 'bg-success' : 'bg-danger'">{{user.activo ? 'Activo' : 'Inactivo'}}</span></td>
                 <td>
-                  <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/hrmdashboards/users/view-user', user.id]">
-                    <i class="fe fe-edit" data-bs-toggle="tooltip" data-original-title="Ver/Editar"></i>
-                  </a>
-                  <a class="btn btn-danger btn-icon" data-bs-toggle="tooltip" (click)="deleteData(user.id)"
-                    data-original-title="Eliminar"><i class="fe fe-trash-2"></i></a>
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/hrmdashboards/users/view-user', user.id]"
+                       data-bs-toggle="tooltip" title="Ver/Editar">
+                      <i class="fe fe-edit"></i>
+                    </a>
+                    <a class="btn btn-icon" 
+                       [class]="user.activo ? 'btn-warning' : 'btn-success'"
+                       (click)="toggleUsuarioStatus(user)"
+                       data-bs-toggle="tooltip" 
+                       [title]="user.activo ? 'Desactivar' : 'Activar'">
+                      <i [class]="user.activo ? 'fe fe-user-x' : 'fe fe-user-check'"></i>
+                    </a>
+                  </div>
                 </td>
               </tr>
               }

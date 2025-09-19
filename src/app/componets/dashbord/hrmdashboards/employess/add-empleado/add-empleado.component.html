@@ -1,0 +1,222 @@
+<app-hr-dashboard-page-header [title]="'Agregar Empleado'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/hrmdashboards/employees/employee-list'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información del Empleado</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="nombre">Nombre *</label>
+                <input type="text" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('nombre')?.invalid && employeeForm.get('nombre')?.touched"
+                       formControlName="nombre" placeholder="Ingrese el nombre">
+                @if (employeeForm.get('nombre')?.invalid && employeeForm.get('nombre')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    @if (employeeForm.get('nombre')?.errors?.['required']) {
+                      El nombre es requerido
+                    }
+                    @if (employeeForm.get('nombre')?.errors?.['minlength']) {
+                      El nombre debe tener al menos 2 caracteres
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="apellido">Apellido *</label>
+                <input type="text" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('apellido')?.invalid && employeeForm.get('apellido')?.touched"
+                       formControlName="apellido" placeholder="Ingrese el apellido">
+                @if (employeeForm.get('apellido')?.invalid && employeeForm.get('apellido')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    @if (employeeForm.get('apellido')?.errors?.['required']) {
+                      El apellido es requerido
+                    }
+                    @if (employeeForm.get('apellido')?.errors?.['minlength']) {
+                      El apellido debe tener al menos 2 caracteres
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="correo">Email *</label>
+                <input type="email" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('correo')?.invalid && employeeForm.get('correo')?.touched"
+                       formControlName="correo" placeholder="empleado@ejemplo.com">
+                @if (employeeForm.get('correo')?.invalid && employeeForm.get('correo')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    @if (employeeForm.get('correo')?.errors?.['required']) {
+                      El email es requerido
+                    }
+                    @if (employeeForm.get('correo')?.errors?.['email']) {
+                      Ingrese un email válido
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="telefono">Teléfono *</label>
+                <input type="text" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('telefono')?.invalid && employeeForm.get('telefono')?.touched"
+                       formControlName="telefono" placeholder="Ingrese el teléfono">
+                @if (employeeForm.get('telefono')?.invalid && employeeForm.get('telefono')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    El teléfono es requerido
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="puesto">Puesto *</label>
+                <input type="text" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('puesto')?.invalid && employeeForm.get('puesto')?.touched"
+                       formControlName="puesto" placeholder="Ingrese el puesto">
+                @if (employeeForm.get('puesto')?.invalid && employeeForm.get('puesto')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    El puesto es requerido
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="departamento">Departamento</label>
+                <input type="text" class="form-control" formControlName="departamento" placeholder="Ingrese el departamento">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="fechaContratacion">Fecha de Contratación *</label>
+                <input type="date" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('fechaContratacion')?.invalid && employeeForm.get('fechaContratacion')?.touched"
+                       formControlName="fechaContratacion">
+                @if (employeeForm.get('fechaContratacion')?.invalid && employeeForm.get('fechaContratacion')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    La fecha de contratación es requerida
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="salario">Salario *</label>
+                <input type="number" class="form-control" 
+                       [class.is-invalid]="employeeForm.get('salario')?.invalid && employeeForm.get('salario')?.touched"
+                       formControlName="salario" placeholder="0.00" min="0" step="0.01">
+                @if (employeeForm.get('salario')?.invalid && employeeForm.get('salario')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    @if (employeeForm.get('salario')?.errors?.['required']) {
+                      El salario es requerido
+                    }
+                    @if (employeeForm.get('salario')?.errors?.['min']) {
+                      El salario debe ser mayor a 0
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="genero">Género *</label>
+                <select class="form-control" 
+                        [class.is-invalid]="employeeForm.get('genero')?.invalid && employeeForm.get('genero')?.touched"
+                        formControlName="genero">
+                  <option value="">Seleccione un género</option>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                  <option value="Otro">Otro</option>
+                </select>
+                @if (employeeForm.get('genero')?.invalid && employeeForm.get('genero')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    Seleccione un género
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="tipoContrato">Tipo de Contrato *</label>
+                <select class="form-control" 
+                        [class.is-invalid]="employeeForm.get('tipoContrato')?.invalid && employeeForm.get('tipoContrato')?.touched"
+                        formControlName="tipoContrato">
+                  <option value="">Seleccione un tipo</option>
+                  <option value="Tiempo Completo">Tiempo Completo</option>
+                  <option value="Medio Tiempo">Medio Tiempo</option>
+                  <option value="Temporal">Temporal</option>
+                  <option value="Contrato">Por Contrato</option>
+                </select>
+                @if (employeeForm.get('tipoContrato')?.invalid && employeeForm.get('tipoContrato')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    Seleccione un tipo de contrato
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="estadoCivil">Estado Civil</label>
+                <select class="form-control" formControlName="estadoCivil">
+                  <option value="">Seleccione un estado</option>
+                  <option value="Soltero">Soltero</option>
+                  <option value="Casado">Casado</option>
+                  <option value="Divorciado">Divorciado</option>
+                  <option value="Viudo">Viudo</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="direccion">Dirección</label>
+                <textarea class="form-control" formControlName="direccion" rows="3" placeholder="Ingrese la dirección"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-2" [disabled]="employeeForm.invalid || isLoading">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Guardando...
+                } @else {
+                  Guardar Empleado
+                }
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="onCancel()">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

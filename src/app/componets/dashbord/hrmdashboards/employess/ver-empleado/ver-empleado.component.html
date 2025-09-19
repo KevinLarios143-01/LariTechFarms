@@ -1,0 +1,286 @@
+<app-hr-dashboard-page-header [title]="'Información del Empleado'" [title2]="'Agregar Nuevo Empleado'"
+  [class]="'btn btn-primary'" [path]="'/dashboard/hrmdashboards/employees/add-empleado'"></app-hr-dashboard-page-header>
+
+@if (loading) {
+  <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+} @else if (empleado) {
+  <!-- Row -->
+  <div class="row">
+    <div class="col-xxl-3 col-md-12 col-lg-12">
+      <div class="card box-widget widget-user custom-card">
+        <div class="card-body text-center">
+          <div class="widget-user-image mx-auto text-center">
+            <img class="avatar avatar-xxl avatar-rounded rounded-circle" alt="img" 
+                 [src]="empleado.img || './assets/images/laritechfarms/2.jpg'" />
+          </div>
+          <div class="pro-user mt-3">
+            <h5 class="pro-user-username text-dark mb-1 fs-16">{{empleado.nombre}} {{empleado.apellido}}</h5>
+            <h6 class="pro-user-desc text-muted fs-12 mb-1">{{empleado.puesto}}</h6>
+            <span class="badge" [class]="empleado.activo ? 'bg-success' : 'bg-danger'">
+              {{empleado.activo ? 'Activo' : 'Inactivo'}}
+            </span>
+          </div>
+          <ngb-rating [(rate)]="currentRate" class="text-warning" [readonly]="true"></ngb-rating>
+        </div>
+        <div class="card-footer p-0">
+          <div class="row mx-0">
+            <div class="col-4 text-center py-3 border-end">
+              <h5 class="fs-12 fw-medium mb-3">Salario</h5>
+              <h5 class="mb-2">
+                <span class="fs-16 text-success">{{getFormattedSalary()}}</span>
+              </h5>
+              <h5 class="fs-12 mb-0">Mensual</h5>
+            </div>
+            <div class="col-4 py-3 text-center border-end">
+              <h5 class="fs-12 fw-medium mb-3">Experiencia</h5>
+              <h5 class="mb-2">
+                <span class="fs-18 text-primary">{{getYearsWorked()}}</span>
+              </h5>
+              <h5 class="fs-12 mb-0">Años</h5>
+            </div>
+            <div class="col-4 text-center py-3">
+              <h5 class="fs-12 fw-medium mb-3">Préstamos</h5>
+              <h5 class="mb-2">
+                <span class="fs-18 text-warning">{{empleado._count?.prestamos || 0}}</span>
+              </h5>
+              <h5 class="fs-12 mb-0">Activos</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Acciones</div>
+        </div>
+        <div class="card-body">
+          <button 
+            type="button" 
+            class="btn w-100 mb-3"
+            [class]="empleado.activo ? 'btn-warning' : 'btn-success'"
+            (click)="toggleEmpleadoStatus()">
+            <i [class]="empleado.activo ? 'ri-close-line' : 'ri-check-line'"></i>
+            {{empleado.activo ? 'Desactivar' : 'Activar'}} Empleado
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-xxl-9 col-md-12 col-lg-12">
+      <div class="tab-menu-heading hremp-tabs p-0 border-0">
+        <div class="tabs-menu1">
+          <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="panel-tabs">
+            <li [ngbNavItem]="1">
+              <a ngbNavLink>Información Personal</a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane active">
+                  <div class="card-body">
+                    <h4 class="mb-4 font-weight-bold">Información Básica</h4>
+                    
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Nombre Completo</label>
+                        </div>
+                        <div class="col-md-9">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" [value]="empleado.nombre" readonly />
+                              <span class="text-muted">Nombre</span>
+                            </div>
+                            <div class="col-md-6">
+                              <input type="text" class="form-control" [value]="empleado.apellido" readonly />
+                              <span class="text-muted">Apellido</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Puesto</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" [value]="empleado.puesto" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Teléfono</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" [value]="empleado.telefono" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Correo Electrónico</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="email" class="form-control" [value]="empleado.correo" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Género</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" [value]="empleado.genero === 'M' ? 'Masculino' : 'Femenino'" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Salario</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" [value]="getFormattedSalary()" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Fecha de Contratación</label>
+                        </div>
+                        <div class="col-md-9">
+                          <input type="text" class="form-control" [value]="empleado.fechaContratacion | date:'dd/MM/yyyy'" readonly />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="row gy-2">
+                        <div class="col-md-3">
+                          <label class="form-label mb-0 mt-2">Estado</label>
+                        </div>
+                        <div class="col-md-9">
+                          <span class="badge fs-12" [class]="empleado.activo ? 'bg-success' : 'bg-danger'">
+                            {{empleado.activo ? 'Activo' : 'Inactivo'}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            
+            <li [ngbNavItem]="2">
+              <a ngbNavLink>Estadísticas</a>
+              <ng-template ngbNavContent>
+                <div class="tab-pane">
+                  <div class="card-body">
+                    <h4 class="mb-4 font-weight-bold">Estadísticas del Empleado</h4>
+                    
+                    <div class="row justify-content-evenly mb-4">
+                      <div class="col-auto pe-0 text-center">
+                        <circle-progress 
+                          [percent]="empleado.activo ? 100 : 0" 
+                          [radius]="40" 
+                          [space]="-5" 
+                          [outerStrokeWidth]="6" 
+                          [innerStrokeWidth]="6"
+                          [showInnerStroke]="true" 
+                          [outerStrokeColor]="empleado.activo ? '#0dcd94' : '#dc3545'" 
+                          [innerStrokeColor]="empleado.activo ? '#87e9cb' : '#f8d7da'" 
+                          [showUnits]="false"
+                          [showSubtitle]="false" 
+                          [animation]="true" 
+                          [animationDuration]="300"
+                          class="chart-circle">
+                        </circle-progress>
+                        <h6 class="fs-14 fw-medium mt-2">Estado</h6>
+                      </div>
+                      
+                      <div class="col-auto pe-0 text-center">
+                        <circle-progress 
+                          [percent]="getYearsWorked() * 10" 
+                          [radius]="40" 
+                          [space]="-5" 
+                          [outerStrokeWidth]="6" 
+                          [innerStrokeWidth]="6"
+                          [showInnerStroke]="true" 
+                          [outerStrokeColor]="'#3366ff'" 
+                          [innerStrokeColor]="'#93abf3'" 
+                          [showUnits]="false"
+                          [showSubtitle]="false" 
+                          [animation]="true" 
+                          [animationDuration]="300"
+                          class="chart-circle">
+                        </circle-progress>
+                        <h6 class="fs-14 fw-medium mt-2">Experiencia</h6>
+                      </div>
+                      
+                      <div class="col-auto pe-0 text-center">
+                        <circle-progress 
+                          [percent]="(empleado._count?.prestamos || 0) * 25" 
+                          [radius]="40" 
+                          [space]="-5" 
+                          [outerStrokeWidth]="6" 
+                          [innerStrokeWidth]="6"
+                          [showInnerStroke]="true" 
+                          [outerStrokeColor]="'#fe7f00'" 
+                          [innerStrokeColor]="'#f7cba0'" 
+                          [showUnits]="false"
+                          [showSubtitle]="false" 
+                          [animation]="true" 
+                          [animationDuration]="300"
+                          class="chart-circle">
+                        </circle-progress>
+                        <h6 class="fs-14 fw-medium mt-2">Préstamos</h6>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="card border">
+                          <div class="card-body text-center">
+                            <h5 class="text-primary">{{empleado._count?.asistencias || 0}}</h5>
+                            <p class="mb-0">Asistencias Registradas</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card border">
+                          <div class="card-body text-center">
+                            <h5 class="text-success">{{getYearsWorked()}}</h5>
+                            <p class="mb-0">Años de Servicio</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+        </div>
+        <div [ngbNavOutlet]="nav" class="mt-2"></div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-warning" role="alert">
+    <i class="ri-alert-line me-2"></i>
+    No se encontró información del empleado.
+  </div>
+}

@@ -1,0 +1,260 @@
+<!-- Page Header -->
+<div class="page-header d-lg-flex d-block">
+    <div class="page-leftheader">
+        <div class="page-title">Lista de Tickets</div>
+    </div>
+    <div class="page-rightheader">
+        <div class="btn-list d-flex gap-1">
+            <a routerLink="/dashboard/business-dashboard/new-ticket" class="btn btn-primary">
+                <i class="fe fe-plus fs-12 my-auto me-2"></i>Agregar Ticket
+            </a>
+            <button class="btn btn-light3" data-bs-toggle="tooltip" data-bs-placement="top" title="E-mail">
+                <i class="fe fe-mail"></i>
+            </button>
+            <button class="btn btn-light3" data-bs-placement="top" data-bs-toggle="tooltip" title="Contact">
+                <i class="fe fe-phone-call"></i>
+            </button>
+            <button class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info">
+                <i class="fe fe-info"></i>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Page Header Close -->
+
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card custom-card">
+            <div class="card-header d-flex justify-content-between border-bottom-0">
+                <h4 class="card-title">Resumen de Tickets</h4>
+                <div class="float-end">
+                    <input type="text" class="form-control" placeholder="buscar">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-7">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Desde:</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-text text-muted">
+                                                <i class="ri-calendar-line"></i>
+                                            </div>
+                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">Hasta:</label>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-text text-muted">
+                                                <i class="ri-calendar-line"></i>
+                                            </div>
+                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="form-label">Seleccionar Estado:</label>
+                            <ng-select class="form-control custom-select p-0" data-trigger placeholder="Seleccionar Estado">
+                                <ng-option value="pendiente">Pendiente</ng-option>
+                                <ng-option value="completado">Completado</ng-option>
+                                <ng-option value="cancelado">Cancelado</ng-option>
+                            </ng-select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mt-2">
+                            <label class="form-label"></label>
+                            <a href="javascript:void(0);" class="btn btn-primary d-grid">Buscar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-sm-6 mb-1">
+                        <div class="d-flex align-items-center">
+                            <span>Mostrar</span>
+                            <div class="d-flex ms-2 mx-2">
+                                <div class="form-group">
+                                    <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0" data-trigger>
+                                        <ng-option value="10" selected>10</ng-option>
+                                        <ng-option value="25">25</ng-option>
+                                        <ng-option value="50">50</ng-option>
+                                        <ng-option value="100">100</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <span>entradas</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-1">
+                        <div class="float-end">
+                            <input type="text" matInput (keyup)="applyFilter($event)" #input class="form-control" placeholder="buscar">
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    @if (loading) {
+                        <div class="text-center p-4">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                            <p class="mt-2">Cargando tickets...</p>
+                        </div>
+                    } @else {
+                    <table mat-table [dataSource]="dataSource" matSort class="table table-vcenter text-nowrap table-bordered border-bottom">
+                        <ng-container matColumnDef="ID">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>#ID</th>
+                            <td mat-cell *matCellDef="let row">{{row.No}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Codigo">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="d-flex align-items-center">
+                                    <span class="avatar avatar-md me-2 avatar-rounded bg-primary-transparent">
+                                        <i class="fe fe-file-text"></i>
+                                    </span>
+                                    <div>
+                                        <h6 class="mb-1 fs-14">{{row.codigo}}</h6>
+                                        <span class="fs-12 text-muted">Ticket #{{row.id}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Fecha">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                            <td mat-cell *matCellDef="let row">{{row.fecha | date:'dd/MM/yyyy'}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Cantidad">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                            <td mat-cell *matCellDef="let row">{{row.cantidad}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Estado">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+                            <td mat-cell *matCellDef="let row">
+                                <span class="badge bg-{{row.status}}-transparent">{{row.statusText}}</span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Action">
+                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                            <td mat-cell *matCellDef="let row">
+                                <div class="d-flex">
+                                    <a routerLink="/dashboard/business-dashboard/view-ticket/{{row.id}}" 
+                                       class="action-btns1" placement="top" ngbTooltip="Ver Ticket">
+                                        <i class="fe fe-eye text-primary"></i>
+                                    </a>
+                                    <a (click)="edit(editContent, row)" class="action-btns1" placement="top" ngbTooltip="Editar">
+                                        <i class="fe fe-edit-2 text-success"></i>
+                                    </a>
+                                    <a (click)="deleteTicket(row.id)" class="action-btns1" placement="top" ngbTooltip="Eliminar">
+                                        <i class="fe fe-trash-2 text-danger"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="6">No hay datos que coincidan con el filtro "{{input.value}}"</td>
+                        </tr>
+                    </table>
+                    }
+                </div>
+                <mat-paginator [pageSizeOptions]="[8, 10, 25, 100]" aria-label="Select page of tickets"></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #editContent let-modal>
+    <form [formGroup]="editForm" (ngSubmit)="onUpdateTicket()">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Ticket</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Estado *</label>
+                        <ng-select class="form-control" 
+                                   formControlName="estado"
+                                   placeholder="Seleccionar estado"
+                                   [class.is-invalid]="editForm.get('estado')?.invalid && editForm.get('estado')?.touched">
+                            <ng-option value="Pendiente">Pendiente</ng-option>
+                            <ng-option value="Completado">Completado</ng-option>
+                            <ng-option value="Cancelado">Cancelado</ng-option>
+                        </ng-select>
+                        @if (editForm.get('estado')?.invalid && editForm.get('estado')?.touched) {
+                            <div class="invalid-feedback">
+                                El estado es requerido
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Cantidad *</label>
+                        <input class="form-control" 
+                               formControlName="cantidad" 
+                               type="number"
+                               placeholder="Cantidad"
+                               [class.is-invalid]="editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched">
+                        @if (editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched) {
+                            <div class="invalid-feedback">
+                                @if (editForm.get('cantidad')?.errors?.['required']) {
+                                    <span>La cantidad es requerida</span>
+                                }
+                                @if (editForm.get('cantidad')?.errors?.['min']) {
+                                    <span>La cantidad debe ser mayor a 0</span>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">Código de Autorización *</label>
+                        <input class="form-control" 
+                               formControlName="codigoAutorizacion" 
+                               placeholder="Código de autorización"
+                               [class.is-invalid]="editForm.get('codigoAutorizacion')?.invalid && editForm.get('codigoAutorizacion')?.touched">
+                        @if (editForm.get('codigoAutorizacion')?.invalid && editForm.get('codigoAutorizacion')?.touched) {
+                            <div class="invalid-feedback">
+                                El código de autorización es requerido
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('cancel')">Cancelar</button>
+            <button type="submit" class="btn btn-success" [disabled]="loading">
+                @if (loading) {
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                }
+                Actualizar
+            </button>
+        </div>
+    </form>
+</ng-template>
