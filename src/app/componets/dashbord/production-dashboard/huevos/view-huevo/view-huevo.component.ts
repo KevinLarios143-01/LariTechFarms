@@ -1,95 +1,68 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { HuevosService } from '../services/huevos.service';
 import { ControlHuevos } from '../interfaces/huevo.interface';
-import { SharedModule } from '../../../../../shared/common/sharedmodule';
 
 @Component({
   selector: 'app-view-huevo',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgbModule, SharedModule],
+  imports: [CommonModule, SharedModule, RouterModule],
   templateUrl: './view-huevo.component.html',
   styleUrls: ['./view-huevo.component.scss']
 })
 export class ViewHuevoComponent implements OnInit {
-  control: ControlHuevos | null = null
-  isLoading = false
-  controlId: number
-  active = 1
+  control: ControlHuevos | null = null;
+  loading = false;
+  controlId: number = 0;
 
   constructor(
-    private huevosService: HuevosService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef,
-    private toastr: ToastrService
-  ) {
-    this.controlId = parseInt(this.route.snapshot.paramMap.get('id') || '0')
+    private huevosService: HuevosService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      this.controlId = +params['id'];
+      if (this.controlId) {
+        this.loadControl();
+      }
+    });
   }
 
-  ngOnInit() {
-    this.loadControl()
-  }
-
-  loadControl() {
-    this.isLoading = true
+  loadControl(): void {
+    this.loading = true;
     this.huevosService.getControlById(this.controlId).subscribe({
       next: (response) => {
-        this.control = response.data
-        this.isLoading = false
-        this.cdr.detectChanges()
+        this.control = response.data || response;
+        this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        this.toastr.error('Error al cargar control', 'Error', {
-          progressBar: true,
-          closeButton: true
-        })
-        this.isLoading = false
-        this.router.navigate(['../list'], { relativeTo: this.route })
+        this.loading = false;
+        this.cdr.detectChanges();
       }
-    })
+    });
   }
 
-  deleteControl() {
-    if (confirm('¿Está seguro de eliminar este control?')) {
-      this.huevosService.deleteControl(this.controlId).subscribe({
-        next: () => {
-          this.toastr.success('Control eliminado exitosamente', 'Éxito', {
-            progressBar: true,
-            closeButton: true
-          })
-          this.router.navigate(['../list'], { relativeTo: this.route })
-        },
-        error: () => {
-          this.toastr.error('Error al eliminar control', 'Error', {
-            progressBar: true,
-            closeButton: true
-          })
-        }
-      })
-    }
+  goBack(): void {
+    this.router.navigate(['/dashboard/production-dashboard/huevos']);
   }
 
-  getCalidadClass(calidad?: string): string {
-    switch(calidad) {
-      case 'Excelente': return 'text-success'
-      case 'Buena': return 'text-info'
-      case 'Regular': return 'text-warning'
-      case 'Mala': return 'text-danger'
-      default: return 'text-muted'
-    }
+  editControl(): void {
+    this.router.navigate(['/dashboard/production-dashboard/huevos/edit', this.controlId]);
   }
 
   getCalidadBadgeClass(calidad?: string): string {
-    switch(calidad) {
-      case 'Excelente': return 'badge bg-success'
-      case 'Buena': return 'badge bg-info'
-      case 'Regular': return 'badge bg-warning'
-      case 'Mala': return 'badge bg-danger'
-      default: return 'badge bg-secondary'
+    switch (calidad) {
+      case 'Excelente': return 'bg-success';
+      case 'Buena': return 'bg-info';
+      case 'Regular': return 'bg-warning';
+      case 'Mala': return 'bg-danger';
+      default: return 'bg-secondary';
     }
   }
 }

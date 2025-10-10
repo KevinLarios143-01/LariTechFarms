@@ -96,13 +96,14 @@ const routes: Routes = [
           {
             path: 'edit/:id',
             loadComponent: () =>
-              import('./productos/new-producto/new-producto.component').then((m) => m.NewProductoComponent)
+              import('./productos/edit-producto/edit-producto.component').then((m) => m.EditProductoComponent)
           },
           {
             path: 'estadisticas',
             loadComponent: () =>
               import('./productos/estadisticas/estadisticas.component').then((m) => m.EstadisticasComponent)
-          }
+          },
+
         ]
       }
     ]

@@ -1,39 +1,36 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule, ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { HuevosService } from '../services/huevos.service';
 import { LotesService } from '../../../bussiness-dashboard/lotes/services/lotes.service';
-import { ControlHuevos, CreateControlHuevosDTO, UpdateControlHuevosDTO } from '../interfaces/huevo.interface';
+import { CreateControlHuevosDTO, UpdateControlHuevosDTO } from '../interfaces/huevo.interface';
 import { Lote } from '../../../bussiness-dashboard/lotes/interfaces/lote.interface';
-import { SharedModule } from '../../../../../shared/common/sharedmodule';
 
 @Component({
   selector: 'app-new-huevo',
   standalone: true,
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, NgSelectModule, NgbModule, SharedModule],
+  imports: [CommonModule, SharedModule, NgSelectModule, RouterModule, ReactiveFormsModule],
   templateUrl: './new-huevo.component.html',
   styleUrls: ['./new-huevo.component.scss']
 })
 export class NewHuevoComponent implements OnInit {
-  controlForm: FormGroup
-  lotes: Lote[] = []
-  calidades = ['Excelente', 'Buena', 'Regular', 'Mala']
-  isLoading = false
-  isEditMode = false
-  controlId: number | null = null
-  active = 1
+  controlForm: FormGroup;
+  loading = false;
+  isEditing = false;
+  controlId: number | null = null;
+  lotes: Lote[] = [];
+  calidades = ['Excelente', 'Buena', 'Regular', 'Mala'];
 
   constructor(
     private fb: FormBuilder,
     private huevosService: HuevosService,
     private lotesService: LotesService,
-    private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute,
     private toastr: ToastrService
   ) {
     this.controlForm = this.fb.group({
@@ -41,159 +38,117 @@ export class NewHuevoComponent implements OnInit {
       fecha: ['', Validators.required],
       cantidadHuevos: ['', [Validators.required, Validators.min(1)]],
       calidad: ['']
-    })
+    });
   }
 
-  ngOnInit() {
-    this.loadLotes()
-    this.checkEditMode()
+  ngOnInit(): void {
+    this.loadLotes();
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.isEditing = true;
+        this.controlId = +params['id'];
+        this.loadControl();
+      }
+    });
   }
 
-  checkEditMode() {
-    const id = this.route.snapshot.paramMap.get('id')
-    if (id) {
-      this.isEditMode = true
-      this.controlId = parseInt(id)
-      this.loadControl()
-    } else {
-      // Set today's date as default
-      const today = new Date().toISOString().split('T')[0]
-      this.controlForm.patchValue({ fecha: today })
-    }
-  }
-
-  loadLotes() {
+  loadLotes(): void {
     this.lotesService.getLotes().subscribe({
       next: (response) => {
-        this.lotes = response.data.data.filter((lote: any) => lote.tipo === 'Ponedoras' && lote.estado === 'Activo')
-        this.cdr.detectChanges()
+        let allLotes: Lote[] = [];
+        if (response?.data?.data && Array.isArray(response.data.data)) {
+          allLotes = response.data.data;
+        } else if (response?.data?.items && Array.isArray(response.data.items)) {
+          allLotes = response.data.items;
+        } else if (response?.data && Array.isArray(response.data)) {
+          allLotes = response.data;
+        } else if (Array.isArray(response)) {
+          allLotes = response;
+        }
+        this.lotes = allLotes.filter((lote: Lote) => lote.tipo === 'Ponedoras' && lote.estado === 'Activo');
       },
       error: (error) => {
-        this.toastr.error('Error al cargar lotes', 'Error', {
-          progressBar: true,
-          closeButton: true
-        })
+        console.error('Error al cargar lotes:', error);
       }
-    })
+    });
   }
 
-  loadControl() {
+  loadControl(): void {
     if (this.controlId) {
-      this.isLoading = true
+      this.loading = true;
       this.huevosService.getControlById(this.controlId).subscribe({
         next: (response) => {
-          const control = response.data
+          const control = response.data;
           this.controlForm.patchValue({
             idLote: control.idLote,
-            fecha: this.formatDateForInput(control.fecha),
+            fecha: control.fecha.split('T')[0],
             cantidadHuevos: control.cantidadHuevos,
-            calidad: control.calidad || ''
-          })
-          this.isLoading = false
-          this.cdr.detectChanges()
+            calidad: control.calidad
+          });
+          this.loading = false;
         },
         error: (error) => {
-          this.toastr.error('Error al cargar control', 'Error', {
-            progressBar: true,
-            closeButton: true
-          })
-          this.isLoading = false
-          this.router.navigate(['../list'], { relativeTo: this.route })
+          console.error('Error al cargar control:', error);
+          this.toastr.error('Error al cargar el control', 'Error');
+          this.loading = false;
         }
-      })
+      });
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.controlForm.valid) {
-      this.isLoading = true
-      const formData = this.controlForm.value
+      this.loading = true;
+      const formData = this.controlForm.value;
 
-      if (this.isEditMode && this.controlId) {
+      if (this.isEditing && this.controlId) {
         const updateData: UpdateControlHuevosDTO = {
           cantidadHuevos: formData.cantidadHuevos,
-          calidad: formData.calidad || undefined
-        }
-
+          calidad: formData.calidad
+        };
+        
         this.huevosService.updateControl(this.controlId, updateData).subscribe({
-          next: (response) => {
-            this.toastr.success('Control actualizado exitosamente', 'Éxito', {
-              progressBar: true,
-              closeButton: true
-            })
-            this.router.navigate(['../list'], { relativeTo: this.route })
+          next: () => {
+            this.toastr.success('Control actualizado exitosamente', 'Éxito');
+            this.router.navigate(['/dashboard/production-dashboard/huevos']);
+            this.loading = false;
           },
           error: (error) => {
-            this.toastr.error('Error al actualizar control', 'Error', {
-              progressBar: true,
-              closeButton: true
-            })
-            this.isLoading = false
-            this.cdr.detectChanges()
+            console.error('Error al actualizar control:', error);
+            this.toastr.error('Error al actualizar el control', 'Error');
+            this.loading = false;
           }
-        })
+        });
       } else {
-        const createData: CreateControlHuevosDTO = {
-          idLote: parseInt(formData.idLote),
-          fecha: formData.fecha,
-          cantidadHuevos: formData.cantidadHuevos,
-          calidad: formData.calidad || undefined
-        }
-
+        const createData: CreateControlHuevosDTO = formData;
+        
         this.huevosService.createControl(createData).subscribe({
-          next: (response) => {
-            this.toastr.success('Control creado exitosamente', 'Éxito', {
-              progressBar: true,
-              closeButton: true
-            })
-            this.router.navigate(['../list'], { relativeTo: this.route })
+          next: () => {
+            this.toastr.success('Control creado exitosamente', 'Éxito');
+            this.router.navigate(['/dashboard/production-dashboard/huevos']);
+            this.loading = false;
           },
           error: (error) => {
-            this.toastr.error('Error al crear control', 'Error', {
-              progressBar: true,
-              closeButton: true
-            })
-            this.isLoading = false
-            this.cdr.detectChanges()
+            console.error('Error al crear control:', error);
+            this.toastr.error('Error al crear el control', 'Error');
+            this.loading = false;
           }
-        })
+        });
       }
     } else {
-      this.markFormGroupTouched()
+      this.markFormGroupTouched();
+      this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia');
     }
   }
 
-  markFormGroupTouched() {
+  onCancel(): void {
+    this.router.navigate(['/dashboard/production-dashboard/huevos']);
+  }
+
+  private markFormGroupTouched(): void {
     Object.keys(this.controlForm.controls).forEach(key => {
-      const control = this.controlForm.get(key)
-      control?.markAsTouched()
-    })
-  }
-
-  formatDateForInput(dateString: string): string {
-    if (!dateString) return ''
-    const date = new Date(dateString + 'T00:00:00.000Z')
-    return date.toISOString().split('T')[0]
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.controlForm.get(fieldName)
-    return !!(field && field.invalid && (field.dirty || field.touched))
-  }
-
-  getFieldError(fieldName: string): string {
-    const field = this.controlForm.get(fieldName)
-    if (field?.errors) {
-      if (field.errors['required']) return `${fieldName} es requerido`
-      if (field.errors['min']) return `${fieldName} debe ser mayor a 0`
-    }
-    return ''
-  }
-
-  getLoteNombre(): string {
-    const loteId = this.controlForm.get('idLote')?.value
-    if (!loteId) return ''
-    const lote = this.lotes.find(l => l.id == loteId)
-    return lote ? `${lote.galera} - ${lote.tipo}` : ''
+      const control = this.controlForm.get(key);
+      control?.markAsTouched();
+    });
   }
 }

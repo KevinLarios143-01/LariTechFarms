@@ -1,98 +1,214 @@
-<app-hr-dashboard-page-header [title]="'Editar Producto'" [title2]="'Lista de Productos'" [class]="'btn btn-outline-primary'"
-  [class1]="''" [path]="'../list'">
+<app-hr-dashboard-page-header [title]="'Editar Producto'">
 </app-hr-dashboard-page-header>
 
-@if (isLoading) {
-  <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Cargando...</span>
-    </div>
-  </div>
-} @else {
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card custom-card">
-        <div class="card-header">
-          <h3 class="card-title">Editar Producto</h3>
-        </div>
-        <div class="card-body">
-          <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Nombre del Producto *</label>
-                  <input class="form-control" formControlName="nombre" placeholder="Nombre del producto"
-                         [class.is-invalid]="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched">
-                  <div *ngIf="productoForm.get('nombre')?.invalid && productoForm.get('nombre')?.touched" class="invalid-feedback">
-                    El nombre es requerido
-                  </div>
+<!-- Row -->
+<div class="row">
+    <div class="col-xxl-3 col-xl-4 col-md-12 col-lg-12">
+        <div class="card box-widget widget-user custom-card">
+            <div class="card-body text-center">
+                <div class="widget-user-image mx-auto text-center">
+                    <i class="fas fa-box fa-5x text-primary"></i>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Precio *</label>
-                  <input class="form-control" formControlName="precio" type="number" step="0.01" placeholder="0.00"
-                         [class.is-invalid]="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched">
-                  <div *ngIf="productoForm.get('precio')?.invalid && productoForm.get('precio')?.touched" class="invalid-feedback">
-                    <span *ngIf="productoForm.get('precio')?.errors?.['required']">El precio es requerido</span>
-                    <span *ngIf="productoForm.get('precio')?.errors?.['min']">El precio debe ser mayor a 0</span>
-                  </div>
+                <div class="pro-user mt-3">
+                    <h5 class="pro-user-username text-dark mb-1 fs-16">{{ productoForm.get('nombre')?.value || 'Editar Producto' }}</h5>
+                    <h6 class="pro-user-desc text-muted fs-12">{{ productoForm.get('categoria')?.value || 'Sin categoría' }}</h6>
                 </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Stock *</label>
-                  <input class="form-control" formControlName="stock" type="number" placeholder="0"
-                         [class.is-invalid]="productoForm.get('stock')?.invalid && productoForm.get('stock')?.touched">
-                  <div *ngIf="productoForm.get('stock')?.invalid && productoForm.get('stock')?.touched" class="invalid-feedback">
-                    <span *ngIf="productoForm.get('stock')?.errors?.['required']">El stock es requerido</span>
-                    <span *ngIf="productoForm.get('stock')?.errors?.['min']">El stock debe ser mayor o igual a 0</span>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Categoría</label>
-                  <ng-select formControlName="categoria" placeholder="Seleccione una categoría" [clearable]="true">
-                    @for (categoria of categorias; track categoria) {
-                      <ng-option [value]="categoria">{{categoria}}</ng-option>
-                    }
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Tamaño</label>
-                  <input class="form-control" formControlName="tamanio" placeholder="Tamaño del producto">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Estado</label>
-                  <ng-select formControlName="activo" placeholder="Seleccione el estado">
-                    <ng-option [value]="true">Activo</ng-option>
-                    <ng-option [value]="false">Inactivo</ng-option>
-                  </ng-select>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label class="form-label">Descripción</label>
-                  <textarea class="form-control" formControlName="descripcion" rows="3" 
-                            placeholder="Descripción del producto"></textarea>
-                </div>
-              </div>
             </div>
-            <div class="d-flex justify-content-end gap-2 mt-3">
-              <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancelar</button>
-              <button type="submit" class="btn btn-primary" [disabled]="productoForm.invalid || isLoading">
-                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-                Actualizar Producto
-              </button>
+            <div class="card-footer p-0">
+                <div class="row">
+                    <div class="col-4 text-center py-3 border-end">
+                        <h5 class="fs-12 fw-semibold mb-3">Precio</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-18 text-success">Q{{ productoForm.get('precio')?.value || '0.00' }}</span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Unitario</h5>
+                    </div>
+                    <div class="col-4 py-3 text-center border-end">
+                        <h5 class="fs-12 fw-semibold mb-3">Stock</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-18 text-primary">{{ productoForm.get('stock')?.value || '0' }}</span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Unidades</h5>
+                    </div>
+                    <div class="col-4 text-center py-3">
+                        <h5 class="fs-12 fw-semibold mb-3">Estado</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-18" [class]="productoForm.get('activo')?.value ? 'text-success' : 'text-danger'">
+                                {{ productoForm.get('activo')?.value ? 'Activo' : 'Inactivo' }}
+                            </span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Producto</h5>
+                    </div>
+                </div>
             </div>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
-}
+    <div class="col-xxl-9 col-xl-8 col-md-12 col-lg-12">
+        <div class="tab-menu-heading hremp-tabs p-0 border-0">
+            <div class="tabs-menu1">
+                <!-- Tabs -->
+                <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="panel-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>Información del Producto</a>
+                        <ng-template ngbNavContent>
+                            <div id="tab1">
+                                <div class="card-body">
+                                    @if (isLoading) {
+                                        <div class="text-center">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    } @else {
+                                        <form [formGroup]="productoForm" (ngSubmit)="onSubmit()">
+                                            <h4 class="mb-4 font-weight-bold">Datos Básicos</h4>
+                                            
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Nombre del Producto *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" 
+                                                               class="form-control" 
+                                                               formControlName="nombre"
+                                                               placeholder="Ingrese el nombre del producto"
+                                                               [class.is-invalid]="isFieldInvalid('nombre')">
+                                                        @if (isFieldInvalid('nombre')) {
+                                                            <div class="invalid-feedback">
+                                                                {{ getFieldError('nombre') }}
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Tamaño</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" 
+                                                               class="form-control" 
+                                                               formControlName="tamanio"
+                                                               placeholder="Ej: XL, Jumbo, Grande">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Categoría</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <ng-select formControlName="categoria" 
+                                                                   class="form-control custom-select p-0"
+                                                                   placeholder="Seleccionar categoría"
+                                                                   [clearable]="true">
+                                                            @for (categoria of categorias; track categoria) {
+                                                                <ng-option [value]="categoria">{{categoria}}</ng-option>
+                                                            }
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <h4 class="mb-4 mt-7 font-weight-bold">Precio e Inventario</h4>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Precio Unitario *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group">
+                                                            <span class="input-group-text">Q</span>
+                                                            <input type="number" 
+                                                                   class="form-control" 
+                                                                   formControlName="precio"
+                                                                   placeholder="0.00"
+                                                                   step="0.01"
+                                                                   min="0.01"
+                                                                   [class.is-invalid]="isFieldInvalid('precio')">
+                                                        </div>
+                                                        @if (isFieldInvalid('precio')) {
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ getFieldError('precio') }}
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Stock Actual *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="number" 
+                                                               class="form-control" 
+                                                               formControlName="stock"
+                                                               placeholder="0"
+                                                               min="0"
+                                                               [class.is-invalid]="isFieldInvalid('stock')"
+                                                               readonly>
+                                                        @if (isFieldInvalid('stock')) {
+                                                            <div class="invalid-feedback">
+                                                                {{ getFieldError('stock') }}
+                                                            </div>
+                                                        }
+                                                        <small class="text-muted">Use la opción "Actualizar Stock" para modificar el inventario</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group mt-7">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label">Estado del Producto:</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="form-check form-check-md form-switch">
+                                                            <input class="form-check-input" 
+                                                                   type="checkbox" 
+                                                                   formControlName="activo"
+                                                                   role="switch"
+                                                                   id="switch-activo">
+                                                            <label class="form-check-label mt-0 custom-switch-description" 
+                                                                   for="switch-activo">Activo/Inactivo</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
+            <div [ngbNavOutlet]="nav" class="tab-content">
+            </div>
+            <div class="panel-footer text-end">
+                <button type="button" 
+                        class="me-2 btn btn-primary"
+                        (click)="onSubmit()"
+                        [disabled]="productoForm.invalid || isLoading">
+                    Actualizar
+                </button>
+                <button type="button" 
+                        class="btn btn-danger" 
+                        (click)="onCancel()">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row-->

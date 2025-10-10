@@ -1,233 +1,117 @@
-<app-hr-dashboard-page-header [title]="'Ver Control'">
+<app-hr-dashboard-page-header [title]="'Detalle del Control'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/huevos'">
 </app-hr-dashboard-page-header>
 
-@if (isLoading) {
-  <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+<div class="row" *ngIf="loading">
+  <div class="col-12 text-center py-5">
     <div class="spinner-border text-primary" role="status">
       <span class="visually-hidden">Cargando...</span>
     </div>
   </div>
-} @else if (control) {
-  <!-- Row -->
-  <div class="row">
-    <div class="col-xxl-3 col-xl-4 col-md-12 col-lg-12">
-      <div class="card box-widget widget-user custom-card">
-        <div class="card-body text-center">
-          <div class="widget-user-image mx-auto text-center">
-            <i class="fas fa-egg fa-5x text-warning"></i>
-          </div>
-          <div class="pro-user mt-3">
-            <h5 class="pro-user-username text-dark mb-1 fs-16">Control de Huevos</h5>
-            <h6 class="pro-user-desc text-muted fs-12">{{control.calidad || 'Sin calidad'}}</h6>
-          </div>
-        </div>
-        <div class="card-footer p-0">
-          <div class="row">
-            <div class="col-4 text-center py-3 border-end">
-              <h5 class="fs-12 fw-semibold mb-3">Cantidad</h5>
-              <h5 class="mb-2">
-                <span class="fs-18 text-primary">{{control.cantidadHuevos}}</span>
-              </h5>
-              <h5 class="fs-12 mb-0">Huevos</h5>
+</div>
+
+<div class="row" *ngIf="!loading && control">
+  <div class="col-xl-8">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h4 class="card-title">Información del Control</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">ID del Control:</label>
+              <p class="mb-0">#CH-{{control.id.toString().padStart(3, '0')}}</p>
             </div>
-            <div class="col-4 py-3 text-center border-end">
-              <h5 class="fs-12 fw-semibold mb-3">Fecha</h5>
-              <h5 class="mb-2">
-                <span class="fs-12 text-info">{{ control.fecha | date: 'dd/MM':'UTC' }}</span>
-              </h5>
-              <h5 class="fs-12 mb-0">Registro</h5>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Fecha:</label>
+              <p class="mb-0">{{control.fecha | date: 'dd/MM/yyyy'}}</p>
             </div>
-            <div class="col-4 text-center py-3">
-              <h5 class="fs-12 fw-semibold mb-3">Calidad</h5>
-              <h5 class="mb-2">
-                <span class="fs-12" [class]="getCalidadClass(control.calidad)">
-                  {{control.calidad || 'N/A'}}
-                </span>
-              </h5>
-              <h5 class="fs-12 mb-0">Estado</h5>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Lote/Galera:</label>
+              <p class="mb-0">{{control.lote?.galera}} ({{control.lote?.tipo}})</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Cantidad de Huevos:</label>
+              <p class="mb-0 fw-bold text-primary">{{control.cantidadHuevos | number}} huevos</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Calidad:</label>
+              <p class="mb-0">
+                <span class="badge" [class]="getCalidadBadgeClass(control.calidad)">{{control.calidad || 'Sin especificar'}}</span>
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Usuario:</label>
+              <p class="mb-0">{{control.usuario?.nombre}} {{control.usuario?.apellido}}</p>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="card custom-card">
-        <div class="card-header border-0">
-          <div class="card-title">Información del Lote</div>
-        </div>
-        <div class="card-body">
-          @if (control.lote) {
-            <div class="d-flex align-items-end justify-content-between">
-              <h6>Galera</h6>
-              <h6 class="font-weight-bold mb-1">{{control.lote.galera}}</h6>
+    </div>
+  </div>
+  
+  <div class="col-xl-4">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h4 class="card-title">Resumen</h4>
+      </div>
+      <div class="card-body">
+        <div class="text-center">
+          <div class="avatar avatar-xl bg-primary-transparent mx-auto mb-3">
+            <i class="fe fe-layers fs-24"></i>
+          </div>
+          <h5 class="mb-1">{{control.lote?.galera}}</h5>
+          <p class="text-muted mb-3">{{control.lote?.tipo}}</p>
+          <div class="row">
+            <div class="col-12">
+              <div class="text-center">
+                <h3 class="mb-1 text-primary">{{control.cantidadHuevos | number}}</h3>
+                <p class="text-muted mb-0">Huevos Recolectados</p>
+              </div>
             </div>
-            <div class="progress progress-sm mb-5">
-              <div class="progress-bar bg-info" style="width: 100%"></div>
-            </div>
-            
-            <div class="d-flex align-items-end justify-content-between mg-b-5">
-              <h6>Tipo</h6>
-              <h6 class="font-weight-bold mb-1">{{control.lote.tipo}}</h6>
-            </div>
-            <div class="progress progress-sm mb-5">
-              <div class="progress-bar bg-success" style="width: 100%"></div>
-            </div>
-            
-            <div class="d-flex align-items-end justify-content-between mg-b-5">
-              <h6>Aves</h6>
-              <h6 class="font-weight-bold mb-1">{{control.lote.cantidad}}</h6>
-            </div>
-            <div class="progress progress-sm mb-5">
-              <div class="progress-bar bg-warning" style="width: 100%"></div>
-            </div>
-          } @else {
-            <p class="text-muted">Sin información del lote</p>
-          }
+          </div>
         </div>
       </div>
     </div>
     
-    <div class="col-xxl-9 col-xl-8 col-md-12 col-lg-12">
-      <div class="tab-menu-heading hremp-tabs p-0 border-0">
-        <div class="tabs-menu1">
-          <!-- Tabs -->
-          <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="panel-tabs">
-            <li [ngbNavItem]="1">
-              <a ngbNavLink>Información del Control</a>
-              <ng-template ngbNavContent>
-                <div id="tab1">
-                  <div class="card-body">
-                    <h4 class="mb-4 font-weight-bold">Datos del Control</h4>
-                    
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label class="form-label mb-0 mt-2">Fecha de Registro</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input type="text" class="form-control" [value]="control.fecha | date: 'dd/MM/yyyy':'UTC'" readonly>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label class="form-label mb-0 mt-2">Cantidad de Huevos</label>
-                        </div>
-                        <div class="col-md-9">
-                          <input type="text" class="form-control" [value]="control.cantidadHuevos + ' huevos'" readonly>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <div class="row">
-                        <div class="col-md-3">
-                          <label class="form-label mb-0 mt-2">Calidad</label>
-                        </div>
-                        <div class="col-md-9">
-                          <span [class]="getCalidadBadgeClass(control.calidad)">
-                            {{ control.calidad || 'Sin especificar' }}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <h4 class="mb-4 mt-7 font-weight-bold">Información del Lote</h4>
-
-                    @if (control.lote) {
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label class="form-label mb-0 mt-2">Galera</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input type="text" class="form-control" [value]="control.lote.galera" readonly>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label class="form-label mb-0 mt-2">Tipo de Lote</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input type="text" class="form-control" [value]="control.lote.tipo" readonly>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label class="form-label mb-0 mt-2">Cantidad de Aves</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input type="text" class="form-control" [value]="control.lote.cantidad + ' aves'" readonly>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label class="form-label mb-0 mt-2">Fecha de Inicio</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input type="text" class="form-control" [value]="control.lote.fechaInicio | date: 'dd/MM/yyyy':'UTC'" readonly>
-                          </div>
-                        </div>
-                      </div>
-                    } @else {
-                      <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>
-                        No hay información del lote disponible
-                      </div>
-                    }
-
-                    @if (control.usuario) {
-                      <h4 class="mb-4 mt-7 font-weight-bold">Registrado por</h4>
-                      
-                      <div class="form-group">
-                        <div class="row">
-                          <div class="col-md-3">
-                            <label class="form-label mb-0 mt-2">Usuario</label>
-                          </div>
-                          <div class="col-md-9">
-                            <input type="text" class="form-control" [value]="control.usuario.nombre + ' ' + control.usuario.apellido" readonly>
-                          </div>
-                        </div>
-                      </div>
-                    }
-                  </div>
-                </div>
-              </ng-template>
-            </li>
-          </ul>
-        </div>
+    <div class="card custom-card">
+      <div class="card-header">
+        <h4 class="card-title">Acciones</h4>
       </div>
-      <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
-        <div [ngbNavOutlet]="nav" class="tab-content">
-        </div>
-        <div class="panel-footer text-end">
-          <button type="button" 
-                  class="me-2 btn btn-warning"
-                  [routerLink]="['../edit', control.id]">
-            <i class="fas fa-edit"></i> Editar
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary" (click)="goBack()">
+            <i class="fe fe-list me-2"></i>Volver a Lista
           </button>
-          <button type="button" 
-                  class="btn btn-danger" 
-                  (click)="deleteControl()">
-            <i class="fas fa-trash"></i> Eliminar
+          <button class="btn btn-success" (click)="editControl()">
+            <i class="fe fe-edit-2 me-2"></i>Editar Control
           </button>
         </div>
       </div>
     </div>
   </div>
-} @else {
-  <div class="alert alert-warning" role="alert">
-    <i class="fas fa-exclamation-triangle me-2"></i>
-    No se encontró información del control.
+</div>
+
+<div class="row" *ngIf="!loading && !control">
+  <div class="col-12">
+    <div class="card custom-card">
+      <div class="card-body text-center py-5">
+        <i class="fe fe-alert-circle fs-48 text-muted mb-3"></i>
+        <h4>Control no encontrado</h4>
+        <p class="text-muted">El control que buscas no existe o no tienes permisos para verlo.</p>
+        <button class="btn btn-primary" (click)="goBack()">Volver a Lista</button>
+      </div>
+    </div>
   </div>
-}
+</div>

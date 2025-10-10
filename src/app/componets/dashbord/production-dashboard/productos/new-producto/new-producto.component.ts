@@ -59,11 +59,12 @@ export class NewProductoComponent implements OnInit {
   loadCategorias() {
     this.productosService.getCategorias().subscribe({
       next: (response) => {
-        this.categorias = response.data
+        this.categorias = Array.isArray(response.data) ? response.data.map((item: any) => item.categoria) : []
         this.cdr.detectChanges()
       },
       error: (error) => {
         console.error('Error al cargar categorías:', error)
+        this.categorias = []
       }
     })
   }
@@ -117,7 +118,9 @@ export class NewProductoComponent implements OnInit {
               progressBar: true,
               closeButton: true
             })
-            this.router.navigate(['../list'], { relativeTo: this.route })
+            setTimeout(() => {
+              this.router.navigate(['../list'], { relativeTo: this.route })
+            }, 1000)
           },
           error: (error) => {
             this.toastr.error('Error al actualizar producto', 'Error', {
@@ -144,7 +147,9 @@ export class NewProductoComponent implements OnInit {
               progressBar: true,
               closeButton: true
             })
-            this.router.navigate(['../list'], { relativeTo: this.route })
+            setTimeout(() => {
+              this.router.navigate(['../list'], { relativeTo: this.route })
+            }, 1000)
           },
           error: (error) => {
             this.toastr.error('Error al crear producto', 'Error', {

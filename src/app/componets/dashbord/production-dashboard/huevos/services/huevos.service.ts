@@ -8,11 +8,11 @@ import { ControlHuevos, CreateControlHuevosDTO, UpdateControlHuevosDTO, ControlH
   providedIn: 'root'
 })
 export class HuevosService {
-  private apiUrl = `${environment.apiUrl}/control-huevos`;
+  private apiUrl = `${environment.apiUrl}/v1/control-huevos`;
 
   constructor(private http: HttpClient) {}
 
-  getControles(params?: any): Observable<ControlHuevosResponse> {
+  getControles(params?: any): Observable<any> {
     let httpParams = new HttpParams();
     if (params) {
       Object.keys(params).forEach(key => {

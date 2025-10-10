@@ -19,7 +19,7 @@
                     <div class="col-4 text-center py-3 border-end">
                         <h5 class="fs-12 fw-semibold mb-3">Precio</h5>
                         <h5 class="mb-2">
-                            <span class="fs-18 text-success">${{ productoForm.get('precio')?.value || '0.00' }}</span>
+                            <span class="fs-18 text-success">Q{{ productoForm.get('precio')?.value || '0.00' }}</span>
                         </h5>
                         <h5 class="fs-12 mb-0">Unitario</h5>
                     </div>
@@ -124,7 +124,7 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="input-group">
-                                                            <span class="input-group-text">$</span>
+                                                            <span class="input-group-text">Q</span>
                                                             <input type="number" 
                                                                    class="form-control" 
                                                                    formControlName="precio"

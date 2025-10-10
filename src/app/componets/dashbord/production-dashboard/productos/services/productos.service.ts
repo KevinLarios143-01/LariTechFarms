@@ -8,11 +8,11 @@ import { Producto, CreateProductoDTO, UpdateProductoDTO, UpdateStockDTO, Product
   providedIn: 'root'
 })
 export class ProductosService {
-  private apiUrl = `${environment.apiUrl}/productos`;
+  private apiUrl = `${environment.apiUrl}/v1/productos`;
 
   constructor(private http: HttpClient) {}
 
-  getProductos(params?: any): Observable<ProductosResponse> {
+  getProductos(params?: any): Observable<any> {
     let httpParams = new HttpParams();
     if (params) {
       Object.keys(params).forEach(key => {
@@ -44,7 +44,7 @@ export class ProductosService {
     return this.http.delete<{ success: boolean; message: string }>(`${this.apiUrl}/${id}`);
   }
 
-  getCategorias(): Observable<{ success: boolean; data: string[] }> {
+  getCategorias(): Observable<any> {
     return this.http.get<{ success: boolean; data: string[] }>(`${this.apiUrl}/categorias`);
   }
 

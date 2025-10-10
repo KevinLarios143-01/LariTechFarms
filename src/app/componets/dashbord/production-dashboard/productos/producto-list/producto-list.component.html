@@ -57,11 +57,11 @@
         <div class="row">
           <div class="col-7">
             <div class="mt-0 text-start"> <span class="fw-medium">Valor Inventario</span>
-              <h3 class="mb-0 mt-1 text-info">${{getValorTotal()}}</h3>
+              <h3 class="mb-0 mt-1 text-info">Q{{getValorTotal()}}</h3>
             </div>
           </div>
           <div class="col-5">
-            <div class="icon1 bg-info-transparent my-auto float-end"> <i class="las la-dollar-sign"></i> </div>
+            <div class="icon1 bg-info-transparent my-auto float-end"> <i class="las la-coins"></i> </div>
           </div>
         </div>
       </div>
@@ -150,7 +150,7 @@
                         </div>
                       </div>
                     </td>
-                    <td class="fw-bold text-primary">${{producto.precio.toFixed(2)}}</td>
+                    <td class="fw-bold text-primary">Q{{(+producto.precio).toFixed(2)}}</td>
                     <td>
                       <span class="badge" [class]="getStockBadgeClass(producto.stock)">
                         {{producto.stock}} unidades

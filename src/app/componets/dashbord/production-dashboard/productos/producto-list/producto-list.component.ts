@@ -42,12 +42,25 @@ export class ProductoListComponent implements OnInit {
     this.isLoading = true
     this.productosService.getProductos().subscribe({
       next: (response) => {
-        this.productos = response.data.items
+        // Manejo robusto de diferentes estructuras de respuesta
+        if (response?.data?.data && Array.isArray(response.data.data)) {
+          this.productos = response.data.data
+        } else if (response?.data?.items && Array.isArray(response.data.items)) {
+          this.productos = response.data.items
+        } else if (response?.data && Array.isArray(response.data)) {
+          this.productos = response.data
+        } else if (Array.isArray(response)) {
+          this.productos = response
+        } else {
+          this.productos = []
+        }
         this.filteredProductos = [...this.productos]
         this.isLoading = false
         this.cdr.detectChanges()
       },
       error: (error) => {
+        this.productos = []
+        this.filteredProductos = []
         this.toastr.error('Error al cargar productos', 'Error', {
           progressBar: true,
           closeButton: true
@@ -61,10 +74,11 @@ export class ProductoListComponent implements OnInit {
   loadCategorias() {
     this.productosService.getCategorias().subscribe({
       next: (response) => {
-        this.categorias = response.data
+        this.categorias = Array.isArray(response.data) ? response.data.map((item: any) => item.categoria) : []
         this.cdr.detectChanges()
       },
       error: (error) => {
+        this.categorias = []
         console.error('Error al cargar categorías:', error)
       }
     })
@@ -92,7 +106,9 @@ export class ProductoListComponent implements OnInit {
             progressBar: true,
             closeButton: true
           })
-          this.loadProductos()
+          setTimeout(() => {
+            this.loadProductos()
+          }, 1000)
         },
         error: () => {
           this.toastr.error('Error al eliminar producto', 'Error', {
@@ -131,7 +147,7 @@ export class ProductoListComponent implements OnInit {
   }
 
   getValorTotal(): string {
-    const total = this.productos.reduce((sum, p) => sum + (p.precio * p.stock), 0)
+    const total = this.productos.reduce((sum, p) => sum + ((+p.precio) * p.stock), 0)
     return total.toFixed(2)
   }
 

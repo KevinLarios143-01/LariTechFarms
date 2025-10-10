@@ -45,12 +45,26 @@ export class HuevoListComponent implements OnInit {
     this.isLoading = true
     this.huevosService.getControles().subscribe({
       next: (response) => {
-        this.controles = response.data.items
+        // Manejo robusto de diferentes estructuras de respuesta
+        if (response?.data?.data && Array.isArray(response.data.data)) {
+          this.controles = response.data.data
+        } else if (response?.data?.items && Array.isArray(response.data.items)) {
+          this.controles = response.data.items
+        } else if (response?.data && Array.isArray(response.data)) {
+          this.controles = response.data
+        } else if (Array.isArray(response)) {
+          this.controles = response
+        } else {
+          this.controles = []
+        }
+
         this.filteredControles = [...this.controles]
         this.isLoading = false
         this.cdr.detectChanges()
       },
       error: (error) => {
+        this.controles = []
+        this.filteredControles = []
         this.toastr.error('Error al cargar controles de huevos', 'Error', {
           progressBar: true,
           closeButton: true
@@ -64,10 +78,24 @@ export class HuevoListComponent implements OnInit {
   loadLotes() {
     this.lotesService.getLotes().subscribe({
       next: (response) => {
-        this.lotes = response.data.data.filter((lote: any) => lote.tipo === 'Ponedoras' && lote.estado === 'Activo')
+        let allLotes: Lote[] = []
+        
+        // Manejo robusto de diferentes estructuras de respuesta
+        if (response?.data?.data && Array.isArray(response.data.data)) {
+          allLotes = response.data.data
+        } else if (response?.data?.items && Array.isArray(response.data.items)) {
+          allLotes = response.data.items
+        } else if (response?.data && Array.isArray(response.data)) {
+          allLotes = response.data
+        } else if (Array.isArray(response)) {
+          allLotes = response
+        }
+        
+        this.lotes = allLotes.filter((lote: Lote) => lote.tipo === 'Ponedoras' && lote.estado === 'Activo')
         this.cdr.detectChanges()
       },
       error: (error) => {
+        this.lotes = []
         console.error('Error al cargar lotes:', error)
       }
     })
@@ -144,5 +172,13 @@ export class HuevoListComponent implements OnInit {
     this.selectedFecha = ''
     this.filteredControles = [...this.controles]
     this.cdr.detectChanges()
+  }
+
+  trackByControlId(index: number, control: ControlHuevos): number {
+    return control.id
+  }
+
+  trackByLoteId(index: number, lote: Lote): number {
+    return lote.id
   }
 }
