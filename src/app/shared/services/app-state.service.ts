@@ -32,9 +32,9 @@ export class AppStateService {
     widthStyles: 'fullwidth',       // fullwidth, boxed
     menuPosition: 'fixed',          // fixed, scrollable
     headerPosition: 'fixed',        // fixed, scrollable
-    menuColor: 'dark',                  // light, dark, color, gradient, transparent
-    headerColor: 'light',                // light, dark, color, gradient, transparent
-    themePrimary: '',               // '58, 88, 146', '92, 144, 163', '161, 90, 223', '78, 172, 76', '223, 90, 90'
+    menuColor: 'color',                  // light, dark, color, gradient, transparent
+    headerColor: 'color',                // light, dark, color, gradient, transparent
+    themePrimary: '49 , 67 , 19',               // '58, 88, 146', '92, 144, 163', '161, 90, 223', '78, 172, 76', '223, 90, 90'
     themeBackground: '',
     backgroundImage: '',            // bgimg1, bgimg2, bgimg3, bgimg4, bgimg5
   } // Store initial state
