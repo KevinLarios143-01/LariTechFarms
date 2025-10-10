@@ -37,8 +37,10 @@ export class TicketListComponent implements OnInit {
   displayedColumns: string[] = ['ID', 'Codigo', 'Fecha', 'Cantidad', 'Estado', 'Action'];
   dataSource: MatTableDataSource<TicketDisplay>;
   tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
   loading = false;
   editForm: FormGroup;
+  filterForm: FormGroup;
   selectedTicket: Ticket | null = null;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -55,6 +57,12 @@ export class TicketListComponent implements OnInit {
       estado: ['', Validators.required],
       codigoAutorizacion: ['', Validators.required],
       cantidad: ['', [Validators.required, Validators.min(1)]]
+    });
+    
+    this.filterForm = this.fb.group({
+      fechaDesde: [''],
+      fechaHasta: [''],
+      estado: ['']
     });
   }
 
@@ -153,7 +161,8 @@ export class TicketListComponent implements OnInit {
       next: (tickets) => {
         console.log('Tickets loaded:', tickets);
         this.tickets = tickets || [];
-        this.dataSource.data = this.mapTicketsToDisplay(this.tickets);
+        this.filteredTickets = [...this.tickets];
+        this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
         this.loading = false;
       },
       error: (error) => {
@@ -180,6 +189,40 @@ export class TicketListComponent implements OnInit {
       statusText: ticket.estado,
       status: this.getStatusClass(ticket.estado)
     }));
+  }
+
+  applyFilters(): void {
+    const { fechaDesde, fechaHasta, estado } = this.filterForm.value;
+    
+    this.filteredTickets = this.tickets.filter(ticket => {
+      let matches = true;
+      
+      if (fechaDesde) {
+        const ticketFecha = new Date(ticket.fecha);
+        const desde = new Date(fechaDesde);
+        matches = matches && ticketFecha >= desde;
+      }
+      
+      if (fechaHasta) {
+        const ticketFecha = new Date(ticket.fecha);
+        const hasta = new Date(fechaHasta);
+        matches = matches && ticketFecha <= hasta;
+      }
+      
+      if (estado) {
+        matches = matches && ticket.estado.toLowerCase() === estado.toLowerCase();
+      }
+      
+      return matches;
+    });
+    
+    this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
+  }
+  
+  clearFilters(): void {
+    this.filterForm.reset();
+    this.filteredTickets = [...this.tickets];
+    this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
   }
 
   private getStatusClass(estado: string): string {
