@@ -20,6 +20,31 @@ const routes: Routes = [
         loadComponent: () =>
           import('./sell-list/sell-list.component').then((m) => m.SellListComponent),
       },
+      {
+        path: 'lotes',
+        loadComponent: () =>
+          import('./lotes/lote-list/lote-list.component').then((m) => m.LoteListComponent),
+      },
+      {
+        path: 'lotes/new-lote',
+        loadComponent: () =>
+          import('./lotes/new-lote/new-lote.component').then((m) => m.NewLoteComponent),
+      },
+      {
+        path: 'lotes/estadisticas',
+        loadComponent: () =>
+          import('./lotes/estadisticas/estadisticas.component').then((m) => m.EstadisticasComponent),
+      },
+      {
+        path: 'lotes/view-lote/:id',
+        loadComponent: () =>
+          import('./lotes/view-lote/view-lote.component').then((m) => m.ViewLoteComponent),
+      },
+      {
+        path: 'lotes/edit-lote/:id',
+        loadComponent: () =>
+          import('./lotes/new-lote/new-lote.component').then((m) => m.NewLoteComponent),
+      },
     ]
   }
 ];

@@ -1,0 +1,185 @@
+<app-hr-dashboard-page-header [title]="'Estadísticas de Lotes'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/lotes'">
+</app-hr-dashboard-page-header>
+
+<div class="row" *ngIf="!loading">
+  <!-- Estadísticas Generales -->
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> 
+              <span class="fw-medium">Total Lotes</span>
+              <h3 class="mb-0 mt-1 text-success">{{stats?.totalLotes || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> 
+              <i class="las la-layer-group"></i> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> 
+              <span class="fw-medium">Cantidad Total</span>
+              <h3 class="mb-0 mt-1 text-primary">{{(stats?.cantidadTotal | number) || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-primary-transparent my-auto float-end"> 
+              <i class="las la-calculator"></i> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> 
+              <span class="fw-medium">Promedio por Lote</span>
+              <h3 class="mb-0 mt-1 text-info">{{(stats?.promedioCantidad | number:'1.0-0') || 0}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-info-transparent my-auto float-end"> 
+              <i class="las la-chart-bar"></i> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> 
+              <span class="fw-medium">Lotes Activos</span>
+              <h3 class="mb-0 mt-1 text-success">{{getEstadoStats('Activo')._count.id}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> 
+              <i class="las la-check-circle"></i> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estadísticas por Tipo -->
+<div class="row" *ngIf="!loading">
+  <div class="col-xl-6">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h4 class="card-title">Lotes por Tipo</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card bg-info-transparent">
+              <div class="card-body text-center">
+                <div class="mb-2">
+                  <i class="las la-egg fs-40 text-info"></i>
+                </div>
+                <h4 class="mb-1 text-info">{{getTipoStats('Ponedoras')._count.id}}</h4>
+                <p class="mb-1 fw-semibold">Lotes Ponedoras</p>
+                <p class="mb-0 text-muted">{{(getTipoStats('Ponedoras')._sum.cantidad | number) || 0}} aves</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-primary-transparent">
+              <div class="card-body text-center">
+                <div class="mb-2">
+                  <i class="las la-drumstick-bite fs-40 text-primary"></i>
+                </div>
+                <h4 class="mb-1 text-primary">{{getTipoStats('Engorde')._count.id}}</h4>
+                <p class="mb-1 fw-semibold">Lotes Engorde</p>
+                <p class="mb-0 text-muted">{{(getTipoStats('Engorde')._sum.cantidad | number) || 0}} aves</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas por Estado -->
+  <div class="col-xl-6">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h4 class="card-title">Lotes por Estado</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card bg-success-transparent">
+              <div class="card-body text-center">
+                <div class="mb-2">
+                  <i class="las la-check-circle fs-30 text-success"></i>
+                </div>
+                <h5 class="mb-1 text-success">{{getEstadoStats('Activo')._count.id}}</h5>
+                <p class="mb-0 fw-semibold">Activos</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-warning-transparent">
+              <div class="card-body text-center">
+                <div class="mb-2">
+                  <i class="las la-pause-circle fs-30 text-warning"></i>
+                </div>
+                <h5 class="mb-1 text-warning">{{getEstadoStats('Inactivo')._count.id}}</h5>
+                <p class="mb-0 fw-semibold">Inactivos</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-danger-transparent">
+              <div class="card-body text-center">
+                <div class="mb-2">
+                  <i class="las la-times-circle fs-30 text-danger"></i>
+                </div>
+                <h5 class="mb-1 text-danger">{{getEstadoStats('Desalojado')._count.id}}</h5>
+                <p class="mb-0 fw-semibold">Desalojados</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="row" *ngIf="loading">
+  <div class="col-12">
+    <div class="card custom-card">
+      <div class="card-body text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3 text-muted">Cargando estadísticas...</p>
+      </div>
+    </div>
+  </div>
+</div>

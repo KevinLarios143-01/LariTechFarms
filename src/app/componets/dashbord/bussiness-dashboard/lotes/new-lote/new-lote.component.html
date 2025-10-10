@@ -1,0 +1,110 @@
+<app-hr-dashboard-page-header [title]="isEditing ? 'Editar Lote' : 'Agregar Lote'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/lotes'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información del Lote</h3>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="loteForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="tipo">Tipo *</label>
+                <ng-select class="form-control p-0" 
+                           [class.is-invalid]="loteForm.get('tipo')?.invalid && loteForm.get('tipo')?.touched"
+                           formControlName="tipo" placeholder="Seleccione el tipo">
+                  <ng-option *ngFor="let tipo of tiposLote" [value]="tipo">{{tipo}}</ng-option>
+                </ng-select>
+                <div *ngIf="loteForm.get('tipo')?.invalid && loteForm.get('tipo')?.touched" class="invalid-feedback d-block">
+                  El tipo es requerido
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="galera">Galera *</label>
+                <input type="text" class="form-control" 
+                       [class.is-invalid]="loteForm.get('galera')?.invalid && loteForm.get('galera')?.touched"
+                       formControlName="galera" placeholder="Ingrese el nombre de la galera">
+                <div *ngIf="loteForm.get('galera')?.invalid && loteForm.get('galera')?.touched" class="invalid-feedback d-block">
+                  La galera es requerida
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="cantidad">Cantidad *</label>
+                <input type="number" class="form-control" 
+                       [class.is-invalid]="loteForm.get('cantidad')?.invalid && loteForm.get('cantidad')?.touched"
+                       formControlName="cantidad" placeholder="Cantidad de aves" min="1">
+                <div *ngIf="loteForm.get('cantidad')?.invalid && loteForm.get('cantidad')?.touched" class="invalid-feedback d-block">
+                  <span *ngIf="loteForm.get('cantidad')?.errors?.['required']">La cantidad es requerida</span>
+                  <span *ngIf="loteForm.get('cantidad')?.errors?.['min']">La cantidad debe ser mayor a 0</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="estado">Estado *</label>
+                <ng-select class="form-control p-0" 
+                           formControlName="estado" placeholder="Seleccione el estado">
+                  <ng-option *ngFor="let estado of estadosLote" [value]="estado">{{estado}}</ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="fechaInicio">Fecha de Inicio *</label>
+                <input type="date" class="form-control" 
+                       [class.is-invalid]="loteForm.get('fechaInicio')?.invalid && loteForm.get('fechaInicio')?.touched"
+                       formControlName="fechaInicio">
+                <div *ngIf="loteForm.get('fechaInicio')?.invalid && loteForm.get('fechaInicio')?.touched" class="invalid-feedback d-block">
+                  La fecha de inicio es requerida
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="fechaFin">Fecha de Fin</label>
+                <input type="date" class="form-control" formControlName="fechaFin">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group mb-3">
+                <label class="form-label" for="observaciones">Observaciones</label>
+                <textarea class="form-control" formControlName="observaciones" rows="4" placeholder="Observaciones adicionales"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group d-flex gap-2 justify-content-end">
+                <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary" [disabled]="loading || loteForm.invalid">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  {{isEditing ? 'Actualizar' : 'Crear'}} Lote
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

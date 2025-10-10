@@ -1,0 +1,299 @@
+<app-hr-dashboard-page-header [title]="'Lotes'" [title2]="'Agregar Nuevo Lote'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/lotes/new-lote'">
+</app-hr-dashboard-page-header>
+
+<!-- Start::row-1 -->
+<div class="row">
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Lotes</span>
+              <h3 class="mb-0 mt-1 text-success">{{totalLotes}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> <i class="las la-layer-group"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Lotes Activos</span>
+              <h3 class="mb-0 mt-1 text-primary">{{lotesActivos}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-primary-transparent my-auto float-end"> <i class="las la-check-circle"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Ponedoras</span>
+              <h3 class="mb-0 mt-1 text-secondary">{{lotesPonedoras}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-secondary-transparent my-auto float-end"> <i class="las la-egg"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Engorde</span>
+              <h3 class="mb-0 mt-1 text-danger">{{lotesEngorde}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-danger-transparent my-auto float-end"> <i class="las la-drumstick-bite"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End::row-1 -->
+
+<!-- Start::row-2 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Lista de lotes</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0">
+                    <ng-option value="10" selected="">10</ng-option>
+                    <ng-option value="25">25</ng-option>
+                    <ng-option value="50">50</ng-option>
+                    <ng-option value="100">100</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <span>registros</span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="float-end">
+              <input type="text" class="form-control" placeholder="Buscar" (keyup)="applyFilter($event)">
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">No</th>
+                <th scope="col">Galera</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Fecha Inicio</th>
+                <th scope="col">Fecha Fin</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Debug: {{lotes.length}} lotes encontrados, loading: {{loading}} -->
+              <tr *ngIf="loading">
+                <td colspan="8" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <div class="mt-2">Cargando lotes...</div>
+                </td>
+              </tr>
+              <tr *ngIf="!loading && lotes.length === 0">
+                <td colspan="8" class="text-center py-4 text-muted">
+                  No se encontraron lotes (Total: {{lotes.length}})
+                </td>
+              </tr>
+              <tr *ngFor="let lote of lotes; trackBy: trackByLoteId" class="border-bottom">
+                <th scope="row">{{lote.id}}</th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar me-2 avatar-rounded bg-primary-transparent">
+                      <i class="fe fe-layers fs-16"></i>
+                    </div>
+                    <div>
+                      <div class="lh-1">
+                        <h6 class="mb-1">{{lote.galera}}</h6>
+                      </div>
+                      <div class="lh-1">
+                        <span class="fs-12 text-muted">{{lote.tipo}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge" [class]="lote.tipo === 'Ponedoras' ? 'bg-info' : 'bg-primary'">{{lote.tipo}}</span></td>
+                <td>
+                  <span class="fw-semibold">{{lote.cantidad | number}}</span>
+                  <small class="d-block text-muted">{{lote._count?.movAvesLote || 0}} mov. | {{lote._count?.tickets || 0}} tickets</small>
+                </td>
+                <td>{{lote.fechaInicio | date: 'dd/MM/yyyy'}}</td>
+                <td>{{lote.fechaFin ? (lote.fechaFin | date: 'dd/MM/yyyy') : 'N/A'}}</td>
+                <td><span class="badge" [class]="getEstadoBadgeClass(lote.estado)">{{lote.estado}}</span></td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/business-dashboard/lotes/view-lote', lote.id]" 
+                       data-bs-toggle="tooltip" title="Ver Lote">
+                      <i class="fe fe-eye"></i>
+                    </a>
+                    <a class="btn btn-success btn-icon" (click)="edit(editContent, lote)"
+                       data-bs-toggle="tooltip" title="Editar">
+                      <i class="fe fe-edit-2"></i>
+                    </a>
+                    <a class="btn btn-icon" 
+                       [class]="lote.estado === 'Activo' ? 'btn-warning' : 'btn-success'"
+                       (click)="toggleLoteStatus(lote)"
+                       data-bs-toggle="tooltip" 
+                       [title]="lote.estado === 'Activo' ? 'Desactivar' : 'Activar'">
+                      <i [class]="lote.estado === 'Activo' ? 'fe fe-pause-circle' : 'fe fe-play-circle'"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Start::pagination -->
+        <nav class="mt-4">
+          <ul class="pagination justify-content-end mb-0">
+            <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
+            <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+          </ul>
+        </nav>
+        <!-- End::pagination -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--End::row-2 -->
+
+<ng-template #editContent let-modal>
+    <form [formGroup]="editForm" (ngSubmit)="onUpdateLote()">
+        <div class="modal-header">
+            <h5 class="modal-title">Editar Lote</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Tipo *</label>
+                        <ng-select class="form-control p-0" 
+                                   formControlName="tipo" 
+                                   placeholder="Seleccione un tipo"
+                                   [class.is-invalid]="editForm.get('tipo')?.invalid && editForm.get('tipo')?.touched">
+                            <ng-option value="Ponedoras">Ponedoras</ng-option>
+                            <ng-option value="Engorde">Engorde</ng-option>
+                        </ng-select>
+                        <div *ngIf="editForm.get('tipo')?.invalid && editForm.get('tipo')?.touched" class="invalid-feedback">
+                            El tipo es requerido
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Galera *</label>
+                        <input class="form-control" 
+                               formControlName="galera" 
+                               placeholder="Nombre de la galera"
+                               [class.is-invalid]="editForm.get('galera')?.invalid && editForm.get('galera')?.touched">
+                        <div *ngIf="editForm.get('galera')?.invalid && editForm.get('galera')?.touched" class="invalid-feedback">
+                            La galera es requerida
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Cantidad *</label>
+                        <input class="form-control" 
+                               formControlName="cantidad" 
+                               type="number"
+                               placeholder="Cantidad de aves"
+                               [class.is-invalid]="editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched">
+                        <div *ngIf="editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched" class="invalid-feedback">
+                            <span *ngIf="editForm.get('cantidad')?.errors?.['required']">La cantidad es requerida</span>
+                            <span *ngIf="editForm.get('cantidad')?.errors?.['min']">La cantidad debe ser mayor a 0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Estado *</label>
+                        <ng-select class="form-control p-0" 
+                                   formControlName="estado" 
+                                   placeholder="Seleccione el estado">
+                            <ng-option value="Activo">Activo</ng-option>
+                            <ng-option value="Inactivo">Inactivo</ng-option>
+                            <ng-option value="Desalojado">Desalojado</ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Fecha Inicio *</label>
+                        <input class="form-control" 
+                               formControlName="fechaInicio" 
+                               type="date"
+                               [class.is-invalid]="editForm.get('fechaInicio')?.invalid && editForm.get('fechaInicio')?.touched">
+                        <div *ngIf="editForm.get('fechaInicio')?.invalid && editForm.get('fechaInicio')?.touched" class="invalid-feedback">
+                            La fecha de inicio es requerida
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">Fecha Fin</label>
+                        <input class="form-control" 
+                               formControlName="fechaFin" 
+                               type="date">
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="form-label">Observaciones</label>
+                        <textarea class="form-control" 
+                                  formControlName="observaciones" 
+                                  rows="3" 
+                                  placeholder="Observaciones adicionales"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('cancel')">Cancelar</button>
+            <button type="submit" class="btn btn-success" [disabled]="loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Actualizar
+            </button>
+        </div>
+    </form>
+</ng-template>

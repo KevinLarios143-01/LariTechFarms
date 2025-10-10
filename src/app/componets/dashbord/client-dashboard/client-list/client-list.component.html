@@ -1,18 +1,22 @@
-     <!-- Page Header -->
-     <div class="page-header d-lg-flex d-block">
-        <div class="page-leftheader">
-            <div class="page-title">Lista de Clientes</div>
-        </div>
-        <div class="page-rightheader">
-            <div class="btn-list d-flex gap-1">
-                <a routerLink="/dashboard/client-dashboard/new-client" class="btn btn-primary"><i class="fe fe-plus fs-12 my-auto me-2"></i>Agregar Cliente</a>
-                <button  class="btn btn-light3" data-bs-toggle="tooltip" data-bs-placement="top" title="E-mail"> <i class="fe fe-mail"></i> </button>
-                <button  class="btn btn-light3" data-bs-placement="top" data-bs-toggle="tooltip" title="Contact"> <i class="fe fe-phone-call"></i> </button>
-                <button  class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info"> <i class="fe fe-info"></i> </button>
-            </div>
+<!-- Page Header -->
+<div class="page-header d-lg-flex d-block">
+    <div class="page-leftheader">
+        <div class="page-title">Lista de Clientes</div>
+    </div>
+    <div class="page-rightheader">
+        <div class="btn-list d-flex gap-1">
+            <a routerLink="/dashboard/client-dashboard/new-client" class="btn btn-primary"><i
+                    class="fe fe-plus fs-12 my-auto me-2"></i>Agregar Cliente</a>
+            <button class="btn btn-light3" data-bs-toggle="tooltip" data-bs-placement="top" title="E-mail"> <i
+                    class="fe fe-mail"></i> </button>
+            <button class="btn btn-light3" data-bs-placement="top" data-bs-toggle="tooltip" title="Contact"> <i
+                    class="fe fe-phone-call"></i> </button>
+            <button class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info"> <i
+                    class="fe fe-info"></i> </button>
         </div>
     </div>
-    <!-- Page Header Close -->
+</div>
+<!-- Page Header Close -->
 
 <div class="row">
     <div class="col-xl-12 col-md-12 col-lg-12">
@@ -32,8 +36,10 @@
                                     <label class="form-label">Desde:</label>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
-                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
+                                            <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i>
+                                            </div>
+                                            <input mwlFlatpickr type="text" class="form-control choose-date"
+                                                placeholder="DD-MM-YYYY">
                                         </div>
                                     </div>
                                 </div>
@@ -43,8 +49,10 @@
                                     <label class="form-label">Hasta:</label>
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
-                                            <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY">
+                                            <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i>
+                                            </div>
+                                            <input mwlFlatpickr type="text" class="form-control choose-date"
+                                                placeholder="DD-MM-YYYY">
                                         </div>
                                     </div>
                                 </div>
@@ -54,7 +62,8 @@
                     <div class="col-md-3">
                         <div class="form-group">
                             <label class="form-label">Seleccionar Estado:</label>
-                            <ng-select class="form-control custom-select p-0" data-trigger placeholder="Seleccionar Estado">
+                            <ng-select class="form-control custom-select p-0" data-trigger
+                                placeholder="Seleccionar Estado">
                                 <ng-option value="">Activo</ng-option>
                                 <ng-option value="1">Inactivo</ng-option>
                             </ng-select>
@@ -63,7 +72,7 @@
                     <div class="col-md-2 ">
                         <div class="form-group mt-2">
                             <label class="form-label"></label>
-                            <a  href="javascript:void(0);" class="btn btn-primary d-grid">Buscar</a>
+                            <a href="javascript:void(0);" class="btn btn-primary d-grid">Buscar</a>
                         </div>
                     </div>
                 </div>
@@ -75,7 +84,8 @@
                             <span>Mostrar</span>
                             <div class="d-flex ms-2 mx-2">
                                 <div class="form-group">
-                                    <ng-select name="quantity" id="select-countries17" placeholder="1" class="form-control  wd-150 p-0" data-trigger>
+                                    <ng-select name="quantity" id="select-countries17" placeholder="1"
+                                        class="form-control  wd-150 p-0" data-trigger>
                                         <ng-option value="1" selected="">1</ng-option>
                                         <ng-option value="2">2</ng-option>
                                         <ng-option value="3">3</ng-option>
@@ -88,18 +98,20 @@
                     </div>
                     <div class="col-sm-6 mb-1">
                         <div class="float-end">
-                            <input type="text" matInput (keyup)="applyFilter($event)"  #input class="form-control" placeholder="buscar">
+                            <input type="text" matInput (keyup)="applyFilter($event)" #input class="form-control"
+                                placeholder="buscar">
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table mat-table [dataSource]="dataSource" matSort class="table  table-vcenter text-nowrap table-bordered border-bottom" id="client-list">
+                    <table mat-table [dataSource]="dataSource" matSort
+                        class="table  table-vcenter text-nowrap table-bordered border-bottom" id="client-list">
                         <ng-container matColumnDef="ID">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> #ID </th>
                             <td mat-cell *matCellDef="let row"> {{row.No}} </td>
-                          </ng-container>
-                           <!-- Title Column -->
-                           <ng-container matColumnDef="Name">
+                        </ng-container>
+                        <!-- Title Column -->
+                        <ng-container matColumnDef="Name">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
                             <td mat-cell *matCellDef="let row">
                                 <a routerLink="/dashboard/client-dashboard/user-profile" class="d-flex">
@@ -112,14 +124,14 @@
                                 </a>
 
                             </td>
-                          </ng-container>
-                                <!-- Purchase from Column -->
-                                <ng-container matColumnDef="Email">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
-                                    <td mat-cell *matCellDef="let row"> {{row.email}} </td>
-                                  </ng-container>
-                                   <!-- Amount Date Column -->
-                          <ng-container matColumnDef="Projects">
+                        </ng-container>
+                        <!-- Purchase from Column -->
+                        <ng-container matColumnDef="Email">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+                            <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+                        </ng-container>
+                        <!-- Amount Date Column -->
+                        <ng-container matColumnDef="Projects">
                             <th mat-header-cell *matHeaderCellDef mat-sort-header> Proyectos </th>
                             <td mat-cell *matCellDef="let row">
                                 {{row.project}}
@@ -132,31 +144,36 @@
                             <td mat-cell *matCellDef="let row">
                                 <span class="badge bg-{{row.status}}-transparent"> {{row.statusText}}</span>
                             </td>
-                          </ng-container>
+                        </ng-container>
 
-                          <ng-container matColumnDef="Action">
+                        <ng-container matColumnDef="Action">
                             <th mat-header-cell *matHeaderCellDef> Acciones </th>
                             <td mat-cell *matCellDef="let row">
                                 <div class="d-flex">
-                                    <a routerLink="/dashboard/client-dashboard/view-client" class="action-btns1" placement="top" ngbTooltip="Ver Cliente"><i class="fe fe-eye text-primary"></i></a>
-                                    <a (click)="edit(editContent, row)"  class="action-btns1" placement="top" ngbTooltip="Editar">
+                                    <a routerLink="/dashboard/client-dashboard/view-client" class="action-btns1"
+                                        placement="top" ngbTooltip="Ver Cliente"><i
+                                            class="fe fe-eye text-primary"></i></a>
+                                    <a (click)="edit(editContent, row)" class="action-btns1" placement="top"
+                                        ngbTooltip="Editar">
                                         <i class="fe fe-edit-2  text-success"></i>
                                     </a>
-                                    <a (click)="toggleClienteStatus(row.No)" class="action-btns1" placement="top" 
-                                       [ngbTooltip]="row.status === 'success' ? 'Desactivar' : 'Activar'">
-                                        <i [class]="row.status === 'success' ? 'fe fe-user-x text-warning' : 'fe fe-user-check text-success'"></i>
+                                    <a (click)="toggleClienteStatus(row.No)" class="action-btns1" placement="top"
+                                        [ngbTooltip]="row.status === 'success' ? 'Desactivar' : 'Activar'">
+                                        <i
+                                            [class]="row.status === 'success' ? 'fe fe-user-x text-warning' : 'fe fe-user-check text-success'"></i>
                                     </a>
                                 </div>
                             </td>
-                          </ng-container>
+                        </ng-container>
 
-                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-                          <!-- Row shown when there is no matching data. -->
-                          <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro "{{input.value}}"</td>
-                          </tr>
+                        <!-- Row shown when there is no matching data. -->
+                        <tr class="mat-row" *matNoDataRow>
+                            <td class="mat-cell" colspan="4">No hay datos que coincidan con el filtro "{{input.value}}"
+                            </td>
+                        </tr>
                     </table>
                 </div>
                 <!-- Start::pagination -->
@@ -172,84 +189,75 @@
     <form [formGroup]="editForm" (ngSubmit)="onUpdateCliente()">
         <div class="modal-header">
             <h5 class="modal-title">Editar Cliente</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Cross click')"></button>
         </div>
         <div class="modal-body">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Nombre *</label>
-                        <input class="form-control" 
-                               formControlName="nombre" 
-                               placeholder="Nombre del cliente"
-                               [class.is-invalid]="editForm.get('nombre')?.invalid && editForm.get('nombre')?.touched">
+                        <input class="form-control" formControlName="nombre" placeholder="Nombre del cliente"
+                            [class.is-invalid]="editForm.get('nombre')?.invalid && editForm.get('nombre')?.touched">
                         @if (editForm.get('nombre')?.invalid && editForm.get('nombre')?.touched) {
-                            <div class="invalid-feedback">
-                                El nombre es requerido
-                            </div>
+                        <div class="invalid-feedback">
+                            El nombre es requerido
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Teléfono *</label>
-                        <input class="form-control" 
-                               formControlName="telefono" 
-                               placeholder="Teléfono"
-                               [class.is-invalid]="editForm.get('telefono')?.invalid && editForm.get('telefono')?.touched">
+                        <input class="form-control" formControlName="telefono" placeholder="Teléfono"
+                            [class.is-invalid]="editForm.get('telefono')?.invalid && editForm.get('telefono')?.touched">
                         @if (editForm.get('telefono')?.invalid && editForm.get('telefono')?.touched) {
-                            <div class="invalid-feedback">
-                                El teléfono es requerido
-                            </div>
+                        <div class="invalid-feedback">
+                            El teléfono es requerido
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Correo Electrónico *</label>
-                        <input class="form-control" 
-                               formControlName="correo" 
-                               type="email" 
-                               placeholder="correo@ejemplo.com"
-                               [class.is-invalid]="editForm.get('correo')?.invalid && editForm.get('correo')?.touched">
+                        <input class="form-control" formControlName="correo" type="email"
+                            placeholder="correo@ejemplo.com"
+                            [class.is-invalid]="editForm.get('correo')?.invalid && editForm.get('correo')?.touched">
                         @if (editForm.get('correo')?.invalid && editForm.get('correo')?.touched) {
-                            <div class="invalid-feedback">
-                                @if (editForm.get('correo')?.errors?.['required']) {
-                                    <span>El correo es requerido</span>
-                                }
-                                @if (editForm.get('correo')?.errors?.['email']) {
-                                    <span>Ingrese un correo válido</span>
-                                }
-                            </div>
+                        <div class="invalid-feedback">
+                            @if (editForm.get('correo')?.errors?.['required']) {
+                            <span>El correo es requerido</span>
+                            }
+                            @if (editForm.get('correo')?.errors?.['email']) {
+                            <span>Ingrese un correo válido</span>
+                            }
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">NIT *</label>
-                        <input class="form-control" 
-                               formControlName="nit" 
-                               placeholder="NIT"
-                               [class.is-invalid]="editForm.get('nit')?.invalid && editForm.get('nit')?.touched">
+                        <input class="form-control" formControlName="nit" placeholder="NIT"
+                            [class.is-invalid]="editForm.get('nit')?.invalid && editForm.get('nit')?.touched">
                         @if (editForm.get('nit')?.invalid && editForm.get('nit')?.touched) {
-                            <div class="invalid-feedback">
-                                El NIT es requerido
-                            </div>
+                        <div class="invalid-feedback">
+                            El NIT es requerido
+                        </div>
                         }
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label class="form-label">Dirección *</label>
-                        <textarea class="form-control" 
-                                  formControlName="direccion" 
-                                  rows="3" 
-                                  placeholder="Dirección completa"
-                                  [class.is-invalid]="editForm.get('direccion')?.invalid && editForm.get('direccion')?.touched"></textarea>
+                        <textarea class="form-control" formControlName="direccion" rows="3"
+                            placeholder="Dirección completa"
+                            [class.is-invalid]="editForm.get('direccion')?.invalid && editForm.get('direccion')?.touched"></textarea>
                         @if (editForm.get('direccion')?.invalid && editForm.get('direccion')?.touched) {
-                            <div class="invalid-feedback">
-                                La dirección es requerida
-                            </div>
+                        <div class="invalid-feedback">
+                            La dirección es requerida
+                        </div>
                         }
                     </div>
                 </div>
@@ -259,7 +267,7 @@
             <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('cancel')">Cancelar</button>
             <button type="submit" class="btn btn-success" [disabled]="loading">
                 @if (loading) {
-                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
                 }
                 Actualizar
             </button>

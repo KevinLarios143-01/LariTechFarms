@@ -1,0 +1,278 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-0">Gestión de Lotes</h2>
+          <p class="text-muted">Administra los lotes de aves de la granja</p>
+        </div>
+        <button class="btn btn-primary" (click)="openCreateModal()">
+          <i class="fas fa-plus me-2"></i>Nuevo Lote
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Buscar por galera</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                placeholder="Nombre de galera..."
+                [(ngModel)]="searchTerm"
+                (keyup.enter)="onSearch()">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Estado</label>
+              <select class="form-select" [(ngModel)]="filtroEstado" (change)="onFilterChange()">
+                <option value="">Todos</option>
+                <option *ngFor="let estado of estadosLote" [value]="estado">{{estado}}</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" [(ngModel)]="filtroTipo" (change)="onFilterChange()">
+                <option value="">Todos</option>
+                <option *ngFor="let tipo of tiposLote" [value]="tipo">{{tipo}}</option>
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button class="btn btn-outline-primary me-2" (click)="onSearch()">
+                <i class="fas fa-search me-1"></i>Buscar
+              </button>
+              <button class="btn btn-outline-secondary" (click)="clearFilters()">
+                <i class="fas fa-times me-1"></i>Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Lotes -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Tipo</th>
+                  <th>Galera</th>
+                  <th>Cantidad</th>
+                  <th>Fecha Inicio</th>
+                  <th>Fecha Fin</th>
+                  <th>Estado</th>
+                  <th>Movimientos</th>
+                  <th>Tickets</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="loading">
+                  <td colspan="10" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngIf="!loading && lotes.length === 0">
+                  <td colspan="10" class="text-center py-4 text-muted">
+                    No se encontraron lotes
+                  </td>
+                </tr>
+                <tr *ngFor="let lote of lotes">
+                  <td>{{lote.id}}</td>
+                  <td>
+                    <span class="badge" [class]="getTipoBadgeClass(lote.tipo)">
+                      {{lote.tipo}}
+                    </span>
+                  </td>
+                  <td class="fw-semibold">{{lote.galera}}</td>
+                  <td>{{lote.cantidad | number}}</td>
+                  <td>{{lote.fechaInicio | date:'dd/MM/yyyy'}}</td>
+                  <td>{{lote.fechaFin ? (lote.fechaFin | date:'dd/MM/yyyy') : 'N/A'}}</td>
+                  <td>
+                    <span class="badge" [class]="getEstadoBadgeClass(lote.estado)">
+                      {{lote.estado}}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">{{lote._count?.movAvesLote || 0}}</span>
+                  </td>
+                  <td>
+                    <span class="badge bg-info">{{lote._count?.tickets || 0}}</span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button 
+                        class="btn btn-outline-primary" 
+                        (click)="openEditModal(lote)"
+                        title="Editar">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button 
+                        class="btn btn-outline-warning" 
+                        (click)="openCantidadModal(lote)"
+                        title="Actualizar cantidad">
+                        <i class="fas fa-calculator"></i>
+                      </button>
+                      <button 
+                        class="btn btn-outline-danger" 
+                        (click)="deleteLote(lote)"
+                        title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalPages > 1">
+            <div class="text-muted">
+              Mostrando {{(currentPage - 1) * itemsPerPage + 1}} - {{getEndItem()}} de {{totalItems}} registros
+            </div>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
+                    Anterior
+                  </button>
+                </li>
+                <li class="page-item" 
+                    *ngFor="let page of [].constructor(totalPages); let i = index"
+                    [class.active]="currentPage === i + 1">
+                  <button class="page-link" (click)="onPageChange(i + 1)">
+                    {{i + 1}}
+                  </button>
+                </li>
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
+                    Siguiente
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Crear/Editar Lote -->
+<div class="modal fade" id="loteModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{isEditing ? 'Editar Lote' : 'Nuevo Lote'}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form [formGroup]="loteForm" (ngSubmit)="onSubmit()">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Tipo *</label>
+              <select class="form-select" formControlName="tipo">
+                <option value="">Seleccione un tipo</option>
+                <option *ngFor="let tipo of tiposLote" [value]="tipo">{{tipo}}</option>
+              </select>
+              <div *ngIf="loteForm.get('tipo')?.invalid && loteForm.get('tipo')?.touched" class="text-danger">
+                <small>El tipo es requerido</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Galera *</label>
+              <input type="text" class="form-control" formControlName="galera" placeholder="Nombre de la galera">
+              <div *ngIf="loteForm.get('galera')?.invalid && loteForm.get('galera')?.touched" class="text-danger">
+                <small>La galera es requerida</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Cantidad *</label>
+              <input type="number" class="form-control" formControlName="cantidad" placeholder="Cantidad de aves">
+              <div *ngIf="loteForm.get('cantidad')?.invalid && loteForm.get('cantidad')?.touched" class="text-danger">
+                <small>La cantidad es requerida y debe ser mayor a 0</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Estado</label>
+              <select class="form-select" formControlName="estado">
+                <option *ngFor="let estado of estadosLote" [value]="estado">{{estado}}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Fecha Inicio *</label>
+              <input type="date" class="form-control" formControlName="fechaInicio">
+              <div *ngIf="loteForm.get('fechaInicio')?.invalid && loteForm.get('fechaInicio')?.touched" class="text-danger">
+                <small>La fecha de inicio es requerida</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Fecha Fin</label>
+              <input type="date" class="form-control" formControlName="fechaFin">
+            </div>
+            <div class="col-12">
+              <label class="form-label">Observaciones</label>
+              <textarea class="form-control" formControlName="observaciones" rows="3" placeholder="Observaciones adicionales"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading || loteForm.invalid">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            {{isEditing ? 'Actualizar' : 'Crear'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Actualizar Cantidad -->
+<div class="modal fade" id="cantidadModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Cantidad</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form [formGroup]="cantidadForm" (ngSubmit)="onUpdateCantidad()">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nueva Cantidad *</label>
+            <input type="number" class="form-control" formControlName="cantidad" placeholder="Cantidad de aves">
+            <div *ngIf="cantidadForm.get('cantidad')?.invalid && cantidadForm.get('cantidad')?.touched" class="text-danger">
+              <small>La cantidad es requerida y debe ser mayor a 0</small>
+            </div>
+          </div>
+          <div class="alert alert-info" *ngIf="selectedLote">
+            <strong>Lote:</strong> {{selectedLote.galera}}<br>
+            <strong>Cantidad actual:</strong> {{selectedLote.cantidad | number}}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-warning" [disabled]="loading || cantidadForm.invalid">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+            Actualizar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
