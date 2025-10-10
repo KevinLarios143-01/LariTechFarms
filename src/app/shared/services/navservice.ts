@@ -231,6 +231,20 @@ export class NavService implements OnDestroy {
         //   ]
         // },
         {
+          title: 'Producción Dashboard', type: 'sub', badgeType: 'success', badgeValue: '3', selected: false, active: false, children: [
+            { path: '/dashboard/production-dashboard/huevos/estadisticas', title: 'Dashboard', type: 'link', selected: false },
+            { path: '/dashboard/production-dashboard/huevos', title: 'Control de Huevos', type: 'link', selected: false },
+            {
+              title: 'Productos', type: 'sub', active: false, selected: false, children: [
+                { path: '/dashboard/production-dashboard/productos/list', title: 'Lista de Productos', type: 'link', selected: false },
+                { path: '/dashboard/production-dashboard/productos/new', title: 'Nuevo Producto', type: 'link', selected: false },
+                { path: '/dashboard/production-dashboard/productos/estadisticas', title: 'Estadísticas', type: 'link', selected: false },
+              ]
+            },
+            { path: '/dashboard/production-dashboard/lotes', title: 'Gestión de Lotes', type: 'link', selected: false },
+          ]
+        },
+        {
           title: 'Super Admin', type: 'sub', active: false, selected: false, children: [
             //{ path: '/dashboard/super-admin/dashboard', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/super-admin/companies', title: 'Empresas', type: 'link', selected: false },

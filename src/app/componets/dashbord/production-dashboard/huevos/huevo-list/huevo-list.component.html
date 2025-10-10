@@ -1,0 +1,168 @@
+<app-hr-dashboard-page-header [title]="'Control de Huevos'" [title2]="'Nuevo Control'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'../new'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+    <div class="col-xl-12 col-md-12 col-lg-12">
+        <div class="card custom-card">
+            <div class="card-header d-flex justify-content-between border-bottom-0">
+                <h4 class="card-title">Resumen de Control de Huevos</h4>
+                <div class="float-end">
+                    <input type="text" class="form-control" placeholder="buscar" 
+                           [(ngModel)]="searchTerm" (input)="applyFilters()">
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-7">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Lote:</label>
+                                    <ng-select [(ngModel)]="selectedLote" placeholder="Filtrar por lote" 
+                                               (change)="applyFilters()" [clearable]="true" class="form-control p-0">
+                                        @for (lote of lotes; track lote.id) {
+                                            <ng-option [value]="lote.id.toString()">{{lote.galera}}</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Calidad:</label>
+                                    <ng-select [(ngModel)]="selectedCalidad" placeholder="Filtrar por calidad" 
+                                               (change)="applyFilters()" [clearable]="true" class="form-control p-0">
+                                        @for (calidad of calidades; track calidad) {
+                                            <ng-option [value]="calidad">{{calidad}}</ng-option>
+                                        }
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">Fecha:</label>
+                                    <input type="date" class="form-control" [(ngModel)]="selectedFecha" 
+                                           (change)="applyFilters()" placeholder="Filtrar por fecha">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mt-2">
+                            <label class="form-label"></label>
+                            <button class="btn btn-primary d-grid" (click)="applyFilters()">Buscar</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group mt-2">
+                            <label class="form-label"></label>
+                            <button class="btn btn-outline-secondary d-grid" (click)="clearFilters()">Limpiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body border-top">
+                <div class="row">
+                    <div class="col-sm-6 mb-1">
+                        <div class="d-flex align-items-center">
+                            <span>Mostrar</span>
+                            <div class="d-flex ms-2 mx-2">
+                                <div class="form-group">
+                                    <ng-select name="quantity" placeholder="10"
+                                        class="form-control wd-150 p-0">
+                                        <ng-option value="10">10</ng-option>
+                                        <ng-option value="25">25</ng-option>
+                                        <ng-option value="50">50</ng-option>
+                                        <ng-option value="100">100</ng-option>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <span>entradas</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-1">
+                        <div class="float-end">
+                            <input type="text" class="form-control" placeholder="buscar" 
+                                   [(ngModel)]="searchTerm" (input)="applyFilters()">
+                        </div>
+                    </div>
+                </div>
+                @if (isLoading) {
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="table-responsive">
+                        <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Fecha</th>
+                                    <th>Lote/Galera</th>
+                                    <th>Cantidad Huevos</th>
+                                    <th>Calidad</th>
+                                    <th>Usuario</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (filteredControles.length === 0) {
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fe fe-inbox fs-24 mb-2"></i>
+                                                <p>No hay controles disponibles</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                } @else {
+                                    @for (control of filteredControles; track control.id) {
+                                        <tr>
+                                            <td>#CH-{{control.id.toString().padStart(3, '0')}}</td>
+                                            <td>{{ control.fecha | date: 'dd/MM/yyyy':'UTC' }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="avatar avatar-md me-2 avatar-rounded bg-primary-transparent">
+                                                        <i class="fe fe-layers"></i>
+                                                    </span>
+                                                    <div>
+                                                        <h6 class="mb-1 fs-14">{{ control.lote?.galera }}</h6>
+                                                        <span class="fs-12 text-muted">{{ control.lote?.tipo }}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="fw-bold text-primary">{{ control.cantidadHuevos }}</td>
+                                            <td>
+                                                <span class="badge" [class]="'bg-' + getCalidadBadgeColor(control.calidad) + '-transparent'">
+                                                    {{ control.calidad || 'Sin especificar' }}
+                                                </span>
+                                            </td>
+                                            <td>{{ control.usuario?.nombre }} {{ control.usuario?.apellido }}</td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a [routerLink]="['../view', control.id]" 
+                                                       class="action-btns1" placement="top" ngbTooltip="Ver Control">
+                                                        <i class="fe fe-eye text-primary"></i>
+                                                    </a>
+                                                    <a [routerLink]="['../edit', control.id]" class="action-btns1" placement="top" ngbTooltip="Editar">
+                                                        <i class="fe fe-edit-2 text-success"></i>
+                                                    </a>
+                                                    <a (click)="deleteControl(control.id)" class="action-btns1" placement="top" 
+                                                       ngbTooltip="Eliminar">
+                                                        <i class="fe fe-trash text-danger"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

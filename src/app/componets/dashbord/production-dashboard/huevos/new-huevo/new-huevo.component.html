@@ -1,0 +1,175 @@
+<app-hr-dashboard-page-header [title]="isEditMode ? 'Editar Control' : 'Agregar Control'">
+</app-hr-dashboard-page-header>
+
+<!-- Row -->
+<div class="row">
+    <div class="col-xxl-3 col-xl-4 col-md-12 col-lg-12">
+        <div class="card box-widget widget-user custom-card">
+            <div class="card-body text-center">
+                <div class="widget-user-image mx-auto text-center">
+                    <i class="fas fa-egg fa-5x text-warning"></i>
+                </div>
+                <div class="pro-user mt-3">
+                    <h5 class="pro-user-username text-dark mb-1 fs-16">Control de Huevos</h5>
+                    <h6 class="pro-user-desc text-muted fs-12">{{ controlForm.get('calidad')?.value || 'Sin calidad' }}</h6>
+                </div>
+            </div>
+            <div class="card-footer p-0">
+                <div class="row">
+                    <div class="col-4 text-center py-3 border-end">
+                        <h5 class="fs-12 fw-semibold mb-3">Cantidad</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-18 text-primary">{{ controlForm.get('cantidadHuevos')?.value || '0' }}</span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Huevos</h5>
+                    </div>
+                    <div class="col-4 py-3 text-center border-end">
+                        <h5 class="fs-12 fw-semibold mb-3">Fecha</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-12 text-info">{{ controlForm.get('fecha')?.value || 'Sin fecha' }}</span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Registro</h5>
+                    </div>
+                    <div class="col-4 text-center py-3">
+                        <h5 class="fs-12 fw-semibold mb-3">Lote</h5>
+                        <h5 class="mb-2">
+                            <span class="fs-12 text-success">{{ getLoteNombre() || 'Sin lote' }}</span>
+                        </h5>
+                        <h5 class="fs-12 mb-0">Asignado</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xxl-9 col-xl-8 col-md-12 col-lg-12">
+        <div class="tab-menu-heading hremp-tabs p-0 border-0">
+            <div class="tabs-menu1">
+                <!-- Tabs -->
+                <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="panel-tabs">
+                    <li [ngbNavItem]="1">
+                        <a ngbNavLink>Control de Huevos</a>
+                        <ng-template ngbNavContent>
+                            <div id="tab1">
+                                <div class="card-body">
+                                    @if (isLoading) {
+                                        <div class="text-center">
+                                            <div class="spinner-border" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    } @else {
+                                        <form [formGroup]="controlForm" (ngSubmit)="onSubmit()">
+                                            <h4 class="mb-4 font-weight-bold">Información del Control</h4>
+                                            
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Lote *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <ng-select formControlName="idLote" 
+                                                                   class="form-control custom-select p-0"
+                                                                   placeholder="Seleccionar lote"
+                                                                   [disabled]="isEditMode"
+                                                                   [class.is-invalid]="isFieldInvalid('idLote')">
+                                                            @for (lote of lotes; track lote.id) {
+                                                                <ng-option [value]="lote.id">
+                                                                    {{lote.galera}} - {{lote.tipo}} ({{lote.cantidad}} aves)
+                                                                </ng-option>
+                                                            }
+                                                        </ng-select>
+                                                        @if (isFieldInvalid('idLote')) {
+                                                            <div class="invalid-feedback d-block">
+                                                                {{ getFieldError('idLote') }}
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Fecha *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="date" 
+                                                               class="form-control" 
+                                                               formControlName="fecha"
+                                                               [class.is-invalid]="isFieldInvalid('fecha')">
+                                                        @if (isFieldInvalid('fecha')) {
+                                                            <div class="invalid-feedback">
+                                                                {{ getFieldError('fecha') }}
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Cantidad de Huevos *</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="number" 
+                                                               class="form-control" 
+                                                               formControlName="cantidadHuevos"
+                                                               placeholder="Ingrese la cantidad"
+                                                               min="1"
+                                                               [class.is-invalid]="isFieldInvalid('cantidadHuevos')">
+                                                        @if (isFieldInvalid('cantidadHuevos')) {
+                                                            <div class="invalid-feedback">
+                                                                {{ getFieldError('cantidadHuevos') }}
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label class="form-label mb-0 mt-2">Calidad</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <ng-select formControlName="calidad" 
+                                                                   class="form-control custom-select p-0"
+                                                                   placeholder="Seleccionar calidad"
+                                                                   [clearable]="true">
+                                                            @for (calidad of calidades; track calidad) {
+                                                                <ng-option [value]="calidad">{{calidad}}</ng-option>
+                                                            }
+                                                        </ng-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    }
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
+            <div [ngbNavOutlet]="nav" class="tab-content">
+            </div>
+            <div class="panel-footer text-end">
+                <button type="button" 
+                        class="me-2 btn btn-primary"
+                        (click)="onSubmit()"
+                        [disabled]="controlForm.invalid || isLoading">
+                    {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+                </button>
+                <button type="button" 
+                        class="btn btn-danger" 
+                        routerLink="../list">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Row-->

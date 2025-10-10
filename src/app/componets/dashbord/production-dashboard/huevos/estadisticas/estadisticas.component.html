@@ -1,0 +1,178 @@
+<app-hr-dashboard-page-header [title]="'Dashboard de Huevos'" [title2]="'Lista de Controles'" [class]="'btn btn-outline-primary'"
+  [class1]="''" [path]="'../list'">
+</app-hr-dashboard-page-header>
+
+<div class="container-fluid">
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <h4>Dashboard de Producción de Huevos</h4>
+    </div>
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Fecha Inicio</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaInicio" (change)="onDateChange()">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Fecha Fin</label>
+          <input type="date" class="form-control" [(ngModel)]="fechaFin" (change)="onDateChange()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando estadísticas...</span>
+      </div>
+    </div>
+  } @else if (stats) {
+    <!-- Resumen General -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title text-primary">{{ stats.totalHuevos }}</h5>
+            <p class="card-text">Total Huevos</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title text-info">{{ stats.totalRegistros }}</h5>
+            <p class="card-text">Total Registros</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title text-success">{{ stats.promedioHuevosPorDia.toFixed(1) }}</h5>
+            <p class="card-text">Promedio por Día</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center">
+          <div class="card-body">
+            <h5 class="card-title text-warning">{{ (stats.totalHuevos / stats.totalRegistros).toFixed(1) }}</h5>
+            <p class="card-text">Promedio por Registro</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producción por Lote -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="card-title mb-0">Producción por Lote</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Galera</th>
+                    <th>Total Huevos</th>
+                    <th>Promedio</th>
+                    <th>Registros</th>
+                    <th>Rendimiento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (lote of stats.produccionPorLote; track lote.idLote) {
+                    <tr>
+                      <td class="fw-bold">{{ lote.galera }}</td>
+                      <td>{{ lote.totalHuevos }}</td>
+                      <td>{{ lote.promedioHuevos.toFixed(1) }}</td>
+                      <td>{{ lote.registros }}</td>
+                      <td>
+                        <div class="progress" style="height: 20px;">
+                          <div class="progress-bar bg-success" 
+                               [style.width.%]="(lote.totalHuevos / stats.totalHuevos) * 100">
+                            {{ ((lote.totalHuevos / stats.totalHuevos) * 100).toFixed(1) }}%
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Producción por Calidad -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="card-title mb-0">Distribución por Calidad</h6>
+          </div>
+          <div class="card-body">
+            @for (calidad of stats.produccionPorCalidad; track calidad.calidad) {
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span [class]="getCalidadBadgeClass(calidad.calidad)">
+                    {{ calidad.calidad }}
+                  </span>
+                  <span class="fw-bold">{{ calidad.totalHuevos }} ({{ getCalidadPercentage(calidad.totalHuevos).toFixed(1) }}%)</span>
+                </div>
+                <div class="progress">
+                  <div class="progress-bar" 
+                       [class]="'bg-' + (calidad.calidad === 'Excelente' ? 'success' : calidad.calidad === 'Buena' ? 'info' : calidad.calidad === 'Regular' ? 'warning' : 'danger')"
+                       [style.width.%]="getCalidadPercentage(calidad.totalHuevos)">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Tendencia Semanal -->
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h6 class="card-title mb-0">Tendencia Semanal</h6>
+          </div>
+          <div class="card-body">
+            @if (stats.tendenciaSemanal && stats.tendenciaSemanal.length > 0) {
+              @for (semana of stats.tendenciaSemanal; track semana.semana) {
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-bold">{{ semana.semana }}</span>
+                    <div>
+                      <span class="badge bg-primary me-2">{{ semana.totalHuevos }}</span>
+                      <span [class]="getCalidadBadgeClass(semana.promedioCalidad)">
+                        {{ semana.promedioCalidad }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="progress">
+                    <div class="progress-bar bg-primary" 
+                         [style.width.%]="(semana.totalHuevos / stats.totalHuevos) * 100">
+                    </div>
+                  </div>
+                </div>
+              }
+            } @else {
+              <p class="text-muted">No hay datos de tendencia semanal disponibles</p>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="alert alert-info">
+      <i class="fas fa-info-circle"></i>
+      No hay datos disponibles para el período seleccionado.
+    </div>
+  }
+</div>

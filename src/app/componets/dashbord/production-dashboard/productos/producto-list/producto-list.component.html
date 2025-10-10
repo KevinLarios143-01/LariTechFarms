@@ -1,0 +1,198 @@
+<app-hr-dashboard-page-header [title]="'Productos'" [title2]="'Agregar Nuevo Producto'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/productos/new'">
+</app-hr-dashboard-page-header>
+<!-- Start::row-1 -->
+<div class="row">
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Productos</span>
+              <h3 class="mb-0 mt-1 text-success">{{productos.length}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> <i class="las la-box"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Productos Activos</span>
+              <h3 class="mb-0 mt-1 text-primary">{{getProductosActivos()}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-primary-transparent my-auto float-end"> <i class="las la-check-circle"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Stock Bajo</span>
+              <h3 class="mb-0 mt-1 text-warning">{{getStockBajo()}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-warning-transparent my-auto float-end"> <i class="las la-exclamation-triangle"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Valor Inventario</span>
+              <h3 class="mb-0 mt-1 text-info">${{getValorTotal()}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-info-transparent my-auto float-end"> <i class="las la-dollar-sign"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End::row-1 -->
+
+<!-- Start::row-2 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Lista de productos</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" id="select-countries17" placeholder="10" class="form-control  wd-150 p-0"
+                    data-trigger>
+                    <ng-option value="1" selected="">10</ng-option>
+                    <ng-option value="2">25</ng-option>
+                    <ng-option value="3">50</ng-option>
+                    <ng-option value="4">100</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <span>registros</span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="float-end">
+              <input type="text" class="form-control" placeholder="Buscar" [(ngModel)]="searchTerm" (input)="applyFilters()">
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">No</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (isLoading) {
+                <tr>
+                  <td colspan="7" class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <div class="mt-2">Cargando productos...</div>
+                  </td>
+                </tr>
+              } @else if (filteredProductos.length === 0) {
+                <tr>
+                  <td colspan="7" class="text-center py-4 text-muted">
+                    No se encontraron productos
+                  </td>
+                </tr>
+              } @else {
+                @for (producto of filteredProductos; track producto.id) {
+                  <tr class="border-bottom">
+                    <th scope="row">{{producto.id}}</th>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="avatar me-2 avatar-rounded bg-primary-transparent">
+                          <i class="fe fe-box fs-16"></i>
+                        </div>
+                        <div>
+                          <div class="lh-1">
+                            <h6 class="mb-1">{{producto.nombre}}</h6>
+                          </div>
+                          <div class="lh-1">
+                            <span class="fs-12 text-muted">{{producto.tamanio || 'Tamaño estándar'}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="fw-bold text-primary">${{producto.precio.toFixed(2)}}</td>
+                    <td>
+                      <span class="badge" [class]="getStockBadgeClass(producto.stock)">
+                        {{producto.stock}} unidades
+                      </span>
+                    </td>
+                    <td>{{producto.categoria || 'Sin categoría'}}</td>
+                    <td><span class="badge" [class]="producto.activo ? 'bg-success' : 'bg-danger'">{{producto.activo ? 'Activo' : 'Inactivo'}}</span></td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a class="btn btn-primary btn-icon" [routerLink]="['/dashboard/production-dashboard/productos/view', producto.id]" 
+                           data-bs-toggle="tooltip" title="Ver Producto">
+                          <i class="fe fe-eye"></i>
+                        </a>
+                        <a class="btn btn-warning btn-icon" [routerLink]="['/dashboard/production-dashboard/productos/edit', producto.id]"
+                           data-bs-toggle="tooltip" title="Editar">
+                          <i class="fe fe-edit-2"></i>
+                        </a>
+                        <a class="btn btn-danger btn-icon" (click)="deleteProducto(producto.id)"
+                           data-bs-toggle="tooltip" title="Eliminar">
+                          <i class="fe fe-trash"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        <!-- Start::pagination -->
+        <nav class="mt-4">
+          <ul class="pagination justify-content-end mb-0">
+            <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
+            <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+          </ul>
+        </nav>
+        <!-- End::pagination -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--End::row-2 -->
