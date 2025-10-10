@@ -59,9 +59,11 @@
               <div class="form-group">
                 <label class="form-label">Seleccionar Venta *</label>
                 <ng-select name="idVenta" class="form-control p-0 custom-select" placeholder="Seleccione una venta" formControlName="idVenta" bindLabel="displayText" bindValue="id">
-                  <ng-option *ngFor="let venta of ventas" [value]="venta.id">
-                    Venta #{{venta.id}} - Cliente #{{venta.idCliente}} - Q{{venta.total | number:'1.2-2'}}
-                  </ng-option>
+                  @for (venta of ventas; track venta.id) {
+                    <ng-option [value]="venta.id">
+                      Venta #{{venta.id}} - Cliente #{{venta.idCliente}} - Q{{venta.total | number:'1.2-2'}}
+                    </ng-option>
+                  }
                 </ng-select>
                 <div *ngIf="ticketForm.get('idVenta')?.invalid && ticketForm.get('idVenta')?.touched" class="text-danger">
                   <small>Debe seleccionar una venta</small>
@@ -72,9 +74,11 @@
               <div class="form-group">
                 <label class="form-label">Lote *</label>
                 <ng-select name="idLote" class="form-control p-0 custom-select" placeholder="Seleccione un lote" formControlName="idLote" bindLabel="galera" bindValue="id">
-                  <ng-option *ngFor="let lote of lotes" [value]="lote.id">
-                    {{lote.galera}}
-                  </ng-option>
+                  @for (lote of lotes; track lote.id) {
+                    <ng-option [value]="lote.id">
+                      {{lote.galera || 'Lote #' + lote.id}}
+                    </ng-option>
+                  }
                 </ng-select>
                 <div *ngIf="ticketForm.get('idLote')?.invalid && ticketForm.get('idLote')?.touched" class="text-danger">
                   <small>Debe seleccionar un lote</small>
@@ -88,9 +92,11 @@
               <div class="form-group">
                 <label class="form-label">Producto *</label>
                 <ng-select name="idProducto" class="form-control p-0 custom-select" placeholder="Seleccione un producto" formControlName="idProducto" bindLabel="nombre" bindValue="id">
-                  <ng-option *ngFor="let producto of productos" [value]="producto.id">
-                    {{producto.nombre}}
-                  </ng-option>
+                  @for (producto of productos; track producto.id) {
+                    <ng-option [value]="producto.id">
+                      {{producto.nombre}}
+                    </ng-option>
+                  }
                 </ng-select>
                 <div *ngIf="ticketForm.get('idProducto')?.invalid && ticketForm.get('idProducto')?.touched" class="text-danger">
                   <small>Debe seleccionar un producto</small>

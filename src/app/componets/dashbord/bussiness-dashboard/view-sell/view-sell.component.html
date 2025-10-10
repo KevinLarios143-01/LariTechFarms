@@ -1,0 +1,174 @@
+<!-- Page Header -->
+<div class="page-header d-lg-flex d-block">
+    <div class="page-leftheader">
+        <div class="page-title">Detalle de Venta</div>
+    </div>
+    <div class="page-rightheader">
+        <div class="btn-list d-flex gap-1">
+            <button class="btn btn-outline-primary" (click)="goBack()">
+                <i class="fe fe-arrow-left fs-12 my-auto me-2"></i>Volver
+            </button>
+            @if (venta) {
+                <button class="btn btn-info" (click)="generateTicket()">
+                    <i class="fe fe-file-plus fs-12 my-auto me-2"></i>Generar Ticket
+                </button>
+                <button class="btn btn-primary" (click)="editVenta()">
+                    <i class="fe fe-edit-2 fs-12 my-auto me-2"></i>Editar
+                </button>
+            }
+        </div>
+    </div>
+</div>
+<!-- Page Header Close -->
+
+@if (loading) {
+    <div class="text-center py-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+} @else if (venta) {
+    <div class="row">
+        <div class="col-xl-8 col-md-12 col-lg-8">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title">Información de la Venta</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">ID de Venta:</label>
+                                <p class="form-control-static">#VT-{{venta.id.toString().padStart(3, '0')}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Estado:</label>
+                                <p class="form-control-static">
+                                    <span class="badge bg-{{getStatusClass(venta.estado)}}-transparent">{{venta.estado}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Fecha:</label>
+                                <p class="form-control-static">{{venta.fecha | date:'dd/MM/yyyy':'UTC'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Total:</label>
+                                <p class="form-control-static">Q{{venta.total | number:'1.2-2'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Método de Pago:</label>
+                                <p class="form-control-static">{{venta.metodoPago || 'No especificado'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Usuario:</label>
+                                <p class="form-control-static">{{venta.usuario?.nombre || 'N/A'}}</p>
+                            </div>
+                        </div>
+                        @if (venta.observaciones) {
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Observaciones:</label>
+                                    <p class="form-control-static">{{venta.observaciones}}</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-4 col-md-12 col-lg-4">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title">Información del Cliente</h4>
+                </div>
+                <div class="card-body">
+                    @if (venta.cliente) {
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="avatar avatar-lg me-3 avatar-rounded bg-primary-transparent">
+                                <i class="fe fe-user fs-18"></i>
+                            </span>
+                            <div>
+                                <h6 class="mb-1">{{venta.cliente.nombre}}</h6>
+                                <span class="text-muted">Cliente #{{venta.cliente.id}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Teléfono:</label>
+                            <p class="form-control-static">{{venta.cliente.telefono || 'No disponible'}}</p>
+                        </div>
+                    } @else {
+                        <p class="text-muted">Información del cliente no disponible</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (venta.detalleVentas && venta.detalleVentas.length > 0) {
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <h4 class="card-title">Detalle de Productos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter text-nowrap table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Tamaño</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (detalle of venta.detalleVentas; track detalle.id) {
+                                        <tr>
+                                            <td>{{detalle.producto.nombre || 'N/A'}}</td>
+                                            <td>{{detalle.producto.tamanio || 'N/A'}}</td>
+                                            <td>{{detalle.cantidad}}</td>
+                                            <td>Q{{detalle.precioUnitario | number:'1.2-2'}}</td>
+                                            <td>Q{{detalle.subtotal | number:'1.2-2'}}</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-active">
+                                        <td colspan="4" class="text-end"><strong>Total:</strong></td>
+                                        <td><strong>Q{{venta.total | number:'1.2-2'}}</strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+} @else {
+    <div class="row">
+        <div class="col-12">
+            <div class="card custom-card">
+                <div class="card-body text-center py-5">
+                    <i class="fe fe-alert-circle fs-48 text-muted mb-3"></i>
+                    <h4>Venta no encontrada</h4>
+                    <p class="text-muted">La venta solicitada no existe o no se pudo cargar.</p>
+                    <button class="btn btn-primary" (click)="goBack()">Volver a la lista</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

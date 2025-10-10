@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
@@ -29,7 +29,8 @@ export class NewLoteComponent implements OnInit {
     private lotesService: LotesService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) {
     this.loteForm = this.fb.group({
       tipo: ['', Validators.required],
@@ -62,17 +63,22 @@ export class NewLoteComponent implements OnInit {
             tipo: lote.tipo,
             galera: lote.galera,
             cantidad: lote.cantidad,
-            fechaInicio: lote.fechaInicio,
-            fechaFin: lote.fechaFin,
+            fechaInicio: this.formatDateForInput(lote.fechaInicio),
+            fechaFin: this.formatDateForInput(lote.fechaFin),
             estado: lote.estado,
             observaciones: lote.observaciones
           });
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error al cargar lote:', error);
-          this.toastr.error('Error al cargar el lote', 'Error');
+          this.toastr.error('Error al cargar el lote', 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
     }
@@ -86,33 +92,52 @@ export class NewLoteComponent implements OnInit {
       if (this.isEditing && this.loteId) {
         this.lotesService.updateLote(this.loteId, formData as UpdateLoteDTO).subscribe({
           next: () => {
-            this.toastr.success('Lote actualizado exitosamente', 'Éxito');
+            this.toastr.success('Lote actualizado exitosamente', 'Éxito', {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            });
             this.router.navigate(['/dashboard/business-dashboard/lotes']);
             this.loading = false;
+            this.cdr.detectChanges();
           },
           error: (error) => {
             console.error('Error al actualizar lote:', error);
-            this.toastr.error('Error al actualizar el lote', 'Error');
+            this.toastr.error('Error al actualizar el lote', 'Error', {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            });
             this.loading = false;
+            this.cdr.detectChanges();
           }
         });
       } else {
         this.lotesService.createLote(formData as CreateLoteDTO).subscribe({
           next: () => {
-            this.toastr.success('Lote creado exitosamente', 'Éxito');
+            this.toastr.success('Lote creado exitosamente', 'Éxito', {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            });
             this.router.navigate(['/dashboard/business-dashboard/lotes']);
             this.loading = false;
+            this.cdr.detectChanges();
           },
           error: (error) => {
             console.error('Error al crear lote:', error);
-            this.toastr.error('Error al crear el lote', 'Error');
+            this.toastr.error('Error al crear el lote', 'Error', {
+              timeOut: 3000,
+              positionClass: 'toast-top-right',
+            });
             this.loading = false;
+            this.cdr.detectChanges();
           }
         });
       }
     } else {
       this.markFormGroupTouched();
-      this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia');
+      this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia', {
+        timeOut: 3000,
+        positionClass: 'toast-top-right',
+      });
     }
   }
 
@@ -125,5 +150,25 @@ export class NewLoteComponent implements OnInit {
       const control = this.loteForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  private formatDateForInput(dateString: string | null | undefined): string {
+    if (!dateString) return '';
+    
+    // Si ya viene en formato YYYY-MM-DD, devolverlo tal como está
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+    
+    // Para fechas ISO, extraer solo la parte de la fecha
+    if (dateString.includes('T')) {
+      return dateString.split('T')[0];
+    }
+    
+    // Fallback: intentar parsear como fecha
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    
+    return date.toISOString().split('T')[0];
   }
 }

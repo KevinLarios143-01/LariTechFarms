@@ -1,12 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MaterialModuleModule } from '../../../../material-module/material-module.module';
 import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -15,28 +11,15 @@ import { Venta, UpdateVentaRequest } from '../../../../shared/interfaces/venta';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 
-interface VentaDisplay {
-  id: number;
-  No: string;
-  cliente: string;
-  fecha: string;
-  total: number;
-  estado: string;
-  statusText: string;
-  status: string;
-}
-
 @Component({
   selector: 'app-sell-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule, DatePipe, DecimalPipe],
+  imports: [SharedModule, NgSelectModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule, DatePipe, DecimalPipe],
   templateUrl: './sell-list.component.html',
   styleUrls: ['./sell-list.component.scss'],
   providers: [FlatpickrDefaults]
 })
 export class SellListComponent implements OnInit {
-  displayedColumns: string[] = ['ID', 'Cliente', 'Fecha', 'Total', 'Estado', 'Action'];
-  dataSource: MatTableDataSource<VentaDisplay>;
   ventas: Venta[] = [];
   filteredVentas: Venta[] = [];
   loading = false;
@@ -44,17 +27,14 @@ export class SellListComponent implements OnInit {
   filterForm: FormGroup;
   selectedVenta: Venta | null = null;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
   constructor(
     private readonly modalService: NgbModal,
     private readonly ventaService: VentaService,
     private readonly fb: FormBuilder,
     private readonly toastr: ToastrService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef
   ) {
-    this.dataSource = new MatTableDataSource<VentaDisplay>([]);
     this.editForm = this.fb.group({
       idCliente: ['', [Validators.required, Validators.min(1)]],
       fecha: ['', Validators.required],
@@ -73,30 +53,16 @@ export class SellListComponent implements OnInit {
     this.loadVentas();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
-
-  edit(editContent: any, venta: VentaDisplay) {
-    this.selectedVenta = this.ventas.find(v => v.id === venta.id) || null;
-    if (this.selectedVenta) {
-      this.editForm.patchValue({
-        idCliente: this.selectedVenta.idCliente,
-        fecha: this.selectedVenta.fecha.split('T')[0],
-        total: this.selectedVenta.total,
-        estado: this.selectedVenta.estado
-      });
-    }
+  edit(editContent: any, venta: Venta) {
+    this.selectedVenta = venta;
+    this.editForm.patchValue({
+      idCliente: venta.idCliente,
+      fecha: this.formatDateForInput(venta.fecha),
+      total: venta.total,
+      estado: venta.estado
+    });
     this.modalService.open(editContent, { windowClass: 'modalCusSty modal-lg' });
   }
 
@@ -109,7 +75,9 @@ export class SellListComponent implements OnInit {
         next: () => {
           this.toastr.success('Venta actualizada exitosamente', 'Éxito', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
           });
           this.loadVentas();
           this.modalService.dismissAll();
@@ -117,8 +85,10 @@ export class SellListComponent implements OnInit {
         },
         error: (error) => {
           this.toastr.error('Error al actualizar la venta: ' + (error.error?.message || 'Error desconocido'), 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right'
+            timeOut: 5000,
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
           });
           this.loading = false;
         }
@@ -126,7 +96,9 @@ export class SellListComponent implements OnInit {
     } else {
       this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia', {
         timeOut: 3000,
-        positionClass: 'toast-top-right'
+        positionClass: 'toast-top-right',
+        progressBar: true,
+        closeButton: true
       });
       this.markFormGroupTouched();
     }
@@ -138,14 +110,18 @@ export class SellListComponent implements OnInit {
         next: () => {
           this.toastr.success('Venta eliminada exitosamente', 'Éxito', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
           });
           this.loadVentas();
         },
         error: (error) => {
           this.toastr.error('Error al eliminar la venta: ' + (error.error?.message || 'Error desconocido'), 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right'
+            timeOut: 5000,
+            positionClass: 'toast-top-right',
+            progressBar: true,
+            closeButton: true
           });
         }
       });
@@ -162,35 +138,28 @@ export class SellListComponent implements OnInit {
   private loadVentas(): void {
     this.loading = true;
     this.ventaService.getVentas().subscribe({
-      next: (ventas) => {
-        this.ventas = ventas || [];
+      next: (response) => {
+        console.log('API Response:', response);
+        const ventasData = response?.data?.data || response?.data || response || [];
+        this.ventas = Array.isArray(ventasData) ? ventasData : [];
         this.filteredVentas = [...this.ventas];
-        this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading ventas:', error);
         this.ventas = [];
-        this.dataSource.data = [];
+        this.filteredVentas = [];
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  private mapVentasToDisplay(ventas: Venta[]): VentaDisplay[] {
-    if (!ventas || !Array.isArray(ventas)) {
-      return [];
-    }
-    return ventas.map(venta => ({
-      id: venta.id,
-      No: `#VT-${String(venta.id).padStart(3, '0')}`,
-      cliente: `Cliente #${venta.idCliente}`,
-      fecha: venta.fecha,
-      total: venta.total,
-      estado: venta.estado,
-      statusText: venta.estado,
-      status: this.getStatusClass(venta.estado)
-    }));
+  formatDateForInput(dateString: string): string {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
   }
 
   generateTicket(ventaId: number): void {
@@ -224,16 +193,16 @@ export class SellListComponent implements OnInit {
       return matches;
     });
     
-    this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
+    this.cdr.detectChanges();
   }
   
   clearFilters(): void {
     this.filterForm.reset();
     this.filteredVentas = [...this.ventas];
-    this.dataSource.data = this.mapVentasToDisplay(this.filteredVentas);
+    this.cdr.detectChanges();
   }
 
-  private getStatusClass(estado: string): string {
+  getStatusClass(estado: string): string {
     switch (estado.toLowerCase()) {
       case 'completada':
         return 'success';

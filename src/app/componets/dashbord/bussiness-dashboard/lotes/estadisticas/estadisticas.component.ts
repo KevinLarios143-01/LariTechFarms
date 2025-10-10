@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { RouterModule } from '@angular/router';
@@ -15,7 +15,10 @@ export class EstadisticasComponent implements OnInit {
   loading = false;
   stats: any = null;
 
-  constructor(private lotesService: LotesService) {}
+  constructor(
+    private lotesService: LotesService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadStats();
@@ -27,10 +30,12 @@ export class EstadisticasComponent implements OnInit {
       next: (response) => {
         this.stats = response.data;
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar estadísticas:', error);
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

@@ -107,79 +107,83 @@
                     </div>
                     <div class="col-sm-6 mb-1">
                         <div class="float-end">
-                            <input type="text" matInput (keyup)="applyFilter($event)" #input class="form-control" placeholder="buscar">
+                            <input type="text" class="form-control" placeholder="buscar">
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive">
-                    <table mat-table [dataSource]="dataSource" matSort class="table table-vcenter text-nowrap table-bordered border-bottom">
-                        <ng-container matColumnDef="ID">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>#ID</th>
-                            <td mat-cell *matCellDef="let row">{{row.No}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Cliente">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex align-items-center">
-                                    <span class="avatar avatar-md me-2 avatar-rounded bg-success-transparent">
-                                        <i class="fe fe-user"></i>
-                                    </span>
-                                    <div>
-                                        <h6 class="mb-1 fs-14">{{row.cliente}}</h6>
-                                        <span class="fs-12 text-muted">Venta #{{row.id}}</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Fecha">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-                            <td mat-cell *matCellDef="let row">{{row.fecha | date:'dd/MM/yyyy'}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Total">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
-                            <td mat-cell *matCellDef="let row">Q{{row.total | number:'1.2-2'}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Estado">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-                            <td mat-cell *matCellDef="let row">
-                                <span class="badge bg-{{row.status}}-transparent">{{row.statusText}}</span>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex">
-                                    <a routerLink="/dashboard/business-dashboard/view-sell/{{row.id}}" 
-                                       class="action-btns1" placement="top" ngbTooltip="Ver Venta">
-                                        <i class="fe fe-eye text-primary"></i>
-                                    </a>
-                                    <a (click)="generateTicket(row.id)" class="action-btns1" placement="top" ngbTooltip="Generar Ticket">
-                                        <i class="fe fe-file-plus text-info"></i>
-                                    </a>
-                                    <a (click)="edit(editContent, row)" class="action-btns1" placement="top" ngbTooltip="Editar">
-                                        <i class="fe fe-edit-2 text-success"></i>
-                                    </a>
-                                    <a (click)="deleteVenta(row.id)" class="action-btns1" placement="top" ngbTooltip="Eliminar">
-                                        <i class="fe fe-trash-2 text-danger"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="6">No hay datos que coincidan con el filtro "{{input.value}}"</td>
-                        </tr>
-                    </table>
-                </div>
-                <mat-paginator [pageSizeOptions]="[8, 10, 25, 100]" aria-label="Select page of sells"></mat-paginator>
+                @if (loading) {
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="table-responsive">
+                        <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+                            <thead>
+                                <tr>
+                                    <th>#ID</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (filteredVentas.length === 0) {
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <div class="text-muted">
+                                                <i class="fe fe-inbox fs-24 mb-2"></i>
+                                                <p>No hay ventas disponibles</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                } @else {
+                                    @for (venta of filteredVentas; track venta.id) {
+                                        <tr>
+                                            <td>#VT-{{venta.id.toString().padStart(3, '0')}}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="avatar avatar-md me-2 avatar-rounded bg-success-transparent">
+                                                        <i class="fe fe-user"></i>
+                                                    </span>
+                                                    <div>
+                                                        <h6 class="mb-1 fs-14">Cliente #{{venta.idCliente}}</h6>
+                                                        <span class="fs-12 text-muted">Venta #{{venta.id}}</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>{{venta.fecha | date:'dd/MM/yyyy':'UTC'}}</td>
+                                            <td>Q{{venta.total | number:'1.2-2'}}</td>
+                                            <td>
+                                                <span class="badge bg-{{getStatusClass(venta.estado)}}-transparent">{{venta.estado}}</span>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a routerLink="/dashboard/business-dashboard/view-sell/{{venta.id}}" 
+                                                       class="action-btns1" placement="top" ngbTooltip="Ver Venta">
+                                                        <i class="fe fe-eye text-primary"></i>
+                                                    </a>
+                                                    <a (click)="generateTicket(venta.id)" class="action-btns1" placement="top" ngbTooltip="Generar Ticket">
+                                                        <i class="fe fe-file-plus text-info"></i>
+                                                    </a>
+                                                    <a (click)="edit(editContent, venta)" class="action-btns1" placement="top" ngbTooltip="Editar">
+                                                        <i class="fe fe-edit-2 text-success"></i>
+                                                    </a>
+                                                    <a (click)="deleteVenta(venta.id)" class="action-btns1" placement="top" ngbTooltip="Eliminar">
+                                                        <i class="fe fe-trash-2 text-danger"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
             </div>
         </div>
     </div>

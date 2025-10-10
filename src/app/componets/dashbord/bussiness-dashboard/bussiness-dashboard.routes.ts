@@ -21,6 +21,21 @@ const routes: Routes = [
           import('./sell-list/sell-list.component').then((m) => m.SellListComponent),
       },
       {
+        path: 'view-sell/:id',
+        loadComponent: () =>
+          import('./view-sell/view-sell.component').then((m) => m.ViewSellComponent),
+      },
+      {
+        path: 'new-sell',
+        loadComponent: () =>
+          import('./new-sell/new-sell.component').then((m) => m.NewSellComponent),
+      },
+      {
+        path: 'view-ticket/:id',
+        loadComponent: () =>
+          import('./view-ticket/view-ticket.component').then((m) => m.ViewTicketComponent),
+      },
+      {
         path: 'lotes',
         loadComponent: () =>
           import('./lotes/lote-list/lote-list.component').then((m) => m.LoteListComponent),

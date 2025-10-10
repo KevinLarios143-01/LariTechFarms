@@ -1,61 +1,46 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MaterialModuleModule } from '../../../../material-module/material-module.module';
-import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TicketService } from '../../../../shared/services/ticket.service';
 import { Ticket, UpdateTicketRequest } from '../../../../shared/interfaces/ticket';
-import { DatePipe } from '@angular/common';
 
-interface TicketDisplay {
-  id: number;
-  No: string;
-  codigo: string;
-  fecha: string;
-  cantidad: number;
-  estado: string;
-  statusText: string;
-  status: string;
-}
+
 
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule, DatePipe],
+  imports: [CommonModule, SharedModule, NgSelectModule, RouterModule, ReactiveFormsModule, NgbModule],
   templateUrl: './ticket-list.component.html',
-  styleUrls: ['./ticket-list.component.scss'],
-  providers: [FlatpickrDefaults]
+  styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit {
-  displayedColumns: string[] = ['ID', 'Codigo', 'Fecha', 'Cantidad', 'Estado', 'Action'];
-  dataSource: MatTableDataSource<TicketDisplay>;
   tickets: Ticket[] = [];
-  filteredTickets: Ticket[] = [];
   loading = false;
   editForm: FormGroup;
   filterForm: FormGroup;
   selectedTicket: Ticket | null = null;
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  
+  // Estadísticas
+  totalTickets = 0;
+  ticketsPendientes = 0;
+  ticketsAutorizados = 0;
+  ticketsDespachados = 0;
 
   constructor(
     private readonly modalService: NgbModal,
     private readonly ticketService: TicketService,
     private readonly fb: FormBuilder,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef
   ) {
-    this.dataSource = new MatTableDataSource<TicketDisplay>([]);
     this.editForm = this.fb.group({
       estado: ['', Validators.required],
-      codigoAutorizacion: ['', Validators.required],
+      codigoAutorizacion: [''],
       cantidad: ['', [Validators.required, Validators.min(1)]]
     });
     
@@ -70,29 +55,19 @@ export class TicketListComponent implements OnInit {
     this.loadTickets();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
+    // Implementar filtro local simple
+    // En una implementación real, esto se haría en el servidor
   }
 
-  edit(editContent: any, ticket: TicketDisplay) {
-    this.selectedTicket = this.tickets.find(t => t.id === ticket.id) || null;
-    if (this.selectedTicket) {
-      this.editForm.patchValue({
-        estado: this.selectedTicket.estado,
-        codigoAutorizacion: this.selectedTicket.codigoAutorizacion,
-        cantidad: this.selectedTicket.cantidad
-      });
-    }
+  edit(editContent: any, ticket: Ticket) {
+    this.selectedTicket = ticket;
+    this.editForm.patchValue({
+      estado: ticket.estado,
+      codigoAutorizacion: ticket.codigoAutorizacion || '',
+      cantidad: ticket.cantidad
+    });
     this.modalService.open(editContent, { windowClass: 'modalCusSty modal-lg' });
   }
 
@@ -105,44 +80,54 @@ export class TicketListComponent implements OnInit {
         next: () => {
           this.toastr.success('Ticket actualizado exitosamente', 'Éxito', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
           });
           this.loadTickets();
           this.modalService.dismissAll();
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.toastr.error('Error al actualizar el ticket: ' + (error.error?.message || 'Error desconocido'), 'Error', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
           });
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
     } else {
       this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia', {
         timeOut: 3000,
-        positionClass: 'toast-top-right'
+        positionClass: 'toast-top-right',
       });
       this.markFormGroupTouched();
     }
   }
 
-  deleteTicket(id: number): void {
-    if (confirm('¿Está seguro de que desea eliminar este ticket?')) {
-      this.ticketService.deleteTicket(id).subscribe({
+  toggleTicketStatus(ticket: Ticket) {
+    const isActive = ticket.estado === 'Pendiente';
+    const newStatus = isActive ? 'Cancelado' : 'Pendiente';
+    const action = isActive ? 'cancelar' : 'activar';
+    
+    if (confirm(`¿Está seguro de que desea ${action} este ticket?`)) {
+      const updateData: UpdateTicketRequest = { estado: newStatus };
+        
+      this.ticketService.updateTicket(ticket.id, updateData).subscribe({
         next: () => {
-          this.toastr.success('Ticket eliminado exitosamente', 'Éxito', {
+          this.toastr.success(`Ticket ${action}do exitosamente`, 'Éxito', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
           });
           this.loadTickets();
+          this.cdr.detectChanges();
         },
         error: (error) => {
-          this.toastr.error('Error al eliminar el ticket: ' + (error.error?.message || 'Error desconocido'), 'Error', {
+          this.toastr.error(`Error al ${action} el ticket: ${error.error?.message || 'Error desconocido'}`, 'Error', {
             timeOut: 3000,
-            positionClass: 'toast-top-right'
+            positionClass: 'toast-top-right',
           });
+          this.cdr.detectChanges();
         }
       });
     }
@@ -157,84 +142,87 @@ export class TicketListComponent implements OnInit {
 
   private loadTickets(): void {
     this.loading = true;
+    
     this.ticketService.getTickets().subscribe({
-      next: (tickets) => {
-        console.log('Tickets loaded:', tickets);
-        this.tickets = tickets || [];
-        this.filteredTickets = [...this.tickets];
-        this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
+      next: (response) => {
+        // Manejar diferentes estructuras de respuesta
+        if (response?.data?.data) {
+          this.tickets = response.data.data;
+        } else if (response?.data?.items) {
+          this.tickets = response.data.items;
+        } else if (response?.data && Array.isArray(response.data)) {
+          this.tickets = response.data;
+        } else if (Array.isArray(response)) {
+          this.tickets = response;
+        } else {
+          this.tickets = [];
+        }
+        
+        this.calculateStats();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error loading tickets:', error);
-        this.toastr.error('Error al cargar los tickets', 'Error');
         this.tickets = [];
-        this.dataSource.data = [];
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
-  private mapTicketsToDisplay(tickets: Ticket[]): TicketDisplay[] {
-    if (!tickets || !Array.isArray(tickets)) {
-      return [];
-    }
-    return tickets.map(ticket => ({
-      id: ticket.id,
-      No: `#TK-${String(ticket.id).padStart(3, '0')}`,
-      codigo: ticket.codigoAutorizacion,
-      fecha: ticket.fecha,
-      cantidad: ticket.cantidad,
-      estado: ticket.estado,
-      statusText: ticket.estado,
-      status: this.getStatusClass(ticket.estado)
-    }));
+  private calculateStats(): void {
+    this.totalTickets = this.tickets.length;
+    this.ticketsPendientes = this.tickets.filter(t => t.estado === 'Pendiente').length;
+    this.ticketsAutorizados = this.tickets.filter(t => t.estado === 'Autorizado').length;
+    this.ticketsDespachados = this.tickets.filter(t => t.estado === 'Despachado').length;
+  }
+
+  open(content: any) {
+    this.modalService.open(content, { windowClass: 'modalCusSty', size: 'lg' });
   }
 
   applyFilters(): void {
-    const { fechaDesde, fechaHasta, estado } = this.filterForm.value;
-    
-    this.filteredTickets = this.tickets.filter(ticket => {
-      let matches = true;
-      
-      if (fechaDesde) {
-        const ticketFecha = new Date(ticket.fecha);
-        const desde = new Date(fechaDesde);
-        matches = matches && ticketFecha >= desde;
-      }
-      
-      if (fechaHasta) {
-        const ticketFecha = new Date(ticket.fecha);
-        const hasta = new Date(fechaHasta);
-        matches = matches && ticketFecha <= hasta;
-      }
-      
-      if (estado) {
-        matches = matches && ticket.estado.toLowerCase() === estado.toLowerCase();
-      }
-      
-      return matches;
-    });
-    
-    this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
+    // Implementar filtros si es necesario
+    console.log('Aplicando filtros:', this.filterForm.value);
   }
   
   clearFilters(): void {
     this.filterForm.reset();
-    this.filteredTickets = [...this.tickets];
-    this.dataSource.data = this.mapTicketsToDisplay(this.filteredTickets);
   }
 
-  private getStatusClass(estado: string): string {
-    switch (estado.toLowerCase()) {
-      case 'completado':
-        return 'success';
-      case 'pendiente':
-        return 'warning';
-      case 'cancelado':
-        return 'danger';
-      default:
-        return 'secondary';
+  deleteTicket(id: number): void {
+    if (confirm('¿Está seguro de que desea eliminar este ticket?')) {
+      this.ticketService.deleteTicket(id).subscribe({
+        next: () => {
+          this.toastr.success('Ticket eliminado exitosamente', 'Éxito', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
+          this.loadTickets();
+          this.cdr.detectChanges();
+        },
+        error: (error) => {
+          this.toastr.error('Error al eliminar el ticket: ' + (error.error?.message || 'Error desconocido'), 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
+          this.cdr.detectChanges();
+        }
+      });
     }
+  }
+
+  getEstadoBadgeClass(estado: string): string {
+    switch (estado) {
+      case 'Autorizado': return 'bg-success';
+      case 'Pendiente': return 'bg-warning';
+      case 'Despachado': return 'bg-primary';
+      case 'Cancelado': return 'bg-danger';
+      default: return 'bg-secondary';
+    }
+  }
+
+  trackByTicketId(index: number, ticket: Ticket): number {
+    return ticket.id;
   }
 }

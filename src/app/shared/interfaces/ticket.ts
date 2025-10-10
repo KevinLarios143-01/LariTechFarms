@@ -5,11 +5,35 @@ export interface Ticket {
   idProducto: number;
   fecha: string;
   cantidad: number;
-  estado: string;
-  codigoAutorizacion: string;
-  idTenant?: number;
-  fechaCreacion?: string;
-  fechaActualizacion?: string;
+  codigoAutorizacion?: string;
+  estado: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
+  idUsuario: number;
+  createdAt: string;
+  updatedAt: string;
+  venta?: {
+    id: number;
+    total: number;
+    fecha: string;
+    cliente: {
+      nombre: string;
+      telefono?: string;
+      direccion?: string;
+    };
+  };
+  lote?: {
+    id: number;
+    galera: string;
+    tipo: string;
+  };
+  producto?: {
+    nombre: string;
+    tamanio?: string;
+    precio?: number;
+  };
+  usuario?: {
+    nombre: string;
+    apellido: string;
+  };
 }
 
 export interface TicketResponse {
@@ -26,14 +50,35 @@ export interface CreateTicketRequest {
   idVenta: number;
   idLote: number;
   idProducto: number;
-  fecha: string;
+  fecha: string; // YYYY-MM-DD
   cantidad: number;
-  estado: string;
-  codigoAutorizacion: string;
+  codigoAutorizacion?: string;
 }
 
 export interface UpdateTicketRequest {
-  estado?: string;
-  codigoAutorizacion?: string;
+  idLote?: number;
+  idProducto?: number;
+  fecha?: string;
   cantidad?: number;
+  codigoAutorizacion?: string;
+  estado?: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
+}
+
+export interface UpdateEstadoTicketDTO {
+  estado: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
+}
+
+export interface TicketsStats {
+  totalTickets: number;
+  ticketsPorEstado: Array<{
+    estado: string;
+    _count: { id: number };
+  }>;
+  ticketsPorLote: Array<{
+    idLote: number;
+    _count: { id: number };
+    _sum: { cantidad: number };
+  }>;
+  cantidadTotal: number;
+  cantidadPromedio: number;
 }

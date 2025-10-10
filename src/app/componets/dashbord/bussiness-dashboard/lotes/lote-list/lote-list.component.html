@@ -153,8 +153,8 @@
                   <span class="fw-semibold">{{lote.cantidad | number}}</span>
                   <small class="d-block text-muted">{{lote._count?.movAvesLote || 0}} mov. | {{lote._count?.tickets || 0}} tickets</small>
                 </td>
-                <td>{{lote.fechaInicio | date: 'dd/MM/yyyy'}}</td>
-                <td>{{lote.fechaFin ? (lote.fechaFin | date: 'dd/MM/yyyy') : 'N/A'}}</td>
+                <td>{{lote.fechaInicio | date: 'dd/MM/yyyy':'UTC'}}</td>
+                <td>{{lote.fechaFin ? (lote.fechaFin | date: 'dd/MM/yyyy':'UTC') : 'N/A'}}</td>
                 <td><span class="badge" [class]="getEstadoBadgeClass(lote.estado)">{{lote.estado}}</span></td>
                 <td>
                   <div class="d-flex gap-2">

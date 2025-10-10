@@ -1,0 +1,125 @@
+<!-- Page Header -->
+<div class="page-header d-lg-flex d-block">
+    <div class="page-leftheader">
+        <div class="page-title">{{isEditing ? 'Editar Venta' : 'Nueva Venta'}}</div>
+    </div>
+    <div class="page-rightheader">
+        <div class="btn-list d-flex gap-1">
+            <button class="btn btn-outline-primary" (click)="onCancel()">
+                <i class="fe fe-arrow-left fs-12 my-auto me-2"></i>Volver
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Page Header Close -->
+
+<form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title">Información de la Venta</h4>
+                </div>
+                <div class="card-body">
+                    @if (loading) {
+                    <div class="text-center py-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                    } @else {
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Cliente *</label>
+                                <ng-select formControlName="idCliente" bindLabel="nombre" bindValue="id"
+                                    placeholder="Seleccionar cliente">
+                                    @for (cliente of clientes; track cliente.id) {
+                                    <ng-option [value]="cliente.id">
+                                        {{cliente.nombre}}
+                                    </ng-option>
+                                    }
+                                </ng-select>
+                                @if (ventaForm.get('idCliente')?.invalid && ventaForm.get('idCliente')?.touched) {
+                                <div class="text-danger">
+                                    <small>Debe seleccionar un cliente</small>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Fecha *</label>
+                                <input class="form-control" formControlName="fecha" type="date">
+                                @if (ventaForm.get('fecha')?.invalid && ventaForm.get('fecha')?.touched) {
+                                <div class="text-danger">
+                                    <small>La fecha es requerida</small>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Total *</label>
+                                <input class="form-control" formControlName="total" type="number" step="0.01"
+                                    placeholder="Total de la venta">
+                                @if (ventaForm.get('total')?.invalid && ventaForm.get('total')?.touched) {
+                                <div class="text-danger">
+                                    <small>El total es requerido</small>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Método de Pago</label>
+                                <ng-select formControlName="metodoPago" placeholder="Seleccionar método de pago">
+                                    <ng-option value="Efectivo">Efectivo</ng-option>
+                                    <ng-option value="Tarjeta">Tarjeta</ng-option>
+                                    <ng-option value="Transferencia">Transferencia</ng-option>
+                                    <ng-option value="Cheque">Cheque</ng-option>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Estado *</label>
+                                <ng-select formControlName="estado"
+                                    placeholder="Seleccionar estado">
+                                    <ng-option value="Pendiente">Pendiente</ng-option>
+                                    <ng-option value="Completada">Completada</ng-option>
+                                    <ng-option value="Cancelada">Cancelada</ng-option>
+                                </ng-select>
+                                @if (ventaForm.get('estado')?.invalid && ventaForm.get('estado')?.touched) {
+                                <div class="text-danger">
+                                    <small>El estado es requerido</small>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Observaciones</label>
+                                <textarea class="form-control" formControlName="observaciones" rows="3"
+                                    placeholder="Observaciones adicionales (opcional)"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </div>
+                <div class="card-footer text-end">
+                    <button type="button" class="btn btn-outline-secondary me-2" (click)="onCancel()"
+                        [disabled]="loading">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" [disabled]="loading">
+                        @if (loading) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        {{isEditing ? 'Actualizar' : 'Crear'}} Venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

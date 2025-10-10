@@ -43,6 +43,7 @@ export class ClientListComponent implements OnInit {
   displayedColumns: string[] = ['ID', 'Name', 'Email', 'Projects', 'Status', 'Action'];
   dataSource: MatTableDataSource<ClienteDisplay>;
   clientes: Cliente[] = [];
+  filteredClientes: Cliente[] = [];
   loading = false;
   editForm: FormGroup;
   selectedCliente: Cliente | null = null;
@@ -80,59 +81,54 @@ export class ClientListComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-  toggleClienteStatus(item: string) {
-    const clienteDisplay = this.dataSource.data.find(el => el.No === item);
-    if (clienteDisplay) {
-      const isActive = clienteDisplay.status === 'success';
-      const action = isActive ? 'desactivar' : 'activar';
-      
-      if (confirm(`¿Está seguro de que desea ${action} este cliente?`)) {
-        const serviceCall = isActive 
-          ? this.clienteService.deactivateCliente(clienteDisplay.id)
-          : this.clienteService.activateCliente(clienteDisplay.id);
+  toggleClienteStatus(cliente: Cliente) {
+    const isActive = cliente.activo;
+    const action = isActive ? 'desactivar' : 'activar';
+    
+    if (confirm(`¿Está seguro de que desea ${action} este cliente?`)) {
+      const serviceCall = isActive 
+        ? this.clienteService.deactivateCliente(cliente.id)
+        : this.clienteService.activateCliente(cliente.id);
+        
+      serviceCall.subscribe({
+        next: () => {
+          this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
+          this.loadClientes();
+        },
+        error: (error: any) => {
+          console.error('Error response:', error);
+          let errorMessage = 'Error desconocido';
           
-        serviceCall.subscribe({
-          next: () => {
-            this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito', {
-              timeOut: 3000,
-              positionClass: 'toast-top-right',
-            });
-            this.loadClientes();
-          },
-          error: (error) => {
-            console.error('Error response:', error);
-            let errorMessage = 'Error desconocido';
-            
-            if (error.error?.message) {
-              errorMessage = error.error.message;
-            } else if (error.error?.error) {
-              errorMessage = error.error.error;
-            } else if (error.message) {
-              errorMessage = error.message;
-            } else if (typeof error.error === 'string') {
-              errorMessage = error.error;
-            }
-            
-            this.toastr.error(`Error al ${action} el cliente: ${errorMessage}`, 'Error', {
-              timeOut: 3000,
-              positionClass: 'toast-top-right',
-            });
+          if (error.error?.message) {
+            errorMessage = error.error.message;
+          } else if (error.error?.error) {
+            errorMessage = error.error.error;
+          } else if (error.message) {
+            errorMessage = error.message;
+          } else if (typeof error.error === 'string') {
+            errorMessage = error.error;
           }
-        });
-      }
-    }
-  }
-  edit(editContent: any, cliente: ClienteDisplay) {
-    this.selectedCliente = this.clientes.find(c => c.id === cliente.id) || null;
-    if (this.selectedCliente) {
-      this.editForm.patchValue({
-        nombre: this.selectedCliente.nombre,
-        telefono: this.selectedCliente.telefono,
-        correo: this.selectedCliente.correo,
-        direccion: this.selectedCliente.direccion,
-        nit: this.selectedCliente.nit
+          
+          this.toastr.error(`Error al ${action} el cliente: ${errorMessage}`, 'Error', {
+            timeOut: 3000,
+            positionClass: 'toast-top-right',
+          });
+        }
       });
     }
+  }
+  edit(editContent: any, cliente: Cliente) {
+    this.selectedCliente = cliente;
+    this.editForm.patchValue({
+      nombre: cliente.nombre,
+      telefono: cliente.telefono,
+      correo: cliente.correo,
+      direccion: cliente.direccion,
+      nit: cliente.nit
+    });
     this.modalService.open(editContent, {windowClass : 'modalCusSty modal-lg' });
   }
 
@@ -186,16 +182,16 @@ export class ClientListComponent implements OnInit {
   private loadClientes(): void {
     this.loading = true;
     this.clienteService.getClientes().subscribe({
-      next: (clientes) => {
-        console.log('Clientes received:', clientes);
-        this.clientes = clientes || [];
-        this.dataSource.data = this.mapClientesToDisplay(this.clientes);
+      next: (response) => {
+        const clientesData = response?.data?.data || response?.data || response || [];
+        this.clientes = Array.isArray(clientesData) ? clientesData : [];
+        this.filteredClientes = [...this.clientes];
         this.loading = false;
       },
       error: (error) => {
         console.error('Error loading clientes:', error);
         this.clientes = [];
-        this.dataSource.data = [];
+        this.filteredClientes = [];
         this.loading = false;
       }
     });

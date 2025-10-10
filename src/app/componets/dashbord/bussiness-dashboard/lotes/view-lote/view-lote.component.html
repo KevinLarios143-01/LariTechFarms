@@ -55,13 +55,13 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label fw-semibold">Fecha de Inicio:</label>
-              <p class="mb-0">{{lote.fechaInicio | date: 'dd/MM/yyyy'}}</p>
+              <p class="mb-0">{{lote.fechaInicio | date: 'dd/MM/yyyy':'UTC'}}</p>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label fw-semibold">Fecha de Fin:</label>
-              <p class="mb-0">{{lote.fechaFin ? (lote.fechaFin | date: 'dd/MM/yyyy') : 'N/A'}}</p>
+              <p class="mb-0">{{lote.fechaFin ? (lote.fechaFin | date: 'dd/MM/yyyy':'UTC') : 'N/A'}}</p>
             </div>
           </div>
 

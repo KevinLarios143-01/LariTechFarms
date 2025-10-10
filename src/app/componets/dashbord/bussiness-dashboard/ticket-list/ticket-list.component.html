@@ -1,195 +1,216 @@
-<!-- Page Header -->
-<div class="page-header d-lg-flex d-block">
-    <div class="page-leftheader">
-        <div class="page-title">Lista de Tickets</div>
-    </div>
-    <div class="page-rightheader">
-        <div class="btn-list d-flex gap-1">
-            <a routerLink="/dashboard/business-dashboard/new-ticket" class="btn btn-primary">
-                <i class="fe fe-plus fs-12 my-auto me-2"></i>Agregar Ticket
-            </a>
-            <button class="btn btn-light3" data-bs-toggle="tooltip" data-bs-placement="top" title="E-mail">
-                <i class="fe fe-mail"></i>
-            </button>
-            <button class="btn btn-light3" data-bs-placement="top" data-bs-toggle="tooltip" title="Contact">
-                <i class="fe fe-phone-call"></i>
-            </button>
-            <button class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info">
-                <i class="fe fe-info"></i>
-            </button>
-        </div>
-    </div>
-</div>
-<!-- Page Header Close -->
+<app-hr-dashboard-page-header [title]="'Tickets'" [title2]="'Agregar Nuevo Ticket'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/new-ticket'">
+</app-hr-dashboard-page-header>
 
+<!-- Start::row-1 -->
 <div class="row">
-    <div class="col-xl-12 col-md-12 col-lg-12">
-        <div class="card custom-card">
-            <div class="card-header d-flex justify-content-between border-bottom-0">
-                <h4 class="card-title">Resumen de Tickets</h4>
-                <div class="float-end">
-                    <input type="text" class="form-control" placeholder="buscar">
-                </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Total Tickets</span>
+              <h3 class="mb-0 mt-1 text-success">{{totalTickets}}</h3>
             </div>
-            <div class="card-body">
-                <form [formGroup]="filterForm">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-7">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Desde:</label>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <div class="input-group-text text-muted">
-                                                    <i class="ri-calendar-line"></i>
-                                                </div>
-                                                <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY" formControlName="fechaDesde">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Hasta:</label>
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <div class="input-group-text text-muted">
-                                                    <i class="ri-calendar-line"></i>
-                                                </div>
-                                                <input mwlFlatpickr type="text" class="form-control choose-date" placeholder="DD-MM-YYYY" formControlName="fechaHasta">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label class="form-label">Seleccionar Estado:</label>
-                                <ng-select class="form-control custom-select p-0" formControlName="estado" placeholder="Seleccionar Estado">
-                                    <ng-option value="">Todos</ng-option>
-                                    <ng-option value="pendiente">Pendiente</ng-option>
-                                    <ng-option value="completado">Completado</ng-option>
-                                    <ng-option value="cancelado">Cancelado</ng-option>
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group mt-2">
-                                <label class="form-label"></label>
-                                <div class="d-flex gap-2">
-                                    <button type="button" class="btn btn-primary" (click)="applyFilters()">Buscar</button>
-                                    <button type="button" class="btn btn-light" (click)="clearFilters()">Limpiar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="card-body border-top">
-                <div class="row">
-                    <div class="col-sm-6 mb-1">
-                        <div class="d-flex align-items-center">
-                            <span>Mostrar</span>
-                            <div class="d-flex ms-2 mx-2">
-                                <div class="form-group">
-                                    <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0" data-trigger>
-                                        <ng-option value="10" selected>10</ng-option>
-                                        <ng-option value="25">25</ng-option>
-                                        <ng-option value="50">50</ng-option>
-                                        <ng-option value="100">100</ng-option>
-                                    </ng-select>
-                                </div>
-                            </div>
-                            <span>entradas</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 mb-1">
-                        <div class="float-end">
-                            <input type="text" matInput (keyup)="applyFilter($event)" #input class="form-control" placeholder="buscar">
-                        </div>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    @if (loading) {
-                        <div class="text-center p-4">
-                            <div class="spinner-border" role="status">
-                                <span class="visually-hidden">Cargando...</span>
-                            </div>
-                            <p class="mt-2">Cargando tickets...</p>
-                        </div>
-                    } @else {
-                    <table mat-table [dataSource]="dataSource" matSort class="table table-vcenter text-nowrap table-bordered border-bottom">
-                        <ng-container matColumnDef="ID">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>#ID</th>
-                            <td mat-cell *matCellDef="let row">{{row.No}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Codigo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex align-items-center">
-                                    <span class="avatar avatar-md me-2 avatar-rounded bg-primary-transparent">
-                                        <i class="fe fe-file-text"></i>
-                                    </span>
-                                    <div>
-                                        <h6 class="mb-1 fs-14">{{row.codigo}}</h6>
-                                        <span class="fs-12 text-muted">Ticket #{{row.id}}</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Fecha">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
-                            <td mat-cell *matCellDef="let row">{{row.fecha | date:'dd/MM/yyyy'}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Cantidad">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
-                            <td mat-cell *matCellDef="let row">{{row.cantidad}}</td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Estado">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
-                            <td mat-cell *matCellDef="let row">
-                                <span class="badge bg-{{row.status}}-transparent">{{row.statusText}}</span>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex">
-                                    <a routerLink="/dashboard/business-dashboard/view-ticket/{{row.id}}" 
-                                       class="action-btns1" placement="top" ngbTooltip="Ver Ticket">
-                                        <i class="fe fe-eye text-primary"></i>
-                                    </a>
-                                    <a (click)="edit(editContent, row)" class="action-btns1" placement="top" ngbTooltip="Editar">
-                                        <i class="fe fe-edit-2 text-success"></i>
-                                    </a>
-                                    <a (click)="deleteTicket(row.id)" class="action-btns1" placement="top" ngbTooltip="Eliminar">
-                                        <i class="fe fe-trash-2 text-danger"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="6">No hay datos que coincidan con el filtro "{{input.value}}"</td>
-                        </tr>
-                    </table>
-                    }
-                </div>
-                <mat-paginator [pageSizeOptions]="[8, 10, 25, 100]" aria-label="Select page of tickets"></mat-paginator>
-            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-success-transparent my-auto float-end"> <i class="las la-ticket-alt"></i> </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Pendientes</span>
+              <h3 class="mb-0 mt-1 text-warning">{{ticketsPendientes}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-warning-transparent my-auto float-end"> <i class="las la-clock"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Autorizados</span>
+              <h3 class="mb-0 mt-1 text-primary">{{ticketsAutorizados}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-primary-transparent my-auto float-end"> <i class="las la-check-circle"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-7">
+            <div class="mt-0 text-start"> <span class="fw-medium">Despachados</span>
+              <h3 class="mb-0 mt-1 text-info">{{ticketsDespachados}}</h3>
+            </div>
+          </div>
+          <div class="col-5">
+            <div class="icon1 bg-info-transparent my-auto float-end"> <i class="las la-shipping-fast"></i> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+<!-- End::row-1 -->
+
+<!-- Start::row-2 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Lista de tickets</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0">
+                    <ng-option value="10" selected="">10</ng-option>
+                    <ng-option value="25">25</ng-option>
+                    <ng-option value="50">50</ng-option>
+                    <ng-option value="100">100</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+              <span>registros</span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="float-end">
+              <input type="text" class="form-control" placeholder="Buscar" (keyup)="applyFilter($event)">
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">No</th>
+                <th scope="col">Venta</th>
+                <th scope="col">Lote</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="loading">
+                <td colspan="8" class="text-center py-4">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                  </div>
+                  <div class="mt-2">Cargando tickets...</div>
+                </td>
+              </tr>
+              <tr *ngIf="!loading && tickets.length === 0">
+                <td colspan="8" class="text-center py-4 text-muted">
+                  No se encontraron tickets
+                </td>
+              </tr>
+              <tr *ngFor="let ticket of tickets; trackBy: trackByTicketId" class="border-bottom">
+                <th scope="row">{{ticket.id}}</th>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar me-2 avatar-rounded bg-primary-transparent">
+                      <i class="fe fe-shopping-cart fs-16"></i>
+                    </div>
+                    <div>
+                      <div class="lh-1">
+                        <h6 class="mb-1">Venta #{{ticket.idVenta}}</h6>
+                      </div>
+                      <div class="lh-1">
+                        <span class="fs-12 text-muted">{{ticket.venta?.cliente?.nombre || 'Cliente N/A'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar me-2 avatar-rounded bg-secondary-transparent">
+                      <i class="fe fe-layers fs-16"></i>
+                    </div>
+                    <div>
+                      <div class="lh-1">
+                        <h6 class="mb-1">{{ticket.lote?.galera || 'Lote #' + ticket.idLote}}</h6>
+                      </div>
+                      <div class="lh-1">
+                        <span class="fs-12 text-muted">{{ticket.lote?.tipo || 'N/A'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-semibold">{{ticket.producto?.nombre || 'Producto #' + ticket.idProducto}}</span>
+                  <small class="d-block text-muted">{{ticket.producto?.tamanio || 'N/A'}}</small>
+                </td>
+                <td>{{ticket.fecha | date: 'dd/MM/yyyy':'UTC'}}</td>
+                <td>
+                  <span class="fw-semibold">{{ticket.cantidad | number}}</span>
+                  <small class="d-block text-muted">unidades</small>
+                </td>
+                <td><span class="badge" [class]="getEstadoBadgeClass(ticket.estado)">{{ticket.estado}}</span></td>
+                <td>
+                  <div class="d-flex gap-2">
+                    <a class="btn btn-success btn-icon" (click)="edit(editContent, ticket)"
+                       data-bs-toggle="tooltip" title="Editar">
+                      <i class="fe fe-edit-2"></i>
+                    </a>
+                    <a class="btn btn-icon" 
+                       [class]="ticket.estado === 'Pendiente' ? 'btn-warning' : 'btn-success'"
+                       (click)="toggleTicketStatus(ticket)"
+                       data-bs-toggle="tooltip" 
+                       [title]="ticket.estado === 'Pendiente' ? 'Cancelar' : 'Activar'">
+                      <i [class]="ticket.estado === 'Pendiente' ? 'fe fe-x-circle' : 'fe fe-check-circle'"></i>
+                    </a>
+                    <a class="btn btn-danger btn-icon" (click)="deleteTicket(ticket.id)"
+                       data-bs-toggle="tooltip" title="Eliminar">
+                      <i class="fe fe-trash-2"></i>
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Start::pagination -->
+        <nav class="mt-4">
+          <ul class="pagination justify-content-end mb-0">
+            <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
+            <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
+            <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+          </ul>
+        </nav>
+        <!-- End::pagination -->
+      </div>
+    </div>
+  </div>
+</div>
+<!--End::row-2 -->
 
 <ng-template #editContent let-modal>
     <form [formGroup]="editForm" (ngSubmit)="onUpdateTicket()">
@@ -202,19 +223,18 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label class="form-label">Estado *</label>
-                        <ng-select class="form-control" 
-                                   formControlName="estado"
-                                   placeholder="Seleccionar estado"
+                        <ng-select class="form-control p-0" 
+                                   formControlName="estado" 
+                                   placeholder="Seleccione un estado"
                                    [class.is-invalid]="editForm.get('estado')?.invalid && editForm.get('estado')?.touched">
                             <ng-option value="Pendiente">Pendiente</ng-option>
-                            <ng-option value="Completado">Completado</ng-option>
+                            <ng-option value="Autorizado">Autorizado</ng-option>
+                            <ng-option value="Despachado">Despachado</ng-option>
                             <ng-option value="Cancelado">Cancelado</ng-option>
                         </ng-select>
-                        @if (editForm.get('estado')?.invalid && editForm.get('estado')?.touched) {
-                            <div class="invalid-feedback">
-                                El estado es requerido
-                            </div>
-                        }
+                        <div *ngIf="editForm.get('estado')?.invalid && editForm.get('estado')?.touched" class="invalid-feedback">
+                            El estado es requerido
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -225,30 +245,18 @@
                                type="number"
                                placeholder="Cantidad"
                                [class.is-invalid]="editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched">
-                        @if (editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched) {
-                            <div class="invalid-feedback">
-                                @if (editForm.get('cantidad')?.errors?.['required']) {
-                                    <span>La cantidad es requerida</span>
-                                }
-                                @if (editForm.get('cantidad')?.errors?.['min']) {
-                                    <span>La cantidad debe ser mayor a 0</span>
-                                }
-                            </div>
-                        }
+                        <div *ngIf="editForm.get('cantidad')?.invalid && editForm.get('cantidad')?.touched" class="invalid-feedback">
+                            <span *ngIf="editForm.get('cantidad')?.errors?.['required']">La cantidad es requerida</span>
+                            <span *ngIf="editForm.get('cantidad')?.errors?.['min']">La cantidad debe ser mayor a 0</span>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="form-group">
-                        <label class="form-label">Código de Autorización *</label>
+                        <label class="form-label">Código de Autorización</label>
                         <input class="form-control" 
                                formControlName="codigoAutorizacion" 
-                               placeholder="Código de autorización"
-                               [class.is-invalid]="editForm.get('codigoAutorizacion')?.invalid && editForm.get('codigoAutorizacion')?.touched">
-                        @if (editForm.get('codigoAutorizacion')?.invalid && editForm.get('codigoAutorizacion')?.touched) {
-                            <div class="invalid-feedback">
-                                El código de autorización es requerido
-                            </div>
-                        }
+                               placeholder="Código de autorización (opcional)">
                     </div>
                 </div>
             </div>
@@ -256,9 +264,7 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('cancel')">Cancelar</button>
             <button type="submit" class="btn btn-success" [disabled]="loading">
-                @if (loading) {
-                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                }
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
                 Actualizar
             </button>
         </div>

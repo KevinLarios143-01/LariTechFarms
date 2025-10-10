@@ -1,40 +1,34 @@
 export interface Venta {
   id: number;
-  idCliente: number;
+  idCliente?: number;
   fecha: string;
   total: number;
-  estado: string;
-  idTenant?: number;
-  fechaCreacion?: string;
-  fechaActualizacion?: string;
   metodoPago?: string;
-  idUsuario?: number;
+  estado: "Completada" | "Cancelada" | "Pendiente";
   observaciones?: string;
   cliente?: {
     id: number;
     nombre: string;
-    telefono: string;
-    correo: string;
-    direccion: string;
-    nit: string;
+    telefono?: string;
   };
   usuario?: {
     nombre: string;
-    email: string;
+    apellido?: string;
   };
-  detalleVentas?: {
-    id: number;
-    cantidad: number;
-    precioUnitario: string;
-    subtotal: string;
-    producto: {
-      id: number;
-      nombre: string;
-      tamanio: string;
-      precio: string;
-    };
-  }[];
-  tickets?: any[];
+  detalleVentas: DetalleVenta[];
+}
+
+export interface DetalleVenta {
+  id: number;
+  idProducto: number;
+  cantidad: number;
+  precioUnitario: number;
+  subtotal: number;
+  producto: {
+    nombre: string;
+    tamanio?: string;
+    categoria?: string;
+  };
 }
 
 export interface VentaResponse {
@@ -52,15 +46,57 @@ export interface VentaResponse {
 }
 
 export interface CreateVentaRequest {
-  idCliente: number;
-  fecha: string;
-  total: number;
-  estado: string;
+  idCliente?: number;
+  fecha: string; // YYYY-MM-DD
+  metodoPago?: string;
+  observaciones?: string;
+  detalles: DetalleVentaDTO[];
+}
+
+export interface DetalleVentaDTO {
+  idProducto: number;
+  cantidad: number;
+  precioUnitario: number;
 }
 
 export interface UpdateVentaRequest {
   idCliente?: number;
   fecha?: string;
-  total?: number;
-  estado?: string;
+  metodoPago?: string;
+  observaciones?: string;
+  detalles?: DetalleVentaDTO[];
+}
+
+export interface UpdateEstadoDTO {
+  estado: "Completada" | "Cancelada" | "Pendiente";
+}
+
+export interface AnularVentaDTO {
+  motivoAnulacion?: string;
+}
+
+export interface VentasStats {
+  totalVentas: number;
+  ventasCompletadas: number;
+  ventasPendientes: number;
+  ventasCanceladas: number;
+  montoTotal: number;
+  promedioVenta: number;
+  topClientes: Array<{
+    idCliente: number;
+    nombreCliente: string;
+    totalCompras: number;
+    numeroVentas: number;
+  }>;
+  topProductos: Array<{
+    idProducto: number;
+    nombreProducto: string;
+    cantidadVendida: number;
+    montoTotal: number;
+  }>;
+  ventasPorMes: Array<{
+    mes: string;
+    totalVentas: number;
+    montoTotal: number;
+  }>;
 }

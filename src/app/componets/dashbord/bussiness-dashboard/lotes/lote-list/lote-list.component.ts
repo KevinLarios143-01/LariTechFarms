@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -32,7 +32,8 @@ export class LoteListComponent implements OnInit {
     private readonly modalService: NgbModal,
     private readonly lotesService: LotesService,
     private readonly fb: FormBuilder,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
+    private readonly cdr: ChangeDetectorRef
   ) {
     this.editForm = this.fb.group({
       tipo: ['', Validators.required],
@@ -66,6 +67,7 @@ export class LoteListComponent implements OnInit {
             positionClass: 'toast-top-right',
           });
           this.loadLotes();
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error response:', error);
@@ -85,6 +87,7 @@ export class LoteListComponent implements OnInit {
             timeOut: 3000,
             positionClass: 'toast-top-right',
           });
+          this.cdr.detectChanges();
         }
       });
     }
@@ -96,8 +99,8 @@ export class LoteListComponent implements OnInit {
       tipo: lote.tipo,
       galera: lote.galera,
       cantidad: lote.cantidad,
-      fechaInicio: lote.fechaInicio,
-      fechaFin: lote.fechaFin,
+      fechaInicio: this.formatDateForInput(lote.fechaInicio),
+      fechaFin: this.formatDateForInput(lote.fechaFin || ''),
       estado: lote.estado,
       observaciones: lote.observaciones
     });
@@ -118,6 +121,7 @@ export class LoteListComponent implements OnInit {
           this.loadLotes();
           this.modalService.dismissAll();
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (error) => {
           this.toastr.error('Error al actualizar el lote: ' + (error.error?.message || 'Error desconocido'), 'Error', {
@@ -125,6 +129,7 @@ export class LoteListComponent implements OnInit {
             positionClass: 'toast-top-right',
           });
           this.loading = false;
+          this.cdr.detectChanges();
         }
       });
     } else {
@@ -171,10 +176,12 @@ export class LoteListComponent implements OnInit {
         
         this.calculateStats();
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.lotes = [];
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -197,5 +204,25 @@ export class LoteListComponent implements OnInit {
 
   trackByLoteId(index: number, lote: Lote): number {
     return lote.id;
+  }
+
+  private formatDateForInput(dateString: string | null | undefined): string {
+    if (!dateString) return '';
+    
+    // Si ya viene en formato YYYY-MM-DD, devolverlo tal como está
+    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+    
+    // Para fechas ISO, extraer solo la parte de la fecha
+    if (dateString.includes('T')) {
+      return dateString.split('T')[0];
+    }
+    
+    // Fallback: intentar parsear como fecha
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    
+    return date.toISOString().split('T')[0];
   }
 }

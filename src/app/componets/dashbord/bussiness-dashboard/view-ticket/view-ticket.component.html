@@ -1,0 +1,176 @@
+<!-- Page Header -->
+<div class="page-header d-lg-flex d-block">
+    <div class="page-leftheader">
+        <div class="page-title">Detalle de Ticket</div>
+    </div>
+    <div class="page-rightheader">
+        <div class="btn-list d-flex gap-1">
+            <button class="btn btn-outline-primary" (click)="goBack()">
+                <i class="fe fe-arrow-left fs-12 my-auto me-2"></i>Volver
+            </button>
+            @if (ticket) {
+                <button class="btn btn-primary" (click)="editTicket()">
+                    <i class="fe fe-edit-2 fs-12 my-auto me-2"></i>Editar
+                </button>
+            }
+        </div>
+    </div>
+</div>
+<!-- Page Header Close -->
+
+@if (loading) {
+    <div class="text-center py-4">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+} @else if (ticket) {
+    <div class="row">
+        <div class="col-xl-8 col-md-12 col-lg-8">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title">Información del Ticket</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">ID de Ticket:</label>
+                                <p class="form-control-static">#TK-{{ticket.id.toString().padStart(3, '0')}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Estado:</label>
+                                <p class="form-control-static">
+                                    <span class="badge bg-{{getStatusClass(ticket.estado)}}-transparent">{{ticket.estado}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Fecha de Creación:</label>
+                                <p class="form-control-static">{{ticket.fecha | date:'dd/MM/yyyy HH:mm':'UTC'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Fecha de Despacho:</label>
+                                <p class="form-control-static">{{ticket.fecha | date:'dd/MM/yyyy':'UTC'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Cantidad Total:</label>
+                                <p class="form-control-static">{{ticket.cantidad}} unidades</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Usuario:</label>
+                                <p class="form-control-static">{{ticket.usuario?.nombre || 'N/A'}}</p>
+                            </div>
+                        </div>
+                        @if (ticket.codigoAutorizacion) {
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="form-label">Código de Autorización:</label>
+                                    <p class="form-control-static">{{ticket.codigoAutorizacion}}</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-4 col-md-12 col-lg-4">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h4 class="card-title">Información de la Venta</h4>
+                </div>
+                <div class="card-body">
+                    @if (ticket.venta) {
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="avatar avatar-lg me-3 avatar-rounded bg-success-transparent">
+                                <i class="fe fe-shopping-cart fs-18"></i>
+                            </span>
+                            <div>
+                                <h6 class="mb-1">Venta #VT-{{ticket.venta.id.toString().padStart(3, '0')}}</h6>
+                                <span class="text-muted">{{ticket.venta.cliente.nombre || 'Cliente N/A'}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total de la Venta:</label>
+                            <p class="form-control-static">Q{{ticket.venta.total | number:'1.2-2'}}</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Estado de la Venta:</label>
+                            <p class="form-control-static">
+                                <span class="badge bg-success-transparent">Activa</span>
+                            </p>
+                        </div>
+                    } @else {
+                        <p class="text-muted">Información de la venta no disponible</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (ticket.lote) {
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <h4 class="card-title">Detalle de Despacho por Lotes</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-vcenter text-nowrap table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Lote</th>
+                                        <th>Galera</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad Despachada</th>
+                                        <th>Fecha de Producción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>Lote #{{ticket.lote.id}}</td>
+                                            <td>{{ticket.lote.galera || 'N/A'}}</td>
+                                            <td>{{ticket.producto?.nombre || 'N/A'}} - {{ticket.producto?.tamanio || 'N/A'}}</td>
+                                            <td>{{ticket.cantidad}} unidades</td>
+                                            <td>{{ticket.fecha | date:'dd/MM/yyyy':'UTC'}}</td>
+                                        </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr class="table-active">
+                                        <td colspan="3" class="text-end"><strong>Total Despachado:</strong></td>
+                                        <td><strong>{{ticket.cantidad}} unidades</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+} @else {
+    <div class="row">
+        <div class="col-12">
+            <div class="card custom-card">
+                <div class="card-body text-center py-5">
+                    <i class="fe fe-alert-circle fs-48 text-muted mb-3"></i>
+                    <h4>Ticket no encontrado</h4>
+                    <p class="text-muted">El ticket solicitado no existe o no se pudo cargar.</p>
+                    <button class="btn btn-primary" (click)="goBack()">Volver a la lista</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
