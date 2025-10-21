@@ -11,8 +11,9 @@ import flatpickr from 'flatpickr';
 import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ClienteService } from '../../../../shared/services/cliente.service';
+
 import { Cliente, UpdateClienteRequest } from '../../../../shared/interfaces/cliente';
+import { ClienteService } from '../cliente.service';
 
 interface ClienteDisplay {
   id: number;
@@ -28,7 +29,7 @@ interface ClienteDisplay {
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [SharedModule,NgSelectModule,MaterialModuleModule,FlatpickrModule,RouterModule,ReactiveFormsModule,NgbModule],
+  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss'],
   providers: [
@@ -82,14 +83,14 @@ export class ClientListComponent implements OnInit {
     }
   }
   toggleClienteStatus(cliente: Cliente) {
-    const isActive = cliente.activo;
+    const isActive = cliente.estado;
     const action = isActive ? 'desactivar' : 'activar';
-    
+
     if (confirm(`¿Está seguro de que desea ${action} este cliente?`)) {
-      const serviceCall = isActive 
+      const serviceCall = isActive
         ? this.clienteService.deactivateCliente(cliente.id)
         : this.clienteService.activateCliente(cliente.id);
-        
+
       serviceCall.subscribe({
         next: () => {
           this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito', {
@@ -101,7 +102,7 @@ export class ClientListComponent implements OnInit {
         error: (error: any) => {
           console.error('Error response:', error);
           let errorMessage = 'Error desconocido';
-          
+
           if (error.error?.message) {
             errorMessage = error.error.message;
           } else if (error.error?.error) {
@@ -111,7 +112,7 @@ export class ClientListComponent implements OnInit {
           } else if (typeof error.error === 'string') {
             errorMessage = error.error;
           }
-          
+
           this.toastr.error(`Error al ${action} el cliente: ${errorMessage}`, 'Error', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
@@ -129,14 +130,14 @@ export class ClientListComponent implements OnInit {
       direccion: cliente.direccion,
       nit: cliente.nit
     });
-    this.modalService.open(editContent, {windowClass : 'modalCusSty modal-lg' });
+    this.modalService.open(editContent, { windowClass: 'modalCusSty modal-lg' });
   }
 
   onUpdateCliente(): void {
     if (this.editForm.valid && this.selectedCliente) {
       this.loading = true;
       const updateData: UpdateClienteRequest = this.editForm.value;
-      
+
       this.clienteService.updateCliente(this.selectedCliente.id, updateData).subscribe({
         next: (response) => {
           this.toastr.success('Cliente actualizado exitosamente', 'Éxito', {
@@ -170,8 +171,8 @@ export class ClientListComponent implements OnInit {
       control?.markAsTouched();
     });
   }
-  open(content:any) {
-    this.modalService.open(content, {windowClass : 'modalCusSty',size:'lg' })
+  open(content: any) {
+    this.modalService.open(content, { windowClass: 'modalCusSty', size: 'lg' })
   }
 
   ngOnInit(): void {
@@ -209,8 +210,8 @@ export class ClientListComponent implements OnInit {
       img: cliente.img || './assets/images/laritechfarms/2.jpg',
       email: cliente.correo || cliente.email || '',
       project: cliente.proyectos || cliente._count?.proyectos || 0,
-      statusText: cliente.estado || cliente.activo ? 'Active' : 'InActive',
-      status: cliente.estado || cliente.activo ? 'success' : 'danger'
+      statusText: cliente.estado ? 'Activo' : 'Inactivo',
+      status: cliente.estado ? 'success' : 'danger'
     }));
   }
 

@@ -5,9 +5,10 @@ import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { VentaService } from '../../../../shared/services/venta.service';
 import { CreateVentaRequest, UpdateVentaRequest } from '../../../../shared/interfaces/venta';
-import { ClienteService, Cliente } from '../../../../shared/services/cliente.service';
 import { ToastrService } from 'ngx-toastr';
 import { DatePipe } from '@angular/common';
+import { Cliente } from '../../../../shared/interfaces/cliente';
+import { ClienteService } from '../../client-dashboard/cliente.service';
 
 @Component({
   selector: 'app-new-sell',
@@ -162,11 +163,11 @@ export class NewSellComponent implements OnInit {
 
   private loadClientes(): void {
     this.clienteService.getClientes().subscribe({
-      next: (response) => {
+      next: (response: any) => {
         const clientesData = response?.data?.data || response?.data || response || [];
         this.clientes = Array.isArray(clientesData) ? clientesData : [];
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading clientes:', error);
         this.clientes = [];
       }

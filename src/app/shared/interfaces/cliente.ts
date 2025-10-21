@@ -14,7 +14,6 @@ export interface Cliente {
   empresa?: string;
   img?: string;
   proyectos?: number;
-  activo?: boolean;
   _count?: {
     proyectos: number;
     pedidos: number;

@@ -8,8 +8,8 @@ import flatpickr from 'flatpickr';
 import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ClienteService } from '../../../../shared/services/cliente.service';
 import { CreateClienteRequest } from '../../../../shared/interfaces/cliente';
+import { ClienteService } from '../cliente.service';
 
 @Component({
   selector: 'app-new-client',
@@ -48,7 +48,7 @@ export class NewClientComponent implements OnInit {
     if (this.clienteForm.valid) {
       this.loading = true;
       const clienteData: CreateClienteRequest = this.clienteForm.value;
-      
+
       this.clienteService.createCliente(clienteData).subscribe({
         next: (response) => {
           this.toastr.success('Cliente creado exitosamente', 'Éxito', {

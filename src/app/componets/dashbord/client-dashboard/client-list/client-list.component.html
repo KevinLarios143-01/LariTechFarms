@@ -84,8 +84,7 @@
                             <span>Mostrar</span>
                             <div class="d-flex ms-2 mx-2">
                                 <div class="form-group">
-                                    <ng-select name="quantity" placeholder="10"
-                                        class="form-control wd-150 p-0">
+                                    <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0">
                                         <ng-option value="10">10</ng-option>
                                         <ng-option value="25">25</ng-option>
                                         <ng-option value="50">50</ng-option>
@@ -103,77 +102,79 @@
                     </div>
                 </div>
                 @if (loading) {
-                    <div class="text-center py-4">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Cargando...</span>
-                        </div>
+                <div class="text-center py-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
+                </div>
                 } @else {
-                    <div class="table-responsive">
-                        <table class="table table-vcenter text-nowrap table-bordered border-bottom">
-                            <thead>
-                                <tr>
-                                    <th>#ID</th>
-                                    <th>Nombre</th>
-                                    <th>Teléfono</th>
-                                    <th>Dirección</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (clientes.length === 0) {
-                                    <tr>
-                                        <td colspan="6" class="text-center py-4">
-                                            <div class="text-muted">
-                                                <i class="fe fe-inbox fs-24 mb-2"></i>
-                                                <p>No hay clientes disponibles</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                } @else {
-                                    @for (cliente of clientes; track cliente.id) {
-                                        <tr>
-                                            <td>#CL-{{cliente.id.toString().padStart(3, '0')}}</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <span class="avatar avatar-md me-2 avatar-rounded bg-primary-transparent">
-                                                        <i class="fe fe-user"></i>
-                                                    </span>
-                                                    <div>
-                                                        <h6 class="mb-1 fs-14">{{cliente.nombre}}</h6>
-                                                        <span class="fs-12 text-muted">Cliente #{{cliente.id}}</span>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td>{{cliente.telefono || 'N/A'}}</td>
-                                            <td>{{cliente.direccion || 'N/A'}}</td>
-                                            <td>
-                                                <span class="badge bg-{{cliente.activo ? 'success' : 'danger'}}-transparent">
-                                                    {{cliente.activo ? 'Activo' : 'Inactivo'}}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex">
-                                                    <a routerLink="/dashboard/client-dashboard/view-client/{{cliente.id}}" 
-                                                       class="action-btns1" placement="top" ngbTooltip="Ver Cliente">
-                                                        <i class="fe fe-eye text-primary"></i>
-                                                    </a>
-                                                    <a (click)="edit(editContent, cliente)" class="action-btns1" placement="top" ngbTooltip="Editar">
-                                                        <i class="fe fe-edit-2 text-success"></i>
-                                                    </a>
-                                                    <a (click)="toggleClienteStatus(cliente)" class="action-btns1" placement="top" 
-                                                       [ngbTooltip]="cliente.activo ? 'Desactivar' : 'Activar'">
-                                                        <i class="fe fe-{{cliente.activo ? 'user-x' : 'user-check'}} text-{{cliente.activo ? 'danger' : 'success'}}"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="table-responsive">
+                    <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+                        <thead>
+                            <tr>
+                                <th>#ID</th>
+                                <th>Nombre</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (clientes.length === 0) {
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fe fe-inbox fs-24 mb-2"></i>
+                                        <p>No hay clientes disponibles</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            } @else {
+                            @for (cliente of clientes; track cliente.id) {
+                            <tr>
+                                <td>#CL-{{cliente.id.toString().padStart(3, '0')}}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="avatar avatar-md me-2 avatar-rounded bg-primary-transparent">
+                                            <i class="fe fe-user"></i>
+                                        </span>
+                                        <div>
+                                            <h6 class="mb-1 fs-14">{{cliente.nombre}}</h6>
+                                            <span class="fs-12 text-muted">Cliente #{{cliente.id}}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{cliente.telefono || 'N/A'}}</td>
+                                <td>{{cliente.direccion || 'N/A'}}</td>
+                                <td>
+                                    <span class="badge bg-{{cliente.estado ? 'success' : 'danger'}}-transparent">
+                                        {{cliente.estado ? 'Activo' : 'Inactivo'}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a routerLink="/dashboard/client-dashboard/view-client/{{cliente.id}}"
+                                            class="action-btns1" placement="top" ngbTooltip="Ver Cliente">
+                                            <i class="fe fe-eye text-primary"></i>
+                                        </a>
+                                        <a (click)="edit(editContent, cliente)" class="action-btns1" placement="top"
+                                            ngbTooltip="Editar">
+                                            <i class="fe fe-edit-2 text-success"></i>
+                                        </a>
+                                        <a (click)="toggleClienteStatus(cliente)" class="action-btns1" placement="top"
+                                            [ngbTooltip]="cliente.estado ? 'Desactivar' : 'Activar'">
+                                            <i
+                                                class="fe fe-{{cliente.estado ? 'user-x' : 'user-check'}} text-{{cliente.estado ? 'danger' : 'success'}}"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                            }
+                        </tbody>
+                    </table>
+                </div>
                 }
             </div>
         </div>
