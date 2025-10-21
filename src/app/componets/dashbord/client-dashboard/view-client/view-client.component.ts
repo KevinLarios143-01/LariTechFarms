@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { AngularEditorModule,AngularEditorConfig } from '@wfpena/angular-wysiwyg';
 
 @Component({
@@ -14,10 +14,12 @@ import { AngularEditorModule,AngularEditorConfig } from '@wfpena/angular-wysiwyg
 })
 export class ViewClientComponent implements OnInit {
   active = 1;
+  clientId: string | null = null;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.clientId = this.route.snapshot.paramMap.get('id');
   }
 
     //Angular Editor

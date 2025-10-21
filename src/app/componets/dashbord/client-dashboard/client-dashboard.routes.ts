@@ -21,7 +21,7 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'view-client',
+        path: 'view-client/:id',
         loadComponent: () =>
           import('./view-client/view-client.component').then((m) => m.ViewClientComponent),
         canActivate: [AuthGuard]
