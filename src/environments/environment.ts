@@ -7,6 +7,7 @@ export const environment = {
 
   apiUrl: 'https://laritechfarmsbackendnode-production.up.railway.app/api',
   //apiUrl: 'http://localhost:3001/api',
+  pythonApiUrl: 'https://farmspb-production.up.railway.app',
 
   // firebase: {
   //   apiKey: "***************************************",

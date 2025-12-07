@@ -44,6 +44,11 @@ const routes: Routes = [
         loadComponent: () =>
           import('./role-access/role-access.component').then((m) => m.RoleAccessComponent),
           
+      },   {
+        path: 'modules',
+        loadComponent: () =>
+          import('./modules/modules.component').then((m) => m.ModulesComponent),
+          
       },
       
     ]

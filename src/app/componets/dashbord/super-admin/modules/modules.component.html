@@ -1,0 +1,83 @@
+<app-hr-dashboard-page-header [title]="'Gestión de Módulos'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+</app-hr-dashboard-page-header>
+
+<!-- Start::row-1 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Seleccionar Empresa</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Empresa</label>
+              <ng-select class="form-control custom-select p-0" placeholder="Seleccione una empresa"
+                [(ngModel)]="selectedTenantId" bindValue="id" bindLabel="name" [items]="tenants"
+                (ngModelChange)="onTenantChange($event)">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if(selectedTenantId && !loading) {
+<!-- Start::row-2 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Módulos Disponibles</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">ID</th>
+                <th scope="col">Nombre del Módulo</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(module of modules; track module.id) {
+              <tr class="border-bottom">
+                <th scope="row">{{module.id}}</th>
+                <td>{{module.name}}</td>
+                <td>
+                  <span class="badge" [class]="module.isEnabled ? 'bg-success' : 'bg-danger'">
+                    {{module.isEnabled ? 'Habilitado' : 'Deshabilitado'}}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-sm" [class]="module.isEnabled ? 'btn-warning' : 'btn-success'"
+                    (click)="toggleModule(module.id, module.isEnabled)">
+                    <i [class]="module.isEnabled ? 'fe fe-x' : 'fe fe-check'"></i>
+                    {{module.isEnabled ? 'Deshabilitar' : 'Habilitar'}}
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+@if(loading) {
+<div class="row">
+  <div class="col-md-12 text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+}

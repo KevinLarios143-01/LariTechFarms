@@ -16,11 +16,11 @@ export interface Company {
 }
 
 export interface TenantResponse {
-  id_tenant: number;
+  id: number;
   nombre: string;
   correo: string;
   telefono: string;
-  fecha_registro: string;
+  fechaRegistro: string;
   direccion: string;
   nit: string;
   activo: boolean;

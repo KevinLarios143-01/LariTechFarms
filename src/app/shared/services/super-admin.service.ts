@@ -14,6 +14,7 @@ import { Plan, PlanResponse } from '../interfaces/plan';
 })
 export class SuperAdminService {
   private readonly apiUrl = `${environment.apiUrl}/v1`;
+  private readonly pythonApiUrl = environment.pythonApiUrl;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -25,13 +26,13 @@ export class SuperAdminService {
 
   private mapTenantToCompany(tenant: TenantResponse): Company {
     return {
-      id: tenant.id_tenant,
-      img: `./assets/images/media/files/company/img${tenant.id_tenant}.png`,
+      id: tenant.id,
+      img: `./assets/images/media/files/company/img${tenant.id}.png`,
       name: tenant.nombre,
       email: tenant.correo,
       package: 'Basic (Monthly)',
       packageBadge: 'Change',
-      registeredBy: new Date(tenant.fecha_registro).toLocaleDateString(),
+      registeredBy: new Date(tenant.fechaRegistro).toLocaleDateString(),
       statusText: tenant.activo ? 'Active' : 'Inactive',
       status: tenant.activo ? 'success' : 'danger',
       telefono: tenant.telefono,
@@ -103,5 +104,17 @@ export class SuperAdminService {
 
   getPlanById(id: number): Observable<Plan> {
     return this.http.get<Plan>(`${this.apiUrl}/planes/${id}`);
+  }
+
+  getEnabledModules(tenantId: number): Observable<any> {
+    return this.http.get(`${this.pythonApiUrl}/modules/enableddos?idTenant=${tenantId}`);
+  }
+
+  updateModuleStatus(tenantId: number, moduleId: number, isEnabled: boolean): Observable<any> {
+    return this.http.post(`${this.pythonApiUrl}/modules/updatedos`, {
+      idTenant: tenantId,
+      idModule: moduleId,
+      isEnabled: isEnabled
+    });
   }
 }
