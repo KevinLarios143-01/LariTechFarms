@@ -107,11 +107,11 @@ export class SuperAdminService {
   }
 
   getEnabledModules(tenantId: number): Observable<any> {
-    return this.http.get(`${this.pythonApiUrl}/modules/enableddos?idTenant=${tenantId}`);
+    return this.http.get(`${this.apiUrl}/modules/enableddos?idTenant=${tenantId}`);
   }
 
   updateModuleStatus(tenantId: number, moduleId: number, isEnabled: boolean): Observable<any> {
-    return this.http.post(`${this.pythonApiUrl}/modules/updatedos`, {
+    return this.http.post(`${this.apiUrl}/modules/updatedos`, {
       idTenant: tenantId,
       idModule: moduleId,
       isEnabled: isEnabled
