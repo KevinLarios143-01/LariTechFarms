@@ -61,9 +61,7 @@ export class ModulesComponent implements OnInit {
     this.loading = true;
     this.superAdminService.getEnabledModules(tenantId).subscribe({
       next: (response) => {
-        if (response.ok) {
-          this.modules = response.modules;
-        }
+        this.modules = response.data?.modules || [];
         this.loading = false;
       },
       error: (error) => {
@@ -87,9 +85,7 @@ export class ModulesComponent implements OnInit {
 
     this.superAdminService.updateModuleStatus(this.selectedTenantId, moduleId, newStatus).subscribe({
       next: (response) => {
-        if (response.ok) {
-          this.toastr.success(response.message, 'Éxito');
-        }
+        this.toastr.success('Módulo actualizado correctamente', 'Éxito');
       },
       error: (error) => {
         // Revertir el cambio si hay error
