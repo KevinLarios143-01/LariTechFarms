@@ -1,0 +1,120 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">{{ isEditMode ? 'Editar' : 'Agregar' }} Vehículo</div>
+        </div>
+        <div class="card-body">
+          @if (isLoading && isEditMode && !vehiculoForm.value.placa) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <!-- Tipo -->
+                <div class="col-md-6">
+                  <label class="form-label">Tipo *</label>
+                  <ng-select [items]="tipos" formControlName="tipo" 
+                             placeholder="Seleccione tipo"
+                             [class.is-invalid]="isFieldInvalid('tipo')">
+                  </ng-select>
+                  @if (isFieldInvalid('tipo')) {
+                    <div class="invalid-feedback d-block">{{ getFieldError('tipo') }}</div>
+                  }
+                </div>
+
+                <!-- Placa -->
+                <div class="col-md-6">
+                  <label class="form-label">Placa *</label>
+                  <input type="text" class="form-control" formControlName="placa"
+                         placeholder="Ej: P-123ABC"
+                         [class.is-invalid]="isFieldInvalid('placa')">
+                  @if (isFieldInvalid('placa')) {
+                    <div class="invalid-feedback">{{ getFieldError('placa') }}</div>
+                  }
+                </div>
+
+                <!-- Marca -->
+                <div class="col-md-6">
+                  <label class="form-label">Marca *</label>
+                  <input type="text" class="form-control" formControlName="marca"
+                         placeholder="Ej: Toyota"
+                         [class.is-invalid]="isFieldInvalid('marca')">
+                  @if (isFieldInvalid('marca')) {
+                    <div class="invalid-feedback">{{ getFieldError('marca') }}</div>
+                  }
+                </div>
+
+                <!-- Modelo -->
+                <div class="col-md-6">
+                  <label class="form-label">Modelo *</label>
+                  <input type="text" class="form-control" formControlName="modelo"
+                         placeholder="Ej: Hilux"
+                         [class.is-invalid]="isFieldInvalid('modelo')">
+                  @if (isFieldInvalid('modelo')) {
+                    <div class="invalid-feedback">{{ getFieldError('modelo') }}</div>
+                  }
+                </div>
+
+                <!-- Año -->
+                <div class="col-md-4">
+                  <label class="form-label">Año</label>
+                  <input type="number" class="form-control" formControlName="anio"
+                         placeholder="Ej: 2020" min="1900" [max]="new Date().getFullYear()"
+                         [class.is-invalid]="isFieldInvalid('anio')">
+                  @if (isFieldInvalid('anio')) {
+                    <div class="invalid-feedback">{{ getFieldError('anio') }}</div>
+                  }
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-4">
+                  <label class="form-label">Estado</label>
+                  <ng-select [items]="estados" formControlName="estado" 
+                             placeholder="Seleccione estado">
+                  </ng-select>
+                </div>
+
+                <!-- Capacidad -->
+                <div class="col-md-4">
+                  <label class="form-label">Capacidad (kg)</label>
+                  <input type="number" class="form-control" formControlName="capacidad"
+                         placeholder="Ej: 1000" min="0" step="0.01"
+                         [class.is-invalid]="isFieldInvalid('capacidad')">
+                  @if (isFieldInvalid('capacidad')) {
+                    <div class="invalid-feedback">{{ getFieldError('capacidad') }}</div>
+                  }
+                </div>
+
+                <!-- Fecha de Adquisición -->
+                <div class="col-md-6">
+                  <label class="form-label">Fecha de Adquisición</label>
+                  <input type="date" class="form-control" formControlName="fechaAdquisicion">
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                  @if (isLoading) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                  }
+                  <i class="ri-save-line"></i> {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+                </button>
+                <button type="button" class="btn btn-secondary" 
+                        [routerLink]="isEditMode ? '../../list' : '../list'" 
+                        [disabled]="isLoading">
+                  <i class="ri-close-line"></i> Cancelar
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

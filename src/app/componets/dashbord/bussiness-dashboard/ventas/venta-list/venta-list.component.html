@@ -1,0 +1,231 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Gestión de Ventas</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" routerLink="../add">
+              <i class="ri-add-line"></i> Nueva Venta
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="row">
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                <i class="ri-shopping-cart-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalVentas }}</h5>
+              <p class="mb-0 fs-12 text-muted">Total Ventas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                <i class="ri-check-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.ventasCompletadas }}</h5>
+              <p class="mb-0 fs-12 text-muted">Completadas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                <i class="ri-time-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.ventasPendientes }}</h5>
+              <p class="mb-0 fs-12 text-muted">Pendientes</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                <i class="ri-money-dollar-circle-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.montoTotal | number:'1.2-2' }}</h5>
+              <p class="mb-0 fs-12 text-muted">Monto Total</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <ng-select [items]="estados" [(ngModel)]="estadoFilter" 
+                         placeholder="Estado" (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <input type="date" class="form-control" placeholder="Fecha Desde" 
+                     [(ngModel)]="fechaDesde" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <input type="date" class="form-control" placeholder="Fecha Hasta" 
+                     [(ngModel)]="fechaHasta" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                <i class="ri-refresh-line"></i> Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table text-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Cliente</th>
+                  <th>Total</th>
+                  <th>Método Pago</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (isLoading) {
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                      </div>
+                    </td>
+                  </tr>
+                } @else if (ventas.length === 0) {
+                  <tr>
+                    <td colspan="6" class="text-center">No hay ventas registradas</td>
+                  </tr>
+                } @else {
+                  @for (venta of ventas; track venta.id) {
+                    <tr>
+                      <td>{{ venta.fecha | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        @if (venta.cliente) {
+                          <div class="fw-semibold">{{ venta.cliente.nombre }}</div>
+                          @if (venta.cliente.telefono) {
+                            <small class="text-muted">{{ venta.cliente.telefono }}</small>
+                          }
+                        } @else {
+                          <span class="text-muted">Cliente general</span>
+                        }
+                      </td>
+                      <td>
+                        <span class="fw-semibold text-success">Q{{ venta.total | number:'1.2-2' }}</span>
+                      </td>
+                      <td>
+                        @if (venta.metodoPago) {
+                          <span class="badge bg-light text-dark">{{ venta.metodoPago }}</span>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>
+                        <span [class]="'badge ' + getEstadoBadgeClass(venta.estado)">
+                          {{ venta.estado }}
+                        </span>
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <button class="btn btn-sm btn-info" [routerLink]="['../view', venta.id]" 
+                                  title="Ver detalles">
+                            <i class="ri-eye-line"></i>
+                          </button>
+                          @if (venta.estado !== 'Cancelada') {
+                            <button class="btn btn-sm btn-primary" [routerLink]="['../edit', venta.id]" 
+                                    title="Editar">
+                              <i class="ri-edit-line"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" (click)="anularVenta(venta)" 
+                                    title="Anular">
+                              <i class="ri-close-circle-line"></i>
+                            </button>
+                          }
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          @if (totalPages > 1) {
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} ventas
+              </div>
+              <nav>
+                <ul class="pagination mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                  </li>
+                  @for (page of pages; track page) {
+                    <li class="page-item" [class.active]="page === currentPage">
+                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                    </li>
+                  }
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

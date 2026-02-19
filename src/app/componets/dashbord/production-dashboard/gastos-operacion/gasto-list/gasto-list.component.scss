@@ -1,0 +1,23 @@
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+}
+
+.bg-purple {
+  background-color: #6f42c1 !important;
+  color: white;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.btn-group {
+  gap: 0.25rem;
+}
+
+.pagination {
+  .page-link {
+    cursor: pointer;
+  }
+}

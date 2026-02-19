@@ -1,0 +1,146 @@
+<div class="container-fluid">
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    </div>
+  } @else if (vehiculo) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">Detalles del Vehículo</div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary btn-sm" [routerLink]="['../../edit', vehiculo.id]">
+                <i class="ri-edit-line"></i> Editar
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="deleteVehiculo()">
+                <i class="ri-delete-bin-line"></i> Eliminar
+              </button>
+              <button class="btn btn-light btn-sm" routerLink="../../list">
+                <i class="ri-arrow-left-line"></i> Volver
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="row gy-4">
+              <div class="col-xl-8">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información del Vehículo</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row gy-3">
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Tipo</label>
+                        <div class="fw-semibold">
+                          <i class="ri-truck-line me-2"></i>{{ vehiculo.tipo }}
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Placa</label>
+                        <div class="fw-semibold fs-5">{{ vehiculo.placa }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Marca</label>
+                        <div class="fw-semibold">{{ vehiculo.marca }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Modelo</label>
+                        <div class="fw-semibold">{{ vehiculo.modelo }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Año</label>
+                        <div class="fw-semibold">
+                          {{ vehiculo.anio || 'No especificado' }}
+                          @if (vehiculo.anio) {
+                            <small class="text-muted">({{ calcularAntiguedad() }} años)</small>
+                          }
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label class="text-muted mb-1">Capacidad de Carga</label>
+                        <div class="fw-semibold">
+                          @if (vehiculo.capacidad) {
+                            {{ vehiculo.capacidad | number:'1.0-0' }} kg
+                          } @else {
+                            No especificada
+                          }
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label class="text-muted mb-1">Fecha de Adquisición</label>
+                        <div class="fw-semibold">
+                          {{ vehiculo.fechaAdquisicion ? (vehiculo.fechaAdquisicion | date:'dd/MM/yyyy') : 'No especificada' }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xl-4">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Estado del Vehículo</h6>
+                  </div>
+                  <div class="card-body text-center">
+                    <div class="mb-3">
+                      <span [class]="'avatar avatar-xl avatar-rounded bg-' + getEstadoBadgeClass(vehiculo.estado) + '-transparent'">
+                        <i [class]="getEstadoIcon(vehiculo.estado) + ' fs-1'"></i>
+                      </span>
+                    </div>
+                    <h4 [class]="'text-' + getEstadoBadgeClass(vehiculo.estado)">{{ vehiculo.estado }}</h4>
+                    
+                    <div class="mt-4">
+                      @if (vehiculo.estado === 'Activo') {
+                        <div class="alert alert-success">
+                          <i class="ri-checkbox-circle-line me-2"></i>
+                          Vehículo disponible para operaciones
+                        </div>
+                      } @else if (vehiculo.estado === 'Mantenimiento') {
+                        <div class="alert alert-warning">
+                          <i class="ri-tools-line me-2"></i>
+                          Vehículo en mantenimiento
+                        </div>
+                      } @else if (vehiculo.estado === 'Inactivo') {
+                        <div class="alert alert-secondary">
+                          <i class="ri-close-circle-line me-2"></i>
+                          Vehículo no disponible
+                        </div>
+                      } @else if (vehiculo.estado === 'Vendido') {
+                        <div class="alert alert-danger">
+                          <i class="ri-shopping-cart-line me-2"></i>
+                          Vehículo vendido
+                        </div>
+                      }
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card border mt-3">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información del Sistema</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-2">
+                      <small class="text-muted">ID del Vehículo</small>
+                      <div class="fw-semibold">#{{ vehiculo.id }}</div>
+                    </div>
+                    <div>
+                      <small class="text-muted">Tenant ID</small>
+                      <div class="fw-semibold">#{{ vehiculo.idTenant }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

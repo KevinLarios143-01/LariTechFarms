@@ -1,0 +1,217 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Gastos de Operación</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" routerLink="../add">
+              <i class="ri-add-line"></i> Registrar Gasto
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="row">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                <i class="ri-money-dollar-circle-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.totalGastos | number:'1.2-2' }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Total Gastos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                <i class="ri-file-list-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalRegistros }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Total Registros</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                <i class="ri-bar-chart-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.promedioGasto | number:'1.2-2' }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Promedio por Gasto</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <ng-select [items]="categorias" [(ngModel)]="selectedCategoria" 
+                         placeholder="Categoría" (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <ng-select [items]="metodosPago" [(ngModel)]="selectedMetodoPago" 
+                         placeholder="Método de Pago" (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6">
+              <input type="date" class="form-control" placeholder="Fecha Inicio" 
+                     [(ngModel)]="fechaInicio" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6">
+              <input type="date" class="form-control" placeholder="Fecha Fin" 
+                     [(ngModel)]="fechaFin" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-2 col-lg-4 col-md-6">
+              <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                <i class="ri-refresh-line"></i> Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table text-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Descripción</th>
+                  <th>Categoría</th>
+                  <th>Monto</th>
+                  <th>Método de Pago</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (isLoading) {
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                      </div>
+                    </td>
+                  </tr>
+                } @else if (gastos.length === 0) {
+                  <tr>
+                    <td colspan="6" class="text-center">No hay gastos registrados</td>
+                  </tr>
+                } @else {
+                  @for (gasto of gastos; track gasto.id) {
+                    <tr>
+                      <td>{{ gasto.fecha | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        <div class="fw-semibold">{{ gasto.descripcion }}</div>
+                      </td>
+                      <td>
+                        <span [class]="'badge ' + getCategoriaBadgeClass(gasto.categoria)">
+                          {{ gasto.categoria }}
+                        </span>
+                      </td>
+                      <td>
+                        <span class="fw-semibold text-danger">Q{{ gasto.monto | number:'1.2-2' }}</span>
+                      </td>
+                      <td>
+                        @if (gasto.metodoPago) {
+                          <span class="badge bg-light text-dark">{{ gasto.metodoPago }}</span>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <button class="btn btn-sm btn-info" [routerLink]="['../view', gasto.id]" 
+                                  title="Ver detalles">
+                            <i class="ri-eye-line"></i>
+                          </button>
+                          <button class="btn btn-sm btn-primary" [routerLink]="['../edit', gasto.id]" 
+                                  title="Editar">
+                            <i class="ri-edit-line"></i>
+                          </button>
+                          <button class="btn btn-sm btn-danger" (click)="deleteGasto(gasto.id)" 
+                                  title="Eliminar">
+                            <i class="ri-delete-bin-line"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          @if (totalPages > 1) {
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} gastos
+              </div>
+              <nav>
+                <ul class="pagination mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                  </li>
+                  @for (page of pages; track page) {
+                    <li class="page-item" [class.active]="page === currentPage">
+                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                    </li>
+                  }
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

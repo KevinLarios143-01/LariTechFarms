@@ -1,0 +1,109 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="card-title">Detalle del Gasto</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" [routerLink]="['../../edit', gastoId]">
+              <i class="ri-edit-line"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteGasto()">
+              <i class="ri-delete-bin-line"></i> Eliminar
+            </button>
+            <button class="btn btn-secondary btn-sm" routerLink="../../list">
+              <i class="ri-arrow-left-line"></i> Volver
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else if (gasto) {
+            <div class="row g-4">
+              <!-- Información Principal -->
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información Principal</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <div class="info-label">Fecha</div>
+                      <div class="info-value">{{ gasto.fecha | date:'dd/MM/yyyy' }}</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Categoría</div>
+                      <div>
+                        <span [class]="'badge ' + getCategoriaBadgeClass(gasto.categoria)">
+                          {{ gasto.categoria }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Monto</div>
+                      <div class="info-value text-danger fw-bold">
+                        Q{{ gasto.monto | number:'1.2-2' }}
+                      </div>
+                    </div>
+                    <div class="mb-0">
+                      <div class="info-label">Método de Pago</div>
+                      <div class="info-value">
+                        @if (gasto.metodoPago) {
+                          <span class="badge bg-light text-dark">{{ gasto.metodoPago }}</span>
+                        } @else {
+                          <span class="text-muted">No especificado</span>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Descripción -->
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Descripción</h6>
+                  </div>
+                  <div class="card-body">
+                    <p class="mb-0">{{ gasto.descripcion }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Información de Auditoría -->
+              <div class="col-md-12">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información de Auditoría</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="info-label">Fecha de Creación</div>
+                        <div class="info-value">{{ gasto.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="info-label">Última Actualización</div>
+                        <div class="info-value">{{ gasto.updatedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="alert alert-warning">
+              No se encontró el gasto solicitado.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

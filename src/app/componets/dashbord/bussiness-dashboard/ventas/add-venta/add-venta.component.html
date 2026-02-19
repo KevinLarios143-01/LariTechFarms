@@ -1,0 +1,160 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Nueva Venta</div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="ventaForm" (ngSubmit)="onSubmit()">
+            <!-- Información General -->
+            <div class="card border mb-3">
+              <div class="card-header bg-light">
+                <h6 class="mb-0">Información General</h6>
+              </div>
+              <div class="card-body">
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <label class="form-label">Fecha *</label>
+                    <input type="date" class="form-control" formControlName="fecha"
+                           [class.is-invalid]="isFieldInvalid('fecha')">
+                    @if (isFieldInvalid('fecha')) {
+                      <div class="invalid-feedback">Fecha es requerida</div>
+                    }
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Cliente</label>
+                    <ng-select [items]="clientes" bindLabel="nombre" bindValue="id"
+                               formControlName="idCliente" 
+                               placeholder="Seleccione cliente (opcional)" [clearable]="true">
+                      <ng-template ng-option-tmp let-item="item">
+                        <div>{{ item.nombre }}</div>
+                        @if (item.telefono) {
+                          <small class="text-muted">{{ item.telefono }}</small>
+                        }
+                      </ng-template>
+                    </ng-select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Método de Pago</label>
+                    <ng-select [items]="metodosPago" formControlName="metodoPago" 
+                               placeholder="Seleccione método" [clearable]="true">
+                    </ng-select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Total</label>
+                    <input type="text" class="form-control fw-bold text-success" 
+                           [value]="'Q' + (totalVenta | number:'1.2-2')" readonly>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="form-label">Observaciones</label>
+                    <textarea class="form-control" formControlName="observaciones" rows="2"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detalles de la Venta -->
+            <div class="card border mb-3">
+              <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h6 class="mb-0">Productos</h6>
+                <button type="button" class="btn btn-sm btn-primary" (click)="addDetalle()">
+                  <i class="ri-add-line"></i> Agregar Producto
+                </button>
+              </div>
+              <div class="card-body">
+                <div formArrayName="detalles">
+                  @for (detalle of detalles.controls; track $index; let i = $index) {
+                    <div [formGroupName]="i" class="row g-3 mb-3 pb-3 border-bottom">
+                      <div class="col-md-4">
+                        <label class="form-label">Producto *</label>
+                        <ng-select [items]="productos" bindLabel="nombre" bindValue="id"
+                                   formControlName="idProducto" 
+                                   (change)="onProductoChange(i)"
+                                   placeholder="Seleccione producto"
+                                   [class.is-invalid]="isDetalleFieldInvalid(i, 'idProducto')">
+                          <ng-template ng-option-tmp let-item="item">
+                            <div>{{ item.nombre }}</div>
+                            <small class="text-muted">
+                              {{ item.tamanio }} - Q{{ item.precio | number:'1.2-2' }}
+                              @if (item.stock !== undefined) {
+                                - Stock: {{ item.stock }}
+                              }
+                            </small>
+                          </ng-template>
+                        </ng-select>
+                        @if (isDetalleFieldInvalid(i, 'idProducto')) {
+                          <div class="invalid-feedback d-block">Producto es requerido</div>
+                        }
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label">Cantidad *</label>
+                        <input type="number" class="form-control" formControlName="cantidad"
+                               (ngModelChange)="onCantidadChange(i)" min="1"
+                               [class.is-invalid]="isDetalleFieldInvalid(i, 'cantidad')">
+                        @if (isDetalleFieldInvalid(i, 'cantidad')) {
+                          <div class="invalid-feedback">Cantidad requerida</div>
+                        }
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label">Precio Unit. *</label>
+                        <input type="number" class="form-control" formControlName="precioUnitario"
+                               (ngModelChange)="onPrecioChange(i)" step="0.01" min="0.01"
+                               [class.is-invalid]="isDetalleFieldInvalid(i, 'precioUnitario')">
+                        @if (isDetalleFieldInvalid(i, 'precioUnitario')) {
+                          <div class="invalid-feedback">Precio requerido</div>
+                        }
+                      </div>
+                      <div class="col-md-3">
+                        <label class="form-label">Subtotal</label>
+                        <input type="text" class="form-control fw-semibold" 
+                               [value]="'Q' + (detalle.get('subtotal')?.value | number:'1.2-2')" readonly>
+                      </div>
+                      <div class="col-md-1 d-flex align-items-end">
+                        <button type="button" class="btn btn-danger btn-sm w-100" 
+                                (click)="removeDetalle(i)"
+                                [disabled]="detalles.length === 1">
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+
+                @if (detalles.length === 0) {
+                  <div class="alert alert-info">
+                    No hay productos agregados. Haga clic en "Agregar Producto" para comenzar.
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Total y Botones -->
+            <div class="card border">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <div class="d-flex gap-2">
+                      <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                        @if (isLoading) {
+                          <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        <i class="ri-save-line"></i> Guardar Venta
+                      </button>
+                      <button type="button" class="btn btn-secondary" routerLink="../list" [disabled]="isLoading">
+                        <i class="ri-close-line"></i> Cancelar
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-end">
+                    <h4 class="mb-0">Total: <span class="text-success">Q{{ totalVenta | number:'1.2-2' }}</span></h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -206,10 +206,11 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '3', selected: false, active: false, children: [
-            { path: '/dashboard/business-dashboard/ticket-list', title: 'Lista de Tickets', type: 'link', selected: false },
-            { path: '/dashboard/business-dashboard/new-ticket', title: 'Nuevo Ticket', type: 'link', selected: false },
-            { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas', type: 'link', selected: false },
+          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '4', selected: false, active: false, children: [
+            { path: '/dashboard/bussiness-dashboard/clientes/list', title: 'Clientes', type: 'link', selected: false },
+            { path: '/dashboard/bussiness-dashboard/ventas/list', title: 'Ventas', type: 'link', selected: false },
+            { path: '/dashboard/bussiness-dashboard/tickets/list', title: 'Tickets', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas (Legacy)', type: 'link', selected: false },
           ]
         },
         {
@@ -231,7 +232,7 @@ export class NavService implements OnDestroy {
         //   ]
         // },
         {
-          title: 'Producción Dashboard', type: 'sub', badgeType: 'success', badgeValue: '3', selected: false, active: false, children: [
+          title: 'Producción Dashboard', type: 'sub', badgeType: 'success', badgeValue: '5', selected: false, active: false, children: [
             { path: '/dashboard/production-dashboard/huevos/estadisticas', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/production-dashboard/huevos', title: 'Control de Huevos', type: 'link', selected: false },
             {
@@ -241,7 +242,9 @@ export class NavService implements OnDestroy {
                 { path: '/dashboard/production-dashboard/productos/estadisticas', title: 'Estadísticas', type: 'link', selected: false },
               ]
             },
-            { path: '/dashboard/production-dashboard/lotes', title: 'Gestión de Lotes', type: 'link', selected: false },
+            { path: '/dashboard/production-dashboard/inventario/list', title: 'Inventario', type: 'link', selected: false },
+            { path: '/dashboard/production-dashboard/vehiculos/list', title: 'Vehículos', type: 'link', selected: false },
+            { path: '/dashboard/production-dashboard/gastos-operacion/list', title: 'Gastos de Operación', type: 'link', selected: false },
           ]
         },
         {

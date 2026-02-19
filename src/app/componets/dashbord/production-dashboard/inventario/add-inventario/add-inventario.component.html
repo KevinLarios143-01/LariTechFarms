@@ -1,0 +1,96 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Agregar Item al Inventario</div>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="inventarioForm" (ngSubmit)="onSubmit()">
+            <div class="row gy-3">
+              <!-- Nombre -->
+              <div class="col-xl-6">
+                <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="nombre" 
+                       [class.is-invalid]="isFieldInvalid('nombre')" placeholder="Ej: Concentrado para ponedoras">
+                @if (isFieldInvalid('nombre')) {
+                  <div class="invalid-feedback">{{ getFieldError('nombre') }}</div>
+                }
+              </div>
+
+              <!-- Cantidad -->
+              <div class="col-xl-3">
+                <label class="form-label">Cantidad <span class="text-danger">*</span></label>
+                <input type="number" class="form-control" formControlName="cantidad" 
+                       [class.is-invalid]="isFieldInvalid('cantidad')" placeholder="0">
+                @if (isFieldInvalid('cantidad')) {
+                  <div class="invalid-feedback">{{ getFieldError('cantidad') }}</div>
+                }
+              </div>
+
+              <!-- Unidad -->
+              <div class="col-xl-3">
+                <label class="form-label">Unidad <span class="text-danger">*</span></label>
+                <ng-select [items]="unidades" formControlName="unidad" 
+                           placeholder="Seleccione unidad" [clearable]="false"
+                           [class.is-invalid]="isFieldInvalid('unidad')">
+                </ng-select>
+                @if (isFieldInvalid('unidad')) {
+                  <div class="invalid-feedback d-block">{{ getFieldError('unidad') }}</div>
+                }
+              </div>
+
+              <!-- Categoría -->
+              <div class="col-xl-6">
+                <label class="form-label">Categoría</label>
+                <ng-select [items]="categorias" formControlName="categoria" 
+                           placeholder="Seleccione categoría" [clearable]="true" [addTag]="true">
+                </ng-select>
+              </div>
+
+              <!-- Stock Mínimo -->
+              <div class="col-xl-6">
+                <label class="form-label">Stock Mínimo</label>
+                <input type="number" class="form-control" formControlName="minimoStock" 
+                       [class.is-invalid]="isFieldInvalid('minimoStock')" placeholder="0">
+                @if (isFieldInvalid('minimoStock')) {
+                  <div class="invalid-feedback">{{ getFieldError('minimoStock') }}</div>
+                }
+                <small class="text-muted">Cantidad mínima para alertas de stock bajo</small>
+              </div>
+
+              <!-- Proveedor -->
+              <div class="col-xl-12">
+                <label class="form-label">Proveedor</label>
+                <input type="text" class="form-control" formControlName="proveedor" 
+                       placeholder="Nombre del proveedor">
+              </div>
+
+              <!-- Observaciones -->
+              <div class="col-xl-12">
+                <label class="form-label">Observaciones</label>
+                <textarea class="form-control" formControlName="observaciones" rows="3" 
+                          placeholder="Observaciones adicionales"></textarea>
+              </div>
+
+              <!-- Botones -->
+              <div class="col-xl-12">
+                <div class="d-flex gap-2 justify-content-end">
+                  <button type="button" class="btn btn-light" routerLink="../list" [disabled]="isLoading">
+                    Cancelar
+                  </button>
+                  <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                    @if (isLoading) {
+                      <span class="spinner-border spinner-border-sm me-2"></span>
+                    }
+                    Guardar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

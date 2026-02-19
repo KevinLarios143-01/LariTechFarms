@@ -1,0 +1,226 @@
+<div class="container-fluid">
+  <!-- Page Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Inventario de Granja</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" routerLink="../add">
+              <i class="ri-add-line"></i> Agregar Item
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="row">
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                <i class="ri-archive-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalItems }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Total Items</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                <i class="ri-alert-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">{{ stats.itemsStockBajo }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Stock Bajo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                <i class="ri-money-dollar-circle-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <div class="d-flex mb-1 align-items-top justify-content-between">
+                <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.valorTotal | number:'1.2-2' }}</h5>
+              </div>
+              <p class="mb-0 fs-12 text-muted">Valor Total</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <input type="text" class="form-control" placeholder="Buscar..." 
+                     [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <ng-select [items]="categorias" [(ngModel)]="selectedCategoria" 
+                         placeholder="Categoría" (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="stockBajo" 
+                       [(ngModel)]="stockBajo" (change)="applyFilters()">
+                <label class="form-check-label" for="stockBajo">
+                  Solo Stock Bajo
+                </label>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+              <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                <i class="ri-refresh-line"></i> Limpiar Filtros
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table text-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Cantidad</th>
+                  <th>Unidad</th>
+                  <th>Categoría</th>
+                  <th>Stock Mínimo</th>
+                  <th>Estado</th>
+                  <th>Proveedor</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (isLoading) {
+                  <tr>
+                    <td colspan="8" class="text-center">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                      </div>
+                    </td>
+                  </tr>
+                } @else if (filteredInventario.length === 0) {
+                  <tr>
+                    <td colspan="8" class="text-center">No hay items en el inventario</td>
+                  </tr>
+                } @else {
+                  @for (item of filteredInventario; track item.id) {
+                    <tr>
+                      <td>
+                        <div class="fw-semibold">{{ item.nombre }}</div>
+                        @if (item.observaciones) {
+                          <small class="text-muted">{{ item.observaciones }}</small>
+                        }
+                      </td>
+                      <td>
+                        <span [class]="getStockClass(item)">
+                          {{ item.cantidad }}
+                        </span>
+                      </td>
+                      <td>{{ item.unidad }}</td>
+                      <td>
+                        @if (item.categoria) {
+                          <span class="badge bg-light text-dark">{{ item.categoria }}</span>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>{{ item.minimoStock || '-' }}</td>
+                      <td>
+                        <span [class]="'badge ' + getStockBadgeClass(item)">
+                          {{ getStockStatus(item) }}
+                        </span>
+                      </td>
+                      <td>{{ item.proveedor || '-' }}</td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <button class="btn btn-sm btn-info" [routerLink]="['../view', item.id]" 
+                                  title="Ver detalles">
+                            <i class="ri-eye-line"></i>
+                          </button>
+                          <button class="btn btn-sm btn-primary" [routerLink]="['../edit', item.id]" 
+                                  title="Editar">
+                            <i class="ri-edit-line"></i>
+                          </button>
+                          <button class="btn btn-sm btn-danger" (click)="deleteItem(item.id)" 
+                                  title="Eliminar">
+                            <i class="ri-delete-bin-line"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          @if (totalPages > 1) {
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
+                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} items
+              </div>
+              <nav>
+                <ul class="pagination mb-0">
+                  <li class="page-item" [class.disabled]="currentPage === 1">
+                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                  </li>
+                  @for (page of pages; track page) {
+                    <li class="page-item" [class.active]="page === currentPage">
+                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                    </li>
+                  }
+                  <li class="page-item" [class.disabled]="currentPage === totalPages">
+                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

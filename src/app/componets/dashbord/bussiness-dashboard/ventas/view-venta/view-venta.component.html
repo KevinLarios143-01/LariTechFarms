@@ -1,0 +1,150 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="card-title">Detalle de Venta #{{ ventaId }}</div>
+          <div class="d-flex gap-2">
+            @if (venta && venta.estado !== 'Cancelada') {
+              <button class="btn btn-primary btn-sm" [routerLink]="['../../edit', ventaId]">
+                <i class="ri-edit-line"></i> Editar
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="anularVenta()">
+                <i class="ri-close-circle-line"></i> Anular
+              </button>
+            }
+            <button class="btn btn-secondary btn-sm" routerLink="../../list">
+              <i class="ri-arrow-left-line"></i> Volver
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else if (venta) {
+            <div class="row g-4">
+              <!-- Información General -->
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información General</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <div class="info-label">Fecha</div>
+                      <div class="info-value">{{ venta.fecha | date:'dd/MM/yyyy' }}</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Cliente</div>
+                      <div class="info-value">
+                        @if (venta.cliente) {
+                          {{ venta.cliente.nombre }}
+                          @if (venta.cliente.telefono) {
+                            <br><small class="text-muted">{{ venta.cliente.telefono }}</small>
+                          }
+                        } @else {
+                          <span class="text-muted">Cliente general</span>
+                        }
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Método de Pago</div>
+                      <div class="info-value">
+                        @if (venta.metodoPago) {
+                          <span class="badge bg-light text-dark">{{ venta.metodoPago }}</span>
+                        } @else {
+                          <span class="text-muted">No especificado</span>
+                        }
+                      </div>
+                    </div>
+                    <div class="mb-0">
+                      <div class="info-label">Estado</div>
+                      <div>
+                        <span [class]="'badge ' + getEstadoBadgeClass(venta.estado)">
+                          {{ venta.estado }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Resumen -->
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Resumen</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <div class="info-label">Total</div>
+                      <div class="info-value">
+                        <h4 class="text-success mb-0">Q{{ venta.total | number:'1.2-2' }}</h4>
+                      </div>
+                    </div>
+                    @if (venta.observaciones) {
+                      <div class="mb-0">
+                        <div class="info-label">Observaciones</div>
+                        <div class="info-value">{{ venta.observaciones }}</div>
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Detalles de Productos -->
+              <div class="col-md-12">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Productos</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table class="table table-bordered">
+                        <thead class="table-light">
+                          <tr>
+                            <th>Producto</th>
+                            <th class="text-center">Cantidad</th>
+                            <th class="text-end">Precio Unit.</th>
+                            <th class="text-end">Subtotal</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @for (detalle of venta.detalleVentas; track detalle.id) {
+                            <tr>
+                              <td>
+                                <div class="fw-semibold">{{ detalle.producto.nombre }}</div>
+                                @if (detalle.producto.tamanio) {
+                                  <small class="text-muted">{{ detalle.producto.tamanio }}</small>
+                                }
+                              </td>
+                              <td class="text-center">{{ detalle.cantidad }}</td>
+                              <td class="text-end">Q{{ detalle.precioUnitario | number:'1.2-2' }}</td>
+                              <td class="text-end fw-semibold">Q{{ detalle.subtotal | number:'1.2-2' }}</td>
+                            </tr>
+                          }
+                          <tr class="table-light">
+                            <td colspan="3" class="text-end fw-bold">TOTAL:</td>
+                            <td class="text-end fw-bold text-success">Q{{ venta.total | number:'1.2-2' }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="alert alert-warning">
+              No se encontró la venta solicitada.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

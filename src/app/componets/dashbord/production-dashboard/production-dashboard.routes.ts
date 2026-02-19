@@ -105,6 +105,96 @@ const routes: Routes = [
           },
 
         ]
+      },
+      {
+        path: 'inventario',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./inventario/inventario-list/inventario-list.component').then((m) => m.InventarioListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./inventario/add-inventario/add-inventario.component').then((m) => m.AddInventarioComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./inventario/edit-inventario/edit-inventario.component').then((m) => m.EditInventarioComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./inventario/view-inventario/view-inventario.component').then((m) => m.ViewInventarioComponent)
+          }
+        ]
+      },
+      {
+        path: 'vehiculos',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./vehiculos/vehiculo-list/vehiculo-list.component').then((m) => m.VehiculoListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./vehiculos/add-vehiculo/add-vehiculo.component').then((m) => m.AddVehiculoComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./vehiculos/add-vehiculo/add-vehiculo.component').then((m) => m.AddVehiculoComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./vehiculos/view-vehiculo/view-vehiculo.component').then((m) => m.ViewVehiculoComponent)
+          }
+        ]
+      },
+      {
+        path: 'gastos-operacion',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./gastos-operacion/gasto-list/gasto-list.component').then((m) => m.GastoListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./gastos-operacion/add-gasto/add-gasto.component').then((m) => m.AddGastoComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./gastos-operacion/edit-gasto/edit-gasto.component').then((m) => m.EditGastoComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./gastos-operacion/view-gasto/view-gasto.component').then((m) => m.ViewGastoComponent)
+          }
+        ]
       }
     ]
   }

@@ -1,0 +1,25 @@
+.table {
+  th {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #495057;
+    background-color: #f8f9fa;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+.btn-group {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+.pagination {
+  .page-link {
+    cursor: pointer;
+  }
+}

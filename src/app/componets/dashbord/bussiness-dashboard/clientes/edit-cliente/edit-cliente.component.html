@@ -1,0 +1,64 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Editar Cliente</div>
+        </div>
+        <div class="card-body">
+          @if (isLoading && !clienteForm.value.nombre) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Nombre *</label>
+                  <input type="text" class="form-control" formControlName="nombre"
+                         [class.is-invalid]="isFieldInvalid('nombre')">
+                  @if (isFieldInvalid('nombre')) {
+                    <div class="invalid-feedback">{{ getFieldError('nombre') }}</div>
+                  }
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Teléfono</label>
+                  <input type="text" class="form-control" formControlName="telefono">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Correo Electrónico</label>
+                  <input type="email" class="form-control" formControlName="correo"
+                         [class.is-invalid]="isFieldInvalid('correo')">
+                  @if (isFieldInvalid('correo')) {
+                    <div class="invalid-feedback">{{ getFieldError('correo') }}</div>
+                  }
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">NIT</label>
+                  <input type="text" class="form-control" formControlName="nit">
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Dirección</label>
+                  <textarea class="form-control" formControlName="direccion" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                  @if (isLoading) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                  }
+                  <i class="ri-save-line"></i> Actualizar
+                </button>
+                <button type="button" class="btn btn-secondary" routerLink="../list" [disabled]="isLoading">
+                  <i class="ri-close-line"></i> Cancelar
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

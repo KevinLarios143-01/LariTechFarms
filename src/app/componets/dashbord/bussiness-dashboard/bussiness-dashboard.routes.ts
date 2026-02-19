@@ -3,8 +3,83 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'dashboard/business-dashboard',
+    path: 'dashboard/bussiness-dashboard',
     children: [
+      {
+        path: 'clientes',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./clientes/cliente-list/cliente-list.component').then((m) => m.ClienteListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./clientes/add-cliente/add-cliente.component').then((m) => m.AddClienteComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./clientes/edit-cliente/edit-cliente.component').then((m) => m.EditClienteComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./clientes/view-cliente/view-cliente.component').then((m) => m.ViewClienteComponent)
+          }
+        ]
+      },
+      {
+        path: 'ventas',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./ventas/venta-list/venta-list.component').then((m) => m.VentaListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./ventas/add-venta/add-venta.component').then((m) => m.AddVentaComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./ventas/add-venta/add-venta.component').then((m) => m.AddVentaComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./ventas/view-venta/view-venta.component').then((m) => m.ViewVentaComponent)
+          }
+        ]
+      },
+      {
+        path: 'tickets',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./tickets/ticket-list/ticket-list.component').then((m) => m.TicketListComponent)
+          }
+        ]
+      },
       {
         path: 'ticket-list',
         loadComponent: () =>

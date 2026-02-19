@@ -1,0 +1,107 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="card-title">Detalle del Cliente</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" [routerLink]="['../../edit', clienteId]">
+              <i class="ri-edit-line"></i> Editar
+            </button>
+            <button class="btn btn-sm" 
+                    [class.btn-success]="cliente && !cliente.activo"
+                    [class.btn-warning]="cliente && cliente.activo"
+                    (click)="toggleEstado()">
+              <i [class]="cliente?.activo ? 'ri-close-circle-line' : 'ri-check-line'"></i>
+              {{ cliente?.activo ? 'Desactivar' : 'Activar' }}
+            </button>
+            <button class="btn btn-secondary btn-sm" routerLink="../../list">
+              <i class="ri-arrow-left-line"></i> Volver
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else if (cliente) {
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información Personal</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <div class="info-label">Nombre</div>
+                      <div class="info-value">{{ cliente.nombre }}</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Teléfono</div>
+                      <div class="info-value">{{ cliente.telefono || 'No especificado' }}</div>
+                    </div>
+                    <div class="mb-3">
+                      <div class="info-label">Correo Electrónico</div>
+                      <div class="info-value">{{ cliente.correo || 'No especificado' }}</div>
+                    </div>
+                    <div class="mb-0">
+                      <div class="info-label">NIT</div>
+                      <div class="info-value">{{ cliente.nit || 'No especificado' }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información Adicional</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="mb-3">
+                      <div class="info-label">Dirección</div>
+                      <div class="info-value">{{ cliente.direccion || 'No especificada' }}</div>
+                    </div>
+                    <div class="mb-0">
+                      <div class="info-label">Estado</div>
+                      <div>
+                        <span [class]="'badge ' + (cliente.activo ? 'bg-success' : 'bg-danger')">
+                          {{ cliente.activo ? 'Activo' : 'Inactivo' }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="card border">
+                  <div class="card-header bg-light">
+                    <h6 class="mb-0">Información de Auditoría</h6>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="info-label">Fecha de Creación</div>
+                        <div class="info-value">{{ cliente.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="info-label">Última Actualización</div>
+                        <div class="info-value">{{ cliente.updatedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="alert alert-warning">
+              No se encontró el cliente solicitado.
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

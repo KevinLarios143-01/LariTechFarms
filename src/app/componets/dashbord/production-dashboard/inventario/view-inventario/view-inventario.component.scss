@@ -1,0 +1,24 @@
+.card.border {
+  border: 1px solid #e9ecef !important;
+}
+
+.card-header.bg-light {
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.progress {
+  background-color: #e9ecef;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-light {
+  background-color: #f8f9fa;
+  border-color: #e9ecef;
+  color: #495057;
+}

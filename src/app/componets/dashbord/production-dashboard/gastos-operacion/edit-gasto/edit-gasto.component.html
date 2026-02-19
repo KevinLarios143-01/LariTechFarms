@@ -1,0 +1,89 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Editar Gasto de Operación</div>
+        </div>
+        <div class="card-body">
+          @if (isLoading && !gastoForm.value.fecha) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            <form [formGroup]="gastoForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <!-- Fecha -->
+                <div class="col-md-6">
+                  <label class="form-label">Fecha *</label>
+                  <input type="date" class="form-control" formControlName="fecha"
+                         [class.is-invalid]="isFieldInvalid('fecha')">
+                  @if (isFieldInvalid('fecha')) {
+                    <div class="invalid-feedback">{{ getFieldError('fecha') }}</div>
+                  }
+                </div>
+
+                <!-- Categoría -->
+                <div class="col-md-6">
+                  <label class="form-label">Categoría *</label>
+                  <ng-select [items]="categorias" formControlName="categoria" 
+                             placeholder="Seleccione categoría"
+                             [class.is-invalid]="isFieldInvalid('categoria')">
+                  </ng-select>
+                  @if (isFieldInvalid('categoria')) {
+                    <div class="invalid-feedback d-block">{{ getFieldError('categoria') }}</div>
+                  }
+                </div>
+
+                <!-- Descripción -->
+                <div class="col-md-12">
+                  <label class="form-label">Descripción *</label>
+                  <textarea class="form-control" formControlName="descripcion" rows="3"
+                            placeholder="Descripción del gasto"
+                            [class.is-invalid]="isFieldInvalid('descripcion')"></textarea>
+                  @if (isFieldInvalid('descripcion')) {
+                    <div class="invalid-feedback">{{ getFieldError('descripcion') }}</div>
+                  }
+                </div>
+
+                <!-- Monto -->
+                <div class="col-md-6">
+                  <label class="form-label">Monto (Q) *</label>
+                  <input type="number" class="form-control" formControlName="monto" 
+                         placeholder="0.00" step="0.01" min="0.01"
+                         [class.is-invalid]="isFieldInvalid('monto')">
+                  @if (isFieldInvalid('monto')) {
+                    <div class="invalid-feedback">{{ getFieldError('monto') }}</div>
+                  }
+                </div>
+
+                <!-- Método de Pago -->
+                <div class="col-md-6">
+                  <label class="form-label">Método de Pago</label>
+                  <ng-select [items]="metodosPago" formControlName="metodoPago" 
+                             placeholder="Seleccione método de pago" [clearable]="true">
+                  </ng-select>
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div class="mt-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                  @if (isLoading) {
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                  }
+                  <i class="ri-save-line"></i> Actualizar
+                </button>
+                <button type="button" class="btn btn-secondary" routerLink="../list" [disabled]="isLoading">
+                  <i class="ri-close-line"></i> Cancelar
+                </button>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
