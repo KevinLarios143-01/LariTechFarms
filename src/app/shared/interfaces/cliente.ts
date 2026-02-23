@@ -7,7 +7,10 @@ export interface Cliente {
   direccion?: string;
   nit?: string;
   estado?: boolean;
+  activo?: boolean; // Alias para estado
   fechaRegistro?: string;
+  createdAt?: string;
+  updatedAt?: string;
   // Campos existentes opcionales
   apellido?: string;
   email?: string;
@@ -31,6 +34,12 @@ export interface ClienteResponse {
       totalPages: number;
     };
   };
+  timestamp: string;
+}
+
+export interface ClienteByIdResponse {
+  success: boolean;
+  data: Cliente;
   timestamp: string;
 }
 

@@ -32,6 +32,9 @@ export class GastoListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
+  // Expose Math to template
+  Math = Math;
+
   stats = {
     totalGastos: 0,
     totalRegistros: 0,

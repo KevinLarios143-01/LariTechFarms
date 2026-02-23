@@ -37,6 +37,9 @@ export class VehiculoListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
+  // Expose Math to template
+  Math = Math;
+
   // Estadísticas
   stats = {
     totalVehiculos: 0,

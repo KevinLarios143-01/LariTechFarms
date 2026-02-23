@@ -32,6 +32,9 @@ export class ClienteListComponent implements OnInit {
     clientesInactivos: 0
   };
 
+  // Expose Math to template
+  Math = Math;
+
   constructor(
     private clienteService: ClienteService,
     private cdr: ChangeDetectorRef,
@@ -95,7 +98,7 @@ export class ClienteListComponent implements OnInit {
   }
 
   toggleEstado(cliente: Cliente) {
-    const nuevoEstado = !cliente.activo;
+    const nuevoEstado = !cliente.estado;
     const mensaje = nuevoEstado ? 'activar' : 'desactivar';
     
     if (confirm(`¿Está seguro de ${mensaje} este cliente?`)) {

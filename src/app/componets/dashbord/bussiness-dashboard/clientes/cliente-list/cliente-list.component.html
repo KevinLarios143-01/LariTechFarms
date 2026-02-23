@@ -83,8 +83,8 @@
         <div class="card-body">
           <div class="row g-3">
             <div class="col-xl-4 col-lg-4 col-md-6">
-              <input type="text" class="form-control" placeholder="Buscar por nombre, teléfono, correo..." 
-                     [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+              <input type="text" class="form-control" placeholder="Buscar por nombre, teléfono, correo..."
+                [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
             </div>
             <div class="col-xl-3 col-lg-4 col-md-6">
               <select class="form-select" [(ngModel)]="estadoFilter" (change)="applyFilters()">
@@ -123,55 +123,51 @@
               </thead>
               <tbody>
                 @if (isLoading) {
-                  <tr>
-                    <td colspan="6" class="text-center">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                      </div>
-                    </td>
-                  </tr>
+                <tr>
+                  <td colspan="6" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                  </td>
+                </tr>
                 } @else if (clientes.length === 0) {
-                  <tr>
-                    <td colspan="6" class="text-center">No hay clientes registrados</td>
-                  </tr>
+                <tr>
+                  <td colspan="6" class="text-center">No hay clientes registrados</td>
+                </tr>
                 } @else {
-                  @for (cliente of clientes; track cliente.id) {
-                    <tr>
-                      <td>
-                        <div class="fw-semibold">{{ cliente.nombre }}</div>
-                        @if (cliente.direccion) {
-                          <small class="text-muted">{{ cliente.direccion }}</small>
-                        }
-                      </td>
-                      <td>{{ cliente.telefono || '-' }}</td>
-                      <td>{{ cliente.correo || '-' }}</td>
-                      <td>{{ cliente.nit || '-' }}</td>
-                      <td>
-                        <span [class]="'badge ' + (cliente.activo ? 'bg-success' : 'bg-danger')">
-                          {{ cliente.activo ? 'Activo' : 'Inactivo' }}
-                        </span>
-                      </td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <button class="btn btn-sm btn-info" [routerLink]="['../view', cliente.id]" 
-                                  title="Ver detalles">
-                            <i class="ri-eye-line"></i>
-                          </button>
-                          <button class="btn btn-sm btn-primary" [routerLink]="['../edit', cliente.id]" 
-                                  title="Editar">
-                            <i class="ri-edit-line"></i>
-                          </button>
-                          <button class="btn btn-sm" 
-                                  [class.btn-success]="!cliente.activo"
-                                  [class.btn-warning]="cliente.activo"
-                                  (click)="toggleEstado(cliente)" 
-                                  [title]="cliente.activo ? 'Desactivar' : 'Activar'">
-                            <i [class]="cliente.activo ? 'ri-close-circle-line' : 'ri-check-line'"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  }
+                @for (cliente of clientes; track cliente.id) {
+                <tr>
+                  <td>
+                    <div class="fw-semibold">{{ cliente.nombre }}</div>
+                    @if (cliente.direccion) {
+                    <small class="text-muted">{{ cliente.direccion }}</small>
+                    }
+                  </td>
+                  <td>{{ cliente.telefono || '-' }}</td>
+                  <td>{{ cliente.correo || '-' }}</td>
+                  <td>{{ cliente.nit || '-' }}</td>
+                  <td>
+                    <span [class]="'badge ' + (cliente.estado ? 'bg-success' : 'bg-danger')">
+                      {{ cliente.estado ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-sm btn-info" [routerLink]="['../view', cliente.id]" title="Ver detalles">
+                        <i class="ri-eye-line"></i>
+                      </button>
+                      <button class="btn btn-sm btn-primary" [routerLink]="['../edit', cliente.id]" title="Editar">
+                        <i class="ri-edit-line"></i>
+                      </button>
+                      <button class="btn btn-sm" [class.btn-success]="!cliente.estado"
+                        [class.btn-warning]="cliente.estado" (click)="toggleEstado(cliente)"
+                        [title]="cliente.estado ? 'Desactivar' : 'Activar'">
+                        <i [class]="cliente.estado ? 'ri-close-circle-line' : 'ri-check-line'"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                }
                 }
               </tbody>
             </table>
@@ -179,27 +175,27 @@
 
           <!-- Paginación -->
           @if (totalPages > 1) {
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <div>
-                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
-                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} clientes
-              </div>
-              <nav>
-                <ul class="pagination mb-0">
-                  <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
-                  </li>
-                  @for (page of pages; track page) {
-                    <li class="page-item" [class.active]="page === currentPage">
-                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
-                    </li>
-                  }
-                  <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
-                  </li>
-                </ul>
-              </nav>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a
+              {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} clientes
             </div>
+            <nav>
+              <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                </li>
+                @for (page of pages; track page) {
+                <li class="page-item" [class.active]="page === currentPage">
+                  <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                </li>
+                }
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
           }
         </div>
       </div>

@@ -30,6 +30,9 @@ export class InventarioListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
+  // Expose Math to template
+  Math = Math;
+
   // Estadísticas
   stats = {
     totalItems: 0,

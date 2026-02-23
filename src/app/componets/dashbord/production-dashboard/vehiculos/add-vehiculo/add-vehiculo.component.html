@@ -64,7 +64,7 @@
                 <div class="col-md-4">
                   <label class="form-label">Año</label>
                   <input type="number" class="form-control" formControlName="anio"
-                         placeholder="Ej: 2020" min="1900" [max]="new Date().getFullYear()"
+                         placeholder="Ej: 2020" min="1900" [max]="currentYear"
                          [class.is-invalid]="isFieldInvalid('anio')">
                   @if (isFieldInvalid('anio')) {
                     <div class="invalid-feedback">{{ getFieldError('anio') }}</div>

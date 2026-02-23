@@ -29,6 +29,9 @@ export class VentaListComponent implements OnInit {
 
   estados = ['Completada', 'Pendiente', 'Cancelada'];
 
+  // Expose Math to template
+  Math = Math;
+
   stats = {
     totalVentas: 0,
     ventasCompletadas: 0,

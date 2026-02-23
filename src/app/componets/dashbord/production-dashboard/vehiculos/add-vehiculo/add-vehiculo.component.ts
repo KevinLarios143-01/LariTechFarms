@@ -23,6 +23,9 @@ export class AddVehiculoComponent implements OnInit {
   vehiculoId: number | null = null;
 
   estados = ['Activo', 'Inactivo', 'Mantenimiento', 'Vendido'];
+  
+  // Expose current year to template
+  currentYear = new Date().getFullYear();
 
   constructor(
     private fb: FormBuilder,

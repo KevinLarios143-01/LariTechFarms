@@ -29,6 +29,9 @@ export class TicketListComponent implements OnInit {
 
   estados = ['Pendiente', 'Autorizado', 'Despachado', 'Cancelado'];
 
+  // Expose Math to template
+  Math = Math;
+
   stats = {
     totalTickets: 0,
     pendientes: 0,
