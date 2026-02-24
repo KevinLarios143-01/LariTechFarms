@@ -38,6 +38,7 @@ export interface Empleado {
   nombre: string;
   apellido: string;
   puesto: string;
+  idPuesto?: number | null;
   salario: string;
   fechaContratacion: string;
   activo: boolean;
@@ -46,6 +47,13 @@ export interface Empleado {
   tiempoTrabajo?: string; // Nuevo campo opcional para tiempo de trabajo
   departamento?: string; // Nuevo campo opcional para departamento
   img?: string; // Nuevo campo opcional para imagen
+  puestoRelacion?: {
+    id: number;
+    nombre: string;
+    descripcion?: string;
+    salarioBase?: number;
+    activo: boolean;
+  } | null;
   genero: 'M' | 'F';
   _count?: {
     prestamos: number;
