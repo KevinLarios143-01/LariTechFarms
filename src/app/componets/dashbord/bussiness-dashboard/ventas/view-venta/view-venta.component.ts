@@ -51,19 +51,16 @@ export class ViewVentaComponent implements OnInit {
   anularVenta() {
     if (!this.venta || this.venta.estado === 'Cancelada') return;
     
-    const motivo = prompt('Ingrese el motivo de anulación de la venta:');
+    const motivo = prompt('Ingrese el motivo de anulación de la venta (opcional):');
     
     if (motivo === null) {
       return; // Usuario canceló
     }
     
-    if (!motivo || motivo.trim() === '') {
-      this.toastr.warning('Debe ingresar un motivo para anular la venta', 'Advertencia');
-      return;
-    }
-    
     if (confirm('¿Está seguro de anular esta venta? Esta acción restaurará el stock de los productos.')) {
-      this.ventaService.anularVenta(this.ventaId, { motivoAnulacion: motivo.trim() }).subscribe({
+      const payload = motivo && motivo.trim() ? { motivoAnulacion: motivo.trim() } : {};
+      
+      this.ventaService.anularVenta(this.ventaId, payload).subscribe({
         next: () => {
           this.toastr.success('Venta anulada exitosamente', 'Éxito');
           this.loadVenta();

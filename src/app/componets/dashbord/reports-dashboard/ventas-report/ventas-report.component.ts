@@ -240,7 +240,7 @@ export class VentasReportComponent implements OnInit {
 
       const ventasData = this.ventasDetalladas.map((v: any) => {
         const fecha = new Date(v.fecha);
-        const productos = v.detalles?.map((d: any) => d.producto?.nombre).join(', ') || 'N/A';
+        const productos = v.detalleVentas?.map((d: any) => d.producto?.nombre).join(', ') || 'N/A';
         return [
           fecha.toLocaleDateString(),
           fecha.toLocaleTimeString(),
@@ -326,7 +326,7 @@ export class VentasReportComponent implements OnInit {
         ['Fecha', 'Hora', 'Cliente', 'Productos', 'Método Pago', 'Estado', 'Total'],
         ...this.ventasDetalladas.map((v: any) => {
           const fecha = new Date(v.fecha);
-          const productos = v.detalles?.map((d: any) => d.producto?.nombre).join(', ') || 'N/A';
+          const productos = v.detalleVentas?.map((d: any) => d.producto?.nombre).join(', ') || 'N/A';
           return [
             fecha.toLocaleDateString(),
             fecha.toLocaleTimeString(),
