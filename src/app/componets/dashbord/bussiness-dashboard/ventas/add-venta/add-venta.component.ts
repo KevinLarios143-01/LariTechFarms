@@ -107,11 +107,34 @@ export class AddVentaComponent implements OnInit {
     
     if (producto) {
       detalle.get('precioUnitario')?.setValue(producto.precio);
+      
+      // Agregar validador de stock máximo
+      const cantidadControl = detalle.get('cantidad');
+      cantidadControl?.setValidators([
+        Validators.required,
+        Validators.min(1),
+        Validators.max(producto.stock)
+      ]);
+      cantidadControl?.updateValueAndValidity();
+      
       this.calculateSubtotal(index);
     }
   }
 
   onCantidadChange(index: number) {
+    const detalle = this.detalles.at(index);
+    const productoId = detalle.get('idProducto')?.value;
+    const cantidad = detalle.get('cantidad')?.value;
+    const producto = this.productos.find(p => p.id === productoId);
+    
+    // Validar stock disponible
+    if (producto && cantidad > producto.stock) {
+      this.toastr.warning(
+        `Stock insuficiente para ${producto.nombre}. Disponible: ${producto.stock}`,
+        'Advertencia'
+      );
+    }
+    
     this.calculateSubtotal(index);
   }
 
@@ -137,40 +160,125 @@ export class AddVentaComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.ventaForm.valid) {
-      this.isLoading = true;
-      const formData = this.ventaForm.getRawValue();
+    // Primero marcar todos los campos como touched para mostrar errores
+    this.markFormGroupTouched();
 
-      const createData: CreateVentaRequest = {
-        fecha: formData.fecha,
-        idCliente: formData.idCliente || undefined,
-        metodoPago: formData.metodoPago || undefined,
-        observaciones: formData.observaciones || undefined,
-        detalles: formData.detalles.map((d: any) => ({
-          idProducto: parseInt(d.idProducto),
-          cantidad: parseInt(d.cantidad),
-          precioUnitario: parseFloat(d.precioUnitario)
-        }))
-      };
+    // Verificar si hay campos requeridos sin completar (excluyendo errores de stock)
+    let hasRequiredErrors = false;
+    let hasStockErrors = false;
 
-      this.ventaService.createVenta(createData).subscribe({
-        next: () => {
-          this.toastr.success('Venta creada exitosamente', 'Éxito');
-          setTimeout(() => {
-            this.router.navigate(['/dashboard/bussiness-dashboard/ventas/list']);
-          }, 1000);
-        },
-        error: (error) => {
-          const errorMsg = error?.error?.message || 'Error al crear venta';
-          this.toastr.error(errorMsg, 'Error');
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        }
-      });
-    } else {
-      this.markFormGroupTouched();
-      this.toastr.warning('Por favor complete todos los campos requeridos', 'Advertencia');
+    this.detalles.controls.forEach((detalle, index) => {
+      const idProducto = detalle.get('idProducto');
+      const cantidad = detalle.get('cantidad');
+      const precioUnitario = detalle.get('precioUnitario');
+
+      // Verificar campos requeridos
+      if (!idProducto?.value || !cantidad?.value || !precioUnitario?.value) {
+        hasRequiredErrors = true;
+      }
+    });
+
+    // Verificar fecha
+    if (!this.ventaForm.get('fecha')?.value) {
+      hasRequiredErrors = true;
     }
+
+    if (hasRequiredErrors) {
+      this.toastr.warning('Por favor complete todos los campos requeridos', 'Advertencia', {
+        timeOut: 3000,
+        positionClass: 'toast-top-right'
+      });
+      return;
+    }
+
+    // Validar stock acumulado por producto
+    const productoCantidades = new Map<number, number>();
+    
+    this.detalles.controls.forEach((detalle) => {
+      const idProducto = detalle.get('idProducto')?.value;
+      const cantidad = detalle.get('cantidad')?.value;
+      
+      if (idProducto && cantidad) {
+        const cantidadActual = productoCantidades.get(idProducto) || 0;
+        productoCantidades.set(idProducto, cantidadActual + parseInt(cantidad));
+      }
+    });
+
+    // Verificar stock disponible para cada producto
+    productoCantidades.forEach((cantidadTotal, idProducto) => {
+      const producto = this.productos.find(p => p.id === idProducto);
+      if (producto && cantidadTotal > producto.stock) {
+        hasStockErrors = true;
+        this.toastr.error(
+          `Stock insuficiente para ${producto.nombre}. Disponible: ${producto.stock}, Total solicitado: ${cantidadTotal}`,
+          'Error de Stock',
+          {
+            timeOut: 5000,
+            positionClass: 'toast-top-right'
+          }
+        );
+      }
+    });
+
+    if (hasStockErrors) {
+      return;
+    }
+
+    if (this.detalles.length === 0) {
+      this.toastr.warning('Debe agregar al menos un producto', 'Advertencia', {
+        timeOut: 3000,
+        positionClass: 'toast-top-right'
+      });
+      return;
+    }
+
+    this.isLoading = true;
+    const formData = this.ventaForm.getRawValue();
+
+    const createData: CreateVentaRequest = {
+      fecha: formData.fecha,
+      idCliente: formData.idCliente || undefined,
+      metodoPago: formData.metodoPago || undefined,
+      observaciones: formData.observaciones || undefined,
+      detalles: formData.detalles.map((d: any) => ({
+        idProducto: parseInt(d.idProducto),
+        cantidad: parseInt(d.cantidad),
+        precioUnitario: parseFloat(d.precioUnitario)
+      }))
+    };
+
+    this.ventaService.createVenta(createData).subscribe({
+      next: () => {
+        this.toastr.success('Venta creada exitosamente', 'Éxito', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right'
+        });
+        setTimeout(() => {
+          this.router.navigate(['/dashboard/bussiness-dashboard/ventas/list']);
+        }, 1000);
+      },
+      error: (error) => {
+        console.error('Error response:', error);
+        let errorMessage = 'Error desconocido';
+        
+        if (error.error?.message) {
+          errorMessage = error.error.message;
+        } else if (error.error?.error) {
+          errorMessage = error.error.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        } else if (typeof error.error === 'string') {
+          errorMessage = error.error;
+        }
+        
+        this.toastr.error(errorMessage, 'Error al crear venta', {
+          timeOut: 5000,
+          positionClass: 'toast-top-right'
+        });
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   markFormGroupTouched() {
@@ -193,5 +301,26 @@ export class AddVentaComponent implements OnInit {
   isDetalleFieldInvalid(index: number, fieldName: string): boolean {
     const field = this.detalles.at(index).get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  getStockDisponible(index: number): number {
+    const detalle = this.detalles.at(index);
+    const productoId = detalle.get('idProducto')?.value;
+    const producto = this.productos.find(p => p.id === productoId);
+    return producto?.stock || 0;
+  }
+
+  getDetalleFieldError(index: number, fieldName: string): string {
+    const field = this.detalles.at(index).get(fieldName);
+    if (field?.errors) {
+      if (field.errors['required']) return `${fieldName} es requerido`;
+      if (field.errors['min']) return `Valor mínimo: ${field.errors['min'].min}`;
+      if (field.errors['max']) {
+        const productoId = this.detalles.at(index).get('idProducto')?.value;
+        const producto = this.productos.find(p => p.id === productoId);
+        return `Stock disponible: ${producto?.stock || 0}`;
+      }
+    }
+    return '';
   }
 }

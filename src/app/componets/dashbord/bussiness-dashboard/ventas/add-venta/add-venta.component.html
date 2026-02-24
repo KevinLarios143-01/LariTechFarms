@@ -93,7 +93,10 @@
                                (ngModelChange)="onCantidadChange(i)" min="1"
                                [class.is-invalid]="isDetalleFieldInvalid(i, 'cantidad')">
                         @if (isDetalleFieldInvalid(i, 'cantidad')) {
-                          <div class="invalid-feedback">Cantidad requerida</div>
+                          <div class="invalid-feedback">{{ getDetalleFieldError(i, 'cantidad') }}</div>
+                        }
+                        @if (detalle.get('idProducto')?.value) {
+                          <small class="text-muted">Stock: {{ getStockDisponible(i) }}</small>
                         }
                       </div>
                       <div class="col-md-2">

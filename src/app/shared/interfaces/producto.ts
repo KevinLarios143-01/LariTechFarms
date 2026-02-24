@@ -2,8 +2,13 @@ export interface Producto {
   id: number;
   nombre: string;
   descripcion?: string;
-  precio?: number;
-  estado?: string;
+  precio: number;
+  stock: number;
+  tamanio: string;
+  categoria: string;
+  estado: string;
+  unidadMedida: string;
+  stockMinimo: number;
 }
 
 export interface ProductoResponse {
