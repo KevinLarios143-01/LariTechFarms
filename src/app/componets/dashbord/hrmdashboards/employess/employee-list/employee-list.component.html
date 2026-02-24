@@ -138,7 +138,7 @@
                   </div>
                 </td>
                 <td>{{emplist.departamento || 'N/A'}}</td>
-                <td>{{emplist.puesto}}</td>
+                <td>{{emplist.puestoRelacion?.nombre || emplist.puesto || 'N/A'}}</td>
                 <td>{{emplist.telefono}}</td>
                 <td>{{emplist.fechaContratacion | date: 'short'}}</td>
                 <td>{{calculateWorkTime(emplist.fechaContratacion)}}</td>

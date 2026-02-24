@@ -1,0 +1,288 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Reporte de Empleados</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-danger btn-sm" (click)="exportarPDF()">
+              <i class="ri-file-pdf-line"></i> Exportar PDF
+            </button>
+            <button class="btn btn-success btn-sm" (click)="exportarExcel()">
+              <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  @if (estadisticas && !isLoading) {
+    <!-- Resumen General -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                  <i class="ri-team-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.totalEmpleados }}</h5>
+                <p class="mb-0 fs-12 text-muted">Total Empleados</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                  <i class="ri-user-follow-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.empleadosActivos }}</h5>
+                <p class="mb-0 fs-12 text-muted">Empleados Activos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                  <i class="ri-user-add-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.empleadosNuevos }}</h5>
+                <p class="mb-0 fs-12 text-muted">Nuevos (3 meses)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                  <i class="ri-money-dollar-circle-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">Q{{ estadisticas.nominaTotal | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Nómina Total</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda fila de estadísticas -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-secondary-transparent">
+                  <i class="ri-men-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.empleadosHombres }}</h5>
+                <p class="mb-0 fs-12 text-muted">Hombres</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-pink-transparent">
+                  <i class="ri-women-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.empleadasMujeres }}</h5>
+                <p class="mb-0 fs-12 text-muted">Mujeres</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                  <i class="ri-user-unfollow-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.empleadosInactivos }}</h5>
+                <p class="mb-0 fs-12 text-muted">Inactivos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-teal-transparent">
+                  <i class="ri-line-chart-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">Q{{ estadisticas.salarioPromedio | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Salario Promedio</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empleados por Puesto -->
+    @if (estadisticas.empleadosPorPuesto && estadisticas.empleadosPorPuesto.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Empleados por Puesto</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Puesto</th>
+                      <th>Cantidad</th>
+                      <th>Salario Promedio</th>
+                      <th>Porcentaje</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (puesto of estadisticas.empleadosPorPuesto; track puesto.puesto; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-semibold">{{ puesto.puesto }}</td>
+                        <td>
+                          <span class="badge bg-primary">{{ puesto._count.id }}</span>
+                        </td>
+                        <td class="text-success">Q{{ puesto._avg.salario | number:'1.2-2' }}</td>
+                        <td>
+                          <span class="badge bg-light text-dark">
+                            {{ (puesto._count.id / estadisticas.totalEmpleados * 100) | number:'1.1-1' }}%
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Listado de Empleados -->
+    @if (empleados && empleados.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Listado de Empleados ({{ empleados.length }} empleados)</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Nombre</th>
+                      <th>Puesto</th>
+                      <th>Salario</th>
+                      <th>Fecha Contratación</th>
+                      <th>Teléfono</th>
+                      <th>Género</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (empleado of empleados; track empleado.id; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-semibold">{{ empleado.nombre }} {{ empleado.apellido }}</td>
+                        <td>
+                          <span class="badge bg-light text-dark">{{ empleado.puesto }}</span>
+                        </td>
+                        <td class="text-success">Q{{ empleado.salario | number:'1.2-2' }}</td>
+                        <td>{{ empleado.fechaContratacion | date:'dd/MM/yyyy' }}</td>
+                        <td>{{ empleado.telefono || '-' }}</td>
+                        <td>
+                          @if (empleado.genero === 'M') {
+                            <span class="badge bg-info">Masculino</span>
+                          } @else if (empleado.genero === 'F') {
+                            <span class="badge bg-pink">Femenino</span>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td>
+                          @if (empleado.activo) {
+                            <span class="badge bg-success">Activo</span>
+                          } @else {
+                            <span class="badge bg-secondary">Inactivo</span>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Generando reporte...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

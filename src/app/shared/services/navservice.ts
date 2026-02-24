@@ -129,6 +129,12 @@ export class NavService implements OnDestroy {
               ]
             },
             {
+              title: 'Puestos', type: 'sub', active: false, selected: false, children: [
+                { path: '/dashboard/hrmdashboards/puestos/puesto-list', title: 'Lista de Puestos', type: 'link', selected: false },
+                { path: '/dashboard/hrmdashboards/puestos/add-puesto', title: 'Agregar Puesto', type: 'link', selected: false },
+              ]
+            },
+            {
               title: 'Usuarios', type: 'sub', active: false, selected: false, children: [
                 { path: '/dashboard/hrmdashboards/users/user-list', title: 'Lista de Usuarios', type: 'link', selected: false },
                 //{ path: '/dashboard/hrmdashboards/users/view-user', title: 'Ver Usuario', type: 'link', selected: false },

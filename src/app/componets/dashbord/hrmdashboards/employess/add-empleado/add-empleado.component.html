@@ -86,11 +86,25 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="form-label" for="puesto">Puesto *</label>
-                <input type="text" class="form-control" 
-                       [class.is-invalid]="employeeForm.get('puesto')?.invalid && employeeForm.get('puesto')?.touched"
-                       formControlName="puesto" placeholder="Ingrese el puesto">
-                @if (employeeForm.get('puesto')?.invalid && employeeForm.get('puesto')?.touched) {
+                <label class="form-label" for="idPuesto">Puesto *</label>
+                <ng-select 
+                  [items]="puestos"
+                  bindLabel="nombre"
+                  bindValue="id"
+                  formControlName="idPuesto"
+                  placeholder="Seleccione un puesto"
+                  [loading]="loadingPuestos"
+                  [class.is-invalid]="employeeForm.get('idPuesto')?.invalid && employeeForm.get('idPuesto')?.touched">
+                  <ng-template ng-option-tmp let-item="item">
+                    <div>
+                      <strong>{{item.nombre}}</strong>
+                      @if(item.salarioBase) {
+                        <small class="text-muted d-block">Salario base: Q{{item.salarioBase}}</small>
+                      }
+                    </div>
+                  </ng-template>
+                </ng-select>
+                @if (employeeForm.get('idPuesto')?.invalid && employeeForm.get('idPuesto')?.touched) {
                   <div class="invalid-feedback d-block">
                     El puesto es requerido
                   </div>

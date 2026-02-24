@@ -45,6 +45,26 @@ export const admin: Routes = [
         loadComponent: () =>
           import('./settings/settings.component').then((m) => m.SettingsComponent),
       },
+      {
+        path: 'puestos',
+        children: [
+          {
+            path: 'puesto-list',
+            loadComponent: () =>
+              import('./puestos/puesto-list/puesto-list.component').then((m) => m.PuestoListComponent),
+          },
+          {
+            path: 'add-puesto',
+            loadComponent: () =>
+              import('./puestos/add-puesto/add-puesto.component').then((m) => m.AddPuestoComponent),
+          },
+          {
+            path: 'add-puesto/:id',
+            loadComponent: () =>
+              import('./puestos/add-puesto/add-puesto.component').then((m) => m.AddPuestoComponent),
+          },
+        ]
+      },
     ]
   }
 ];

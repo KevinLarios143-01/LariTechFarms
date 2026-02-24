@@ -14,6 +14,7 @@ import { UsersRoutingModule } from '../../componets/dashbord/hrmdashboards/users
 import { BusinessDashboardRoutingModule } from '../../componets/dashbord/bussiness-dashboard/bussiness-dashboard.routes';
 import { ProductionDashboardRoutingModule } from '../../componets/dashbord/production-dashboard/production-dashboard.routes';
 import { ReportsDashboardRoutingModule } from '../../componets/dashbord/reports-dashboard/reports-dashboard.routes';
+import { PuestosRoutingModule } from '../../componets/dashbord/hrmdashboards/puestos/puestos.routes';
 
 
 
@@ -27,6 +28,7 @@ export const content: Routes = [
       ...hrmdashboardRoutingModule.routes,
       ...ClientDashboardRoutingModule.routes,
       ...EmployessRoutingModule.routes,
+      ...PuestosRoutingModule.routes,
       ...UsersRoutingModule.routes,
       ...AttendanceRoutingModule.routes,
       ...PayrollRoutingModule.routes,

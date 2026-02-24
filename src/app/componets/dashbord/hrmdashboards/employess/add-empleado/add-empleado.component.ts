@@ -1,30 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { ToastrService } from 'ngx-toastr';
 import { EmpleadoService } from '../../../../../shared/services/empleado.service';
+import { PuestoService, Puesto } from '../../puestos/puesto-list/puesto.service';
 
 @Component({
   selector: 'app-add-empleado',
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule],
+  imports: [SharedModule, ReactiveFormsModule, FormsModule, NgSelectModule],
   templateUrl: './add-empleado.component.html',
   styleUrls: ['./add-empleado.component.scss']
 })
 export class AddEmpleadoComponent implements OnInit {
   employeeForm!: FormGroup;
   isLoading = false;
+  puestos: Puesto[] = [];
+  loadingPuestos = false;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly empleadoService: EmpleadoService,
+    private readonly puestoService: PuestoService,
     private readonly toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.initForm();
+    this.loadPuestos();
   }
 
   initForm() {
@@ -33,7 +40,7 @@ export class AddEmpleadoComponent implements OnInit {
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       correo: ['', [Validators.required, Validators.email]],
       telefono: ['', [Validators.required]],
-      puesto: ['', [Validators.required]],
+      idPuesto: ['', [Validators.required]],
       departamento: [''],
       fechaContratacion: ['', [Validators.required]],
       salario: ['', [Validators.required, Validators.min(0)]],
@@ -41,6 +48,23 @@ export class AddEmpleadoComponent implements OnInit {
       estadoCivil: [''],
       direccion: [''],
       tipoContrato: ['', [Validators.required]]
+    });
+  }
+
+  loadPuestos() {
+    this.loadingPuestos = true;
+    this.puestoService.getPuestos({ activo: true, limit: 1000 }).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.puestos = response.data.data;
+        }
+        this.loadingPuestos = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar puestos:', error);
+        this.toastr.error('No se pudieron cargar los puestos', 'Error');
+        this.loadingPuestos = false;
+      }
     });
   }
 
