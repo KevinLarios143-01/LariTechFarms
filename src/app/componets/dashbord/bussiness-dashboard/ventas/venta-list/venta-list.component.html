@@ -182,10 +182,6 @@
                             <i class="ri-eye-line"></i>
                           </button>
                           @if (venta.estado !== 'Cancelada') {
-                            <button class="btn btn-sm btn-primary" [routerLink]="['../edit', venta.id]" 
-                                    title="Editar">
-                              <i class="ri-edit-line"></i>
-                            </button>
                             <button class="btn btn-sm btn-danger" (click)="anularVenta(venta)" 
                                     title="Anular">
                               <i class="ri-close-circle-line"></i>

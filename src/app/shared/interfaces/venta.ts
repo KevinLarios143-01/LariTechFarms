@@ -46,7 +46,7 @@ export interface VentaResponse {
 }
 
 export interface CreateVentaRequest {
-  idCliente?: number;
+  idCliente: number;
   fecha: string; // YYYY-MM-DD
   metodoPago?: string;
   observaciones?: string;

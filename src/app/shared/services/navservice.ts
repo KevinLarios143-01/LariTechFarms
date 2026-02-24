@@ -262,6 +262,48 @@ export class NavService implements OnDestroy {
       ],
     },
 
+    // Reportes
+    { headTitle: 'REPORTERÍA' },
+    {
+      title: 'Reportes',
+      icon: 'bar-chart-2',
+      dirchange: false,
+      type: 'sub',
+      active: false,
+      children: [
+        {
+          path: '/dashboard/reports/ventas',
+          title: 'Reporte de Ventas',
+          type: 'link',
+          selected: false
+        },
+        {
+          path: '/dashboard/reports/productos',
+          title: 'Reporte de Productos',
+          type: 'link',
+          selected: false
+        },
+        {
+          path: '/dashboard/reports/tickets',
+          title: 'Reporte de Tickets',
+          type: 'link',
+          selected: false
+        },
+        {
+          path: '/dashboard/reports/huevos',
+          title: 'Reporte de Huevos',
+          type: 'link',
+          selected: false
+        },
+        {
+          path: '/dashboard/reports/empleados',
+          title: 'Reporte de Empleados',
+          type: 'link',
+          selected: false
+        }
+      ]
+    },
+
     // {
     //   title: 'Submenús', icon: 'sliders', type: 'sub', active: false, selected: false, children: [
     //     { title: 'nivel-1', type: 'empty', selected: false },

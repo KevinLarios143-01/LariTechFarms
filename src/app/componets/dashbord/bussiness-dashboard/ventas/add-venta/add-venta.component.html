@@ -23,10 +23,11 @@
                     }
                   </div>
                   <div class="col-md-3">
-                    <label class="form-label">Cliente</label>
+                    <label class="form-label">Cliente *</label>
                     <ng-select [items]="clientes" bindLabel="nombre" bindValue="id"
                                formControlName="idCliente" 
-                               placeholder="Seleccione cliente (opcional)" [clearable]="true">
+                               placeholder="Seleccione cliente"
+                               [class.is-invalid]="isFieldInvalid('idCliente')">
                       <ng-template ng-option-tmp let-item="item">
                         <div>{{ item.nombre }}</div>
                         @if (item.telefono) {
@@ -34,6 +35,9 @@
                         }
                       </ng-template>
                     </ng-select>
+                    @if (isFieldInvalid('idCliente')) {
+                      <div class="invalid-feedback d-block">Cliente es requerido</div>
+                    }
                   </div>
                   <div class="col-md-3">
                     <label class="form-label">Método de Pago</label>

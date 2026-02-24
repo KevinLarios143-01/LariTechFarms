@@ -1,0 +1,480 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Reporte de Ventas</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-danger btn-sm" (click)="exportarPDF()">
+              <i class="ri-file-pdf-line"></i> Exportar PDF
+            </button>
+            <button class="btn btn-success btn-sm" (click)="exportarExcel()">
+              <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Filtros</div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <!-- Tipo de Filtro -->
+            <div class="col-md-3">
+              <label class="form-label">Tipo de Filtro</label>
+              <select class="form-select" [(ngModel)]="tipoFiltro" (change)="onTipoFiltroChange()">
+                <option value="dia">Por Día</option>
+                <option value="mes">Por Mes</option>
+                <option value="rango">Rango de Fechas</option>
+              </select>
+            </div>
+
+            <!-- Filtro por Día -->
+            @if (tipoFiltro === 'dia') {
+              <div class="col-md-3">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada">
+              </div>
+            }
+
+            <!-- Filtro por Mes -->
+            @if (tipoFiltro === 'mes') {
+              <div class="col-md-3">
+                <label class="form-label">Mes</label>
+                <select class="form-select" [(ngModel)]="mesSeleccionado">
+                  @for (mes of meses; track mes.value) {
+                    <option [value]="mes.value">{{ mes.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Año</label>
+                <select class="form-select" [(ngModel)]="anioSeleccionado">
+                  @for (anio of anios; track anio) {
+                    <option [value]="anio">{{ anio }}</option>
+                  }
+                </select>
+              </div>
+            }
+
+            <!-- Filtro por Rango -->
+            @if (tipoFiltro === 'rango') {
+              <div class="col-md-3">
+                <label class="form-label">Fecha Desde</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaDesde">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Fecha Hasta</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaHasta">
+              </div>
+            }
+
+            <!-- Botón Generar -->
+            <div class="col-md-3 d-flex align-items-end">
+              <button class="btn btn-primary w-100" (click)="loadReport()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                <i class="ri-bar-chart-line"></i> Generar Reporte
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  @if (estadisticas && !isLoading) {
+    <!-- Resumen General -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                  <i class="ri-shopping-cart-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.totalVentas || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Total Ventas Válidas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                  <i class="ri-check-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.ventasCompletadas || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Completadas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                  <i class="ri-time-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.ventasPendientes || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Pendientes</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                  <i class="ri-money-dollar-circle-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">Q{{ estadisticas.montoTotal | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Monto Total Válido</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fila adicional para ventas anuladas -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card border-danger">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                  <i class="ri-close-circle-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.ventasAnuladas || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Ventas Anuladas</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card border-danger">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                  <i class="ri-money-dollar-circle-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0 text-danger">Q{{ estadisticas.montoCancelado | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Monto Cancelado</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top Clientes -->
+    @if (estadisticas.topClientes && estadisticas.topClientes.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Top 10 Clientes</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Cliente</th>
+                      <th>Ventas</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (cliente of estadisticas.topClientes; track cliente.idCliente; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.totalVentas }}</td>
+                        <td class="fw-semibold text-success">Q{{ cliente.montoTotal | number:'1.2-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Productos Más Vendidos -->
+    @if (estadisticas.topProductos && estadisticas.topProductos.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Top 10 Productos Más Vendidos</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Total Vendido</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (producto of estadisticas.topProductos; track producto.idProducto; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.cantidadVendida }}</td>
+                        <td class="fw-semibold text-success">Q{{ producto.montoTotal | number:'1.2-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Detalle de Ventas -->
+    @if (ventasDetalladas && ventasDetalladas.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Detalle de Ventas Válidas ({{ ventasDetalladas.length }} ventas)</div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha y Hora</th>
+                      <th>Cliente</th>
+                      <th>Productos</th>
+                      <th>Método Pago</th>
+                      <th>Estado</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (venta of ventasDetalladas; track venta.id; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          <div class="fw-semibold">{{ venta.fecha | date:'dd/MM/yyyy' }}</div>
+                          @if (venta.createdAt) {
+                            <small class="text-muted">{{ venta.createdAt | date:'HH:mm:ss' }}</small>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.cliente) {
+                            <div class="fw-semibold">{{ venta.cliente.nombre }}</div>
+                            @if (venta.cliente.telefono) {
+                              <small class="text-muted">{{ venta.cliente.telefono }}</small>
+                            }
+                          } @else {
+                            <span class="text-muted">Cliente general</span>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.detalleVentas && venta.detalleVentas.length > 0) {
+                            <div class="d-flex flex-column gap-1">
+                              @for (detalle of venta.detalleVentas; track detalle.id) {
+                                <small>
+                                  {{ detalle.producto?.nombre || 'Producto' }} 
+                                  <span class="badge bg-light text-dark">x{{ detalle.cantidad }}</span>
+                                </small>
+                              }
+                            </div>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.metodoPago) {
+                            <span class="badge bg-light text-dark">{{ venta.metodoPago }}</span>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td>
+                          <span [class]="'badge ' + getEstadoBadge(venta.estado)">
+                            {{ venta.estado }}
+                          </span>
+                        </td>
+                        <td class="fw-semibold text-success">Q{{ venta.total | number:'1.2-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-active">
+                      <td colspan="6" class="text-end fw-bold">TOTAL:</td>
+                      <td class="fw-bold text-success fs-5">
+                        Q{{ getTotalVentasValidas() | number:'1.2-2' }}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Ventas Anuladas -->
+    @if (ventasAnuladas && ventasAnuladas.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card border-danger">
+            <div class="card-header bg-danger-transparent">
+              <div class="card-title text-danger">
+                <i class="ri-close-circle-line me-2"></i>
+                Ventas Anuladas ({{ ventasAnuladas.length }} ventas)
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha y Hora</th>
+                      <th>Cliente</th>
+                      <th>Productos</th>
+                      <th>Método Pago</th>
+                      <th>Total</th>
+                      <th>Motivo de Anulación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (venta of ventasAnuladas; track venta.id; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                          <div class="fw-semibold">{{ venta.fecha | date:'dd/MM/yyyy' }}</div>
+                          @if (venta.createdAt) {
+                            <small class="text-muted">{{ venta.createdAt | date:'HH:mm:ss' }}</small>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.cliente) {
+                            <div class="fw-semibold">{{ venta.cliente.nombre }}</div>
+                            @if (venta.cliente.telefono) {
+                              <small class="text-muted">{{ venta.cliente.telefono }}</small>
+                            }
+                          } @else {
+                            <span class="text-muted">Cliente general</span>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.detalleVentas && venta.detalleVentas.length > 0) {
+                            <div class="d-flex flex-column gap-1">
+                              @for (detalle of venta.detalleVentas; track detalle.id) {
+                                <small>
+                                  {{ detalle.producto?.nombre || 'Producto' }} 
+                                  <span class="badge bg-light text-dark">x{{ detalle.cantidad }}</span>
+                                </small>
+                              }
+                            </div>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td>
+                          @if (venta.metodoPago) {
+                            <span class="badge bg-light text-dark">{{ venta.metodoPago }}</span>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td class="fw-semibold text-danger">Q{{ venta.total | number:'1.2-2' }}</td>
+                        <td>
+                          @if (venta.motivoAnulacion) {
+                            <div class="text-danger">
+                              <i class="ri-information-line me-1"></i>
+                              {{ venta.motivoAnulacion }}
+                            </div>
+                          } @else {
+                            <span class="text-muted">Sin motivo registrado</span>
+                          }
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-danger">
+                      <td colspan="5" class="text-end fw-bold">TOTAL CANCELADO:</td>
+                      <td class="fw-bold text-danger fs-5" colspan="2">
+                        Q{{ getTotalVentasAnuladas() | number:'1.2-2' }}
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Generando reporte...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -86,13 +86,16 @@ export class VentaListComponent implements OnInit {
 
     this.ventaService.getVentasEstadisticas(params).subscribe({
       next: (response) => {
+        console.log('Respuesta de estadísticas:', response);
         if (response?.data) {
+          console.log('response.data:', response.data);
           this.stats = {
-            totalVentas: response.data.totalVentas,
-            ventasCompletadas: response.data.ventasCompletadas,
-            ventasPendientes: response.data.ventasPendientes,
-            montoTotal: response.data.montoTotal
+            totalVentas: response.data.totalVentas || 0,
+            ventasCompletadas: response.data.ventasCompletadas || 0,
+            ventasPendientes: response.data.ventasPendientes || 0,
+            montoTotal: response.data.montoTotal || 0
           };
+          console.log('Stats asignados:', this.stats);
         }
         this.cdr.detectChanges();
       },
@@ -123,8 +126,19 @@ export class VentaListComponent implements OnInit {
       return;
     }
 
+    const motivo = prompt('Ingrese el motivo de anulación de la venta:');
+    
+    if (motivo === null) {
+      return; // Usuario canceló
+    }
+    
+    if (!motivo || motivo.trim() === '') {
+      this.toastr.warning('Debe ingresar un motivo para anular la venta', 'Advertencia');
+      return;
+    }
+
     if (confirm('¿Está seguro de anular esta venta? Esta acción restaurará el stock de los productos.')) {
-      this.ventaService.anularVenta(venta.id, {}).subscribe({
+      this.ventaService.anularVenta(venta.id, { motivoAnulacion: motivo.trim() }).subscribe({
         next: () => {
           this.toastr.success('Venta anulada exitosamente', 'Éxito');
           this.loadVentas();

@@ -13,6 +13,7 @@ import { SuperAdminRoutingModule } from '../../componets/dashbord/super-admin/su
 import { UsersRoutingModule } from '../../componets/dashbord/hrmdashboards/users/users.routes';
 import { BusinessDashboardRoutingModule } from '../../componets/dashbord/bussiness-dashboard/bussiness-dashboard.routes';
 import { ProductionDashboardRoutingModule } from '../../componets/dashbord/production-dashboard/production-dashboard.routes';
+import { ReportsDashboardRoutingModule } from '../../componets/dashbord/reports-dashboard/reports-dashboard.routes';
 
 
 
@@ -36,6 +37,7 @@ export const content: Routes = [
       ...SuperAdminRoutingModule.routes,
       ...BusinessDashboardRoutingModule.routes,
       ...ProductionDashboardRoutingModule.routes,
+      ...ReportsDashboardRoutingModule.routes,
     ]
   }
 

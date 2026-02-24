@@ -39,7 +39,7 @@ export class AddVentaComponent implements OnInit {
   ) {
     this.ventaForm = this.fb.group({
       fecha: ['', Validators.required],
-      idCliente: [''],
+      idCliente: ['', Validators.required],
       metodoPago: [''],
       observaciones: [''],
       detalles: this.fb.array([this.createDetalleFormGroup()])
@@ -47,6 +47,7 @@ export class AddVentaComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('AddVentaComponent ngOnInit ejecutado');
     const today = new Date().toISOString().split('T')[0];
     this.ventaForm.patchValue({ fecha: today });
     this.loadClientes();
@@ -67,10 +68,32 @@ export class AddVentaComponent implements OnInit {
   }
 
   loadClientes() {
-    this.clienteService.clienteData$.subscribe({
-      next: (clientes) => {
-        this.clientes = clientes.filter(c => c.activo);
-        this.cdr.detectChanges();
+    console.log('loadClientes() ejecutado');
+    // Llamar directamente al endpoint de clientes
+    this.clienteService.getClientes().subscribe({
+      next: (response) => {
+        console.log('Respuesta completa de clientes:', response);
+        // La estructura correcta es response.data (array directo)
+        if (response && response.data) {
+          // Verificar si response.data es un array o un objeto con data
+          if (Array.isArray(response.data)) {
+            this.clientes = response.data;
+          } else if (response.data.data && Array.isArray(response.data.data)) {
+            this.clientes = response.data.data;
+          } else {
+            this.clientes = [];
+          }
+          console.log('Clientes asignados:', this.clientes);
+          console.log('Cantidad de clientes:', this.clientes.length);
+          this.cdr.detectChanges();
+        } else {
+          console.error('Estructura de respuesta inesperada:', response);
+          this.clientes = [];
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar clientes:', error);
+        this.toastr.error('Error al cargar clientes', 'Error');
       }
     });
   }
@@ -178,8 +201,8 @@ export class AddVentaComponent implements OnInit {
       }
     });
 
-    // Verificar fecha
-    if (!this.ventaForm.get('fecha')?.value) {
+    // Verificar fecha y cliente
+    if (!this.ventaForm.get('fecha')?.value || !this.ventaForm.get('idCliente')?.value) {
       hasRequiredErrors = true;
     }
 
@@ -237,7 +260,7 @@ export class AddVentaComponent implements OnInit {
 
     const createData: CreateVentaRequest = {
       fecha: formData.fecha,
-      idCliente: formData.idCliente || undefined,
+      idCliente: parseInt(formData.idCliente),
       metodoPago: formData.metodoPago || undefined,
       observaciones: formData.observaciones || undefined,
       detalles: formData.detalles.map((d: any) => ({
