@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/componets/dashbord/hrmdashboards/puestos/add-puesto/add-puesto.component.scss"],
-  "sourcesContent": [".form-label {\n  font-weight: 500;\n}\n\n.text-danger {\n  font-size: 0.875rem;\n}\n"],
-  "mappings": ";AAAA,CAAA;AACE,eAAA;;AAGF,CAAA;AACE,aAAA;;",
-  "names": []
-}

@@ -22,7 +22,7 @@ export class ClienteListComponent implements OnInit {
   estadoFilter = '';
 
   currentPage = 1;
-  itemsPerPage = 10;
+  itemsPerPage = 100;
   totalItems = 0;
   totalPages = 0;
 
@@ -52,18 +52,35 @@ export class ClienteListComponent implements OnInit {
     this.clienteService.pageSize = this.itemsPerPage;
     this.clienteService.searchTerm = this.searchTerm;
 
-    this.clienteService.clienteData$.subscribe({
-      next: (clientes) => {
-        this.clientes = clientes;
+    // Construir parámetros adicionales para el filtro de estado
+    let params: any = {
+      page: this.currentPage,
+      limit: this.itemsPerPage
+    };
+
+    if (this.searchTerm) {
+      params.search = this.searchTerm;
+    }
+
+    if (this.estadoFilter) {
+      params.estado = this.estadoFilter === 'activo' ? 'true' : 'false';
+    }
+
+    // Hacer la petición directamente con los parámetros
+    this.clienteService.getClientesWithParams(params).subscribe({
+      next: (response) => {
+        this.clientes = response.data.data;
+        this.totalItems = response.data.pagination.total;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
         this.isLoading = false;
         this.cdr.detectChanges();
-      }
-    });
-
-    this.clienteService.total$.subscribe({
-      next: (total) => {
-        this.totalItems = total;
-        this.totalPages = Math.ceil(total / this.itemsPerPage);
+      },
+      error: (error) => {
+        console.error('Error al cargar clientes:', error);
+        this.clientes = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
+        this.isLoading = false;
         this.cdr.detectChanges();
       }
     });
@@ -122,6 +139,11 @@ export class ClienteListComponent implements OnInit {
 
   onPageChange(page: number) {
     this.currentPage = page;
+    this.loadClientes();
+  }
+
+  onPageSizeChange() {
+    this.currentPage = 1; // Resetear a la primera página
     this.loadClientes();
   }
 

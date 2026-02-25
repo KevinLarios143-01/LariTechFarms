@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/shared/layouts/support-system/support-system.component.scss"],
-  "sourcesContent": [".pt-125{\n    padding-top: 125px;\n}"],
-  "mappings": ";AAAA,CAAA;AACI,eAAA;;",
-  "names": []
-}

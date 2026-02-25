@@ -109,6 +109,24 @@
     <div class="col-xl-12">
       <div class="card custom-card">
         <div class="card-body">
+          <!-- Selector de cantidad por página -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <label class="mb-0">Mostrar</label>
+              <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange()">
+                <option [value]="10">10</option>
+                <option [value]="25">25</option>
+                <option [value]="50">50</option>
+                <option [value]="100">100</option>
+              </select>
+              <label class="mb-0">entradas</label>
+            </div>
+            <div>
+              <input type="text" class="form-control form-control-sm" placeholder="Buscar..." 
+                [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" style="width: 200px;">
+            </div>
+          </div>
+
           <div class="table-responsive">
             <table class="table text-nowrap table-hover">
               <thead>

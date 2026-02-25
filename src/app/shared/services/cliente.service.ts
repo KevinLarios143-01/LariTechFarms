@@ -92,6 +92,18 @@ export class ClienteService {
     return this.http.get<ClienteResponse>(this.apiUrl);
   }
 
+  getClientesWithParams(params: any): Observable<ClienteResponse> {
+    let httpParams = new HttpParams();
+    
+    Object.keys(params).forEach(key => {
+      if (params[key] !== null && params[key] !== undefined && params[key] !== '') {
+        httpParams = httpParams.set(key, params[key].toString());
+      }
+    });
+
+    return this.http.get<ClienteResponse>(this.apiUrl, { params: httpParams });
+  }
+
   getClienteById(id: number): Observable<ClienteByIdResponse> {
     return this.http.get<ClienteByIdResponse>(`${this.apiUrl}/${id}`);
   }

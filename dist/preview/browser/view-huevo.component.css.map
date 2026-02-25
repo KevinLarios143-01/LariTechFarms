@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/componets/dashbord/production-dashboard/huevos/view-huevo/view-huevo.component.scss"],
-  "sourcesContent": ["// Estilos específicos para el componente view-huevo\n.avatar-xl {\n  width: 4rem;\n  height: 4rem;\n}\n\n.fs-24 {\n  font-size: 1.5rem;\n}\n\n.fs-48 {\n  font-size: 3rem;\n}"],
-  "mappings": ";AACA,CAAA;AACE,SAAA;AACA,UAAA;;AAGF,CAAA;AACE,aAAA;;AAGF,CAAA;AACE,aAAA;;",
-  "names": []
-}

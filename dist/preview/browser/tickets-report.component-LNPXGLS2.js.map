@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/componets/dashbord/reports-dashboard/tickets-report/tickets-report.component.ts"],
-  "sourcesContent": ["import { Component } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\nimport { SharedModule } from '../../../../shared/common/sharedmodule';\n\n@Component({\n  selector: 'app-tickets-report',\n  standalone: true,\n  imports: [CommonModule, FormsModule, SharedModule],\n  template: `<div class=\"container-fluid\"><div class=\"card\"><div class=\"card-body\"><h3>Reporte de Tickets</h3><p>En desarrollo...</p></div></div></div>`,\n  styles: []\n})\nexport class TicketsReportComponent {}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;AAYM,IAAO,0BAAP,MAAO,wBAAsB;;;mCAAtB,yBAAsB;AAAA;wFAAtB,yBAAsB,WAAA,CAAA,CAAA,oBAAA,CAAA,GAAA,YAAA,MAAA,UAAA,CAAA,6BAAA,GAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,iBAAA,GAAA,CAAA,GAAA,MAAA,GAAA,CAAA,GAAA,WAAA,CAAA,GAAA,UAAA,SAAA,gCAAA,IAAA,KAAA;AAAA,MAAA,KAAA,GAAA;AAHtB,IAAA,yBAAA,GAAA,OAAA,CAAA,EAA6B,GAAA,OAAA,CAAA,EAAkB,GAAA,OAAA,CAAA,EAAuB,GAAA,IAAA;AAAI,IAAA,iBAAA,GAAA,oBAAA;AAAkB,IAAA,uBAAA;AAAK,IAAA,yBAAA,GAAA,GAAA;AAAG,IAAA,iBAAA,GAAA,kBAAA;AAAgB,IAAA,uBAAA,EAAI,EAAM,EAAM;;kBADrI,cAAc,aAAa,YAAY,GAAA,eAAA,EAAA,CAAA;AAI7C,IAAO,yBAAP;;6EAAO,wBAAsB,EAAA,WAAA,yBAAA,CAAA;AAAA,GAAA;",
-  "names": []
-}

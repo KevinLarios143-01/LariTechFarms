@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/shared/common/support-header/support-header.component.scss"],
-  "sourcesContent": [".sticky {\n  position: fixed;\n  top: 0;\n}\n\n::ng-deep {\n  @media screen and (min-width:992px) {\n    .horizontal-megamenu {\n      display: block !important;\n    }\n  }\n\n  app-support-system .slide-menu.open {\n    display: block !important;\n  }\n}\n"],
-  "mappings": ";AAAA,CAAA;AACE,YAAA;AACA,OAAA;;AAIA,OAAA,OAAA,IAAA,CAAA,SAAA,EAAA;AACE,YAAA,CAAA;AACE,aAAA;;;AAIJ,UAAA,mBAAA,CAAA,UAAA,CAAA;AACE,WAAA;;",
-  "names": []
-}

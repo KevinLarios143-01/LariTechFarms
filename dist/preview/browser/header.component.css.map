@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/shared/common/header/header.component.scss"],
-  "sourcesContent": [".search_drop {\n  color: var(--default-text-color);\n  background-color: var(--custom-white);\n  border: 0px solid var(--default-border);\n}\n"],
-  "mappings": ";AAAA,CAAA;AACE,SAAA,IAAA;AACA,oBAAA,IAAA;AACA,UAAA,IAAA,MAAA,IAAA;;",
-  "names": []
-}

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/shared/common/page-headers/hr-dashboard-page-header-modal/hr-dashboard-page-header-modal.component.scss"],
-  "sourcesContent": [".btn-close {\n  border: none;\n}\n\n.modal-header {\n  position: relative;\n}\n\n.size_md {\n  font-size: 30px;\n}\n\n.countdowntimer {\n  text-align: center;\n  margin-top: 0.75rem;\n}\n\n.modal-footer {\n  padding: 0;\n}\n\n::ng-deep {\n  .cdk-overlay-pane {\n    min-width: 20vw;\n  }\n}\n"],
-  "mappings": ";AAAA,CAAA;AACE,UAAA;;AAGF,CAAA;AACE,YAAA;;AAGF,CAAA;AACE,aAAA;;AAGF,CAAA;AACE,cAAA;AACA,cAAA;;AAGF,CAAA;AACE,WAAA;;AAIA,UAAA,CAAA;AACE,aAAA;;",
-  "names": []
-}

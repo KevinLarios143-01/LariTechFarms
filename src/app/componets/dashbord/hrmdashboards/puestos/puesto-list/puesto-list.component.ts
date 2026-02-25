@@ -23,6 +23,7 @@ export class PuestoListComponent implements OnInit {
   totalPages = 0;
   searchTerm = '';
   Math = Math;
+  Number = Number;
 
   constructor(private puestoService: PuestoService) {}
 

@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["src/app/authentication/login/login.component.scss"],
-  "sourcesContent": [":host {\n  display: block;\n  min-height: 100vh;\n  background-image: url('../../../assets/images/laritechfarms/11.jpg');\n  background-size: cover;\n  background-position: center;\n  background-repeat: no-repeat;\n}\n\n::ng-deep {\n  .firebase {\n    width: 30px;\n    height: 30px;\n  }\n\n  .nav-tabs {\n    border-color: none !important;\n  }\n}\n"],
-  "mappings": ";AAAA;AACE,WAAA;AACA,cAAA;AACA,oBAAA;AACA,mBAAA;AACA,uBAAA;AACA,qBAAA;;AAIA,UAAA,CAAA;AACE,SAAA;AACA,UAAA;;AAGF,UAAA,CAAA;AACE,gBAAA;;",
-  "names": []
-}
