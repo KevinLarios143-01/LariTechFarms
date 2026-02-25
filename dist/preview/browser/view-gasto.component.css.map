@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/production-dashboard/gastos-operacion/view-gasto/view-gasto.component.scss"],
+  "sourcesContent": [".info-label {\n  font-weight: 600;\n  color: #6c757d;\n  margin-bottom: 0.25rem;\n}\n\n.info-value {\n  font-size: 1.1rem;\n  color: #212529;\n}\n\n.badge {\n  font-size: 0.875rem;\n  padding: 0.5em 0.75em;\n}\n\n.bg-purple {\n  background-color: #6f42c1 !important;\n  color: white;\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,eAAA;AACA,SAAA;AACA,iBAAA;;AAGF,CAAA;AACE,aAAA;AACA,SAAA;;AAGF,CAAA;AACE,aAAA;AACA,WAAA,MAAA;;AAGF,CAAA;AACE,oBAAA;AACA,SAAA;;",
+  "names": []
+}

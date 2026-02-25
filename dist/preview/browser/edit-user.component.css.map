@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/hrmdashboards/users/edit-user/edit-user.component.scss"],
+  "sourcesContent": [".invalid-feedback {\n  display: block;\n}\n\n.form-control.ng-invalid.ng-touched {\n  border-color: #dc3545;\n}\n\n.spinner-border-sm {\n  width: 1rem;\n  height: 1rem;\n}"],
+  "mappings": ";AAAA,CAAA;AACE,WAAA;;AAGF,CAAA,YAAA,CAAA,UAAA,CAAA;AACE,gBAAA;;AAGF,CAAA;AACE,SAAA;AACA,UAAA;;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/production-dashboard/vehiculos/vehiculo-list/vehiculo-list.component.scss"],
+  "sourcesContent": [".table {\n  th {\n    font-weight: 600;\n    font-size: 0.875rem;\n    color: #495057;\n    background-color: #f8f9fa;\n  }\n\n  td {\n    vertical-align: middle;\n  }\n}\n\n.btn-group {\n  .btn {\n    padding: 0.25rem 0.5rem;\n    font-size: 0.875rem;\n  }\n}\n\n.pagination {\n  .page-link {\n    cursor: pointer;\n  }\n}\n\n.badge {\n  font-size: 0.75rem;\n  padding: 0.35em 0.65em;\n}\n"],
+  "mappings": ";AACE,CAAA,MAAA;AACE,eAAA;AACA,aAAA;AACA,SAAA;AACA,oBAAA;;AAGF,CAPA,MAOA;AACE,kBAAA;;AAKF,CAAA,UAAA,CAAA;AACE,WAAA,QAAA;AACA,aAAA;;AAKF,CAAA,WAAA,CAAA;AACE,UAAA;;AAIJ,CAAA;AACE,aAAA;AACA,WAAA,OAAA;;",
+  "names": []
+}

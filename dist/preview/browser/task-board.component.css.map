@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/task-dashboard/task-board/task-board.component.scss"],
+  "sourcesContent": ["[dragula=\"DRAGULA_EVENTS\"]{\n    min-height: 100px;\n}\n"],
+  "mappings": ";AAAA,CAAA;AACI,cAAA;;",
+  "names": []
+}

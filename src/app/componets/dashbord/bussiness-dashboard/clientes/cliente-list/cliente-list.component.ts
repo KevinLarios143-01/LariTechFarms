@@ -26,14 +26,14 @@ export class ClienteListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
+  // Exponer Math para usar en el template
+  protected readonly Math = Math;
+
   stats = {
     totalClientes: 0,
     clientesActivos: 0,
     clientesInactivos: 0
   };
-
-  // Expose Math to template
-  Math = Math;
 
   constructor(
     private clienteService: ClienteService,

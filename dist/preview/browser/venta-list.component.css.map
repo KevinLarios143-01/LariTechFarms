@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/bussiness-dashboard/ventas/venta-list/venta-list.component.scss"],
+  "sourcesContent": [".badge {\n  font-size: 0.75rem;\n  padding: 0.35em 0.65em;\n}\n\n.table-hover tbody tr:hover {\n  background-color: rgba(0, 0, 0, 0.02);\n}\n\n.btn-group {\n  gap: 0.25rem;\n}\n\n.pagination {\n  .page-link {\n    cursor: pointer;\n  }\n}\n"],
+  "mappings": ";AAAA,CAAA;AACE,aAAA;AACA,WAAA,OAAA;;AAGF,CAAA,YAAA,MAAA,EAAA;AACE,oBAAA,KAAA,CAAA,EAAA,CAAA,EAAA,CAAA,EAAA;;AAGF,CAAA;AACE,OAAA;;AAIA,CAAA,WAAA,CAAA;AACE,UAAA;;",
+  "names": []
+}

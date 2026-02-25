@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/componets/dashbord/task-dashboard/on-hold-tasks/on-hold-tasks.component.scss"],
+  "sourcesContent": ["::ng-deep{\n    app-on-hold-tasks{\n        .mat-paginator-container{\n            justify-content: space-between !important;\n        }\n    }\n}"],
+  "mappings": ";AAEQ,UAAA,kBAAA,CAAA;AACI,mBAAA;;",
+  "names": []
+}
