@@ -68,4 +68,17 @@ export class TicketService {
     }
     return this.http.get<{ data: TicketsStats }>(`${this.apiUrl}/tickets/stats`, { params: httpParams });
   }
+
+  generarTicketsDesdeVenta(data: {
+    idVenta: number;
+    tickets: Array<{
+      idLote: number;
+      detalles: Array<{
+        idProducto: number;
+        cantidad: number;
+      }>;
+    }>;
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/tickets/generar-desde-venta`, data);
+  }
 }

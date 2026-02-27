@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Registrar Clasificación de Huevos</div>
+        </div>
+        <div class="card-body">
+          <!-- Información del Lote y Fecha -->
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label class="form-label">Lote / Galera <span class="text-danger">*</span></label>
+              <ng-select [items]="lotes" bindLabel="galera" bindValue="id"
+                         [(ngModel)]="idLote" placeholder="Seleccione un lote"
+                         [loading]="isLoadingLotes">
+                <ng-template ng-option-tmp let-item="item">
+                  <div>
+                    <strong>{{ item.galera }}</strong>
+                    <small class="text-muted d-block">{{ item.tipo }}</small>
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Fecha <span class="text-danger">*</span></label>
+              <input type="date" class="form-control" [(ngModel)]="fecha">
+            </div>
+          </div>
+
+          <!-- Productos Clasificados -->
+          <div class="card mb-3">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+              <h6 class="mb-0">Productos Clasificados</h6>
+              <button class="btn btn-sm btn-primary" (click)="agregarProducto()">
+                <i class="ri-add-line"></i> Agregar Producto
+              </button>
+            </div>
+            <div class="card-body">
+              @if (productos.length === 0) {
+                <div class="alert alert-info">
+                  <i class="ri-information-line"></i> 
+                  Haga clic en "Agregar Producto" para comenzar a registrar la clasificación.
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th style="width: 40%">Producto</th>
+                        <th style="width: 20%">Cartones</th>
+                        <th style="width: 25%">Huevos</th>
+                        <th style="width: 15%">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (producto of productos; track $index) {
+                        <tr>
+                          <td>
+                            <ng-select [items]="productosDisponibles" 
+                                       bindLabel="nombre" 
+                                       bindValue="id"
+                                       [(ngModel)]="producto.idProducto"
+                                       (change)="onProductoChange(producto)"
+                                       placeholder="Seleccione producto"
+                                       [loading]="isLoadingProductos">
+                              <ng-template ng-option-tmp let-item="item">
+                                <div>
+                                  <strong>{{ item.nombre }}</strong>
+                                  @if (item.tamanio) {
+                                    <small class="text-muted">({{ item.tamanio }})</small>
+                                  }
+                                </div>
+                              </ng-template>
+                            </ng-select>
+                          </td>
+                          <td>
+                            <input type="number" 
+                                   class="form-control" 
+                                   [(ngModel)]="producto.cantidadCartones"
+                                   (ngModelChange)="onCartonesChange(producto)"
+                                   min="1" 
+                                   placeholder="0">
+                            <small class="text-muted">30 huevos c/u</small>
+                          </td>
+                          <td>
+                            <input type="number" 
+                                   class="form-control" 
+                                   [(ngModel)]="producto.cantidadHuevos"
+                                   min="1" 
+                                   placeholder="0">
+                          </td>
+                          <td class="text-center">
+                            <button class="btn btn-sm btn-danger" 
+                                    (click)="eliminarProducto($index)"
+                                    title="Eliminar">
+                              <i class="ri-delete-bin-line"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                    <tfoot>
+                      <tr class="table-active">
+                        <td><strong>TOTAL</strong></td>
+                        <td><strong>{{ getTotalCartones() }}</strong></td>
+                        <td><strong>{{ getTotalHuevos() | number }}</strong></td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Resumen -->
+          @if (productos.length > 0) {
+            <div class="alert alert-success">
+              <i class="ri-checkbox-circle-line"></i>
+              <strong>Resumen:</strong> Se registrarán {{ productos.length }} producto(s), 
+              {{ getTotalCartones() }} cartones totales ({{ getTotalHuevos() | number }} huevos).
+            </div>
+          }
+
+          <!-- Botones -->
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isLoading">
+              <i class="ri-close-line"></i> Cancelar
+            </button>
+            <button class="btn btn-primary" (click)="guardar()" 
+                    [disabled]="isLoading || productos.length === 0">
+              @if (isLoading) {
+                <span class="spinner-border spinner-border-sm me-2"></span>
+              }
+              <i class="ri-save-line"></i> Guardar Clasificación
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

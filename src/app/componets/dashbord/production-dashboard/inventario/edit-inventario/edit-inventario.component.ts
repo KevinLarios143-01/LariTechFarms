@@ -4,8 +4,8 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
-import { InventarioService } from '../../../../../shared/services/inventario.service';
-import { UpdateInventarioDTO, UpdateStockDTO } from '../../../../../shared/interfaces/inventario';
+// import { IngresoInventarioService } from '../../../../../shared/services/ingreso-inventario.service';
+// import { UpdateInventarioDTO, UpdateStockDTO } from '../../../../../shared/interfaces/inventario';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 
 @Component({
@@ -32,7 +32,7 @@ export class EditInventarioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private inventarioService: InventarioService,
+    // private inventarioService: IngresoInventarioService,
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -56,87 +56,92 @@ export class EditInventarioComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadCategorias();
+    // this.loadCategorias();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.inventarioId = parseInt(id);
-      this.loadInventario();
+      // this.loadInventario();
+      this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
+      this.router.navigate(['../list'], { relativeTo: this.route });
     } else {
       this.router.navigate(['../list'], { relativeTo: this.route });
     }
   }
 
   loadCategorias() {
-    this.inventarioService.getCategorias().subscribe({
-      next: (response) => {
-        this.categorias = response.data || [];
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Error al cargar categorías:', error);
-      }
-    });
+    // TODO: Implementar servicio de inventario de granja
+    // this.inventarioService.getCategorias().subscribe({
+    //   next: (response: any) => {
+    //     this.categorias = response.data || [];
+    //     this.cdr.detectChanges();
+    //   },
+    //   error: (error: any) => {
+    //     console.error('Error al cargar categorías:', error);
+    //   }
+    // });
   }
 
   loadInventario() {
-    if (this.inventarioId) {
-      this.isLoading = true;
-      this.inventarioService.getInventarioById(this.inventarioId).subscribe({
-        next: (response) => {
-          const item = response.data;
-          this.inventarioForm.patchValue({
-            nombre: item.nombre,
-            cantidad: item.cantidad,
-            unidad: item.unidad,
-            categoria: item.categoria || '',
-            minimoStock: item.minimoStock || '',
-            proveedor: item.proveedor || '',
-            observaciones: item.observaciones || ''
-          });
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          this.toastr.error('Error al cargar item', 'Error');
-          this.isLoading = false;
-          this.router.navigate(['../list'], { relativeTo: this.route });
-        }
-      });
-    }
+    // TODO: Implementar servicio de inventario de granja
+    // if (this.inventarioId) {
+    //   this.isLoading = true;
+    //   this.inventarioService.getInventarioById(this.inventarioId).subscribe({
+    //     next: (response: any) => {
+    //       const item = response.data;
+    //       this.inventarioForm.patchValue({
+    //         nombre: item.nombre,
+    //         cantidad: item.cantidad,
+    //         unidad: item.unidad,
+    //         categoria: item.categoria || '',
+    //         minimoStock: item.minimoStock || '',
+    //         proveedor: item.proveedor || '',
+    //         observaciones: item.observaciones || ''
+    //       });
+    //       this.isLoading = false;
+    //       this.cdr.detectChanges();
+    //     },
+    //     error: (error: any) => {
+    //       this.toastr.error('Error al cargar item', 'Error');
+    //       this.isLoading = false;
+    //       this.router.navigate(['../list'], { relativeTo: this.route });
+    //     }
+    //   });
+    // }
   }
 
   onSubmit() {
-    if (this.inventarioForm.valid && this.inventarioId) {
-      this.isLoading = true;
-      const formData = this.inventarioForm.value;
+    this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
+    // if (this.inventarioForm.valid && this.inventarioId) {
+    //   this.isLoading = true;
+    //   const formData = this.inventarioForm.value;
 
-      const updateData: UpdateInventarioDTO = {
-        nombre: formData.nombre,
-        unidad: formData.unidad,
-        categoria: formData.categoria || undefined,
-        minimoStock: formData.minimoStock ? parseFloat(formData.minimoStock) : undefined,
-        proveedor: formData.proveedor || undefined,
-        observaciones: formData.observaciones || undefined
-      };
+    //   const updateData: UpdateInventarioDTO = {
+    //     nombre: formData.nombre,
+    //     unidad: formData.unidad,
+    //     categoria: formData.categoria || undefined,
+    //     minimoStock: formData.minimoStock ? parseFloat(formData.minimoStock) : undefined,
+    //     proveedor: formData.proveedor || undefined,
+    //     observaciones: formData.observaciones || undefined
+    //   };
 
-      this.inventarioService.updateInventario(this.inventarioId, updateData).subscribe({
-        next: (response) => {
-          this.toastr.success('Item actualizado exitosamente', 'Éxito');
-          setTimeout(() => {
-            this.router.navigate(['../../list'], { relativeTo: this.route });
-          }, 1000);
-        },
-        error: (error) => {
-          const errorMsg = error?.error?.message || 'Error al actualizar item';
-          this.toastr.error(errorMsg, 'Error');
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        }
-      });
-    } else {
-      this.markFormGroupTouched();
-      this.toastr.warning('Por favor complete todos los campos requeridos', 'Advertencia');
-    }
+    //   this.inventarioService.updateInventario(this.inventarioId, updateData).subscribe({
+    //     next: (response: any) => {
+    //       this.toastr.success('Item actualizado exitosamente', 'Éxito');
+    //       setTimeout(() => {
+    //         this.router.navigate(['../../list'], { relativeTo: this.route });
+    //       }, 1000);
+    //     },
+    //     error: (error: any) => {
+    //       const errorMsg = error?.error?.message || 'Error al actualizar item';
+    //       this.toastr.error(errorMsg, 'Error');
+    //       this.isLoading = false;
+    //       this.cdr.detectChanges();
+    //     }
+    //   });
+    // } else {
+    //   this.markFormGroupTouched();
+    //   this.toastr.warning('Por favor complete todos los campos requeridos', 'Advertencia');
+    // }
   }
 
   openStockModal() {
@@ -149,26 +154,27 @@ export class EditInventarioComponent implements OnInit {
   }
 
   onStockSubmit() {
-    if (this.stockForm.valid && this.inventarioId) {
-      const formData = this.stockForm.value;
-      const stockData: UpdateStockDTO = {
-        operacion: formData.operacion,
-        cantidad: parseFloat(formData.cantidad),
-        observaciones: formData.observaciones || undefined
-      };
+    this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
+    // if (this.stockForm.valid && this.inventarioId) {
+    //   const formData = this.stockForm.value;
+    //   const stockData: UpdateStockDTO = {
+    //     operacion: formData.operacion,
+    //     cantidad: parseFloat(formData.cantidad),
+    //     observaciones: formData.observaciones || undefined
+    //   };
 
-      this.inventarioService.updateStock(this.inventarioId, stockData).subscribe({
-        next: (response) => {
-          this.toastr.success('Stock actualizado exitosamente', 'Éxito');
-          this.closeStockModal();
-          this.loadInventario();
-        },
-        error: (error) => {
-          const errorMsg = error?.error?.message || 'Error al actualizar stock';
-          this.toastr.error(errorMsg, 'Error');
-        }
-      });
-    }
+    //   this.inventarioService.updateStock(this.inventarioId, stockData).subscribe({
+    //     next: (response: any) => {
+    //       this.toastr.success('Stock actualizado exitosamente', 'Éxito');
+    //       this.closeStockModal();
+    //       this.loadInventario();
+    //     },
+    //     error: (error: any) => {
+    //       const errorMsg = error?.error?.message || 'Error al actualizar stock';
+    //       this.toastr.error(errorMsg, 'Error');
+    //     }
+    //   });
+    // }
   }
 
   markFormGroupTouched() {

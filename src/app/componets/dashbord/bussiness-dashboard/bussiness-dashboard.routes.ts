@@ -77,6 +77,36 @@ const routes: Routes = [
             path: 'list',
             loadComponent: () =>
               import('./tickets/ticket-list/ticket-list.component').then((m) => m.TicketListComponent)
+          },
+          {
+            path: 'generar/:id',
+            loadComponent: () =>
+              import('./tickets/generar-tickets/generar-tickets.component').then((m) => m.GenerarTicketsComponent)
+          }
+        ]
+      },
+      {
+        path: 'inventario',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./inventario/ingreso-list/ingreso-list.component').then((m) => m.IngresoListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./inventario/add-ingreso/add-ingreso.component').then((m) => m.AddIngresoComponent)
+          },
+          {
+            path: 'stock',
+            loadComponent: () =>
+              import('./inventario/stock-lote/stock-lote.component').then((m) => m.StockLoteComponent)
           }
         ]
       },

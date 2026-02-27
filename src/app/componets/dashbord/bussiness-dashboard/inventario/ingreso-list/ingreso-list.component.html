@@ -1,0 +1,203 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Clasificación de Inventario</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" routerLink="../add">
+              <i class="ri-add-line"></i> Nueva Clasificación
+            </button>
+            <button class="btn btn-info btn-sm" routerLink="../stock">
+              <i class="ri-stock-line"></i> Ver Stock
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estadísticas -->
+  <div class="row">
+    <div class="col-xl-4">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                <i class="ri-file-list-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalIngresos }}</h5>
+              <p class="mb-0 fs-12 text-muted">Total Registros</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                <i class="ri-inbox-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalCartones | number }}</h5>
+              <p class="mb-0 fs-12 text-muted">Total Cartones</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                <i class="ri-egg-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalHuevos | number }}</h5>
+              <p class="mb-0 fs-12 text-muted">Total Huevos</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xl-3">
+              <ng-select [items]="lotes" bindLabel="galera" bindValue="id"
+                         [(ngModel)]="loteFilter" placeholder="Lote" 
+                         (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-3">
+              <ng-select [items]="productos" bindLabel="nombre" bindValue="id"
+                         [(ngModel)]="productoFilter" placeholder="Producto" 
+                         (change)="applyFilters()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-2">
+              <input type="date" class="form-control" placeholder="Fecha Inicio" 
+                     [(ngModel)]="fechaInicio" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-2">
+              <input type="date" class="form-control" placeholder="Fecha Fin" 
+                     [(ngModel)]="fechaFin" (ngModelChange)="applyFilters()">
+            </div>
+            <div class="col-xl-2">
+              <button class="btn btn-secondary w-100" (click)="clearFilters()">
+                <i class="ri-refresh-line"></i> Limpiar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table text-nowrap table-hover">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Lote</th>
+                  <th>Producto</th>
+                  <th>Cartones</th>
+                  <th>Huevos</th>
+                  <th>Usuario</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (isLoading) {
+                  <tr>
+                    <td colspan="7" class="text-center">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                      </div>
+                    </td>
+                  </tr>
+                } @else if (ingresos.length === 0) {
+                  <tr>
+                    <td colspan="7" class="text-center">No hay registros</td>
+                  </tr>
+                } @else {
+                  @for (ingreso of ingresos; track ingreso.id) {
+                    <tr>
+                      <td>{{ ingreso.fecha | date:'dd/MM/yyyy' }}</td>
+                      <td>
+                        @if (ingreso.lote) {
+                          <span class="badge bg-light text-dark">{{ ingreso.lote.galera }}</span>
+                        }
+                      </td>
+                      <td>
+                        @if (ingreso.producto) {
+                          <div>{{ ingreso.producto.nombre }}</div>
+                          @if (ingreso.producto.tamanio) {
+                            <small class="text-muted">{{ ingreso.producto.tamanio }}</small>
+                          }
+                        }
+                      </td>
+                      <td>{{ ingreso.cantidadCartones }}</td>
+                      <td>{{ ingreso.cantidadHuevos | number }}</td>
+                      <td>
+                        @if (ingreso.usuario) {
+                          <small>{{ ingreso.usuario.nombre }} {{ ingreso.usuario.apellido }}</small>
+                        }
+                      </td>
+                      <td>
+                        <button class="btn btn-sm btn-danger" (click)="deleteIngreso(ingreso)" 
+                                title="Eliminar">
+                          <i class="ri-delete-bin-line"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          @if (totalPages > 1) {
+            <nav>
+              <ul class="pagination justify-content-end">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                </li>
+                @for (page of pages; track page) {
+                  <li class="page-item" [class.active]="page === currentPage">
+                    <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
+                  </li>
+                }
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                </li>
+              </ul>
+            </nav>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

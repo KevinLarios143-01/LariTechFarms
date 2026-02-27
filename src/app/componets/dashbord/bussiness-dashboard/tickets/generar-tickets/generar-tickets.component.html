@@ -1,0 +1,235 @@
+<div class="container-fluid">
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  } @else {
+    <!-- Header -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Generar Tickets de Despacho</div>
+          </div>
+          <div class="card-body">
+            @if (venta) {
+              <div class="row">
+                <div class="col-md-6">
+                  <p class="mb-1"><strong>Venta:</strong> #{{ venta.id }}</p>
+                  <p class="mb-1"><strong>Cliente:</strong> {{ venta.cliente?.nombre }}</p>
+                  <p class="mb-1"><strong>Fecha:</strong> {{ venta.fecha | date:'dd/MM/yyyy' }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                  <p class="mb-1"><strong>Total:</strong> <span class="text-success fs-4">Q{{ venta.total | number:'1.2-2' }}</span></p>
+                  <p class="mb-1"><strong>Estado:</strong> <span class="badge bg-warning">{{ venta.estado }}</span></p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos de la Venta -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Productos a Despachar</div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+                    <th class="text-center">Vendido</th>
+                    <th class="text-center">Asignado</th>
+                    <th class="text-center">Pendiente</th>
+                    <th class="text-center">Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (producto of productos; track producto.idProducto) {
+                    <tr>
+                      <td>
+                        <strong>{{ producto.nombre }}</strong>
+                        @if (producto.tamanio) {
+                          <small class="text-muted d-block">{{ producto.tamanio }}</small>
+                        }
+                      </td>
+                      <td class="text-center">{{ producto.cantidadVendida }}</td>
+                      <td class="text-center">
+                        <span [class]="producto.cantidadAsignada > 0 ? 'text-primary fw-bold' : ''">
+                          {{ producto.cantidadAsignada }}
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        <span [class]="producto.cantidadPendiente > 0 ? 'text-danger fw-bold' : 'text-success'">
+                          {{ producto.cantidadPendiente }}
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        @if (producto.cantidadPendiente === 0) {
+                          <span class="badge bg-success">Completo</span>
+                        } @else if (producto.cantidadAsignada > 0) {
+                          <span class="badge bg-warning">Parcial</span>
+                        } @else {
+                          <span class="badge bg-secondary">Pendiente</span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tickets -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div class="card-title">Tickets de Despacho</div>
+            <button class="btn btn-primary btn-sm" (click)="agregarTicket()">
+              <i class="ri-add-line"></i> Agregar Ticket
+            </button>
+          </div>
+          <div class="card-body">
+            @if (tickets.length === 0) {
+              <div class="alert alert-info">
+                <i class="ri-information-line"></i> 
+                Haga clic en "Agregar Ticket" para comenzar a asignar productos a lotes.
+              </div>
+            } @else {
+              @for (ticket of tickets; track $index) {
+                <div class="card mb-3 border">
+                  <div class="card-header bg-light">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h6 class="mb-0">Ticket {{ $index + 1 }}</h6>
+                      <button class="btn btn-sm btn-danger" (click)="eliminarTicket($index)">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <!-- Seleccionar Lote -->
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        <label class="form-label">Lote / Galera <span class="text-danger">*</span></label>
+                        <ng-select 
+                          [items]="lotes"
+                          bindLabel="galera"
+                          bindValue="id"
+                          [(ngModel)]="ticket.idLote"
+                          (change)="onLoteChange(ticket)"
+                          placeholder="Seleccione un lote"
+                          [loading]="isLoadingLotes">
+                          <ng-template ng-option-tmp let-item="item">
+                            <div>
+                              <strong>{{ item.galera }}</strong>
+                              <small class="text-muted d-block">{{ item.tipo }}</small>
+                            </div>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                    </div>
+
+                    <!-- Productos del Ticket -->
+                    @if (ticket.detalles.length > 0) {
+                      <div class="table-responsive mb-3">
+                        <table class="table table-sm table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Producto</th>
+                              <th class="text-center">Cantidad</th>
+                              <th class="text-center">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (detalle of ticket.detalles; track $index) {
+                              <tr>
+                                <td>{{ getProductoNombre(detalle.idProducto) }}</td>
+                                <td class="text-center">{{ detalle.cantidad }}</td>
+                                <td class="text-center">
+                                  <button class="btn btn-sm btn-danger" 
+                                          (click)="eliminarDetalleTicket(ticket, $index)">
+                                    <i class="ri-close-line"></i>
+                                  </button>
+                                </td>
+                              </tr>
+                            }
+                          </tbody>
+                        </table>
+                      </div>
+                    }
+
+                    <!-- Agregar Producto -->
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="form-label">Producto</label>
+                        <ng-select 
+                          #productoSelect
+                          [items]="getProductosDisponibles()"
+                          bindLabel="nombre"
+                          bindValue="idProducto"
+                          placeholder="Seleccione un producto">
+                          <ng-template ng-option-tmp let-item="item">
+                            <div>
+                              <strong>{{ item.nombre }}</strong>
+                              @if (item.tamanio) {
+                                <small class="text-muted">({{ item.tamanio }})</small>
+                              }
+                              <span class="badge bg-info ms-2">{{ item.cantidadPendiente }} disponibles</span>
+                            </div>
+                          </ng-template>
+                        </ng-select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">Cantidad</label>
+                        <input #cantidadInput type="number" class="form-control" min="1" placeholder="0">
+                      </div>
+                      <div class="col-md-2">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-success w-100" 
+                                (click)="agregarProductoATicket(ticket, productoSelect.selectedValues[0], +cantidadInput.value); productoSelect.clearModel(); cantidadInput.value = ''">
+                          <i class="ri-add-line"></i> Agregar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isLoading">
+                <i class="ri-close-line"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" (click)="generarTickets()" [disabled]="isLoading || tickets.length === 0">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                <i class="ri-ticket-line"></i> Generar Tickets
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -2,9 +2,23 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { InventarioService } from '../../../../../shared/services/inventario.service';
-import { InventarioGranja } from '../../../../../shared/interfaces/inventario';
+// import { IngresoInventarioService } from '../../../../../shared/services/ingreso-inventario.service';
+// import { InventarioGranja } from '../../../../../shared/interfaces/inventario';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
+
+interface InventarioGranja {
+  id: number;
+  idTenant?: number;
+  nombre: string;
+  cantidad: number;
+  unidad: string;
+  categoria?: string;
+  minimoStock?: number;
+  proveedor?: string;
+  observaciones?: string;
+  fechaCreacion?: string;
+  fechaActualizacion?: string;
+}
 
 @Component({
   selector: 'app-view-inventario',
@@ -19,7 +33,7 @@ export class ViewInventarioComponent implements OnInit {
   inventarioId: number | null = null;
 
   constructor(
-    private inventarioService: InventarioService,
+    // private inventarioService: IngresoInventarioService,
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
@@ -30,28 +44,31 @@ export class ViewInventarioComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.inventarioId = parseInt(id);
-      this.loadInventario();
+      // this.loadInventario();
+      this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
+      this.router.navigate(['../list'], { relativeTo: this.route });
     } else {
       this.router.navigate(['../list'], { relativeTo: this.route });
     }
   }
 
   loadInventario() {
-    if (this.inventarioId) {
-      this.isLoading = true;
-      this.inventarioService.getInventarioById(this.inventarioId).subscribe({
-        next: (response) => {
-          this.item = response.data;
-          this.isLoading = false;
-          this.cdr.detectChanges();
-        },
-        error: (error) => {
-          this.toastr.error('Error al cargar item', 'Error');
-          this.isLoading = false;
-          this.router.navigate(['../list'], { relativeTo: this.route });
-        }
-      });
-    }
+    // TODO: Implementar servicio de inventario de granja
+    // if (this.inventarioId) {
+    //   this.isLoading = true;
+    //   this.inventarioService.getInventarioById(this.inventarioId).subscribe({
+    //     next: (response: any) => {
+    //       this.item = response.data;
+    //       this.isLoading = false;
+    //       this.cdr.detectChanges();
+    //     },
+    //     error: (error: any) => {
+    //       this.toastr.error('Error al cargar item', 'Error');
+    //       this.isLoading = false;
+    //       this.router.navigate(['../list'], { relativeTo: this.route });
+    //     }
+    //   });
+    // }
   }
 
   getStockStatus(): { text: string; class: string; icon: string } {
@@ -72,17 +89,18 @@ export class ViewInventarioComponent implements OnInit {
   }
 
   deleteItem() {
-    if (this.inventarioId && confirm('¿Está seguro de eliminar este item del inventario?')) {
-      this.inventarioService.deleteInventario(this.inventarioId).subscribe({
-        next: () => {
-          this.toastr.success('Item eliminado exitosamente', 'Éxito');
-          this.router.navigate(['../../list'], { relativeTo: this.route });
-        },
-        error: (error) => {
-          const errorMsg = error?.error?.message || 'Error al eliminar item';
-          this.toastr.error(errorMsg, 'Error');
-        }
-      });
-    }
+    this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
+    // if (this.inventarioId && confirm('¿Está seguro de eliminar este item del inventario?')) {
+    //   this.inventarioService.deleteInventario(this.inventarioId).subscribe({
+    //     next: () => {
+    //       this.toastr.success('Item eliminado exitosamente', 'Éxito');
+    //       this.router.navigate(['../../list'], { relativeTo: this.route });
+    //     },
+    //     error: (error: any) => {
+    //       const errorMsg = error?.error?.message || 'Error al eliminar item';
+    //       this.toastr.error(errorMsg, 'Error');
+    //     }
+    //   });
+    // }
   }
 }

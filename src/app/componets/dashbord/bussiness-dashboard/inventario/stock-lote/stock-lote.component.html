@@ -1,0 +1,138 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Stock Disponible por Lote</div>
+          <button class="btn btn-primary btn-sm" routerLink="../list">
+            <i class="ri-arrow-left-line"></i> Volver a Clasificación
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtro -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-xl-4">
+              <ng-select [items]="lotes" bindLabel="galera" bindValue="id"
+                         [(ngModel)]="loteFilter" placeholder="Filtrar por lote" 
+                         (change)="applyFilter()" [clearable]="true">
+              </ng-select>
+            </div>
+            <div class="col-xl-2">
+              <button class="btn btn-secondary w-100" (click)="clearFilter()">
+                <i class="ri-refresh-line"></i> Limpiar
+              </button>
+            </div>
+            <div class="col-xl-6 text-end">
+              <div class="alert alert-info mb-0 d-inline-block">
+                <strong>Total Stock:</strong> {{ getTotalStock() | number }} cartones
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock por Lote -->
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (stock.length === 0) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <i class="ri-inbox-line fs-1 text-muted"></i>
+            <p class="text-muted mt-3">No hay stock disponible</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    @for (loteGroup of getStockPorLote(); track loteGroup.loteId) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header bg-light">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                  <i class="ri-building-line"></i> {{ loteGroup.galera }}
+                </h5>
+                <span class="badge bg-primary">
+                  {{ loteGroup.totalCartones }} cartones
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Tamaño</th>
+                      <th class="text-end">Cantidad (Cartones)</th>
+                      <th class="text-end">Precio Unitario</th>
+                      <th class="text-end">Valor Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of loteGroup.productos; track item.id) {
+                      <tr>
+                        <td>
+                          <strong>{{ item.producto?.nombre }}</strong>
+                        </td>
+                        <td>
+                          @if (item.producto?.tamanio) {
+                            <span class="badge bg-light text-dark">{{ item.producto.tamanio }}</span>
+                          } @else {
+                            <span class="text-muted">-</span>
+                          }
+                        </td>
+                        <td class="text-end">
+                          <span class="badge bg-success">{{ item.cantidad }}</span>
+                        </td>
+                        <td class="text-end">
+                          Q{{ item.producto?.precio | number:'1.2-2' }}
+                        </td>
+                        <td class="text-end">
+                          <strong>Q{{ (item.cantidad * (item.producto?.precio || 0)) | number:'1.2-2' }}</strong>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-active">
+                      <td colspan="2"><strong>SUBTOTAL LOTE</strong></td>
+                      <td class="text-end"><strong>{{ loteGroup.totalCartones }}</strong></td>
+                      <td></td>
+                      <td class="text-end">
+                        <strong>Q{{ loteGroup.valorTotal | number:'1.2-2' }}</strong>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

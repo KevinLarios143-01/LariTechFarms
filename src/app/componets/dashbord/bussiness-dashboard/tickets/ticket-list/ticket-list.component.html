@@ -160,7 +160,17 @@
                         }
                       </td>
                       <td>
-                        @if (ticket.producto) {
+                        @if (ticket.detalles && ticket.detalles.length > 0) {
+                          @for (detalle of ticket.detalles; track detalle.id) {
+                            <div>
+                              {{ detalle.producto?.nombre }}
+                              @if (detalle.producto?.tamanio) {
+                                <small class="text-muted">({{ detalle.producto?.tamanio }})</small>
+                              }
+                              <span class="badge bg-light text-dark ms-1">x{{ detalle.cantidad }}</span>
+                            </div>
+                          }
+                        } @else if (ticket.producto) {
                           <div>{{ ticket.producto.nombre }}</div>
                           @if (ticket.producto.tamanio) {
                             <small class="text-muted">{{ ticket.producto.tamanio }}</small>
@@ -176,7 +186,13 @@
                           <span class="text-muted">-</span>
                         }
                       </td>
-                      <td>{{ ticket.cantidad }}</td>
+                      <td>
+                        @if (ticket.detalles && ticket.detalles.length > 0) {
+                          {{ getTotalCantidad(ticket.detalles) }}
+                        } @else {
+                          {{ ticket.cantidad || 0 }}
+                        }
+                      </td>
                       <td>
                         <span [class]="'badge ' + getEstadoBadgeClass(ticket.estado)">
                           {{ ticket.estado }}

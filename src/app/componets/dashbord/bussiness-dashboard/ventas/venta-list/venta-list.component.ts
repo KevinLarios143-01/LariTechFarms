@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
@@ -42,7 +42,8 @@ export class VentaListComponent implements OnInit {
   constructor(
     private ventaService: VentaService,
     private cdr: ChangeDetectorRef,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -165,5 +166,10 @@ export class VentaListComponent implements OnInit {
 
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  generarTickets(venta: Venta) {
+    // Redirigir a una página para generar tickets
+    this.router.navigate(['/dashboard/bussiness-dashboard/tickets/generar', venta.id]);
   }
 }

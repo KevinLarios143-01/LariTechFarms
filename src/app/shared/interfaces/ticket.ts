@@ -2,9 +2,9 @@ export interface Ticket {
   id: number;
   idVenta: number;
   idLote: number;
-  idProducto: number;
+  idProducto?: number | null;
   fecha: string;
-  cantidad: number;
+  cantidad?: number | null;
   codigoAutorizacion?: string;
   estado: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
   idUsuario: number;
@@ -30,9 +30,22 @@ export interface Ticket {
     tamanio?: string;
     precio?: number;
   };
+  detalles?: DetalleTicket[];
   usuario?: {
     nombre: string;
     apellido: string;
+  };
+}
+
+export interface DetalleTicket {
+  id: number;
+  idTicket: number;
+  idProducto: number;
+  cantidad: number;
+  producto?: {
+    nombre: string;
+    tamanio?: string;
+    precio?: number;
   };
 }
 
@@ -49,10 +62,14 @@ export interface TicketResponse {
 export interface CreateTicketRequest {
   idVenta: number;
   idLote: number;
-  idProducto: number;
+  idProducto?: number;
   fecha: string; // YYYY-MM-DD
-  cantidad: number;
+  cantidad?: number;
   codigoAutorizacion?: string;
+  detalles?: Array<{
+    idProducto: number;
+    cantidad: number;
+  }>;
 }
 
 export interface UpdateTicketRequest {

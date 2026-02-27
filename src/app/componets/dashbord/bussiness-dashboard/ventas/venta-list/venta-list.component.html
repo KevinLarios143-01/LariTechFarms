@@ -181,6 +181,12 @@
                                   title="Ver detalles">
                             <i class="ri-eye-line"></i>
                           </button>
+                          @if (venta.estado === 'Pendiente') {
+                            <button class="btn btn-sm btn-success" (click)="generarTickets(venta)" 
+                                    title="Generar Tickets">
+                              <i class="ri-ticket-line"></i>
+                            </button>
+                          }
                           @if (venta.estado !== 'Cancelada') {
                             <button class="btn btn-sm btn-danger" (click)="anularVenta(venta)" 
                                     title="Anular">

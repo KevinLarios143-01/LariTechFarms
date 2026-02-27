@@ -150,4 +150,8 @@ export class TicketListComponent implements OnInit {
   get pages(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
+
+  getTotalCantidad(detalles: any[]): number {
+    return detalles.reduce((sum, d) => sum + d.cantidad, 0);
+  }
 }
