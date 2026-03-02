@@ -99,13 +99,23 @@ export class AddVentaComponent implements OnInit {
   }
 
   loadProductos() {
+    console.log('🔍 Cargando productos para ventas...');
     this.productoService.getProductos().subscribe({
-      next: (productos) => {
-        this.productos = productos;
+      next: (response: any) => {
+        console.log('✅ Respuesta de productos:', response);
+        // Manejar diferentes estructuras de respuesta
+        const productos = response?.data?.data || response?.data || response || [];
+        this.productos = Array.isArray(productos) ? productos.filter((p: Producto) => p.activo === true) : [];
+        console.log('✅ Productos activos:', this.productos);
+        
+        if (this.productos.length === 0) {
+          this.toastr.warning('No hay productos activos disponibles', 'Advertencia');
+        }
         this.cdr.detectChanges();
       },
       error: (error) => {
-        console.error('Error al cargar productos:', error);
+        console.error('❌ Error al cargar productos:', error);
+        this.toastr.error('Error al cargar productos', 'Error');
       }
     });
   }
@@ -277,7 +287,7 @@ export class AddVentaComponent implements OnInit {
           positionClass: 'toast-top-right'
         });
         setTimeout(() => {
-          this.router.navigate(['/dashboard/bussiness-dashboard/ventas/list']);
+          this.router.navigate(['/dashboard/business-dashboard/ventas/list']);
         }, 1000);
       },
       error: (error) => {

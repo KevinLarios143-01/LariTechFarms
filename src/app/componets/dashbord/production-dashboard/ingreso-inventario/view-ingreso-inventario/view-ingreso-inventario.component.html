@@ -1,0 +1,134 @@
+<app-hr-dashboard-page-header [title]="'Detalle de Ingreso'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/ingreso-inventario/list'">
+</app-hr-dashboard-page-header>
+
+@if (loading) {
+  <div class="d-flex justify-content-center align-items-center" style="height: 400px;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+} @else if (ingreso) {
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="card-title">Información del Ingreso #{{ingreso.id}}</h3>
+          <button class="btn btn-danger btn-sm" (click)="onDelete()">
+            <i class="fe fe-trash me-2"></i>
+            Eliminar
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Fecha:</label>
+                <p class="text-muted">{{ingreso.fecha | date:'dd/MM/yyyy'}}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Fecha de Registro:</label>
+                <p class="text-muted">{{ingreso.createdAt | date:'dd/MM/yyyy HH:mm'}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Lote/Galera:</label>
+                <p class="text-muted">
+                  <span class="badge bg-info">{{ingreso.lote?.galera || 'N/A'}}</span>
+                  <span class="ms-2">{{ingreso.lote?.tipo || ''}}</span>
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Producto:</label>
+                <p class="text-muted">
+                  <strong>{{ingreso.producto?.nombre || 'N/A'}}</strong>
+                  <br>
+                  <small>{{ingreso.producto?.tamanio || ''}}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card border border-primary">
+                <div class="card-body text-center">
+                  <i class="las la-layer-group fs-1 text-primary"></i>
+                  <h4 class="mt-2">{{ingreso.cantidadCartones}}</h4>
+                  <p class="text-muted mb-0">Cartones</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border border-warning">
+                <div class="card-body text-center">
+                  <i class="las la-egg fs-1 text-warning"></i>
+                  <h4 class="mt-2">{{ingreso.cantidadHuevos}}</h4>
+                  <p class="text-muted mb-0">Huevos</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border border-success">
+                <div class="card-body text-center">
+                  <i class="las la-calculator fs-1 text-success"></i>
+                  <h4 class="mt-2">{{(ingreso.cantidadHuevos / ingreso.cantidadCartones) | number:'1.0-0'}}</h4>
+                  <p class="text-muted mb-0">Huevos/Cartón</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          @if (ingreso.observaciones) {
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Observaciones:</label>
+                  <p class="text-muted">{{ingreso.observaciones}}</p>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (ingreso.usuario) {
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Registrado por:</label>
+                  <p class="text-muted">{{ingreso.usuario.nombre}} {{ingreso.usuario.apellido}}</p>
+                </div>
+              </div>
+            </div>
+          }
+
+          <div class="alert alert-info" role="alert">
+            <i class="fe fe-info me-2"></i>
+            <strong>Nota:</strong> Este ingreso actualizó automáticamente el stock del producto en el lote seleccionado.
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button class="btn btn-secondary" (click)="onBack()">
+                <i class="fe fe-arrow-left me-2"></i>
+                Volver a la Lista
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="alert alert-warning" role="alert">
+    <i class="ri-alert-line me-2"></i>
+    No se encontró información del ingreso.
+  </div>
+}

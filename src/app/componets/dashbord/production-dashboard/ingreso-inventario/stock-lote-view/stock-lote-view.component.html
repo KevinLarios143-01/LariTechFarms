@@ -1,0 +1,118 @@
+<app-hr-dashboard-page-header [title]="'Stock por Lote'" [title2]="'Registrar Ingreso'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/ingreso-inventario/add'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Stock Disponible por Lote y Producto</h3>
+        <p class="text-muted mb-0">Vista consolidada del inventario disponible en cada lote</p>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">Lote/Galera</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Tamaño</th>
+                <th scope="col">Stock (Cartones)</th>
+                <th scope="col">Última Actualización</th>
+                <th scope="col">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(stock of stockList$ | async; track stock.id) {
+              <tr class="border-bottom">
+                <td>
+                  <span class="badge bg-info">{{stock.lote?.galera || 'N/A'}}</span>
+                  <br>
+                  <small class="text-muted">{{stock.lote?.tipo || ''}}</small>
+                </td>
+                <td>
+                  <strong>{{stock.producto?.nombre || 'N/A'}}</strong>
+                </td>
+                <td>
+                  <small class="text-muted">{{stock.producto?.tamanio || 'N/A'}}</small>
+                </td>
+                <td>
+                  <span class="badge" [class]="stock.cantidad > 10 ? 'bg-success' : stock.cantidad > 5 ? 'bg-warning' : 'bg-danger'">
+                    {{stock.cantidad}} cartones
+                  </span>
+                  <br>
+                  <small class="text-muted">{{stock.cantidad * 30}} huevos</small>
+                </td>
+                <td>
+                  <small>{{stock.updatedAt | date:'dd/MM/yyyy HH:mm'}}</small>
+                </td>
+                <td>
+                  @if (stock.cantidad > 10) {
+                    <span class="badge bg-success">Stock Alto</span>
+                  } @else if (stock.cantidad > 5) {
+                    <span class="badge bg-warning">Stock Medio</span>
+                  } @else if (stock.cantidad > 0) {
+                    <span class="badge bg-danger">Stock Bajo</span>
+                  } @else {
+                    <span class="badge bg-secondary">Sin Stock</span>
+                  }
+                </td>
+              </tr>
+              }
+              @if ((stockList$ | async)?.length === 0) {
+                <tr>
+                  <td colspan="6" class="text-center">No hay stock registrado</td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr class="border-top">
+                <td colspan="3" class="text-end"><strong>Total Stock:</strong></td>
+                <td colspan="3">
+                  <strong class="text-primary">{{getTotalStock()}} cartones</strong>
+                  <small class="text-muted ms-2">({{getTotalStock() * 30}} huevos)</small>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div class="alert alert-info mt-3" role="alert">
+          <i class="fe fe-info me-2"></i>
+          <strong>Nota:</strong> El stock se actualiza automáticamente al registrar ingresos de inventario y al generar tickets de despacho.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Leyenda de colores -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h5 class="card-title">Leyenda de Estados</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3">
+            <span class="badge bg-success me-2">Stock Alto</span>
+            <small class="text-muted">Más de 10 cartones</small>
+          </div>
+          <div class="col-md-3">
+            <span class="badge bg-warning me-2">Stock Medio</span>
+            <small class="text-muted">Entre 6 y 10 cartones</small>
+          </div>
+          <div class="col-md-3">
+            <span class="badge bg-danger me-2">Stock Bajo</span>
+            <small class="text-muted">Entre 1 y 5 cartones</small>
+          </div>
+          <div class="col-md-3">
+            <span class="badge bg-secondary me-2">Sin Stock</span>
+            <small class="text-muted">0 cartones</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

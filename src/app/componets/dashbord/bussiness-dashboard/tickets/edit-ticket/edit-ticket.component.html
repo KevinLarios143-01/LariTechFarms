@@ -1,0 +1,142 @@
+<div class="container-fluid">
+  @if (isLoading) {
+    <div class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  } @else if (ticket) {
+    <!-- Header -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Editar Ticket #{{ ticket.id }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información del Ticket -->
+    <div class="row">
+      <div class="col-xl-6">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Información del Ticket</div>
+          </div>
+          <div class="card-body">
+            <table class="table table-borderless">
+              <tbody>
+                <tr>
+                  <td class="fw-semibold">Fecha:</td>
+                  <td>{{ ticket.fecha | date:'dd/MM/yyyy' }}</td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Lote / Galera:</td>
+                  <td>
+                    @if (ticket.lote) {
+                      <span class="badge bg-light text-dark">{{ ticket.lote.galera }}</span>
+                    }
+                  </td>
+                </tr>
+                <tr>
+                  <td class="fw-semibold">Cantidad Total:</td>
+                  <td><strong>{{ getTotalCantidad() }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-6">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Productos</div>
+          </div>
+          <div class="card-body">
+            @if (ticket.detalles && ticket.detalles.length > 0) {
+              <ul class="list-unstyled mb-0">
+                @for (detalle of ticket.detalles; track detalle.id) {
+                  <li class="mb-2">
+                    <strong>{{ detalle.producto?.nombre }}</strong>
+                    <span class="badge bg-light text-dark ms-2">x{{ detalle.cantidad }}</span>
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulario de Edición -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Editar Información</div>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Estado <span class="text-danger">*</span></label>
+                  <ng-select 
+                    [items]="estados"
+                    [(ngModel)]="estadoActual"
+                    placeholder="Seleccione un estado">
+                  </ng-select>
+                  <small class="text-muted">
+                    Estado actual: 
+                    <span [class]="'badge ' + getEstadoBadgeClass(ticket.estado)">
+                      {{ ticket.estado }}
+                    </span>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="mb-3">
+                  <label class="form-label">Observaciones</label>
+                  <textarea 
+                    class="form-control" 
+                    rows="3" 
+                    [(ngModel)]="observaciones"
+                    placeholder="Ingrese observaciones (opcional)">
+                  </textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-info">
+              <i class="ri-information-line"></i>
+              <strong>Nota:</strong> Solo se puede cambiar el estado y las observaciones. 
+              Los productos y cantidades no se pueden modificar una vez generado el ticket.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isSaving">
+                <i class="ri-close-line"></i> Cancelar
+              </button>
+              <button class="btn btn-primary" (click)="guardar()" [disabled]="isSaving">
+                @if (isSaving) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                <i class="ri-save-line"></i> Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

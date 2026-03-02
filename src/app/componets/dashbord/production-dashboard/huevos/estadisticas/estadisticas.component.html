@@ -49,7 +49,7 @@
       <div class="col-md-3">
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title text-success">{{ stats.promedioHuevosPorDia.toFixed(1) }}</h5>
+            <h5 class="card-title text-success">{{ (stats.promedioHuevosPorDia || 0).toFixed(1) }}</h5>
             <p class="card-text">Promedio por Día</p>
           </div>
         </div>
@@ -57,7 +57,7 @@
       <div class="col-md-3">
         <div class="card text-center">
           <div class="card-body">
-            <h5 class="card-title text-warning">{{ (stats.totalHuevos / stats.totalRegistros).toFixed(1) }}</h5>
+            <h5 class="card-title text-warning">{{ stats.totalRegistros > 0 ? (stats.totalHuevos / stats.totalRegistros).toFixed(1) : '0.0' }}</h5>
             <p class="card-text">Promedio por Registro</p>
           </div>
         </div>
@@ -88,13 +88,13 @@
                     <tr>
                       <td class="fw-bold">{{ lote.galera }}</td>
                       <td>{{ lote.totalHuevos }}</td>
-                      <td>{{ lote.promedioHuevos.toFixed(1) }}</td>
+                      <td>{{ (lote.promedioHuevos || 0).toFixed(1) }}</td>
                       <td>{{ lote.registros }}</td>
                       <td>
                         <div class="progress" style="height: 20px;">
                           <div class="progress-bar bg-success" 
-                               [style.width.%]="(lote.totalHuevos / stats.totalHuevos) * 100">
-                            {{ ((lote.totalHuevos / stats.totalHuevos) * 100).toFixed(1) }}%
+                               [style.width.%]="stats.totalHuevos > 0 ? (lote.totalHuevos / stats.totalHuevos) * 100 : 0">
+                            {{ stats.totalHuevos > 0 ? ((lote.totalHuevos / stats.totalHuevos) * 100).toFixed(1) : '0.0' }}%
                           </div>
                         </div>
                       </td>
@@ -122,7 +122,7 @@
                   <span [class]="getCalidadBadgeClass(calidad.calidad)">
                     {{ calidad.calidad }}
                   </span>
-                  <span class="fw-bold">{{ calidad.totalHuevos }} ({{ getCalidadPercentage(calidad.totalHuevos).toFixed(1) }}%)</span>
+                  <span class="fw-bold">{{ calidad.totalHuevos }} ({{ (getCalidadPercentage(calidad.totalHuevos) || 0).toFixed(1) }}%)</span>
                 </div>
                 <div class="progress">
                   <div class="progress-bar" 
@@ -157,7 +157,7 @@
                   </div>
                   <div class="progress">
                     <div class="progress-bar bg-primary" 
-                         [style.width.%]="(semana.totalHuevos / stats.totalHuevos) * 100">
+                         [style.width.%]="stats.totalHuevos > 0 ? (semana.totalHuevos / stats.totalHuevos) * 100 : 0">
                     </div>
                   </div>
                 </div>

@@ -18,7 +18,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
 export class TicketListComponent implements OnInit {
   tickets: Ticket[] = [];
   isLoading = false;
-  estadoFilter = '';
+  activeTab: 'activos' | 'despachados' | 'anulados' = 'activos';
   fechaInicio = '';
   fechaFin = '';
 
@@ -27,8 +27,6 @@ export class TicketListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
 
-  estados = ['Pendiente', 'Autorizado', 'Despachado', 'Cancelado'];
-
   // Expose Math to template
   Math = Math;
 
@@ -36,7 +34,8 @@ export class TicketListComponent implements OnInit {
     totalTickets: 0,
     pendientes: 0,
     autorizados: 0,
-    despachados: 0
+    despachados: 0,
+    cancelados: 0
   };
 
   constructor(
@@ -52,10 +51,22 @@ export class TicketListComponent implements OnInit {
 
   loadTickets() {
     this.isLoading = true;
+    
+    // Determinar estados según el tab activo
+    let estadoFilter: string | undefined;
+    if (this.activeTab === 'activos') {
+      // No usar estadoFilter, filtraremos en el frontend
+      estadoFilter = undefined;
+    } else if (this.activeTab === 'despachados') {
+      estadoFilter = 'Despachado';
+    } else if (this.activeTab === 'anulados') {
+      estadoFilter = 'Cancelado';
+    }
+
     const params = {
       page: this.currentPage,
       limit: this.itemsPerPage,
-      estado: this.estadoFilter || undefined,
+      estado: estadoFilter,
       fechaInicio: this.fechaInicio || undefined,
       fechaFin: this.fechaFin || undefined
     };
@@ -63,7 +74,16 @@ export class TicketListComponent implements OnInit {
     this.ticketService.getTickets(params).subscribe({
       next: (response) => {
         if (response?.data) {
-          this.tickets = response.data;
+          let ticketsData = response.data;
+          
+          // Filtrar tickets activos (Pendiente + Autorizado) en el frontend
+          if (this.activeTab === 'activos') {
+            ticketsData = ticketsData.filter((t: Ticket) => 
+              t.estado === 'Pendiente' || t.estado === 'Autorizado'
+            );
+          }
+          
+          this.tickets = ticketsData;
           this.totalItems = response.pagination.total;
           this.totalPages = response.pagination.totalPages;
         }
@@ -92,6 +112,7 @@ export class TicketListComponent implements OnInit {
           this.stats.pendientes = porEstado.find(e => e.estado === 'Pendiente')?._count.id || 0;
           this.stats.autorizados = porEstado.find(e => e.estado === 'Autorizado')?._count.id || 0;
           this.stats.despachados = porEstado.find(e => e.estado === 'Despachado')?._count.id || 0;
+          this.stats.cancelados = porEstado.find(e => e.estado === 'Cancelado')?._count.id || 0;
         }
         this.cdr.detectChanges();
       },
@@ -101,6 +122,12 @@ export class TicketListComponent implements OnInit {
     });
   }
 
+  changeTab(tab: 'activos' | 'despachados' | 'anulados') {
+    this.activeTab = tab;
+    this.currentPage = 1;
+    this.loadTickets();
+  }
+
   applyFilters() {
     this.currentPage = 1;
     this.loadTickets();
@@ -108,7 +135,6 @@ export class TicketListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.estadoFilter = '';
     this.fechaInicio = '';
     this.fechaFin = '';
     this.currentPage = 1;
@@ -153,5 +179,25 @@ export class TicketListComponent implements OnInit {
 
   getTotalCantidad(detalles: any[]): number {
     return detalles.reduce((sum, d) => sum + d.cantidad, 0);
+  }
+
+  eliminarTicket(ticket: Ticket) {
+    const mensaje = ticket.estado === 'Pendiente' 
+      ? '¿Está seguro de eliminar este ticket? Esta acción no se puede deshacer y restaurará el inventario.'
+      : `Este ticket está en estado "${ticket.estado}". ¿Está seguro de eliminarlo? El inventario será restaurado.`;
+    
+    if (confirm(mensaje)) {
+      this.ticketService.deleteTicket(ticket.id).subscribe({
+        next: () => {
+          this.toastr.success('Ticket eliminado exitosamente. Inventario restaurado.', 'Éxito');
+          this.loadTickets();
+          this.loadStats();
+        },
+        error: (error) => {
+          const errorMsg = error?.error?.message || 'Error al eliminar ticket';
+          this.toastr.error(errorMsg, 'Error');
+        }
+      });
+    }
   }
 }

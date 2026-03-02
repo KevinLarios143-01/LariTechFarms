@@ -195,6 +195,36 @@ const routes: Routes = [
               import('./gastos-operacion/view-gasto/view-gasto.component').then((m) => m.ViewGastoComponent)
           }
         ]
+      },
+      {
+        path: 'ingreso-inventario',
+        children: [
+          {
+            path: '',
+            redirectTo: 'list',
+            pathMatch: 'full'
+          },
+          {
+            path: 'list',
+            loadComponent: () =>
+              import('./ingreso-inventario/ingreso-inventario-list/ingreso-inventario-list.component').then((m) => m.IngresoInventarioListComponent)
+          },
+          {
+            path: 'add',
+            loadComponent: () =>
+              import('./ingreso-inventario/add-ingreso-inventario/add-ingreso-inventario.component').then((m) => m.AddIngresoInventarioComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./ingreso-inventario/view-ingreso-inventario/view-ingreso-inventario.component').then((m) => m.ViewIngresoInventarioComponent)
+          },
+          {
+            path: 'stock-lote',
+            loadComponent: () =>
+              import('./ingreso-inventario/stock-lote-view/stock-lote-view.component').then((m) => m.StockLoteViewComponent)
+          }
+        ]
       }
     ]
   }

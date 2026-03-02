@@ -165,7 +165,7 @@ export class AddIngresoComponent implements OnInit {
     this.inventarioService.registrarClasificacionMultiple(data).subscribe({
       next: (response) => {
         this.toastr.success(response.message || 'Clasificación registrada exitosamente', 'Éxito');
-        this.router.navigate(['/dashboard/bussiness-dashboard/inventario/list']);
+        this.router.navigate(['/dashboard/business-dashboard/inventario/list']);
       },
       error: (error) => {
         const errorMsg = error?.error?.error || 'Error al registrar clasificación';
@@ -176,7 +176,7 @@ export class AddIngresoComponent implements OnInit {
   }
 
   cancelar() {
-    this.router.navigate(['/dashboard/bussiness-dashboard/inventario/list']);
+    this.router.navigate(['/dashboard/business-dashboard/inventario/list']);
   }
 
   getTotalCartones(): number {

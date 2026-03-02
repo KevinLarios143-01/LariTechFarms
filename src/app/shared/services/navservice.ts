@@ -213,9 +213,9 @@ export class NavService implements OnDestroy {
         },
         {
           title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '4', selected: false, active: false, children: [
-            { path: '/dashboard/bussiness-dashboard/clientes/list', title: 'Clientes', type: 'link', selected: false },
-            { path: '/dashboard/bussiness-dashboard/ventas/list', title: 'Ventas', type: 'link', selected: false },
-            { path: '/dashboard/bussiness-dashboard/tickets/list', title: 'Tickets', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/clientes/list', title: 'Clientes', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/ventas/list', title: 'Ventas', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/tickets/list', title: 'Tickets', type: 'link', selected: false },
             { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas (Legacy)', type: 'link', selected: false },
           ]
         },
@@ -248,7 +248,14 @@ export class NavService implements OnDestroy {
                 { path: '/dashboard/production-dashboard/productos/estadisticas', title: 'Estadísticas', type: 'link', selected: false },
               ]
             },
-            { path: '/dashboard/production-dashboard/inventario/list', title: 'Inventario', type: 'link', selected: false },
+            {
+              title: 'Ingreso de Inventario', type: 'sub', active: false, selected: false, children: [
+                { path: '/dashboard/production-dashboard/ingreso-inventario/list', title: 'Lista de Ingresos', type: 'link', selected: false },
+                { path: '/dashboard/production-dashboard/ingreso-inventario/add', title: 'Registrar Ingreso', type: 'link', selected: false },
+                { path: '/dashboard/production-dashboard/ingreso-inventario/stock-lote', title: 'Stock por Lote', type: 'link', selected: false },
+              ]
+            },
+            { path: '/dashboard/production-dashboard/inventario/list', title: 'Inventario General', type: 'link', selected: false },
             { path: '/dashboard/production-dashboard/vehiculos/list', title: 'Vehículos', type: 'link', selected: false },
             { path: '/dashboard/production-dashboard/gastos-operacion/list', title: 'Gastos de Operación', type: 'link', selected: false },
           ]

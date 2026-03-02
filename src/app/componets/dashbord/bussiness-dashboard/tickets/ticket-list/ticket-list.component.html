@@ -5,8 +5,8 @@
         <div class="card-header justify-content-between">
           <div class="card-title">Gestión de Tickets</div>
           <div class="d-flex gap-2">
-            <button class="btn btn-primary btn-sm" routerLink="../add">
-              <i class="ri-add-line"></i> Nuevo Ticket
+            <button class="btn btn-primary btn-sm" routerLink="/dashboard/business-dashboard/ventas/list">
+              <i class="ri-add-line"></i> Generar Tickets desde Venta
             </button>
           </div>
         </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+    <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
       <div class="card custom-card">
         <div class="card-body">
           <div class="d-flex align-items-top">
@@ -50,7 +50,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+    <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
       <div class="card custom-card">
         <div class="card-body">
           <div class="d-flex align-items-top">
@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+    <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
       <div class="card custom-card">
         <div class="card-body">
           <div class="d-flex align-items-top">
@@ -84,6 +84,23 @@
         </div>
       </div>
     </div>
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+      <div class="card custom-card">
+        <div class="card-body">
+          <div class="d-flex align-items-top">
+            <div class="me-3">
+              <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                <i class="ri-close-circle-line fs-18"></i>
+              </span>
+            </div>
+            <div class="flex-fill">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.cancelados }}</h5>
+              <p class="mb-0 fs-12 text-muted">Anulados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Filtros -->
@@ -92,20 +109,15 @@
       <div class="card custom-card">
         <div class="card-body">
           <div class="row g-3">
-            <div class="col-xl-3 col-lg-4 col-md-6">
-              <ng-select [items]="estados" [(ngModel)]="estadoFilter" 
-                         placeholder="Estado" (change)="applyFilters()" [clearable]="true">
-              </ng-select>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="col-xl-4 col-lg-6 col-md-6">
               <input type="date" class="form-control" placeholder="Fecha Inicio" 
                      [(ngModel)]="fechaInicio" (ngModelChange)="applyFilters()">
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="col-xl-4 col-lg-6 col-md-6">
               <input type="date" class="form-control" placeholder="Fecha Fin" 
                      [(ngModel)]="fechaFin" (ngModelChange)="applyFilters()">
             </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
+            <div class="col-xl-4 col-lg-6 col-md-6">
               <button class="btn btn-secondary w-100" (click)="clearFilters()">
                 <i class="ri-refresh-line"></i> Limpiar
               </button>
@@ -116,10 +128,44 @@
     </div>
   </div>
 
-  <!-- Tabla -->
+  <!-- Tabs -->
   <div class="row">
     <div class="col-xl-12">
       <div class="card custom-card">
+        <div class="card-header p-0">
+          <ul class="nav nav-tabs nav-justified" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button 
+                [class]="'nav-link ' + (activeTab === 'activos' ? 'active' : '')"
+                (click)="changeTab('activos')"
+                type="button">
+                <i class="ri-file-list-line me-1"></i>
+                Tickets Activos
+                <span class="badge bg-warning ms-2">{{ stats.pendientes + stats.autorizados }}</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button 
+                [class]="'nav-link ' + (activeTab === 'despachados' ? 'active' : '')"
+                (click)="changeTab('despachados')"
+                type="button">
+                <i class="ri-truck-line me-1"></i>
+                Tickets Despachados
+                <span class="badge bg-success ms-2">{{ stats.despachados }}</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button 
+                [class]="'nav-link ' + (activeTab === 'anulados' ? 'active' : '')"
+                (click)="changeTab('anulados')"
+                type="button">
+                <i class="ri-close-circle-line me-1"></i>
+                Tickets Anulados
+                <span class="badge bg-danger ms-2">{{ stats.cancelados }}</span>
+              </button>
+            </li>
+          </ul>
+        </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table text-nowrap table-hover">
@@ -204,22 +250,39 @@
                                   title="Ver detalles">
                             <i class="ri-eye-line"></i>
                           </button>
-                          @if (ticket.estado !== 'Cancelado' && ticket.estado !== 'Despachado') {
+                          
+                          @if (activeTab === 'activos') {
                             <button class="btn btn-sm btn-primary" [routerLink]="['../edit', ticket.id]" 
                                     title="Editar">
                               <i class="ri-edit-line"></i>
                             </button>
+                            
+                            @if (ticket.estado === 'Pendiente') {
+                              <button class="btn btn-sm btn-success" (click)="cambiarEstado(ticket, 'Autorizado')" 
+                                      title="Autorizar">
+                                <i class="ri-check-line"></i>
+                              </button>
+                            }
+                            
+                            @if (ticket.estado === 'Autorizado') {
+                              <button class="btn btn-sm btn-success" (click)="cambiarEstado(ticket, 'Despachado')" 
+                                      title="Despachar">
+                                <i class="ri-truck-line"></i>
+                              </button>
+                            }
+                            
+                            @if (ticket.estado === 'Pendiente') {
+                              <button class="btn btn-sm btn-danger" (click)="eliminarTicket(ticket)" 
+                                      title="Eliminar y restaurar inventario">
+                                <i class="ri-delete-bin-line"></i>
+                              </button>
+                            }
                           }
-                          @if (ticket.estado === 'Pendiente') {
-                            <button class="btn btn-sm btn-success" (click)="cambiarEstado(ticket, 'Autorizado')" 
-                                    title="Autorizar">
-                              <i class="ri-check-line"></i>
-                            </button>
-                          }
-                          @if (ticket.estado === 'Autorizado') {
-                            <button class="btn btn-sm btn-success" (click)="cambiarEstado(ticket, 'Despachado')" 
-                                    title="Despachar">
-                              <i class="ri-truck-line"></i>
+                          
+                          @if (activeTab === 'anulados') {
+                            <button class="btn btn-sm btn-danger" (click)="eliminarTicket(ticket)" 
+                                    title="Eliminar permanentemente">
+                              <i class="ri-delete-bin-line"></i>
                             </button>
                           }
                         </div>

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'dashboard/bussiness-dashboard',
+    path: 'dashboard/business-dashboard',
     children: [
       {
         path: 'clientes',
@@ -82,6 +82,16 @@ const routes: Routes = [
             path: 'generar/:id',
             loadComponent: () =>
               import('./tickets/generar-tickets/generar-tickets.component').then((m) => m.GenerarTicketsComponent)
+          },
+          {
+            path: 'view/:id',
+            loadComponent: () =>
+              import('./tickets/view-ticket/view-ticket.component').then((m) => m.ViewTicketComponent)
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('./tickets/edit-ticket/edit-ticket.component').then((m) => m.EditTicketComponent)
           }
         ]
       },

@@ -1,0 +1,144 @@
+<app-hr-dashboard-page-header [title]="'Registrar Ingreso de Inventario'" [title2]="'Volver a Lista'" [class]="'btn btn-secondary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/ingreso-inventario/list'">
+</app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Clasificación de Huevos por Tipo</h3>
+        <p class="text-muted mb-0">Registre la clasificación diaria de huevos por tipo y lote</p>
+      </div>
+      <div class="card-body">
+        <form [formGroup]="ingresoForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="fecha">Fecha *</label>
+                <input type="date" class="form-control" 
+                       [class.is-invalid]="ingresoForm.get('fecha')?.invalid && ingresoForm.get('fecha')?.touched"
+                       formControlName="fecha">
+                @if (ingresoForm.get('fecha')?.invalid && ingresoForm.get('fecha')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    La fecha es requerida
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="idLote">Lote/Galera *</label>
+                <select class="form-control" 
+                        [class.is-invalid]="ingresoForm.get('idLote')?.invalid && ingresoForm.get('idLote')?.touched"
+                        formControlName="idLote">
+                  <option value="">Seleccione un lote</option>
+                  @for (lote of lotes; track lote.id) {
+                    <option [value]="lote.id">{{lote.galera}} - {{lote.tipo}}</option>
+                  }
+                </select>
+                @if (ingresoForm.get('idLote')?.invalid && ingresoForm.get('idLote')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    Seleccione un lote
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="idProducto">Producto *</label>
+                <select class="form-control" 
+                        [class.is-invalid]="ingresoForm.get('idProducto')?.invalid && ingresoForm.get('idProducto')?.touched"
+                        formControlName="idProducto">
+                  <option value="">Seleccione un producto</option>
+                  @for (producto of productos; track producto.id) {
+                    <option [value]="producto.id">{{producto.nombre}} - {{producto.tamanio}}</option>
+                  }
+                </select>
+                @if (ingresoForm.get('idProducto')?.invalid && ingresoForm.get('idProducto')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    Seleccione un producto
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="cantidadCartones">Cantidad de Cartones *</label>
+                <input type="number" class="form-control" 
+                       [class.is-invalid]="ingresoForm.get('cantidadCartones')?.invalid && ingresoForm.get('cantidadCartones')?.touched"
+                       formControlName="cantidadCartones" 
+                       placeholder="Ingrese cantidad de cartones"
+                       min="1">
+                @if (ingresoForm.get('cantidadCartones')?.invalid && ingresoForm.get('cantidadCartones')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    @if (ingresoForm.get('cantidadCartones')?.errors?.['required']) {
+                      La cantidad de cartones es requerida
+                    }
+                    @if (ingresoForm.get('cantidadCartones')?.errors?.['min']) {
+                      La cantidad debe ser mayor a 0
+                    }
+                  </div>
+                }
+                <small class="text-muted">1 cartón = 30 huevos</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="cantidadHuevos">Cantidad de Huevos *</label>
+                <input type="number" class="form-control" 
+                       [class.is-invalid]="ingresoForm.get('cantidadHuevos')?.invalid && ingresoForm.get('cantidadHuevos')?.touched"
+                       formControlName="cantidadHuevos" 
+                       placeholder="Se calcula automáticamente"
+                       min="1"
+                       readonly>
+                @if (ingresoForm.get('cantidadHuevos')?.invalid && ingresoForm.get('cantidadHuevos')?.touched) {
+                  <div class="invalid-feedback d-block">
+                    La cantidad de huevos es requerida
+                  </div>
+                }
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label class="form-label" for="observaciones">Observaciones</label>
+                <textarea class="form-control" 
+                          formControlName="observaciones" 
+                          rows="3"
+                          placeholder="Observaciones adicionales (opcional)"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info" role="alert">
+            <i class="fe fe-info me-2"></i>
+            <strong>Nota:</strong> Al registrar este ingreso, el stock del producto se actualizará automáticamente en el lote seleccionado.
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-2" [disabled]="ingresoForm.invalid || isLoading">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Guardando...
+                } @else {
+                  <i class="fe fe-save me-2"></i>
+                  Registrar Ingreso
+                }
+              </button>
+              <button type="button" class="btn btn-secondary" (click)="onCancel()">
+                <i class="fe fe-x me-2"></i>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

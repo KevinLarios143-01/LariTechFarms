@@ -1,14 +1,16 @@
 export interface Producto {
   id: number;
+  idTenant?: number;
   nombre: string;
   descripcion?: string;
-  precio: number;
+  precio: number | string;
   stock: number;
   tamanio: string;
   categoria: string;
-  estado: string;
-  unidadMedida: string;
-  stockMinimo: number;
+  activo: boolean;
+  estado?: string; // Mantener por compatibilidad
+  unidadMedida?: string;
+  stockMinimo?: number;
 }
 
 export interface ProductoResponse {

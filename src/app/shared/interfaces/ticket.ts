@@ -7,6 +7,7 @@ export interface Ticket {
   cantidad?: number | null;
   codigoAutorizacion?: string;
   estado: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
+  observaciones?: string;
   idUsuario: number;
   createdAt: string;
   updatedAt: string;
@@ -42,6 +43,7 @@ export interface DetalleTicket {
   idTicket: number;
   idProducto: number;
   cantidad: number;
+  precioUnitario?: number;
   producto?: {
     nombre: string;
     tamanio?: string;
@@ -79,6 +81,7 @@ export interface UpdateTicketRequest {
   cantidad?: number;
   codigoAutorizacion?: string;
   estado?: "Pendiente" | "Autorizado" | "Despachado" | "Cancelado";
+  observaciones?: string;
 }
 
 export interface UpdateEstadoTicketDTO {

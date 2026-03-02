@@ -170,6 +170,6 @@ export class VentaListComponent implements OnInit {
 
   generarTickets(venta: Venta) {
     // Redirigir a una página para generar tickets
-    this.router.navigate(['/dashboard/bussiness-dashboard/tickets/generar', venta.id]);
+    this.router.navigate(['/dashboard/business-dashboard/tickets/generar', venta.id]);
   }
 }

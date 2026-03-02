@@ -52,7 +52,7 @@ export class AddClienteComponent implements OnInit {
         next: (response) => {
           this.toastr.success('Cliente creado exitosamente', 'Éxito');
           setTimeout(() => {
-            this.router.navigate(['/dashboard/bussiness-dashboard/clientes/list']);
+            this.router.navigate(['/dashboard/business-dashboard/clientes/list']);
           }, 1000);
         },
         error: (error) => {
