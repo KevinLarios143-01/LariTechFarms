@@ -1,0 +1,156 @@
+<div class="container-fluid">
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (galera) {
+    <!-- Header -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header justify-content-between">
+            <div class="card-title">
+              <i class="ri-building-line me-2"></i>
+              {{ galera.nombre }}
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-secondary btn-sm" (click)="onBack()">
+                <i class="ri-arrow-left-line"></i> Volver
+              </button>
+              <button class="btn btn-warning btn-sm" (click)="onEdit()">
+                <i class="ri-edit-line"></i> Editar
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="onDelete()">
+                <i class="ri-delete-bin-line"></i> Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información General -->
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Información General</div>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label text-muted">Nombre</label>
+                <p class="fw-semibold">{{ galera.nombre }}</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted">Tipo</label>
+                <p>
+                  @if (galera.tipo) {
+                    <span [class]="'badge ' + getTipoBadge(galera.tipo)">
+                      {{ galera.tipo }}
+                    </span>
+                  } @else {
+                    <span class="text-muted">No especificado</span>
+                  }
+                </p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted">Capacidad</label>
+                <p class="fw-semibold">
+                  @if (galera.capacidad) {
+                    <i class="ri-group-line"></i> {{ galera.capacidad | number }} aves
+                  } @else {
+                    <span class="text-muted">No especificada</span>
+                  }
+                </p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted">Estado</label>
+                <p>
+                  <span [class]="'badge ' + getEstadoBadge(galera.estado || 'Activa')">
+                    {{ galera.estado || 'Activa' }}
+                  </span>
+                </p>
+              </div>
+              <div class="col-md-12">
+                <label class="form-label text-muted">Ubicación</label>
+                <p>
+                  @if (galera.ubicacion) {
+                    <i class="ri-map-pin-line"></i> {{ galera.ubicacion }}
+                  } @else {
+                    <span class="text-muted">No especificada</span>
+                  }
+                </p>
+              </div>
+              @if (galera.observaciones) {
+                <div class="col-md-12">
+                  <label class="form-label text-muted">Observaciones</label>
+                  <p>{{ galera.observaciones }}</p>
+                </div>
+              }
+              <div class="col-md-6">
+                <label class="form-label text-muted">Fecha de Creación</label>
+                <p>{{ galera.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label text-muted">Última Actualización</label>
+                <p>{{ galera.updatedAt | date:'dd/MM/yyyy HH:mm' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas -->
+      <div class="col-xl-4">
+        @if (stats) {
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Estadísticas</div>
+            </div>
+            <div class="card-body">
+              <div class="d-flex flex-column gap-3">
+                <div>
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Lotes Activos</span>
+                    <span class="badge bg-primary fs-6">{{ stats.lotesActivos }}</span>
+                  </div>
+                </div>
+                
+                @if (stats.capacidadTotal > 0) {
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="text-muted">Capacidad Utilizada</span>
+                      <span class="fw-semibold">
+                        {{ stats.capacidadUtilizada | number }} / {{ stats.capacidadTotal | number }}
+                      </span>
+                    </div>
+                    <div class="progress" style="height: 20px;">
+                      <div 
+                        class="progress-bar" 
+                        [class.bg-success]="getCapacidadUtilizadaPorcentaje() < 80"
+                        [class.bg-warning]="getCapacidadUtilizadaPorcentaje() >= 80 && getCapacidadUtilizadaPorcentaje() < 95"
+                        [class.bg-danger]="getCapacidadUtilizadaPorcentaje() >= 95"
+                        role="progressbar" 
+                        [style.width.%]="getCapacidadUtilizadaPorcentaje()">
+                        {{ getCapacidadUtilizadaPorcentaje() | number:'1.0-0' }}%
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

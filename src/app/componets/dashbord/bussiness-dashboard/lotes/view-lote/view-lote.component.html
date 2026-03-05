@@ -35,7 +35,17 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label fw-semibold">Galera:</label>
-              <p class="mb-0">{{lote.galera}}</p>
+              <p class="mb-0" *ngIf="lote.galeraRelacion">
+                {{lote.galeraRelacion.nombre}}
+                <span class="badge bg-secondary ms-2">{{lote.galeraRelacion.tipo}}</span>
+                <span class="badge ms-1" [class]="lote.galeraRelacion.estado === 'Activa' ? 'bg-success' : 'bg-warning'">
+                  {{lote.galeraRelacion.estado}}
+                </span>
+              </p>
+              <p class="mb-0" *ngIf="!lote.galeraRelacion">
+                {{lote.galera || 'Sin galera'}}
+                <span class="badge bg-secondary ms-2" *ngIf="lote.galera">(Texto libre)</span>
+              </p>
             </div>
           </div>
           <div class="col-md-6">
@@ -88,8 +98,11 @@
               <div class="avatar avatar-xl bg-primary-transparent mx-auto mb-2">
                 <i class="fe fe-layers fs-24"></i>
               </div>
-              <h5 class="mb-1">{{lote.galera}}</h5>
+              <h5 class="mb-1">{{lote.galeraRelacion?.nombre || lote.galera || 'Sin galera'}}</h5>
               <p class="text-muted mb-0">{{lote.tipo}}</p>
+              <p class="text-muted mb-0 fs-12" *ngIf="lote.galeraRelacion">
+                <span class="badge bg-secondary">{{lote.galeraRelacion.tipo}}</span>
+              </p>
             </div>
           </div>
           <div class="col-6">

@@ -56,6 +56,8 @@ export class TicketService {
   getTicketsStats(params?: {
     fechaInicio?: string;
     fechaFin?: string;
+    idLote?: number;
+    categoria?: string;
   }): Observable<{ data: TicketsStats }> {
     let httpParams = new HttpParams();
     if (params) {

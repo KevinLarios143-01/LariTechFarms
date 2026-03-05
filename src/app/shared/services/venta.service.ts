@@ -19,6 +19,8 @@ export class VentaService {
     estado?: string;
     fechaDesde?: string;
     fechaHasta?: string;
+    idLote?: number;
+    categoria?: string;
   }): Observable<any> {
     let httpParams = new HttpParams();
     if (params) {
@@ -78,6 +80,8 @@ export class VentaService {
   getVentasEstadisticas(params?: {
     fechaDesde?: string;
     fechaHasta?: string;
+    idLote?: number;
+    categoria?: string;
   }): Observable<{ data: VentasStats }> {
     let httpParams = new HttpParams();
     if (params) {

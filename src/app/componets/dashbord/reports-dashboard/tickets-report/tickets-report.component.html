@@ -1,0 +1,282 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Reporte de Tickets de Despacho</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-danger btn-sm" (click)="exportarPDF()">
+              <i class="ri-file-pdf-line"></i> Exportar PDF
+            </button>
+            <button class="btn btn-success btn-sm" (click)="exportarExcel()">
+              <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Filtros</div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <!-- Tipo de Filtro -->
+            <div class="col-md-2">
+              <label class="form-label">Tipo de Filtro</label>
+              <select class="form-select" [(ngModel)]="tipoFiltro" (change)="onTipoFiltroChange()">
+                <option value="dia">Por Día</option>
+                <option value="mes">Por Mes</option>
+                <option value="rango">Rango de Fechas</option>
+              </select>
+            </div>
+
+            <!-- Filtro por Día -->
+            @if (tipoFiltro === 'dia') {
+              <div class="col-md-2">
+                <label class="form-label">Fecha</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada">
+              </div>
+            }
+
+            <!-- Filtro por Mes -->
+            @if (tipoFiltro === 'mes') {
+              <div class="col-md-2">
+                <label class="form-label">Mes</label>
+                <select class="form-select" [(ngModel)]="mesSeleccionado">
+                  @for (mes of meses; track mes.value) {
+                    <option [value]="mes.value">{{ mes.label }}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Año</label>
+                <select class="form-select" [(ngModel)]="anioSeleccionado">
+                  @for (anio of anios; track anio) {
+                    <option [value]="anio">{{ anio }}</option>
+                  }
+                </select>
+              </div>
+            }
+
+            <!-- Filtro por Rango -->
+            @if (tipoFiltro === 'rango') {
+              <div class="col-md-2">
+                <label class="form-label">Fecha Desde</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaDesde">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Fecha Hasta</label>
+                <input type="date" class="form-control" [(ngModel)]="fechaHasta">
+              </div>
+            }
+
+            <!-- Filtro por Lote -->
+            <div class="col-md-2">
+              <label class="form-label">Lote/Galera</label>
+              <select class="form-select" [(ngModel)]="loteSeleccionado">
+                <option [value]="null">Todos los lotes</option>
+                @for (lote of lotes; track lote.id) {
+                  <option [value]="lote.id">{{ lote.galera }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Filtro por Categoría -->
+            <div class="col-md-2">
+              <label class="form-label">Tipo de Producto</label>
+              <select class="form-select" [(ngModel)]="categoriaSeleccionada">
+                <option value="">Todas las categorías</option>
+                @for (cat of categorias; track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Filtro por Estado -->
+            <div class="col-md-2">
+              <label class="form-label">Estado</label>
+              <select class="form-select" [(ngModel)]="estadoSeleccionado">
+                <option value="">Todos los estados</option>
+                @for (estado of estados; track estado) {
+                  <option [value]="estado">{{ estado }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Botón Generar -->
+            <div class="col-md-2 d-flex align-items-end">
+              <button class="btn btn-primary w-100" (click)="loadReport()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                <i class="ri-refresh-line"></i> Generar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resultados -->
+  @if (estadisticas && !isLoading) {
+    <!-- Resumen General -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                  <i class="ri-ticket-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.totalTickets || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Total Tickets</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                  <i class="ri-box-3-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ estadisticas.cantidadTotal || 0 }}</h5>
+                <p class="mb-0 fs-12 text-muted">Cantidad Total</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+                  <i class="ri-bar-chart-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ (estadisticas.cantidadPromedio || 0).toFixed(2) }}</h5>
+                <p class="mb-0 fs-12 text-muted">Promedio por Ticket</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tickets por Estado -->
+    @if (estadisticas.ticketsPorEstado && estadisticas.ticketsPorEstado.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">Tickets por Estado</div>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                @for (estado of estadisticas.ticketsPorEstado; track estado.estado) {
+                  <div class="col-xl-3 col-lg-6 mb-3">
+                    <div class="card border">
+                      <div class="card-body text-center">
+                        <span class="badge {{ getEstadoBadge(estado.estado) }} mb-2">{{ estado.estado }}</span>
+                        <h4 class="fw-semibold mb-0">{{ estado._count.id }}</h4>
+                        <p class="text-muted mb-0 fs-12">tickets</p>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Tabla de Tickets -->
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-header">
+            <div class="card-title">Listado de Tickets</div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha</th>
+                    <th>Lote/Galera</th>
+                    <th>Cliente</th>
+                    <th>Estado</th>
+                    <th>Productos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @if (tickets.length === 0) {
+                    <tr>
+                      <td colspan="6" class="text-center text-muted">No hay tickets para mostrar</td>
+                    </tr>
+                  }
+                  @for (ticket of tickets; track ticket.id) {
+                    <tr>
+                      <td>{{ ticket.id }}</td>
+                      <td>{{ ticket.fecha | date:'dd/MM/yyyy' }}</td>
+                      <td>{{ ticket.lote?.galera || 'N/A' }}</td>
+                      <td>{{ ticket.venta?.cliente?.nombre || 'N/A' }}</td>
+                      <td>
+                        <span class="badge {{ getEstadoBadge(ticket.estado) }}">
+                          {{ ticket.estado }}
+                        </span>
+                      </td>
+                      <td>
+                        @if (ticket.detalles && ticket.detalles.length > 0) {
+                          @for (detalle of ticket.detalles; track detalle.id) {
+                            <div class="mb-1">
+                              <small>{{ detalle.producto?.nombre }} ({{ detalle.cantidad }})</small>
+                            </div>
+                          }
+                        } @else {
+                          <small class="text-muted">Sin detalles</small>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+        <p class="mt-3">Generando reporte...</p>
+      </div>
+    </div>
+  }
+</div>

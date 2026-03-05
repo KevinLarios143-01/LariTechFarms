@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { VentaService } from '../../../../shared/services/venta.service';
+import { LoteService } from '../../../../shared/services/lote.service';
+import { ProductosService } from '../../production-dashboard/productos/services/productos.service';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -25,6 +27,8 @@ export class VentasReportComponent implements OnInit {
   anioSeleccionado = '';
   fechaDesde = '';
   fechaHasta = '';
+  loteSeleccionado: number = 0;
+  categoriaSeleccionada: string = '';
   
   // Datos
   estadisticas: any = null;
@@ -33,6 +37,8 @@ export class VentasReportComponent implements OnInit {
   ventasAnuladas: any[] = [];
   
   // Opciones
+  lotes: any[] = [];
+  categorias: string[] = [];
   meses = [
     { value: '01', label: 'Enero' },
     { value: '02', label: 'Febrero' },
@@ -52,6 +58,8 @@ export class VentasReportComponent implements OnInit {
 
   constructor(
     private ventaService: VentaService,
+    private loteService: LoteService,
+    private productosService: ProductosService,
     private cdr: ChangeDetectorRef
   ) {
     // Generar últimos 5 años
@@ -66,7 +74,33 @@ export class VentasReportComponent implements OnInit {
     const today = new Date();
     this.mesSeleccionado = String(today.getMonth() + 1).padStart(2, '0');
     this.anioSeleccionado = String(today.getFullYear());
+    
+    this.loadLotes();
+    this.loadCategorias();
     this.loadReport();
+  }
+
+  loadLotes() {
+    this.loteService.getLotes({ estado: 'Activo' }).subscribe({
+      next: (response) => {
+        this.lotes = response.data?.data || [];
+      },
+      error: (error) => {
+        console.error('Error al cargar lotes:', error);
+      }
+    });
+  }
+
+  loadCategorias() {
+    this.productosService.getCategorias().subscribe({
+      next: (response) => {
+        const categoriasData = response.data || [];
+        this.categorias = categoriasData.map((c: any) => c.categoria).filter((cat: string) => cat);
+      },
+      error: (error) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
   }
 
   onTipoFiltroChange() {
@@ -76,6 +110,12 @@ export class VentasReportComponent implements OnInit {
     this.anioSeleccionado = '';
     this.fechaDesde = '';
     this.fechaHasta = '';
+  }
+
+  onFiltroChange() {
+    console.log('🔄 Filtro cambiado - Lote:', this.loteSeleccionado, 'Categoría:', this.categoriaSeleccionada);
+    // Opcional: auto-recargar al cambiar filtro
+    // this.loadReport();
   }
 
   loadReport() {
@@ -96,12 +136,27 @@ export class VentasReportComponent implements OnInit {
       params.fechaHasta = this.fechaHasta;
     }
 
+    // Agregar filtros adicionales (solo si no es 0 o vacío)
+    if (this.loteSeleccionado && this.loteSeleccionado !== 0) {
+      params.idLote = this.loteSeleccionado;
+    }
+    
+    if (this.categoriaSeleccionada && this.categoriaSeleccionada !== '') {
+      params.categoria = this.categoriaSeleccionada;
+    }
+
+    console.log('🔍 Filtros aplicados:', params);
+    console.log('📦 Lote seleccionado:', this.loteSeleccionado);
+    console.log('🏷️ Categoría seleccionada:', this.categoriaSeleccionada);
+    console.log('📋 Params enviados al backend:', JSON.stringify(params, null, 2));
+
     // Cargar estadísticas y ventas en paralelo
     Promise.all([
       this.ventaService.getVentasEstadisticas(params).toPromise(),
       this.ventaService.getVentas({ ...params, limit: 1000 }).toPromise()
     ]).then(([statsResponse, ventasResponse]) => {
-      console.log('Estadísticas recibidas:', statsResponse?.data);
+      console.log('📊 Estadísticas recibidas:', statsResponse?.data);
+      console.log('💰 Ventas recibidas:', ventasResponse?.data?.data?.length, 'ventas');
       this.estadisticas = statsResponse?.data;
       const todasLasVentas = ventasResponse?.data?.data || [];
       

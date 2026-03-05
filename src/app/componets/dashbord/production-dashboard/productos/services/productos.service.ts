@@ -51,4 +51,20 @@ export class ProductosService {
   getStats(): Observable<{ success: boolean; data: ProductosStats }> {
     return this.http.get<{ success: boolean; data: ProductosStats }>(`${this.apiUrl}/estadisticas`);
   }
+
+  getStatsWithFilters(params?: {
+    idLote?: number;
+    categoria?: string;
+  }): Observable<{ success: boolean; data: ProductosStats }> {
+    let httpParams = new HttpParams();
+    if (params) {
+      Object.keys(params).forEach(key => {
+        const value = params[key as keyof typeof params];
+        if (value !== undefined && value !== null && value !== '') {
+          httpParams = httpParams.set(key, value.toString());
+        }
+      });
+    }
+    return this.http.get<{ success: boolean; data: ProductosStats }>(`${this.apiUrl}/estadisticas`, { params: httpParams });
+  }
 }

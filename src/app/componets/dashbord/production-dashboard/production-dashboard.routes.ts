@@ -71,6 +71,10 @@ const routes: Routes = [
           import('../bussiness-dashboard/lotes/new-lote/new-lote.component').then((m) => m.NewLoteComponent)
       },
       {
+        path: 'galeras',
+        loadChildren: () => import('./galeras/galeras.routes').then(m => m.galerasRoutes)
+      },
+      {
         path: 'productos',
         children: [
           {

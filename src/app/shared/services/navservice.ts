@@ -242,6 +242,12 @@ export class NavService implements OnDestroy {
             { path: '/dashboard/production-dashboard/huevos/estadisticas', title: 'Dashboard', type: 'link', selected: false },
             { path: '/dashboard/production-dashboard/huevos', title: 'Control de Huevos', type: 'link', selected: false },
             {
+              title: 'Galeras', type: 'sub', active: false, selected: false, children: [
+                { path: '/dashboard/production-dashboard/galeras', title: 'Lista de Galeras', type: 'link', selected: false },
+                { path: '/dashboard/production-dashboard/galeras/add', title: 'Nueva Galera', type: 'link', selected: false },
+              ]
+            },
+            {
               title: 'Productos', type: 'sub', active: false, selected: false, children: [
                 { path: '/dashboard/production-dashboard/productos/list', title: 'Lista de Productos', type: 'link', selected: false },
                 { path: '/dashboard/production-dashboard/productos/new', title: 'Nuevo Producto', type: 'link', selected: false },

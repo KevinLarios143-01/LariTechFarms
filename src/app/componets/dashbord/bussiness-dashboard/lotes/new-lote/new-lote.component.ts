@@ -7,6 +7,7 @@ import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LotesService } from '../services/lotes.service';
 import { CreateLoteDTO, UpdateLoteDTO } from '../interfaces/lote.interface';
+import { GaleraService, Galera } from '../../../../../shared/services/galera.service';
 
 @Component({
   selector: 'app-new-lote',
@@ -23,10 +24,12 @@ export class NewLoteComponent implements OnInit {
 
   tiposLote = ['Ponedoras', 'Engorde'];
   estadosLote = ['Activo', 'Inactivo', 'Desalojado'];
+  galeras: Galera[] = [];
 
   constructor(
     private fb: FormBuilder,
     private lotesService: LotesService,
+    private galeraService: GaleraService,
     private router: Router,
     private route: ActivatedRoute,
     private toastr: ToastrService,
@@ -34,7 +37,7 @@ export class NewLoteComponent implements OnInit {
   ) {
     this.loteForm = this.fb.group({
       tipo: ['', Validators.required],
-      galera: ['', Validators.required],
+      idGalera: [null, Validators.required],
       cantidad: ['', [Validators.required, Validators.min(1)]],
       fechaInicio: ['', Validators.required],
       fechaFin: [''],
@@ -44,11 +47,30 @@ export class NewLoteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadGaleras();
     this.route.params.subscribe(params => {
       if (params['id']) {
         this.isEditing = true;
         this.loteId = +params['id'];
         this.loadLote();
+      }
+    });
+  }
+
+  loadGaleras(): void {
+    this.galeraService.getGaleras({ limit: 1000 }).subscribe({
+      next: (response) => {
+        this.galeras = response.data?.data || [];
+        // Filtrar solo galeras activas
+        this.galeras = this.galeras.filter(g => g.estado === 'Activa');
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar galeras:', error);
+        this.toastr.error('Error al cargar las galeras', 'Error', {
+          timeOut: 3000,
+          positionClass: 'toast-top-right',
+        });
       }
     });
   }
@@ -61,7 +83,7 @@ export class NewLoteComponent implements OnInit {
           const lote = response.data;
           this.loteForm.patchValue({
             tipo: lote.tipo,
-            galera: lote.galera,
+            idGalera: lote.idGalera,
             cantidad: lote.cantidad,
             fechaInicio: this.formatDateForInput(lote.fechaInicio),
             fechaFin: this.formatDateForInput(lote.fechaFin),

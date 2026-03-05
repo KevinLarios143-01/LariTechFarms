@@ -28,7 +28,7 @@
         <div class="card-body">
           <div class="row g-3">
             <!-- Tipo de Filtro -->
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label class="form-label">Tipo de Filtro</label>
               <select class="form-select" [(ngModel)]="tipoFiltro" (change)="onTipoFiltroChange()">
                 <option value="dia">Por Día</option>
@@ -39,7 +39,7 @@
 
             <!-- Filtro por Día -->
             @if (tipoFiltro === 'dia') {
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label class="form-label">Fecha</label>
                 <input type="date" class="form-control" [(ngModel)]="fechaSeleccionada">
               </div>
@@ -47,7 +47,7 @@
 
             <!-- Filtro por Mes -->
             @if (tipoFiltro === 'mes') {
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label class="form-label">Mes</label>
                 <select class="form-select" [(ngModel)]="mesSeleccionado">
                   @for (mes of meses; track mes.value) {
@@ -55,7 +55,7 @@
                   }
                 </select>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label class="form-label">Año</label>
                 <select class="form-select" [(ngModel)]="anioSeleccionado">
                   @for (anio of anios; track anio) {
@@ -67,23 +67,45 @@
 
             <!-- Filtro por Rango -->
             @if (tipoFiltro === 'rango') {
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label class="form-label">Fecha Desde</label>
                 <input type="date" class="form-control" [(ngModel)]="fechaDesde">
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label class="form-label">Fecha Hasta</label>
                 <input type="date" class="form-control" [(ngModel)]="fechaHasta">
               </div>
             }
 
+            <!-- Filtro por Lote -->
+            <div class="col-md-2">
+              <label class="form-label">Lote/Galera</label>
+              <select class="form-select" [(ngModel)]="loteSeleccionado" (change)="onFiltroChange()">
+                <option [value]="0">Todos los lotes</option>
+                @for (lote of lotes; track lote.id) {
+                  <option [value]="lote.id">{{ lote.galera }}</option>
+                }
+              </select>
+            </div>
+
+            <!-- Filtro por Categoría -->
+            <div class="col-md-2">
+              <label class="form-label">Tipo de Producto</label>
+              <select class="form-select" [(ngModel)]="categoriaSeleccionada" (change)="onFiltroChange()">
+                <option value="">Todas las categorías</option>
+                @for (cat of categorias; track cat) {
+                  <option [value]="cat">{{ cat }}</option>
+                }
+              </select>
+            </div>
+
             <!-- Botón Generar -->
-            <div class="col-md-3 d-flex align-items-end">
+            <div class="col-md-2 d-flex align-items-end">
               <button class="btn btn-primary w-100" (click)="loadReport()" [disabled]="isLoading">
                 @if (isLoading) {
                   <span class="spinner-border spinner-border-sm me-2"></span>
                 }
-                <i class="ri-bar-chart-line"></i> Generar Reporte
+                <i class="ri-bar-chart-line"></i> Generar
               </button>
             </div>
           </div>

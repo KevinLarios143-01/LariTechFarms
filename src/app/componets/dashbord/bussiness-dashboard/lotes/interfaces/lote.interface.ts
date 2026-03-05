@@ -5,7 +5,14 @@ export interface Lote {
   fechaInicio: string;
   fechaFin?: string | null;
   cantidad: number;
-  galera: string;
+  galera: string; // DEPRECATED: usar idGalera
+  idGalera?: number | null;
+  galeraRelacion?: {
+    id: number;
+    nombre: string;
+    tipo: string;
+    estado: string;
+  };
   estado: "Activo" | "Inactivo" | "Desalojado";
   observaciones?: string | null;
   _count?: {
@@ -19,7 +26,8 @@ export interface CreateLoteDTO {
   fechaInicio: string;
   fechaFin?: string;
   cantidad: number;
-  galera: string;
+  galera?: string; // DEPRECATED: usar idGalera
+  idGalera?: number;
   observaciones?: string;
 }
 
@@ -28,7 +36,8 @@ export interface UpdateLoteDTO {
   fechaInicio?: string;
   fechaFin?: string;
   cantidad?: number;
-  galera?: string;
+  galera?: string; // DEPRECATED: usar idGalera
+  idGalera?: number;
   estado?: "Activo" | "Inactivo" | "Desalojado";
   observaciones?: string;
 }
