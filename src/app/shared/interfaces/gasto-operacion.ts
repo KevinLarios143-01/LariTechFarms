@@ -7,8 +7,6 @@ export interface GastoOperacion {
   monto: number;
   metodoPago?: string;
   idUsuario?: number;
-  createdAt?: string;
-  updatedAt?: string;
   usuario?: {
     nombre: string;
     apellido: string;

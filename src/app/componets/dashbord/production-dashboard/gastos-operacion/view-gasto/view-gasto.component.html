@@ -76,26 +76,21 @@
                 </div>
               </div>
 
-              <!-- Información de Auditoría -->
-              <div class="col-md-12">
-                <div class="card border">
-                  <div class="card-header bg-light">
-                    <h6 class="mb-0">Información de Auditoría</h6>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="info-label">Fecha de Creación</div>
-                        <div class="info-value">{{ gasto.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="info-label">Última Actualización</div>
-                        <div class="info-value">{{ gasto.updatedAt | date:'dd/MM/yyyy HH:mm' }}</div>
+              <!-- Información del Usuario -->
+              @if (gasto.usuario) {
+                <div class="col-md-6">
+                  <div class="card border">
+                    <div class="card-header bg-light">
+                      <h6 class="mb-0">Registrado por</h6>
+                    </div>
+                    <div class="card-body">
+                      <div class="info-value">
+                        {{ gasto.usuario.nombre }} {{ gasto.usuario.apellido }}
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              }
             </div>
           } @else {
             <div class="alert alert-warning">
