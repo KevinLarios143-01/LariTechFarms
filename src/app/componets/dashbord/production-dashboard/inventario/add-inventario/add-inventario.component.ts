@@ -4,8 +4,8 @@ import { RouterModule, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
-// import { IngresoInventarioService } from '../../../../../shared/services/ingreso-inventario.service';
-// import { CreateInventarioDTO } from '../../../../../shared/interfaces/inventario';
+import { InventarioGranjaService } from '../../../../../shared/services/inventario-granja.service';
+import { CreateInventarioGranjaDTO } from '../../../../../shared/interfaces/inventario';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 
 @Component({
@@ -24,7 +24,7 @@ export class AddInventarioComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    // private inventarioService: IngresoInventarioService,
+    private inventarioService: InventarioGranjaService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService
@@ -45,48 +45,48 @@ export class AddInventarioComponent implements OnInit {
   }
 
   loadCategorias() {
-    // TODO: Implementar servicio de inventario de granja
-    // this.inventarioService.getCategorias().subscribe({
-    //   next: (response: any) => {
-    //     this.categorias = response.data || [];
-    //     this.cdr.detectChanges();
-    //   },
-    //   error: (error: any) => {
-    //     console.error('Error al cargar categorías:', error);
-    //   }
-    // });
+    this.inventarioService.getCategorias().subscribe({
+      next: (response: any) => {
+        this.categorias = response.data?.map((c: any) => c.categoria).filter((c: string) => c) || [];
+        this.cdr.detectChanges();
+      },
+      error: (error: any) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
   }
 
   onSubmit() {
     if (this.inventarioForm.valid) {
       this.isLoading = true;
-      // TODO: Implementar servicio de inventario de granja
-      this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
-      this.isLoading = false;
       
-      // const formData = this.inventarioForm.value;
-      // const createData: CreateInventarioDTO = {
-      //   nombre: formData.nombre,
-      //   cantidad: parseFloat(formData.cantidad),
-      //   unidad: formData.unidad,
-      //   categoria: formData.categoria || undefined,
-      //   minimoStock: formData.minimoStock ? parseFloat(formData.minimoStock) : undefined,
-      //   proveedor: formData.proveedor || undefined,
-      //   observaciones: formData.observaciones || undefined
-      // };
-      // this.inventarioService.createInventario(createData).subscribe({
-      //   next: (response: any) => {
-      //     this.toastr.success('Item agregado al inventario exitosamente', 'Éxito');
-      //     setTimeout(() => {
-      //       this.router.navigate(['/dashboard/production-dashboard/inventario/list']);
-      //     }, 1000);
-      //   },
-      //   error: (error: any) => {
-      //     const errorMsg = error?.error?.message || 'Error al agregar item';
-      //     this.toastr.error(errorMsg, 'Error');
-      //     this.isLoading = false;
-      //   }
-      // });
+      const formData = this.inventarioForm.value;
+      const createData: CreateInventarioGranjaDTO = {
+        nombre: formData.nombre,
+        cantidad: parseFloat(formData.cantidad),
+        unidad: formData.unidad,
+        categoria: formData.categoria || undefined,
+        minimoStock: formData.minimoStock ? parseFloat(formData.minimoStock) : undefined,
+        proveedor: formData.proveedor || undefined,
+        observaciones: formData.observaciones || undefined
+      };
+
+      this.inventarioService.createInventario(createData).subscribe({
+        next: (response: any) => {
+          this.toastr.success('Item agregado al inventario exitosamente', 'Éxito');
+          setTimeout(() => {
+            this.router.navigate(['/dashboard/production-dashboard/inventario/list']);
+          }, 1000);
+        },
+        error: (error: any) => {
+          const errorMsg = error?.error?.message || 'Error al agregar item';
+          this.toastr.error(errorMsg, 'Error');
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.markFormGroupTouched();
+      this.toastr.warning('Por favor complete todos los campos requeridos', 'Advertencia');
     }
   }
 

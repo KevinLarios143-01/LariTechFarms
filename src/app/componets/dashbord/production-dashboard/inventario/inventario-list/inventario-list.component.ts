@@ -4,23 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ToastrService } from 'ngx-toastr';
-// import { IngresoInventarioService } from '../../../../../shared/services/ingreso-inventario.service';
-// import { InventarioGranja } from '../../../../../shared/interfaces/inventario';
+import { InventarioGranjaService } from '../../../../../shared/services/inventario-granja.service';
+import { InventarioGranja } from '../../../../../shared/interfaces/inventario';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
-
-interface InventarioGranja {
-  id: number;
-  idTenant?: number;
-  nombre: string;
-  cantidad: number;
-  unidad: string;
-  categoria?: string;
-  minimoStock?: number;
-  proveedor?: string;
-  observaciones?: string;
-  fechaCreacion?: string;
-  fechaActualizacion?: string;
-}
 
 @Component({
   selector: 'app-inventario-list',
@@ -55,78 +41,79 @@ export class InventarioListComponent implements OnInit {
   };
 
   constructor(
-    // private inventarioService: IngresoInventarioService,
+    private inventarioService: InventarioGranjaService,
     private cdr: ChangeDetectorRef,
     private toastr: ToastrService
   ) {}
 
   ngOnInit() {
-    this.toastr.info('Módulo de inventario de granja pendiente de implementar', 'Información');
-    // this.loadInventario();
-    // this.loadCategorias();
-    // this.loadStats();
+    this.loadInventario();
+    this.loadCategorias();
+    this.loadStats();
   }
 
   loadInventario() {
-    // TODO: Implementar servicio de inventario de granja
-    // this.isLoading = true;
-    // const params = {
-    //   page: this.currentPage,
-    //   limit: this.itemsPerPage,
-    //   search: this.searchTerm || undefined,
-    //   categoria: this.selectedCategoria || undefined,
-    //   stockBajo: this.stockBajo || undefined
-    // };
+    this.isLoading = true;
+    const params: any = {
+      page: this.currentPage,
+      limit: this.itemsPerPage
+    };
 
-    // this.inventarioService.getInventario(params).subscribe({
-    //   next: (response: any) => {
-    //     if (response?.data?.items) {
-    //       this.inventario = response.data.items;
-    //       this.filteredInventario = [...this.inventario];
-    //       this.totalItems = response.data.pagination.total;
-    //       this.totalPages = response.data.pagination.totalPages;
-    //     }
-    //     this.isLoading = false;
-    //     this.cdr.detectChanges();
-    //   },
-    //   error: (error: any) => {
-    //     this.toastr.error('Error al cargar inventario', 'Error');
-    //     this.isLoading = false;
-    //     this.cdr.detectChanges();
-    //   }
-    // });
+    if (this.searchTerm) {
+      params.search = this.searchTerm;
+    }
+
+    if (this.selectedCategoria) {
+      params.categoria = this.selectedCategoria;
+    }
+
+    this.inventarioService.getInventario(params).subscribe({
+      next: (response: any) => {
+        if (response?.data?.data) {
+          this.inventario = response.data.data;
+          this.filteredInventario = [...this.inventario];
+          this.totalItems = response.data.pagination.total;
+          this.totalPages = response.data.pagination.totalPages;
+        }
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error: any) => {
+        this.toastr.error('Error al cargar inventario', 'Error');
+        this.isLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   loadCategorias() {
-    // TODO: Implementar servicio de inventario de granja
-    // this.inventarioService.getCategorias().subscribe({
-    //   next: (response: any) => {
-    //     this.categorias = response.data || [];
-    //     this.cdr.detectChanges();
-    //   },
-    //   error: (error: any) => {
-    //     console.error('Error al cargar categorías:', error);
-    //   }
-    // });
+    this.inventarioService.getCategorias().subscribe({
+      next: (response: any) => {
+        this.categorias = response.data?.map((c: any) => c.categoria).filter((c: string) => c) || [];
+        this.cdr.detectChanges();
+      },
+      error: (error: any) => {
+        console.error('Error al cargar categorías:', error);
+      }
+    });
   }
 
   loadStats() {
-    // TODO: Implementar servicio de inventario de granja
-    // this.inventarioService.getStats().subscribe({
-    //   next: (response: any) => {
-    //     if (response?.data) {
-    //       this.stats = {
-    //         totalItems: response.data.totalItems,
-    //         itemsStockBajo: response.data.itemsStockBajo,
-    //         valorTotal: response.data.valorTotalInventario
-    //       };
-    //     }
-    //     this.cdr.detectChanges();
-    //   },
-    //   error: (error: any) => {
-    //     console.error('Error al cargar estadísticas:', error);
-    //   }
-    // });
+    this.inventarioService.getEstadisticas().subscribe({
+      next: (response: any) => {
+        if (response?.data) {
+          this.stats = {
+            totalItems: response.data.totalItems || 0,
+            itemsStockBajo: response.data.itemsConStockBajo || 0,
+            valorTotal: 0
+          };
+        }
+        this.cdr.detectChanges();
+      },
+      error: (error: any) => {
+        console.error('Error al cargar estadísticas:', error);
+      }
+    });
   }
 
   applyFilters() {
@@ -143,20 +130,19 @@ export class InventarioListComponent implements OnInit {
   }
 
   deleteItem(id: number) {
-    this.toastr.warning('Funcionalidad pendiente de implementar', 'Aviso');
-    // if (confirm('¿Está seguro de eliminar este item del inventario?')) {
-    //   this.inventarioService.deleteInventario(id).subscribe({
-    //     next: () => {
-    //       this.toastr.success('Item eliminado exitosamente', 'Éxito');
-    //       this.loadInventario();
-    //       this.loadStats();
-    //     },
-    //     error: (error: any) => {
-    //       const errorMsg = error?.error?.message || 'Error al eliminar item';
-    //       this.toastr.error(errorMsg, 'Error');
-    //     }
-    //   });
-    // }
+    if (confirm('¿Está seguro de eliminar este item del inventario?')) {
+      this.inventarioService.deleteInventario(id).subscribe({
+        next: () => {
+          this.toastr.success('Item eliminado exitosamente', 'Éxito');
+          this.loadInventario();
+          this.loadStats();
+        },
+        error: (error: any) => {
+          const errorMsg = error?.error?.message || 'Error al eliminar item';
+          this.toastr.error(errorMsg, 'Error');
+        }
+      });
+    }
   }
 
   getStockClass(item: InventarioGranja): string {

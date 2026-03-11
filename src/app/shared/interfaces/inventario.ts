@@ -99,3 +99,65 @@ export interface InventarioStats {
   totalHuevos: number;
   promedioCartones: number;
 }
+
+// Interfaces para Inventario de Granja
+export interface InventarioGranja {
+  id: number;
+  idTenant: number;
+  nombre: string;
+  cantidad: number;
+  unidad: string;
+  categoria: string | null;
+  minimoStock: number | null;
+  proveedor: string | null;
+  observaciones: string | null;
+  estadoStock?: string;
+}
+
+export interface InventarioGranjaResponse {
+  data: {
+    data: InventarioGranja[];
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+    };
+  };
+}
+
+export interface CreateInventarioGranjaDTO {
+  nombre: string;
+  cantidad: number;
+  unidad: string;
+  categoria?: string;
+  minimoStock?: number;
+  proveedor?: string;
+  observaciones?: string;
+}
+
+export interface UpdateInventarioGranjaDTO {
+  nombre?: string;
+  cantidad?: number;
+  unidad?: string;
+  categoria?: string;
+  minimoStock?: number;
+  proveedor?: string;
+  observaciones?: string;
+}
+
+export interface UpdateStockDTO {
+  operacion: 'entrada' | 'salida' | 'ajuste';
+  cantidad: number;
+  observaciones?: string;
+}
+
+export interface InventarioGranjaStats {
+  totalItems: number;
+  itemsPorCategoria: Array<{
+    categoria: string;
+    _count: { id: number };
+  }>;
+  itemsConStockBajo: number;
+  itemsCriticos: number;
+}
