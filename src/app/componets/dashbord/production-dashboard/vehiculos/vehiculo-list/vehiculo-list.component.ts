@@ -44,7 +44,10 @@ export class VehiculoListComponent implements OnInit {
   stats = {
     totalVehiculos: 0,
     vehiculosPorEstado: [] as any[],
-    capacidadTotal: 0
+    vehiculosPorTipo: [] as any[],
+    capacidadTotal: 0,
+    capacidadPromedio: 0,
+    promedioAntiguedad: 0
   };
 
   constructor(
@@ -107,7 +110,10 @@ export class VehiculoListComponent implements OnInit {
           this.stats = {
             totalVehiculos: response.data.totalVehiculos,
             vehiculosPorEstado: response.data.vehiculosPorEstado || [],
-            capacidadTotal: response.data.capacidadTotal
+            vehiculosPorTipo: response.data.vehiculosPorTipo || [],
+            capacidadTotal: response.data.capacidadTotal,
+            capacidadPromedio: response.data.capacidadPromedio,
+            promedioAntiguedad: response.data.promedioAntiguedad
           };
         }
         this.cdr.detectChanges();

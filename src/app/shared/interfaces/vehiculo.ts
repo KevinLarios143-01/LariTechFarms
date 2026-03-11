@@ -60,6 +60,13 @@ export interface VehiculoStats {
     tipo: string;
     cantidad: number;
   }>;
+  vehiculosPorAnio: Array<{
+    anio: number | null;
+    _count: {
+      id: number;
+    };
+  }>;
+  capacidadPromedio: number;
   capacidadTotal: number;
   promedioAntiguedad: number;
 }
