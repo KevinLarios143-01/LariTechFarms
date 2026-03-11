@@ -1,0 +1,205 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Gestión de Galeras</div>
+          <div class="d-flex gap-2">
+            <a routerLink="/dashboard/production-dashboard/galeras/add" class="btn btn-primary btn-sm">
+              <i class="ri-add-line"></i> Nueva Galera
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Filtros</div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Buscar</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="searchTerm" 
+                (keyup.enter)="onSearch()"
+                placeholder="Buscar por nombre o ubicación">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Estado</label>
+              <select class="form-select" [(ngModel)]="estadoFilter" (change)="onFilterChange()">
+                <option value="">Todos</option>
+                <option value="Activa">Activa</option>
+                <option value="Inactiva">Inactiva</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Tipo</label>
+              <select class="form-select" [(ngModel)]="tipoFilter" (change)="onFilterChange()">
+                <option value="">Todos</option>
+                <option value="Ponedoras">Ponedoras</option>
+                <option value="Pollos">Pollos</option>
+                <option value="Mixta">Mixta</option>
+              </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end gap-2">
+              <button class="btn btn-primary" (click)="onSearch()">
+                <i class="ri-search-line"></i> Buscar
+              </button>
+              <button class="btn btn-secondary" (click)="clearFilters()">
+                <i class="ri-refresh-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Galeras -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">
+            Galeras ({{ totalItems }})
+          </div>
+        </div>
+        <div class="card-body">
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else if (galeras.length === 0) {
+            <div class="text-center py-5">
+              <i class="ri-inbox-line fs-1 text-muted"></i>
+              <p class="text-muted mt-2">No se encontraron galeras</p>
+              <a routerLink="/dashboard/production-dashboard/galeras/add" class="btn btn-primary btn-sm">
+                <i class="ri-add-line"></i> Crear Primera Galera
+              </a>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table text-nowrap table-hover">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Capacidad</th>
+                    <th>Ubicación</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (galera of galeras; track galera.id) {
+                    <tr>
+                      <td>{{ galera.id }}</td>
+                      <td>
+                        <div class="fw-semibold">{{ galera.nombre }}</div>
+                        @if (galera.observaciones) {
+                          <small class="text-muted">{{ galera.observaciones }}</small>
+                        }
+                      </td>
+                      <td>
+                        @if (galera.tipo) {
+                          <span [class]="'badge ' + getTipoBadge(galera.tipo)">
+                            {{ galera.tipo }}
+                          </span>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>
+                        @if (galera.capacidad) {
+                          <span class="badge bg-light text-dark">
+                            <i class="ri-group-line"></i> {{ galera.capacidad | number }}
+                          </span>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>
+                        @if (galera.ubicacion) {
+                          <small>
+                            <i class="ri-map-pin-line"></i> {{ galera.ubicacion }}
+                          </small>
+                        } @else {
+                          <span class="text-muted">-</span>
+                        }
+                      </td>
+                      <td>
+                        <span [class]="'badge ' + getEstadoBadge(galera.estado || 'Activa')">
+                          {{ galera.estado || 'Activa' }}
+                        </span>
+                      </td>
+                      <td>
+                        <div class="btn-group" role="group">
+                          <a 
+                            [routerLink]="['/dashboard/production-dashboard/galeras/view', galera.id]" 
+                            class="btn btn-sm btn-info"
+                            title="Ver detalles">
+                            <i class="ri-eye-line"></i>
+                          </a>
+                          <a 
+                            [routerLink]="['/dashboard/production-dashboard/galeras/edit', galera.id]" 
+                            class="btn btn-sm btn-warning"
+                            title="Editar">
+                            <i class="ri-edit-line"></i>
+                          </a>
+                          <button 
+                            (click)="deleteGalera(galera.id, galera.nombre)" 
+                            class="btn btn-sm btn-danger"
+                            title="Eliminar">
+                            <i class="ri-delete-bin-line"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Paginación -->
+            @if (totalPages > 1) {
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                  Mostrando {{ (currentPage - 1) * pageSize + 1 }} - 
+                  {{ Math.min(currentPage * pageSize, totalItems) }} de {{ totalItems }}
+                </div>
+                <nav>
+                  <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" [class.disabled]="currentPage === 1">
+                      <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                    </li>
+                    @for (page of [].constructor(totalPages); track $index; let i = $index) {
+                      <li class="page-item" [class.active]="currentPage === i + 1">
+                        <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
+                      </li>
+                    }
+                    <li class="page-item" [class.disabled]="currentPage === totalPages">
+                      <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

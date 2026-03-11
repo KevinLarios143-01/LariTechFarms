@@ -140,10 +140,15 @@
                     </div>
                     <div>
                       <div class="lh-1">
-                        <h6 class="mb-1">{{lote.galera}}</h6>
+                        <h6 class="mb-1">{{lote.galeraRelacion?.nombre || lote.galera || 'Sin galera'}}</h6>
                       </div>
                       <div class="lh-1">
-                        <span class="fs-12 text-muted">{{lote.tipo}}</span>
+                        <span class="fs-12 text-muted" *ngIf="lote.galeraRelacion">
+                          {{lote.galeraRelacion.tipo}} - {{lote.galeraRelacion.estado}}
+                        </span>
+                        <span class="fs-12 text-muted" *ngIf="!lote.galeraRelacion && lote.galera">
+                          (Texto libre)
+                        </span>
                       </div>
                     </div>
                   </div>

@@ -1,0 +1,118 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Editar Galera</div>
+        </div>
+        <div class="card-body">
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            <form [formGroup]="galeraForm" (ngSubmit)="onSubmit()">
+              <div class="row g-3">
+                <!-- Nombre -->
+                <div class="col-md-6">
+                  <label class="form-label">Nombre <span class="text-danger">*</span></label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="nombre"
+                    [class.is-invalid]="isFieldInvalid('nombre')"
+                    placeholder="Ej: Galera A">
+                  @if (isFieldInvalid('nombre')) {
+                    <div class="invalid-feedback">
+                      {{ getFieldError('nombre') }}
+                    </div>
+                  }
+                </div>
+
+                <!-- Tipo -->
+                <div class="col-md-6">
+                  <label class="form-label">Tipo</label>
+                  <select class="form-select" formControlName="tipo">
+                    <option value="Ponedoras">Ponedoras</option>
+                    <option value="Pollos">Pollos</option>
+                    <option value="Mixta">Mixta</option>
+                  </select>
+                </div>
+
+                <!-- Capacidad -->
+                <div class="col-md-6">
+                  <label class="form-label">Capacidad (aves)</label>
+                  <input 
+                    type="number" 
+                    class="form-control" 
+                    formControlName="capacidad"
+                    [class.is-invalid]="isFieldInvalid('capacidad')"
+                    placeholder="Ej: 5000">
+                  @if (isFieldInvalid('capacidad')) {
+                    <div class="invalid-feedback">
+                      {{ getFieldError('capacidad') }}
+                    </div>
+                  }
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-6">
+                  <label class="form-label">Estado</label>
+                  <select class="form-select" formControlName="estado">
+                    <option value="Activa">Activa</option>
+                    <option value="Inactiva">Inactiva</option>
+                    <option value="Mantenimiento">Mantenimiento</option>
+                  </select>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="col-md-12">
+                  <label class="form-label">Ubicación</label>
+                  <input 
+                    type="text" 
+                    class="form-control" 
+                    formControlName="ubicacion"
+                    placeholder="Ej: Sector Norte, Finca Principal">
+                </div>
+
+                <!-- Observaciones -->
+                <div class="col-md-12">
+                  <label class="form-label">Observaciones</label>
+                  <textarea 
+                    class="form-control" 
+                    formControlName="observaciones"
+                    rows="3"
+                    placeholder="Notas adicionales sobre la galera"></textarea>
+                </div>
+
+                <!-- Botones -->
+                <div class="col-md-12">
+                  <div class="d-flex gap-2 justify-content-end">
+                    <button 
+                      type="button" 
+                      class="btn btn-secondary" 
+                      (click)="onCancel()"
+                      [disabled]="isSubmitting">
+                      <i class="ri-close-line"></i> Cancelar
+                    </button>
+                    <button 
+                      type="submit" 
+                      class="btn btn-primary"
+                      [disabled]="isSubmitting">
+                      @if (isSubmitting) {
+                        <span class="spinner-border spinner-border-sm me-2"></span>
+                      }
+                      <i class="ri-save-line"></i> Actualizar Galera
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

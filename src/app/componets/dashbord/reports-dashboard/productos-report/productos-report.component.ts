@@ -5,6 +5,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { ProductosService } from '../../production-dashboard/productos/services/productos.service';
 import { VentaService } from '../../../../shared/services/venta.service';
+import { LoteService } from '../../../../shared/services/lote.service';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -27,24 +28,51 @@ export class ProductosReportComponent implements OnInit {
   
   // Filtros
   categoriaSeleccionada: string = '';
+  loteSeleccionado: number | null = null;
+  
+  // Opciones
   categorias: string[] = [];
+  lotes: any[] = [];
 
   constructor(
     private productosService: ProductosService,
     private ventaService: VentaService,
+    private loteService: LoteService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
+    this.loadLotes();
     this.loadReport();
+  }
+
+  loadLotes() {
+    this.loteService.getLotes({ estado: 'Activo' }).subscribe({
+      next: (response) => {
+        this.lotes = response.data?.data || [];
+      },
+      error: (error) => {
+        console.error('Error al cargar lotes:', error);
+      }
+    });
   }
 
   loadReport() {
     this.isLoading = true;
     
+    let params: any = {};
+    
+    if (this.loteSeleccionado) {
+      params.idLote = this.loteSeleccionado;
+    }
+    
+    if (this.categoriaSeleccionada) {
+      params.categoria = this.categoriaSeleccionada;
+    }
+    
     Promise.all([
-      this.productosService.getStats().toPromise(),
-      this.productosService.getProductos().toPromise(),
+      this.productosService.getStatsWithFilters(params).toPromise(),
+      this.productosService.getProductos(params).toPromise(),
       this.ventaService.getVentasEstadisticas({}).toPromise()
     ]).then(([statsResponse, productosResponse, ventasStatsResponse]) => {
       console.log('Estadísticas productos:', statsResponse);

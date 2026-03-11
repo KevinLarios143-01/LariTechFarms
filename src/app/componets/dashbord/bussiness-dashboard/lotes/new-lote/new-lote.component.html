@@ -26,11 +26,18 @@
             </div>
             <div class="col-md-6">
               <div class="form-group mb-3">
-                <label class="form-label" for="galera">Galera *</label>
-                <input type="text" class="form-control" 
-                       [class.is-invalid]="loteForm.get('galera')?.invalid && loteForm.get('galera')?.touched"
-                       formControlName="galera" placeholder="Ingrese el nombre de la galera">
-                <div *ngIf="loteForm.get('galera')?.invalid && loteForm.get('galera')?.touched" class="invalid-feedback d-block">
+                <label class="form-label" for="idGalera">Galera *</label>
+                <ng-select class="form-control p-0" 
+                           [class.is-invalid]="loteForm.get('idGalera')?.invalid && loteForm.get('idGalera')?.touched"
+                           formControlName="idGalera" 
+                           placeholder="Seleccione una galera"
+                           bindLabel="nombre"
+                           bindValue="id">
+                  <ng-option *ngFor="let galera of galeras" [value]="galera.id">
+                    {{galera.nombre}} - {{galera.tipo}} (Capacidad: {{galera.capacidad || 'N/A'}})
+                  </ng-option>
+                </ng-select>
+                <div *ngIf="loteForm.get('idGalera')?.invalid && loteForm.get('idGalera')?.touched" class="invalid-feedback d-block">
                   La galera es requerida
                 </div>
               </div>
