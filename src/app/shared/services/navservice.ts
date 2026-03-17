@@ -319,6 +319,12 @@ export class NavService implements OnDestroy {
           title: 'Reporte de Empleados',
           type: 'link',
           selected: false
+        },
+        {
+          path: '/dashboard/reports/vehiculos',
+          title: 'Reporte de Vehículos',
+          type: 'link',
+          selected: false
         }
       ]
     },

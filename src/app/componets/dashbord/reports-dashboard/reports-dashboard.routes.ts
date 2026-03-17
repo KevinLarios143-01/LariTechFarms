@@ -33,6 +33,11 @@ export const admin: Routes = [
         path: 'empleados',
         loadComponent: () =>
           import('./empleados-report/empleados-report.component').then((m) => m.EmpleadosReportComponent)
+      },
+      {
+        path: 'vehiculos',
+        loadComponent: () =>
+          import('./vehiculos-report/vehiculos-report.component').then((m) => m.VehiculosReportComponent)
       }
     ]
   }
