@@ -11,6 +11,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AppStateService } from '../../shared/services/app-state.service';
+import { PermissionsService } from '../../shared/services/permissions.service';
 
 @Component({
   selector: 'app-login',
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private readonly firebaseService: FirebaseService,
     private readonly toastr: ToastrService,
     private readonly appStateService: AppStateService,
+    private readonly permissionsService: PermissionsService,
   ) {
     document.body.classList.add('error-1');
     const htmlElement =
@@ -191,7 +193,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (res && res.data && res.data.token) {
           this.authservice.saveToken(res.data.token);
-          this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
+          this.permissionsService.init().subscribe(() => {
+            const redirect = this.permissionsService.getDefaultRedirect();
+            this.router.navigate([redirect]);
+          });
           this.toastr.success(res.message || 'Login exitoso', 'Backend', {
             timeOut: 3000,
             positionClass: 'toast-top-right',
@@ -228,7 +233,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           if (response && response.data && response.data.token) {
             this.authservice.saveToken(response.data.token);
-            this.router.navigate(['/dashboard/hrmdashboards/dashboard']);
+            this.permissionsService.init().subscribe(() => {
+              const redirect = this.permissionsService.getDefaultRedirect();
+              this.router.navigate([redirect]);
+            });
             this.toastr.success('Login exitoso', 'Acceso Autorizado', {
               timeOut: 3000,
               positionClass: 'toast-top-right',
@@ -250,6 +258,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * Logout universal (Firebase y Backend)
    */
   logout() {
+    this.permissionsService.clear();
     this.authservice.singout();
     this.authservice.removeToken();
     this.router.navigate(['/']);

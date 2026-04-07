@@ -6,8 +6,9 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { Menu, NavService } from '../../services/navservice';
-import { Subscription, fromEvent } from 'rxjs';
+import { Subscription, fromEvent, combineLatest } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
+import { PermissionsService } from '../../services/permissions.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class SidebarComponent {
     public router: Router,
     public renderer: Renderer2,
     private elementRef: ElementRef,
-    private cd: ChangeDetectorRef,) {
+    private cd: ChangeDetectorRef,
+    private permissionsService: PermissionsService,) {
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
 
 
@@ -46,8 +48,11 @@ export class SidebarComponent {
     });
   }
   ngOnInit() {
-    this.menuitemsSubscribe$ = this.navServices.items.subscribe((items) => {
-      this.menuItems = items;
+    this.menuitemsSubscribe$ = combineLatest([
+      this.navServices.items,
+      this.permissionsService.permissions$
+    ]).subscribe(([items, _]) => {
+      this.menuItems = this.permissionsService.getFilteredMenuItems(items);
     });
 
 

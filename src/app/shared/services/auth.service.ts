@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import firebase from 'firebase/compat/app';
+import { PermissionsService } from './permissions.service';
 export interface User {
   uid: string;
   email: string;
@@ -33,7 +34,8 @@ export class AuthService {
     private router: Router,
     public ngZone: NgZone,
     private cookieService: CookieService,
-    private http: HttpClient
+    private http: HttpClient,
+    private permissionsService: PermissionsService,
   ) {
     this.afu.authState.subscribe((auth: any) => {
       this.authState = auth;
@@ -110,6 +112,8 @@ export class AuthService {
    * Logout universal
    */
   universalLogout() {
+    // Limpiar permisos primero
+    this.permissionsService.clear();
     // Cerrar sesión de Firebase
     this.singout();
     // Remover token del backend

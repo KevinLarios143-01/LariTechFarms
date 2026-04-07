@@ -13,6 +13,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { RightSidebarComponent } from '../right-sidebar/right-sidebar.component';
 import { ToastrService } from 'ngx-toastr';
+import { PermissionsService } from '../../services/permissions.service';
 
 
 interface Item {
@@ -46,7 +47,8 @@ export class HeaderComponent implements OnInit {
     public modalService: NgbModal,
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly toastr: ToastrService
+    private readonly toastr: ToastrService,
+    private readonly permissionsService: PermissionsService,
   ) { this.localStorageBackUp() }
 
   private readonly offcanvasService = inject(NgbOffcanvas);
@@ -382,6 +384,7 @@ export class HeaderComponent implements OnInit {
       positionClass: 'toast-top-right',
     });
     setTimeout(() => {
+      this.permissionsService.clear();
       localStorage.clear();
       this.router.navigate(['/auth/login']);
     }, 2000);

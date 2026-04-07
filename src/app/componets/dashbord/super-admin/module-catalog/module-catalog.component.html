@@ -1,0 +1,89 @@
+<app-hr-dashboard-page-header [title]="'Catálogo de Módulos'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+</app-hr-dashboard-page-header>
+
+<!-- Start::row-1 -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h3 class="card-title">Listado de Módulos</h3>
+        <button class="btn btn-sm btn-success" (click)="openCreateModal(createEditModal)">
+          <i class="fe fe-plus"></i> Nuevo Módulo
+        </button>
+      </div>
+      <div class="card-body">
+        @if(loading) {
+        <div class="text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+        } @else {
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for(module of modules; track module.id_module) {
+              <tr class="border-bottom">
+                <th scope="row">{{module.id_module}}</th>
+                <td>{{module.name}}</td>
+                <td>{{module.description || '—'}}</td>
+                <td>
+                  <span class="badge" [class]="module.is_active ? 'bg-success' : 'bg-danger'">
+                    {{module.is_active ? 'Activo' : 'Inactivo'}}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-primary me-1" (click)="openEditModal(createEditModal, module)">
+                    <i class="fe fe-edit-2"></i>
+                  </button>
+                  <button class="btn btn-sm me-1" [class]="module.is_active ? 'btn-warning' : 'btn-success'"
+                    (click)="toggleStatus(module)">
+                    <i [class]="module.is_active ? 'fe fe-x' : 'fe fe-check'"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger" (click)="confirmDelete(module)">
+                    <i class="fe fe-trash-2"></i>
+                  </button>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create/Edit Module Modal -->
+<ng-template #createEditModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{editingModule ? 'Editar Módulo' : 'Nuevo Módulo'}}</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label class="form-label">Nombre <span class="text-danger">*</span></label>
+      <input class="form-control" placeholder="Nombre del módulo" [(ngModel)]="moduleName">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Descripción</label>
+      <input class="form-control" placeholder="Descripción del módulo" [(ngModel)]="moduleDescription">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="javascript:;" class="btn btn-outline-danger me-2" (click)="modal.dismiss('Cross click')">Cerrar</a>
+    <a href="javascript:;" class="btn btn-success" (click)="saveModule(modal)">
+      {{editingModule ? 'Actualizar' : 'Guardar'}}
+    </a>
+  </div>
+</ng-template>

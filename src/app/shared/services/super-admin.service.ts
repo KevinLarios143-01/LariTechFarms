@@ -117,4 +117,24 @@ export class SuperAdminService {
       isEnabled: isEnabled
     });
   }
+
+  getModuleCatalog(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/module-catalog`);
+  }
+
+  createModuleCatalog(data: { name: string; description?: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/module-catalog`, data);
+  }
+
+  updateModuleCatalog(id: number, data: { name: string; description?: string }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/module-catalog/${id}`, data);
+  }
+
+  toggleModuleCatalogStatus(id: number, is_active: boolean): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/module-catalog/${id}/status`, { is_active });
+  }
+
+  deleteModuleCatalog(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/module-catalog/${id}`);
+  }
 }

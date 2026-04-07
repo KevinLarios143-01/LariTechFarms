@@ -50,6 +50,11 @@ const routes: Routes = [
           import('./modules/modules.component').then((m) => m.ModulesComponent),
           
       },
+      {
+        path: 'module-catalog',
+        loadComponent: () =>
+          import('./module-catalog/module-catalog.component').then((m) => m.ModuleCatalogComponent),
+      },
       
     ]
   }
