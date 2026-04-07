@@ -55,6 +55,12 @@ const routes: Routes = [
         loadComponent: () =>
           import('./module-catalog/module-catalog.component').then((m) => m.ModuleCatalogComponent),
       },
+      {
+        path: 'role-access-matrix',
+        loadComponent: () =>
+          import('./role-access-matrix/role-access-matrix.component')
+            .then((m) => m.RoleAccessMatrixComponent),
+      },
       
     ]
   }

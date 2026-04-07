@@ -273,6 +273,7 @@ export class NavService implements OnDestroy {
             { path: '/dashboard/super-admin/subscription-plans', title: 'Planes de Suscripción', type: 'link', selected: false },
             { path: '/dashboard/super-admin/modules', title: 'Gestión de Módulos', type: 'link', selected: false },
             { path: '/dashboard/super-admin/module-catalog', title: 'Catálogo de Módulos', type: 'link', selected: false },
+            { path: '/dashboard/super-admin/role-access-matrix', title: 'Matriz de Acceso', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/invoices', title: 'Facturas', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/super-admins', title: 'Super Administradores', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/settings', title: 'Configuración', type: 'link', selected: false },

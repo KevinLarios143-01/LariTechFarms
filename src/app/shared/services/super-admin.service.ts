@@ -137,4 +137,28 @@ export class SuperAdminService {
   deleteModuleCatalog(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/module-catalog/${id}`);
   }
+
+  // --- Role Modules (Matriz de Acceso Rol-Módulo) ---
+
+  getRoleModules(tenantId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/role-modules`, { params: { idTenant: tenantId.toString() } });
+  }
+
+  getRoleModulesByRole(role: string, tenantId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/role-modules/by-role`, {
+      params: { role, idTenant: tenantId.toString() }
+    });
+  }
+
+  assignRoleModule(data: { role: string; id_module: number; id_tenant: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/role-modules`, data);
+  }
+
+  revokeRoleModule(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/role-modules/${id}`);
+  }
+
+  bulkUpdateRoleModules(data: { role: string; id_tenant: number; module_ids: number[] }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/role-modules/bulk`, data);
+  }
 }

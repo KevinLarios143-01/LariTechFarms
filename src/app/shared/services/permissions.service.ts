@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
-import { catchError, filter, first, map, tap } from 'rxjs/operators';
+import { catchError, filter, first, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {
   UserRole,
@@ -16,6 +16,8 @@ import { Menu } from './navservice';
 @Injectable({ providedIn: 'root' })
 export class PermissionsService {
   private tenantModules$ = new BehaviorSubject<string[]>([]);
+  private roleModules$ = new BehaviorSubject<string[]>([]);
+  private usingFallback$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<UserRole | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
 
@@ -73,12 +75,34 @@ export class PermissionsService {
           } else {
             this.tenantModules$.next([]);
           }
-          this.initialized$.next(true);
         }),
         catchError(() => {
           this.tenantModules$.next([]);
-          this.initialized$.next(true);
           return of(undefined);
+        }),
+        switchMap(() =>
+          this.http
+            .get<{ success: boolean; data: { modules: string[] } }>(
+              `${this.apiUrl}/v1/role-modules/by-role`,
+              { params: { role: rol, idTenant: String(idTenant) } }
+            )
+            .pipe(
+              tap((res) => {
+                if (res?.success && res.data?.modules) {
+                  this.roleModules$.next(res.data.modules);
+                  this.usingFallback$.next(false);
+                } else {
+                  this.useFallback(rol);
+                }
+              }),
+              catchError(() => {
+                this.useFallback(rol);
+                return of(undefined);
+              })
+            )
+        ),
+        tap(() => {
+          this.initialized$.next(true);
         }),
         map(() => undefined)
       );
@@ -87,6 +111,8 @@ export class PermissionsService {
   /** Reset all state (call on logout). */
   clear(): void {
     this.tenantModules$.next([]);
+    this.roleModules$.next([]);
+    this.usingFallback$.next(false);
     this.userRole$.next(null);
     this.initialized$.next(false);
   }
@@ -109,10 +135,9 @@ export class PermissionsService {
     return this.tenantModules$.getValue().includes(module);
   }
 
-  /** Check if a role has access to a module per the static matrix. */
+  /** Check if a role has access to a module using dynamic role modules. */
   roleHasModule(role: UserRole, module: ModuleName): boolean {
-    const modules = ROLE_ACCESS_MATRIX[role];
-    return modules ? modules.includes(module) : false;
+    return this.roleModules$.getValue().includes(module);
   }
 
   /**
@@ -151,7 +176,7 @@ export class PermissionsService {
     }
 
     // Fallback: find first accessible route from the role's allowed modules
-    const allowedModules = ROLE_ACCESS_MATRIX[role] || [];
+    const allowedModules = this.roleModules$.getValue();
     for (const mod of allowedModules) {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];
@@ -232,6 +257,15 @@ export class PermissionsService {
   }
 
   // ---- Private helpers ----
+
+  private useFallback(role: string): void {
+    if (VALID_ROLES.includes(role as UserRole)) {
+      this.roleModules$.next(ROLE_ACCESS_MATRIX[role as UserRole] || []);
+    } else {
+      this.roleModules$.next([]);
+    }
+    this.usingFallback$.next(true);
+  }
 
   private filterMenuChildren(children: Menu[]): Menu[] {
     const result: Menu[] = [];

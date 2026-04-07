@@ -1,0 +1,88 @@
+<app-hr-dashboard-page-header [title]="'Matriz de Acceso Rol-Módulo'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+</app-hr-dashboard-page-header>
+
+<!-- Tenant Selector (superadmin only) -->
+@if(isSuperadmin) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Seleccionar Empresa</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label class="form-label">Empresa</label>
+              <ng-select class="form-control custom-select p-0" placeholder="Seleccione una empresa"
+                [(ngModel)]="selectedTenantId" bindValue="id" bindLabel="name" [items]="tenants"
+                (ngModelChange)="onTenantChange($event)">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Loading Spinner -->
+@if(loading) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Access Matrix Table -->
+@if(selectedTenantId && !loading && modules.length > 0) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Matriz de Acceso</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">Módulo</th>
+                @for(role of roles; track role) {
+                <th scope="col" class="text-center text-capitalize">{{ role }}</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for(mod of modules; track mod.id_module) {
+              <tr class="border-bottom">
+                <td>
+                  <strong>{{ mod.name }}</strong>
+                  @if(mod.description) {
+                  <br><small class="text-muted">{{ mod.description }}</small>
+                  }
+                </td>
+                @for(role of roles; track role) {
+                <td class="text-center">
+                  <div class="form-check d-flex justify-content-center mb-0">
+                    <input class="form-check-input" type="checkbox"
+                      [checked]="matrix[role][mod.id_module].assigned"
+                      [disabled]="isCheckboxDisabled(role, mod.id_module)"
+                      (change)="toggleAccess(role, mod.id_module)">
+                  </div>
+                </td>
+                }
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
