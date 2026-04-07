@@ -1,0 +1,288 @@
+<div class="container-fluid">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header justify-content-between">
+          <div class="card-title">Reporte de Vehículos - Registro Mensual de Combustible</div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-danger btn-sm" (click)="exportarPDF()" [disabled]="isLoading || registros.length === 0">
+              <i class="ri-file-pdf-line"></i> Exportar PDF
+            </button>
+            <button class="btn btn-success btn-sm" (click)="exportarExcel()" [disabled]="isLoading || registros.length === 0">
+              <i class="ri-file-excel-line"></i> Exportar Excel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card custom-card">
+        <div class="card-header">
+          <div class="card-title">Filtros</div>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-3">
+              <label class="form-label">Vehículo / Placa</label>
+              <select class="form-select" [(ngModel)]="vehiculoSeleccionado">
+                <option [ngValue]="null">Todos los vehículos</option>
+                @for (v of vehiculos; track v.id) {
+                  <option [ngValue]="v.id">{{ v.placa }} - {{ v.marca }} {{ v.modelo }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Mes</label>
+              <select class="form-select" [(ngModel)]="mesSeleccionado">
+                @for (mes of meses; track mes.value) {
+                  <option [value]="mes.value">{{ mes.label }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Año</label>
+              <select class="form-select" [(ngModel)]="anioSeleccionado">
+                @for (anio of anios; track anio) {
+                  <option [value]="anio">{{ anio }}</option>
+                }
+              </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+              <button class="btn btn-primary w-100" (click)="loadReport()" [disabled]="isLoading">
+                @if (isLoading) {
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                }
+                <i class="ri-refresh-line"></i> Actualizar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (isLoading) {
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card custom-card">
+          <div class="card-body text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-3">Generando reporte...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <!-- Tarjetas resumen -->
+    <div class="row">
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+                  <i class="ri-file-list-3-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ registros.length }}</h5>
+                <p class="mb-0 fs-12 text-muted">Total Registros</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-warning-transparent">
+                  <i class="ri-gas-station-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ totalGalones | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Total Galones</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+                  <i class="ri-money-dollar-circle-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">Q{{ totalCosto | number:'1.2-2' }}</h5>
+                <p class="mb-0 fs-12 text-muted">Costo Total</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-6">
+        <div class="card custom-card">
+          <div class="card-body">
+            <div class="d-flex align-items-top">
+              <div class="me-3">
+                <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+                  <i class="ri-truck-line fs-18"></i>
+                </span>
+              </div>
+              <div class="flex-fill">
+                <h5 class="fw-semibold mb-0">{{ registrosPorVehiculo.length }}</h5>
+                <p class="mb-0 fs-12 text-muted">Vehículos Activos</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumen por Vehículo -->
+    @if (registrosPorVehiculo.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="ri-truck-line me-2"></i>
+                Consumo por Vehículo - {{ getMesLabel() }}
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Placa</th>
+                      <th>Marca</th>
+                      <th>Modelo</th>
+                      <th>Total Galones</th>
+                      <th>Costo Total</th>
+                      <th>Registros</th>
+                      <th>Promedio/Registro</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (v of registrosPorVehiculo; track v.placa; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td class="fw-semibold">
+                          <span class="badge bg-primary">{{ v.placa }}</span>
+                        </td>
+                        <td>{{ v.marca }}</td>
+                        <td>{{ v.modelo }}</td>
+                        <td>
+                          <span class="badge bg-warning-transparent text-warning">
+                            {{ v.totalGalones | number:'1.2-2' }} gal
+                          </span>
+                        </td>
+                        <td class="fw-semibold text-danger">Q{{ v.totalCosto | number:'1.2-2' }}</td>
+                        <td>{{ v.registros }}</td>
+                        <td class="text-muted">Q{{ (v.totalCosto / v.registros) | number:'1.2-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr class="table-active">
+                      <td colspan="4" class="text-end fw-semibold">TOTALES:</td>
+                      <td class="fw-semibold">{{ totalGalones | number:'1.2-2' }} gal</td>
+                      <td class="fw-semibold text-danger">Q{{ totalCosto | number:'1.2-2' }}</td>
+                      <td class="fw-semibold">{{ registros.length }}</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Detalle de Registros -->
+    @if (registros.length > 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-header">
+              <div class="card-title">
+                <i class="ri-list-check me-2"></i>
+                Detalle de Registros ({{ registros.length }})
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table text-nowrap table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Fecha</th>
+                      <th>Placa</th>
+                      <th>Marca / Modelo</th>
+                      <th>Tipo Operación</th>
+                      <th>Galones</th>
+                      <th>Costo</th>
+                      <th>Registrado por</th>
+                      <th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (r of registros; track r.id; let i = $index) {
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ r.fecha | date:'dd/MM/yyyy':'UTC' }}</td>
+                        <td>
+                          <span class="badge bg-primary">{{ r.vehiculo?.placa || 'N/A' }}</span>
+                        </td>
+                        <td>{{ r.vehiculo?.marca || '-' }} {{ r.vehiculo?.modelo || '' }}</td>
+                        <td>
+                          <span class="badge bg-info-transparent text-info">{{ r.tipoOperacion }}</span>
+                        </td>
+                        <td>{{ r.galonesAplicados | number:'1.2-2' }}</td>
+                        <td class="fw-semibold text-danger">Q{{ r.costoTotal | number:'1.2-2' }}</td>
+                        <td class="text-muted">{{ r.usuario?.nombre }} {{ r.usuario?.apellido }}</td>
+                        <td class="text-muted">{{ r.observaciones || '-' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (registros.length === 0) {
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card custom-card">
+            <div class="card-body text-center py-5">
+              <i class="ri-truck-line fs-48 text-muted mb-3 d-block"></i>
+              <h5 class="text-muted">No hay registros de combustible para {{ getMesLabel() }}</h5>
+              <p class="text-muted">Intenta seleccionar otro mes o vehículo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  }
+</div>

@@ -47,9 +47,10 @@ export class ProductosReportComponent implements OnInit {
   }
 
   loadLotes() {
-    this.loteService.getLotes({ estado: 'Activo' }).subscribe({
+    this.loteService.getLotes({ estado: 'Activo', limit: 100 }).subscribe({
       next: (response) => {
         this.lotes = response.data?.data || [];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar lotes:', error);
@@ -73,7 +74,7 @@ export class ProductosReportComponent implements OnInit {
     Promise.all([
       this.productosService.getStatsWithFilters(params).toPromise(),
       this.productosService.getProductos(params).toPromise(),
-      this.ventaService.getVentasEstadisticas({}).toPromise()
+      this.ventaService.getVentasEstadisticas(params).toPromise()
     ]).then(([statsResponse, productosResponse, ventasStatsResponse]) => {
       console.log('Estadísticas productos:', statsResponse);
       console.log('Productos:', productosResponse);
