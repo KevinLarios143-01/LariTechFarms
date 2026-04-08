@@ -88,7 +88,7 @@ export class PermissionsService {
             )
             .pipe(
               tap((res) => {
-                if (res?.success && res.data?.modules) {
+                if (res?.success && res.data?.modules && res.data.modules.length > 0) {
                   this.roleModules$.next(res.data.modules);
                   this.usingFallback$.next(false);
                 } else {

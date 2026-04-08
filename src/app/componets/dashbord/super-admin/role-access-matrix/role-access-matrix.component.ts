@@ -22,7 +22,7 @@ export class RoleAccessMatrixComponent implements OnInit {
   tenants: any[] = [];
   selectedTenantId: number | null = null;
   modules: any[] = [];
-  roles: string[] = ['superadmin', 'admin', 'gerente', 'supervisor', 'vendedor', 'veterinario'];
+  roles: string[] = ['superadmin', 'admin', 'gerente', 'supervisor', 'vendedor', 'operador'];
   matrix: Record<string, Record<number, MatrixCell>> = {};
   loading = false;
   isSuperadmin = false;

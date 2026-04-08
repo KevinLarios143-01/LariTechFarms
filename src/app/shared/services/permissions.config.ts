@@ -5,14 +5,14 @@
  */
 
 // Roles válidos del sistema
-export type UserRole = 'superadmin' | 'admin' | 'gerente' | 'supervisor' | 'vendedor' | 'veterinario';
+export type UserRole = 'superadmin' | 'admin' | 'gerente' | 'supervisor' | 'vendedor' | 'operador';
 
 // Módulos del sistema
 export type ModuleName = 'RH' | 'Clientes' | 'Business' | 'Lotes' | 'Producción' | 'Reportería' | 'Super Admin';
 
 // Array de roles válidos para validación
 export const VALID_ROLES: UserRole[] = [
-  'superadmin', 'admin', 'gerente', 'supervisor', 'vendedor', 'veterinario'
+  'superadmin', 'admin', 'gerente', 'supervisor', 'vendedor', 'operador'
 ];
 
 // Mapa módulo → prefijos de ruta
@@ -36,7 +36,7 @@ export const ROLE_ACCESS_MATRIX: Record<UserRole, ModuleName[]> = {
   gerente:     ['RH', 'Clientes', 'Business', 'Lotes', 'Producción', 'Reportería'],
   supervisor:  ['Business', 'Lotes', 'Producción', 'Reportería'],
   vendedor:    ['Clientes', 'Business', 'Lotes', 'Reportería'],
-  veterinario: ['Lotes', 'Producción', 'Reportería'],
+  operador: ['Lotes', 'Producción', 'Reportería'],
 };
 
 // Redirecciones post-login por rol
@@ -46,5 +46,5 @@ export const DEFAULT_REDIRECTS: Record<UserRole, string> = {
   gerente:     '/dashboard/hrmdashboards/dashboard',
   supervisor:  '/dashboard/production-dashboard/huevos',
   vendedor:    '/dashboard/business-dashboard/ventas/list',
-  veterinario: '/dashboard/production-dashboard/huevos',
+  operador: '/dashboard/production-dashboard/huevos',
 };
