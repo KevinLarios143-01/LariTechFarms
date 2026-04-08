@@ -156,10 +156,14 @@ export class PermissionsService {
     return this.tenantModules$.getValue().includes(module);
   }
 
-  /** Check if a role has access to a module using dynamic role modules + user overrides. */
+  /** Check if a role has access to a module using dynamic role modules or user overrides. */
   roleHasModule(role: UserRole, module: ModuleName): boolean {
-    return this.roleModules$.getValue().includes(module) ||
-           this.userModules$.getValue().includes(module);
+    // If user has custom config, use that; otherwise use role modules
+    const userMods = this.userModules$.getValue();
+    if (userMods.length > 0) {
+      return userMods.includes(module);
+    }
+    return this.roleModules$.getValue().includes(module);
   }
 
   /**
@@ -197,11 +201,9 @@ export class PermissionsService {
       return defaultRoute;
     }
 
-    // Fallback: find first accessible route from the role's allowed modules
-    const allowedModules = [...new Set([
-      ...this.roleModules$.getValue(),
-      ...this.userModules$.getValue()
-    ])];
+    // Fallback: find first accessible route from allowed modules
+    const userMods = this.userModules$.getValue();
+    const allowedModules = userMods.length > 0 ? userMods : this.roleModules$.getValue();
     for (const mod of allowedModules) {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];

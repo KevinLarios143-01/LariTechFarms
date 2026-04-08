@@ -1,4 +1,4 @@
-<app-hr-dashboard-page-header [title]="'Matriz de Acceso por Usuario'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+<app-hr-dashboard-page-header [title]="'Acceso por Usuario'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
 </app-hr-dashboard-page-header>
 
 <!-- Selectores -->
@@ -61,7 +61,7 @@
 }
 
 <!-- Matrix Table -->
-@if (selectedUsuarioId && !loading && modules.length > 0) {
+@if (selectedUsuarioId && !loading && roleModules.length > 0) {
 <div class="row">
   <div class="col-md-12">
     <div class="card custom-card">
@@ -69,23 +69,36 @@
         <h3 class="card-title">
           Módulos de {{ selectedUsuario?.nombre }} {{ selectedUsuario?.apellido || '' }}
         </h3>
-        <span class="badge {{ getRolBadgeClass(selectedUsuario?.rol) }}">Rol base: {{ selectedUsuario?.rol }}</span>
+        <div class="d-flex align-items-center gap-2">
+          @if (hasCustomConfig) {
+            <span class="badge bg-warning-transparent text-warning">Personalizado</span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="resetToRole()" [disabled]="saving">
+              <i class="ri-refresh-line"></i> Restaurar al rol
+            </button>
+          } @else {
+            <span class="badge bg-success-transparent text-success">Hereda del rol</span>
+          }
+          <span class="badge {{ getRolBadgeClass(selectedUsuario?.rol) }}">{{ selectedUsuario?.rol }}</span>
+        </div>
       </div>
       <div class="card-body">
-        <p class="text-muted mb-3">
-          Estos módulos son asignaciones individuales para este usuario. Se suman a los módulos que ya tiene por su rol.
-        </p>
+        @if (!hasCustomConfig) {
+          <div class="alert alert-info mb-3">
+            <i class="ri-information-line me-1"></i>
+            Este usuario hereda todos los módulos de su rol. Al desmarcar un módulo se creará una configuración personalizada.
+          </div>
+        }
         <div class="table-responsive">
           <table class="table mb-0 text-nowrap table-bordered border">
             <thead>
               <tr class="border-bottom">
                 <th scope="col">Módulo</th>
                 <th scope="col">Descripción</th>
-                <th scope="col" class="text-center">Acceso</th>
+                <th scope="col" class="text-center" style="width: 100px;">Acceso</th>
               </tr>
             </thead>
             <tbody>
-              @for (mod of modules; track mod.id_module) {
+              @for (mod of roleModules; track mod.id_module) {
               <tr class="border-bottom">
                 <td><strong>{{ mod.name }}</strong></td>
                 <td><small class="text-muted">{{ mod.description || '-' }}</small></td>
@@ -93,7 +106,7 @@
                   <div class="form-check d-flex justify-content-center mb-0">
                     <input class="form-check-input" type="checkbox"
                       [checked]="matrix[mod.id_module]?.assigned"
-                      [disabled]="isCheckboxDisabled(mod.id_module)"
+                      [disabled]="saving"
                       (change)="toggleAccess(mod.id_module)">
                   </div>
                 </td>
@@ -102,6 +115,20 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+@if (selectedUsuarioId && !loading && roleModules.length === 0) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-body text-center py-5">
+        <i class="ri-shield-line fs-48 text-muted mb-3 d-block"></i>
+        <h5 class="text-muted">El rol "{{ selectedUsuario?.rol }}" no tiene módulos asignados</h5>
+        <p class="text-muted">Primero asigna módulos al rol desde la Matriz de Acceso por Rol</p>
       </div>
     </div>
   </div>
