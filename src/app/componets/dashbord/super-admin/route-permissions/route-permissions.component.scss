@@ -1,0 +1,18 @@
+.form-check-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.form-check-input {
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.table-light td {
+  background-color: rgba(var(--primary-rgb), 0.05);
+}
+
+.btn-icon {
+  line-height: 1;
+}

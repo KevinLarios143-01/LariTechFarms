@@ -1,24 +1,13 @@
+// Justificación: Sobrescritura necesaria porque el estilo global de .card.custom-card
+// establece card-header background como $custom-white !important. Estas reglas permiten
+// que las cards internas con clases .border y .bg-light muestren el diseño de detalle
+// con fondo claro y borde visible, usando variables CSS de la plantilla Dayone.
+
 .card.border {
-  border: 1px solid #e9ecef !important;
+  border: 1px solid var(--default-border) !important;
 }
 
 .card-header.bg-light {
-  background-color: #f8f9fa !important;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.progress {
-  background-color: #e9ecef;
-}
-
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.alert-light {
-  background-color: #f8f9fa;
-  border-color: #e9ecef;
-  color: #495057;
+  background-color: rgb(var(--light-rgb)) !important;
+  border-bottom: 1px solid var(--default-border);
 }

@@ -1,3 +1,6 @@
+/* Estilo de negocio: padding personalizado para centrar visualmente el contenido
+   de la página de acceso denegado. El padding vertical (3rem) es mayor al estándar
+   de Bootstrap (.card-body usa 1.5rem) para dar más espacio visual al mensaje de error. */
 .card-body.text-center {
   padding: 3rem 1rem;
 }

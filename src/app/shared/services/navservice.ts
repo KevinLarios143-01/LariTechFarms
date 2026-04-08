@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, BehaviorSubject, fromEvent } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operators';
+import { takeUntil, debounceTime, filter } from 'rxjs/operators';
 
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 // Menu
 export interface Menu {
   headTitle?: string;
@@ -70,8 +70,10 @@ export class NavService implements OnDestroy {
         }
       });
     if (window.innerWidth < 991) {
-      // Detect Route change sidebar close
-      this.router.events.subscribe((event) => {
+      // Detect Route change sidebar close — only on NavigationEnd to avoid multiple close/reopen cycles
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
         this.collapseSidebar = true;
         this.megaMenu = false;
         this.levelMenu = false;
@@ -275,6 +277,7 @@ export class NavService implements OnDestroy {
             { path: '/dashboard/super-admin/module-catalog', title: 'Catálogo de Módulos', type: 'link', selected: false },
             { path: '/dashboard/super-admin/role-access-matrix', title: 'Matriz de Acceso', type: 'link', selected: false },
             { path: '/dashboard/super-admin/user-access-matrix', title: 'Acceso por Usuario', type: 'link', selected: false },
+            { path: '/dashboard/super-admin/route-permissions', title: 'Permisos de Ruta', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/invoices', title: 'Facturas', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/super-admins', title: 'Super Administradores', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/settings', title: 'Configuración', type: 'link', selected: false },

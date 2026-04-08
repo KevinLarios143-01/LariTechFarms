@@ -9,6 +9,8 @@ import { Menu, NavService } from '../../services/navservice';
 import { Subscription, fromEvent, combineLatest } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { PermissionsService } from '../../services/permissions.service';
+import { UserSessionService } from '../../services/user-session.service';
+import { UserData } from '../../interfaces/login-response.interface';
 
 
 @Component({
@@ -24,13 +26,20 @@ export class SidebarComponent {
   options = { autoHide: false, scrollbarMinSize: 100 };
   public menuItems!: Menu[];
   public menuitemsSubscribe$!: Subscription;
+
+  user: UserData | null = null;
+  defaultAvatar = './assets/images/users/16.jpg';
+  private userSubscription?: Subscription;
+
   constructor(
     private navServices: NavService,
     public router: Router,
     public renderer: Renderer2,
     private elementRef: ElementRef,
     private cd: ChangeDetectorRef,
-    private permissionsService: PermissionsService,) {
+    private permissionsService: PermissionsService,
+    private readonly userSessionService: UserSessionService,
+  ) {
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
 
 
@@ -48,6 +57,11 @@ export class SidebarComponent {
     });
   }
   ngOnInit() {
+    // Subscribe to user session data
+    this.userSubscription = this.userSessionService.user$.subscribe(user => {
+      this.user = user;
+    });
+
     this.menuitemsSubscribe$ = combineLatest([
       this.navServices.items,
       this.permissionsService.permissions$
@@ -317,6 +331,7 @@ export class SidebarComponent {
     this.cd.detectChanges();
   }
   ngOnDestroy() {
+    this.userSubscription?.unsubscribe();
     this.menuitemsSubscribe$.unsubscribe();
     this.windowSubscribe$.unsubscribe();
     document.querySelector('html')?.setAttribute('data-vertical-style', 'overlay');

@@ -1,15 +1,13 @@
+// Estilos de negocio: etiquetas y valores de información del detalle de cliente.
+// Usan variables CSS de la plantilla Dayone para colores y tipografía.
+
 .info-label {
   font-weight: 600;
-  color: #6c757d;
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
 }
 
 .info-value {
   font-size: 1.1rem;
-  color: #212529;
-}
-
-.badge {
-  font-size: 0.875rem;
-  padding: 0.5em 0.75em;
+  color: var(--default-text-color);
 }

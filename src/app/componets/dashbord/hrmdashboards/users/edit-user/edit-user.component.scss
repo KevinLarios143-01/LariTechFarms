@@ -3,7 +3,7 @@
 }
 
 .form-control.ng-invalid.ng-touched {
-  border-color: #dc3545;
+  border-color: var(--danger-color, rgb(var(--danger-rgb)));
 }
 
 .spinner-border-sm {

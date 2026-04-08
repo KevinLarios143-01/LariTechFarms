@@ -1,13 +1,6 @@
 // Estilos específicos para el componente view-huevo
-.avatar-xl {
-  width: 4rem;
-  height: 4rem;
-}
-
-.fs-24 {
-  font-size: 1.5rem;
-}
-
-.fs-48 {
-  font-size: 3rem;
-}
+// Las clases .avatar-xl, .fs-24 y .fs-48 fueron eliminadas porque ya existen
+// como clases utilitarias globales en la plantilla Dayone:
+// - .avatar-xl → assets/scss/util/_avatars.scss (4rem × 4rem)
+// - .fs-24 → assets/scss/util/_typography.scss (1.5rem)
+// - .fs-48 → reemplazado por .fs-50 de _typography.scss (3.125rem)

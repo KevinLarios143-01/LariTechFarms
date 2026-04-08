@@ -1,7 +1,10 @@
-::ng-deep{
-    app-on-hold-tasks{
-        .mat-paginator-container{
-            justify-content: space-between !important;
-        }
+/* ::ng-deep necesario: sobrescribe la alineación del contenedor del mat-paginator
+   de Angular Material. El mat-paginator renderiza su contenido internamente
+   con ViewEncapsulation, por lo que no es accesible sin ::ng-deep. */
+::ng-deep {
+  app-on-hold-tasks {
+    .mat-paginator-container {
+      justify-content: space-between !important;
     }
+  }
 }

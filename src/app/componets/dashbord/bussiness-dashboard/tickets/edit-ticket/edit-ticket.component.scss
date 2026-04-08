@@ -1,9 +1,8 @@
+// Estilo de negocio: alineación vertical específica para tablas de tickets
 .table {
   th, td {
     vertical-align: middle;
   }
 }
 
-.card {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
+// Eliminado: .card { box-shadow } — redundante con Bootstrap .shadow-sm / estilos globales de .card

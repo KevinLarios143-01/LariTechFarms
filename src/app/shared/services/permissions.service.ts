@@ -21,6 +21,8 @@ export class PermissionsService {
   private usingFallback$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<UserRole | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
+  private roleRoutePermissions$ = new BehaviorSubject<Record<string, string[]>>({});
+  private userRoutePermissions$ = new BehaviorSubject<Record<string, string[]>>({});
 
   private apiUrl = environment.apiUrl;
 
@@ -121,6 +123,25 @@ export class PermissionsService {
               catchError(() => of(undefined))
             );
         }),
+        // Fetch route-level permissions (layer 3)
+        switchMap(() =>
+          this.http.get<{ success: boolean; data: { role_routes: Record<string, string[]>; user_routes: Record<string, string[]> } }>(
+            `${this.apiUrl}/v1/route-permissions/me`
+          ).pipe(
+            tap((res) => {
+              if (res?.success && res.data) {
+                this.roleRoutePermissions$.next(res.data.role_routes || {});
+                this.userRoutePermissions$.next(res.data.user_routes || {});
+              }
+            }),
+            catchError(() => {
+              // Permissive fallback: no route restrictions
+              this.roleRoutePermissions$.next({});
+              this.userRoutePermissions$.next({});
+              return of(undefined);
+            })
+          )
+        ),
         tap(() => {
           this.initialized$.next(true);
         }),
@@ -136,6 +157,8 @@ export class PermissionsService {
     this.usingFallback$.next(false);
     this.userRole$.next(null);
     this.initialized$.next(false);
+    this.roleRoutePermissions$.next({});
+    this.userRoutePermissions$.next({});
   }
 
   /** Find which module governs a given route, or null if unmapped. */
@@ -184,6 +207,34 @@ export class PermissionsService {
       return false;
     }
     return this.roleHasModule(role, module);
+  }
+
+  /**
+   * Three-layer access check: module enabled + role/user has module + route permissions.
+   * User route permissions override role route permissions.
+   * If no route permissions exist for the module, access is permissive (all routes allowed).
+   */
+  hasRouteAccess(route: string): boolean {
+    // First check module access (layers 1 and 2)
+    if (!this.hasAccess(route)) return false;
+
+    const module = this.getModuleForRoute(route);
+    if (!module) return false;
+
+    // Check user route permissions (override)
+    const userRoutes = this.userRoutePermissions$.getValue();
+    if (userRoutes[module] && userRoutes[module].length > 0) {
+      return userRoutes[module].some(p => route.startsWith(p));
+    }
+
+    // Check role route permissions
+    const roleRoutes = this.roleRoutePermissions$.getValue();
+    if (roleRoutes[module] && roleRoutes[module].length > 0) {
+      return roleRoutes[module].some(p => route.startsWith(p));
+    }
+
+    // No route restrictions → permissive access
+    return true;
   }
 
   /**
@@ -257,7 +308,7 @@ export class PermissionsService {
 
       // Items with path: check access
       if (item.path) {
-        if (this.hasAccess(item.path)) {
+        if (this.hasRouteAccess(item.path)) {
           result.push(item);
         }
         continue;
@@ -303,7 +354,7 @@ export class PermissionsService {
           result.push({ ...child, children: filteredChildren });
         }
       } else if (child.path) {
-        if (this.hasAccess(child.path)) {
+        if (this.hasRouteAccess(child.path)) {
           result.push(child);
         }
       } else {

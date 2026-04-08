@@ -67,6 +67,12 @@ const routes: Routes = [
           import('./user-access-matrix/user-access-matrix.component')
             .then((m) => m.UserAccessMatrixComponent),
       },
+      {
+        path: 'route-permissions',
+        loadComponent: () =>
+          import('./route-permissions/route-permissions.component')
+            .then((m) => m.RoutePermissionsComponent),
+      },
       
     ]
   }

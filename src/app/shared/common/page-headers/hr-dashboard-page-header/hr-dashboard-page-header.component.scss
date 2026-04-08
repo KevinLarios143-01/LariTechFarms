@@ -1,7 +1,11 @@
+// ::ng-deep necesario: Angular Material no expone hooks de theming para
+// mat-form-field-flex, mat-form-field-underline, mat-form-field-wrapper,
+// mat-datepicker-toggle ni mat-calendar navigation buttons.
+// Estas sobrescrituras son requeridas para integrar el datepicker con la plantilla Dayone.
 ::ng-deep {
   app-hr-dashboard-page-header {
     .mat-form-field-appearance-fill .mat-form-field-flex {
-      background-color: rgb(222, 229, 247) !important;
+      background-color: var(--default-background2) !important;
     }
 
     .mat-form-field-underline {
@@ -23,8 +27,8 @@
       padding: 0 0.75rem !important;
     }
 
-    .input-group>.custom-select:not(:last-child),
-    .input-group>.form-control:not(:last-child) {
+    .input-group > .custom-select:not(:last-child),
+    .input-group > .form-control:not(:last-child) {
       border-top-right-radius: 0.25rem;
       border-bottom-right-radius: 0.25rem;
     }
@@ -34,45 +38,25 @@
     }
   }
 
-  .dark-mode {
-    app-hr-dashboard-page-header {
-      .mat-form-field-appearance-fill .mat-form-field-flex {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-        color: #fff;
-      }
-
-      .mat-form-field-label {
-        color: rgb(255 255 255 / 60%);
-      }
-
-      .mat-datepicker-toggle,
-      .mat-datepicker-content .mat-calendar-next-button,
-      .mat-datepicker-content .mat-calendar-previous-button {
-        color: rgb(204 217 255);
-      }
-
-    }
-
-  }
-
+  // Estilos para dark-mode y transparent-mode: ambos comparten las mismas
+  // sobrescrituras de Angular Material para adaptarse al tema oscuro.
+  .dark-mode,
   .transparent-mode {
     app-hr-dashboard-page-header {
       .mat-form-field-appearance-fill .mat-form-field-flex {
-        background-color: rgba(0, 0, 0, 0.2) !important;
-        color: #fff;
+        background-color: var(--default-background) !important;
+        color: var(--custom-black);
       }
 
       .mat-form-field-label {
-        color: rgb(255 255 255 / 60%);
+        color: var(--text-muted);
       }
 
       .mat-datepicker-toggle,
       .mat-datepicker-content .mat-calendar-next-button,
       .mat-datepicker-content .mat-calendar-previous-button {
-        color: rgb(204 217 255);
+        color: var(--header-prime-color);
       }
-
     }
-
   }
 }

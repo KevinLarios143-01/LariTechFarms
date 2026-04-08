@@ -1,6 +1,10 @@
-::ng-deep{
-    .timepicker-backdrop-overlay,
-    .timepicker-overlay{
-        z-index: 999999 !important;
-    }
+/* ::ng-deep necesario: sobrescribe el z-index del overlay del timepicker
+   (ngx-material-timepicker). El overlay se renderiza en el body del documento
+   fuera del encapsulamiento del componente, y necesita un z-index alto
+   para mostrarse por encima de modales y otros overlays. */
+::ng-deep {
+  .timepicker-backdrop-overlay,
+  .timepicker-overlay {
+    z-index: 999999 !important;
+  }
 }

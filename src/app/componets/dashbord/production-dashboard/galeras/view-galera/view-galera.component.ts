@@ -120,7 +120,7 @@ export class ViewGaleraComponent implements OnInit {
     const badges: { [key: string]: string } = {
       'Ponedoras': 'bg-primary',
       'Pollos': 'bg-info',
-      'Mixta': 'bg-purple'
+      'Mixta': 'bg-purple text-white'
     };
     return badges[tipo] || 'bg-secondary';
   }

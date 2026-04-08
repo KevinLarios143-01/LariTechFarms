@@ -1,0 +1,312 @@
+<app-hr-dashboard-page-header [title]="'Permisos de Ruta'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+</app-hr-dashboard-page-header>
+
+<!-- Tenant Selector -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <h3 class="card-title">Seleccionar Empresa</h3>
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-sm" [class.btn-primary]="viewMode === 'role'" [class.btn-outline-primary]="viewMode !== 'role'" (click)="setViewMode('role')">
+            <i class="ri-group-line me-1"></i>Por Rol
+          </button>
+          <button type="button" class="btn btn-sm" [class.btn-primary]="viewMode === 'user'" [class.btn-outline-primary]="viewMode !== 'user'" (click)="setViewMode('user')">
+            <i class="ri-user-line me-1"></i>Por Usuario
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Empresa</label>
+            <ng-select class="form-control custom-select p-0" placeholder="Seleccione una empresa"
+              [(ngModel)]="selectedTenantId" bindValue="id" bindLabel="name" [items]="tenants"
+              (ngModelChange)="onTenantChange($event)">
+            </ng-select>
+          </div>
+          @if (viewMode === 'user') {
+          <div class="col-md-4">
+            <label class="form-label">Usuario</label>
+            <ng-select class="form-control custom-select p-0" placeholder="Seleccione un usuario"
+              [(ngModel)]="selectedUsuarioId" bindValue="id" [items]="usuarios"
+              [loading]="loadingUsuarios" [disabled]="!selectedTenantId"
+              (ngModelChange)="onUsuarioChange($event)">
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.nombre }} {{ item.apellido || '' }} - {{ item.rol }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>{{ item.nombre }} {{ item.apellido || '' }}</span>
+                  <span class="badge {{ getRolBadgeClass(item.rol) }} ms-2">{{ item.rol }}</span>
+                </div>
+                <small class="text-muted">{{ item.email }}</small>
+              </ng-template>
+            </ng-select>
+          </div>
+          @if (selectedUsuario) {
+            <div class="col-md-4 d-flex align-items-end">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge {{ getRolBadgeClass(selectedUsuario.rol) }} fs-12">{{ selectedUsuario.rol }}</span>
+                <span class="text-muted">{{ selectedUsuario.email }}</span>
+              </div>
+            </div>
+          }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Spinner -->
+@if (loading) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+}
+
+<!-- ROLE VIEW -->
+@if (viewMode === 'role' && selectedTenantId && !loading && moduleGroups.length > 0) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <h3 class="card-title">Matriz de Permisos de Ruta por Rol</h3>
+        <button class="btn btn-sm btn-primary" (click)="toggleAddRouteForm()" [disabled]="saving">
+          <i class="ri-add-line me-1"></i>Agregar Ruta
+        </button>
+      </div>
+      <div class="card-body">
+        <!-- Add Route Form -->
+        @if (showAddRouteForm) {
+        <div class="border rounded p-3 mb-3 bg-light">
+          <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label">Path</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="newRoute.path" placeholder="/dashboard/...">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="newRoute.nombre" placeholder="Nombre descriptivo">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Módulo</label>
+              <ng-select class="form-control custom-select p-0" [(ngModel)]="newRoute.id_module"
+                bindValue="id_module" bindLabel="name" [items]="modulesForSelect" placeholder="Módulo">
+              </ng-select>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-sm btn-success me-1" (click)="createRoute()" [disabled]="saving">
+                <i class="ri-check-line"></i> Guardar
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="toggleAddRouteForm()">
+                <i class="ri-close-line"></i> Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col" style="min-width: 280px;">Ruta</th>
+                @for (role of roles; track role) {
+                <th scope="col" class="text-center text-capitalize">{{ role }}</th>
+                }
+                <th scope="col" class="text-center" style="width: 80px;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (group of moduleGroups; track group.id_module) {
+              <!-- Module header row -->
+              <tr class="table-light">
+                <td [attr.colspan]="roles.length + 2">
+                  <strong class="text-primary"><i class="ri-folder-line me-1"></i>{{ group.moduleName }}</strong>
+                </td>
+              </tr>
+              @for (route of group.routes; track route.id_route) {
+              <tr class="border-bottom" [class.text-muted]="!route.activo">
+                <td>
+                  @if (route.editing) {
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="route.editNombre" style="max-width: 200px;">
+                    <div class="form-check form-switch mb-0">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="route.editActivo">
+                      <label class="form-check-label small">Activo</label>
+                    </div>
+                    <button class="btn btn-sm btn-success p-1" (click)="saveEditRoute(route)" [disabled]="saving">
+                      <i class="ri-check-line"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary p-1" (click)="cancelEditRoute(route)">
+                      <i class="ri-close-line"></i>
+                    </button>
+                  </div>
+                  } @else {
+                  <span>{{ route.nombre }}</span>
+                  <br><small class="text-muted">{{ route.path }}</small>
+                  @if (!route.activo) {
+                    <span class="badge bg-secondary-transparent ms-1">Inactiva</span>
+                  }
+                  }
+                </td>
+                @for (role of roles; track role) {
+                <td class="text-center">
+                  <div class="form-check d-flex justify-content-center mb-0">
+                    <input class="form-check-input" type="checkbox"
+                      [checked]="isRoleRouteChecked(role, route.id_route)"
+                      [disabled]="isRoleModuleDisabled(role, group.moduleName) || saving || !route.activo"
+                      (change)="toggleRoleRoute(role, route.id_route, group.moduleName)">
+                  </div>
+                </td>
+                }
+                <td class="text-center">
+                  @if (!route.editing) {
+                  <button class="btn btn-sm btn-icon btn-outline-primary p-1" (click)="startEditRoute(route)" title="Editar">
+                    <i class="ri-pencil-line"></i>
+                  </button>
+                  }
+                </td>
+              </tr>
+              }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- USER VIEW -->
+@if (viewMode === 'user' && selectedTenantId && selectedUsuarioId && !loading && moduleGroups.length > 0) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <h3 class="card-title">
+          Permisos de Ruta de {{ selectedUsuario?.nombre }} {{ selectedUsuario?.apellido || '' }}
+        </h3>
+        <button class="btn btn-sm btn-primary" (click)="toggleAddRouteForm()" [disabled]="saving">
+          <i class="ri-add-line me-1"></i>Agregar Ruta
+        </button>
+      </div>
+      <div class="card-body">
+        <!-- Add Route Form -->
+        @if (showAddRouteForm) {
+        <div class="border rounded p-3 mb-3 bg-light">
+          <div class="row g-2 align-items-end">
+            <div class="col-md-3">
+              <label class="form-label">Path</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="newRoute.path" placeholder="/dashboard/...">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-control form-control-sm" [(ngModel)]="newRoute.nombre" placeholder="Nombre descriptivo">
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Módulo</label>
+              <ng-select class="form-control custom-select p-0" [(ngModel)]="newRoute.id_module"
+                bindValue="id_module" bindLabel="name" [items]="modulesForSelect" placeholder="Módulo">
+              </ng-select>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-sm btn-success me-1" (click)="createRoute()" [disabled]="saving">
+                <i class="ri-check-line"></i> Guardar
+              </button>
+              <button class="btn btn-sm btn-outline-secondary" (click)="toggleAddRouteForm()">
+                <i class="ri-close-line"></i> Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col" style="min-width: 280px;">Ruta</th>
+                <th scope="col" class="text-center" style="width: 100px;">Acceso</th>
+                <th scope="col" class="text-center" style="width: 80px;">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (group of moduleGroups; track group.id_module) {
+              <tr class="table-light">
+                <td colspan="3">
+                  <strong class="text-primary"><i class="ri-folder-line me-1"></i>{{ group.moduleName }}</strong>
+                </td>
+              </tr>
+              @for (route of group.routes; track route.id_route) {
+              <tr class="border-bottom" [class.text-muted]="!route.activo">
+                <td>
+                  @if (route.editing) {
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="text" class="form-control form-control-sm" [(ngModel)]="route.editNombre" style="max-width: 200px;">
+                    <div class="form-check form-switch mb-0">
+                      <input class="form-check-input" type="checkbox" [(ngModel)]="route.editActivo">
+                      <label class="form-check-label small">Activo</label>
+                    </div>
+                    <button class="btn btn-sm btn-success p-1" (click)="saveEditRoute(route)" [disabled]="saving">
+                      <i class="ri-check-line"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary p-1" (click)="cancelEditRoute(route)">
+                      <i class="ri-close-line"></i>
+                    </button>
+                  </div>
+                  } @else {
+                  <span>{{ route.nombre }}</span>
+                  <br><small class="text-muted">{{ route.path }}</small>
+                  @if (!route.activo) {
+                    <span class="badge bg-secondary-transparent ms-1">Inactiva</span>
+                  }
+                  }
+                </td>
+                <td class="text-center">
+                  <div class="form-check d-flex justify-content-center mb-0">
+                    <input class="form-check-input" type="checkbox"
+                      [checked]="isUserRouteChecked(route.id_route)"
+                      [disabled]="saving || !route.activo"
+                      (change)="toggleUserRoute(route.id_route)">
+                  </div>
+                </td>
+                <td class="text-center">
+                  @if (!route.editing) {
+                  <button class="btn btn-sm btn-icon btn-outline-primary p-1" (click)="startEditRoute(route)" title="Editar">
+                    <i class="ri-pencil-line"></i>
+                  </button>
+                  }
+                </td>
+              </tr>
+              }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Empty state when user view but no user selected -->
+@if (viewMode === 'user' && selectedTenantId && !selectedUsuarioId && !loading) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-body text-center py-5">
+        <i class="ri-user-search-line fs-48 text-muted mb-3 d-block"></i>
+        <h5 class="text-muted">Seleccione un usuario para gestionar sus permisos de ruta</h5>
+      </div>
+    </div>
+  </div>
+</div>
+}

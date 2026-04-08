@@ -146,7 +146,7 @@ export class GastoListComponent implements OnInit {
       'Transporte': 'bg-secondary',
       'Limpieza': 'bg-light text-dark',
       'Combustible': 'bg-danger',
-      'Medicamentos': 'bg-purple'
+      'Medicamentos': 'bg-purple text-white'
     };
     return classes[categoria] || 'bg-secondary';
   }

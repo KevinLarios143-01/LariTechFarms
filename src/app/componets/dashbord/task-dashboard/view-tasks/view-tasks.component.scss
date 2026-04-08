@@ -1,43 +1,56 @@
-::ng-deep{
-    .dark-mode{
-        // angular editor
-        .angular-editor-toolbar {
-            background-color: #2a2e3f !important;
-            border: 1px solid #32394e !important;
-        }
-        .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button {
-            background-color: #2a2e3f !important;
-            border: 1px solid #32394e !important;
-            color: #ccc;
-        }  
-        .ae-font .ae-picker-label {
-            background-color: #2a2e3f;
-            border: 1px solid #32394e;
-            color: #ccc;
-        }
-        .ae-font .ae-picker-label:before {
-            background: linear-gradient(90deg,#2a2e3f,#2a2e3f);
-            filter: contrast(0);
-        }
-        .ae-font .ae-picker-label:hover {
-            cursor: pointer;
-            background-color: #2a2e3f;
-            transition: .2s ease;
-        }
-        .ae-font .ae-picker-options .ae-picker-item {
-            background-color: #2a2e3f;
-            border: 0 solid #32394e;
-            color: #ccc;
-        }        
-        .ae-font.ae-expanded .ae-picker-options {
-            border-color: #32394e;
-        }    
-        .angular-editor .angular-editor-wrapper .angular-editor-textarea {
-            border: 1px solid #32394e !important;
-            outline: none;
-        }    
-        .angular-editor-button.active{
-            color: #654cc8 !important;
-        }
+/*
+ * ::ng-deep es necesario para sobrescribir los estilos encapsulados de la librería
+ * de terceros @kolkov/angular-editor, que no expone API de tematización.
+ * Se usan CSS custom properties de la plantilla Dayone para compatibilidad con dark mode.
+ * Selector corregido: la app usa [data-theme-mode="dark"], no .dark-mode.
+ */
+::ng-deep {
+  [data-theme-mode="dark"] {
+    .angular-editor-toolbar {
+      background-color: var(--custom-white) !important;
+      border: 1px solid var(--default-border) !important;
     }
+
+    .angular-editor-toolbar .angular-editor-toolbar-set .angular-editor-button {
+      background-color: var(--custom-white) !important;
+      border: 1px solid var(--default-border) !important;
+      color: var(--default-text-color);
+    }
+
+    .ae-font .ae-picker-label {
+      background-color: var(--custom-white);
+      border: 1px solid var(--default-border);
+      color: var(--default-text-color);
+    }
+
+    .ae-font .ae-picker-label:before {
+      background: linear-gradient(90deg, var(--custom-white), var(--custom-white));
+      filter: contrast(0);
+    }
+
+    .ae-font .ae-picker-label:hover {
+      cursor: pointer;
+      background-color: var(--custom-white);
+      transition: 0.2s ease;
+    }
+
+    .ae-font .ae-picker-options .ae-picker-item {
+      background-color: var(--custom-white);
+      border: 0 solid var(--default-border);
+      color: var(--default-text-color);
+    }
+
+    .ae-font.ae-expanded .ae-picker-options {
+      border-color: var(--default-border);
+    }
+
+    .angular-editor .angular-editor-wrapper .angular-editor-textarea {
+      border: 1px solid var(--default-border) !important;
+      outline: none;
+    }
+
+    .angular-editor-button.active {
+      color: var(--primary-color) !important;
+    }
+  }
 }

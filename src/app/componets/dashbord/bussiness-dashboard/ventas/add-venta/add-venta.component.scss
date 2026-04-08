@@ -1,16 +1,14 @@
-.form-label {
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
+// .form-label y .btn ya están definidos globalmente (Bootstrap _forms.scss y _buttons.scss).
+// Se eliminaron las redefiniciones redundantes.
 
+// Necesario para que Angular reactive forms muestre los mensajes de validación
+// cuando el control está en estado inválido (Bootstrap requiere .is-invalid en el input
+// para mostrar .invalid-feedback, pero Angular usa clases propias ng-invalid).
 .invalid-feedback {
   display: block;
 }
 
-.btn {
-  min-width: 100px;
-}
-
+// Estilo de negocio: elimina el borde inferior del último elemento en listas con separadores.
 .border-bottom:last-child {
   border-bottom: none !important;
 }

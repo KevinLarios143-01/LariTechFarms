@@ -3,8 +3,12 @@
   top: 0;
 }
 
+/* ::ng-deep necesario: sobrescribe la visibilidad del megamenu horizontal
+   y el slide-menu del sistema de soporte. Estos elementos son renderizados
+   por componentes de la plantilla base con encapsulamiento propio,
+   y requieren ::ng-deep para forzar display:block en breakpoints desktop. */
 ::ng-deep {
-  @media screen and (min-width:992px) {
+  @media screen and (min-width: 992px) {
     .horizontal-megamenu {
       display: block !important;
     }

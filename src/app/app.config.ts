@@ -1,4 +1,4 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { App_Route } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -22,10 +22,23 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthInterceptor } from './shared/services/auth-interceptor.service';
+import { UserSessionService } from './shared/services/user-session.service';
+import { firstValueFrom } from 'rxjs';
+
+function initializeUserSession(userSessionService: UserSessionService): () => Promise<void> {
+  return () => firstValueFrom(userSessionService.initSession());
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(App_Route),
     provideHttpClient(withInterceptors([AuthInterceptor])),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeUserSession,
+      deps: [UserSessionService],
+      multi: true
+    },
     AngularFireModule,
     AngularFireDatabaseModule,
     AngularFirestoreModule,

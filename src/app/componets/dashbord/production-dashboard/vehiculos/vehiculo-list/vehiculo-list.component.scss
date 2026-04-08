@@ -1,20 +1,14 @@
+/* Estilos de tabla: solo propiedades no cubiertas por la plantilla global (_tables.scss) */
 .table {
   th {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #495057;
-    background-color: #f8f9fa;
-  }
-
-  td {
-    vertical-align: middle;
+    color: var(--default-text-color);
+    background-color: rgb(var(--light-rgb));
   }
 }
 
 .btn-group {
   .btn {
     padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
   }
 }
 
@@ -22,9 +16,4 @@
   .page-link {
     cursor: pointer;
   }
-}
-
-.badge {
-  font-size: 0.75rem;
-  padding: 0.35em 0.65em;
 }

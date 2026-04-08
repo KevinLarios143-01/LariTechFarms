@@ -1,9 +1,8 @@
+/* Estilos de tabla: solo propiedades no cubiertas por la plantilla global (_tables.scss) */
 .table {
   th {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #495057;
-    background-color: #f8f9fa;
+    color: var(--default-text-color);
+    background-color: rgb(var(--light-rgb));
   }
 
   td {
@@ -14,7 +13,6 @@
 .btn-group {
   .btn {
     padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
   }
 }
 

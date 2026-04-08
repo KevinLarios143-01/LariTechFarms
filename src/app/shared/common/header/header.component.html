@@ -462,7 +462,13 @@
         <a href="javascript:void(0);" ngbDropdownToggle class="header-link dropdown-toggle mx-0 w-100"
           id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
           <div>
-            <img src="./assets/images/users/16.jpg" alt="img" class="rounded-3 avatar avatar-md">
+            @if (isLoading) {
+              <span class="avatar avatar-md rounded-3 bg-light d-inline-flex align-items-center justify-content-center">
+                <i class="fe fe-user text-muted"></i>
+              </span>
+            } @else {
+              <img [src]="defaultAvatar" [alt]="user ? user.nombre + ' ' + user.apellido : 'Usuario'" class="rounded-3 avatar avatar-md">
+            }
           </div>
         </a>
         <!-- End::header-link|dropdown-toggle -->
@@ -470,8 +476,13 @@
           aria-labelledby="mainHeaderProfile">
           <Li>
             <div class="p-3 text-center border-bottom">
-              <a href="javascript:void(0);" class="text-center fw-semibold">John Thomson</a>
-              <p class="text-center user-semi-title fs-13 mb-0">App Developer</p>
+              @if (isLoading) {
+                <span class="text-center fw-semibold text-muted">Cargando...</span>
+                <p class="text-center user-semi-title fs-13 mb-0 text-muted">...</p>
+              } @else {
+                <a href="javascript:void(0);" class="text-center fw-semibold">{{ user?.nombre }} {{ user?.apellido }}</a>
+                <p class="text-center user-semi-title fs-13 mb-0">{{ user?.rol || 'Sin rol' }}</p>
+              }
             </div>
           </Li>
           <!--<li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" href="javascript:void(0);"><i

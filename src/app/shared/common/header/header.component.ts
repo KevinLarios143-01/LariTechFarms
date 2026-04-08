@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  OnDestroy,
   OnInit,
   Renderer2,
   inject,
@@ -10,10 +11,12 @@ import { SwitcherComponent } from '../switcher/switcher.component';
 import { NgbModal, NgbOffcanvas } from '@ng-bootstrap/ng-bootstrap';
 import { AppStateService } from '../../services/app-state.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { RightSidebarComponent } from '../right-sidebar/right-sidebar.component';
 import { ToastrService } from 'ngx-toastr';
 import { PermissionsService } from '../../services/permissions.service';
+import { UserSessionService } from '../../services/user-session.service';
+import { UserData } from '../../interfaces/login-response.interface';
 
 
 interface Item {
@@ -28,7 +31,7 @@ interface Item {
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   cartItemCount: number = 5;
   notificationCount: number = 5;
   public isCollapsed = true;
@@ -39,6 +42,13 @@ export class HeaderComponent implements OnInit {
   selectedItem: string | null = 'selectedItem';
   isOpen: boolean = false;
   modal: any;
+
+  user: UserData | null = null;
+  isLoading = false;
+  defaultAvatar = './assets/images/users/16.jpg';
+  private userSubscription?: Subscription;
+  private loadingSubscription?: Subscription;
+
   constructor(
     private readonly appStateService: AppStateService,
     public navServices: NavService,
@@ -49,6 +59,7 @@ export class HeaderComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly toastr: ToastrService,
     private readonly permissionsService: PermissionsService,
+    private readonly userSessionService: UserSessionService,
   ) { this.localStorageBackUp() }
 
   private readonly offcanvasService = inject(NgbOffcanvas);
@@ -240,6 +251,14 @@ export class HeaderComponent implements OnInit {
   public SearchResultEmpty: boolean = false;
 
   ngOnInit(): void {
+    // Subscribe to user session data
+    this.userSubscription = this.userSessionService.user$.subscribe(user => {
+      this.user = user;
+    });
+    this.loadingSubscription = this.userSessionService.loading$.subscribe(loading => {
+      this.isLoading = loading;
+    });
+
     const storedSelectedItem = localStorage.getItem('selectedItem');
     // this.updateSelectedItem();
     // If there's no selected item stored, set a default one
@@ -268,6 +287,9 @@ export class HeaderComponent implements OnInit {
     this.selectedItem = dashboard ? dashboard.charAt(0).toUpperCase() + dashboard.slice(1) + ' Dashboard' : this.selectedItem;
   }
   ngOnDestroy(): void {
+    this.userSubscription?.unsubscribe();
+    this.loadingSubscription?.unsubscribe();
+
     const windowObject: any = window;
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
 
@@ -384,6 +406,7 @@ export class HeaderComponent implements OnInit {
       positionClass: 'toast-top-right',
     });
     setTimeout(() => {
+      this.userSessionService.clearSession();
       this.permissionsService.clear();
       localStorage.clear();
       this.router.navigate(['/auth/login']);

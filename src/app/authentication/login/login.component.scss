@@ -1,3 +1,5 @@
+/* Estilo de negocio: background-image específico de la página de login de LariTechFarms.
+   No existe equivalente en la plantilla base Dayone. */
 :host {
   display: block;
   min-height: 100vh;
@@ -7,6 +9,9 @@
   background-repeat: no-repeat;
 }
 
+/* ::ng-deep necesario: sobrescribe estilos de componentes de Firebase UI
+   y nav-tabs dentro de la vista de login. Estos elementos son renderizados
+   por librerías de terceros fuera del encapsulamiento de Angular. */
 ::ng-deep {
   .firebase {
     width: 30px;

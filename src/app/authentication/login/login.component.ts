@@ -12,6 +12,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AppStateService } from '../../shared/services/app-state.service';
 import { PermissionsService } from '../../shared/services/permissions.service';
+import { UserSessionService } from '../../shared/services/user-session.service';
 
 @Component({
   selector: 'app-login',
@@ -53,6 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private readonly toastr: ToastrService,
     private readonly appStateService: AppStateService,
     private readonly permissionsService: PermissionsService,
+    private readonly userSessionService: UserSessionService,
   ) {
     document.body.classList.add('error-1');
     const htmlElement =
@@ -193,6 +195,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       next: (res) => {
         if (res && res.data && res.data.token) {
           this.authservice.saveToken(res.data.token);
+          this.userSessionService.setUser(res.data.user);
           this.permissionsService.init().subscribe(() => {
             const redirect = this.permissionsService.getDefaultRedirect();
             this.router.navigate([redirect]);
@@ -233,6 +236,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           if (response && response.data && response.data.token) {
             this.authservice.saveToken(response.data.token);
+            this.userSessionService.setUser(response.data.user);
             this.permissionsService.init().subscribe(() => {
               const redirect = this.permissionsService.getDefaultRedirect();
               this.router.navigate([redirect]);

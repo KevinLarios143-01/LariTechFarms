@@ -22,6 +22,6 @@ function evaluateAccess(
 ): boolean | UrlTree {
   const module = permissions.getModuleForRoute(url);
   if (!module) return router.createUrlTree(['/access-denied']);
-  if (!permissions.hasAccess(url)) return router.createUrlTree(['/access-denied']);
+  if (!permissions.hasRouteAccess(url)) return router.createUrlTree(['/access-denied']);
   return true;
 }

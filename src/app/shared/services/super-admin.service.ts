@@ -179,4 +179,48 @@ export class SuperAdminService {
   bulkUpdateUserModules(data: { id_usuario: number; module_ids: number[] }): Observable<any> {
     return this.http.put(`${this.apiUrl}/user-modules/bulk`, data);
   }
+
+  // --- Route Catalog ---
+
+  getRouteCatalog(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/route-catalog`);
+  }
+
+  createRouteCatalogEntry(data: { path: string; nombre: string; id_module: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/route-catalog`, data);
+  }
+
+  updateRouteCatalogEntry(id: number, data: { nombre?: string; activo?: boolean }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/route-catalog/${id}`, data);
+  }
+
+  // --- Route Permissions (por rol) ---
+
+  getRoleRoutePermissions(role: string, tenantId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/route-permissions/by-role`, {
+      params: { role, idTenant: tenantId.toString() }
+    });
+  }
+
+  updateRoleRoutePermissions(data: { role: string; id_tenant: number; route_ids: number[] }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/route-permissions/by-role`, data);
+  }
+
+  // --- Route Permissions (por usuario) ---
+
+  getUserRoutePermissions(idUsuario: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/route-permissions/by-user`, {
+      params: { idUsuario: idUsuario.toString() }
+    });
+  }
+
+  updateUserRoutePermissions(data: { id_usuario: number; route_ids: number[] }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/route-permissions/by-user`, data);
+  }
+
+  // --- Mis permisos de ruta ---
+
+  getMyRoutePermissions(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/route-permissions/me`);
+  }
 }

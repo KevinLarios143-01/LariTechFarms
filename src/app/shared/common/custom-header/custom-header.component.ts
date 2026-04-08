@@ -271,12 +271,12 @@ export class CustomHeaderComponent {
     const windowObject: any = window;
     let html = this.elementRef.nativeElement.ownerDocument.documentElement;
     if (windowObject.innerWidth <= '991') {
-      html?.setAttribute('data-toggled', 'open');
+      html?.setAttribute('data-toggled', 'close');
     }
     window.addEventListener('resize', () => {
       if (localStorage.getItem('valexverticalstyles') != 'icon-text-close') {
         if (windowObject.innerWidth <= '991') {
-          html?.setAttribute('data-toggled', 'open');
+          html?.setAttribute('data-toggled', 'close');
         } else {
           if (!(localStorage.getItem('valexverticalstyles') == 'doublemenu')) {
             html?.removeAttribute('data-toggled');
@@ -290,7 +290,7 @@ export class CustomHeaderComponent {
     });
 
     if (windowObject.innerWidth <= '991') {
-      html?.setAttribute('data-toggled', 'open');
+      html?.setAttribute('data-toggled', 'close');
     }
   }
   Search(searchText: string) {

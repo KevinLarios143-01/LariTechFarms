@@ -6,8 +6,11 @@
   position: relative;
 }
 
+/* Estilo de negocio: tamaño de ícono específico para el modal del dashboard HR.
+   Usa clase utilitaria .fs-30 en el template si es posible; de lo contrario,
+   se mantiene aquí con variable de la plantilla. */
 .size_md {
-  font-size: 30px;
+  font-size: 1.875rem; // equivalente a .fs-30 (30px)
 }
 
 .countdowntimer {
@@ -19,6 +22,9 @@
   padding: 0;
 }
 
+/* ::ng-deep necesario: sobrescribe el ancho mínimo del CDK overlay pane
+   de Angular Material. El CDK overlay se renderiza fuera del componente
+   en el body del documento, fuera del alcance del encapsulamiento de Angular. */
 ::ng-deep {
   .cdk-overlay-pane {
     min-width: 20vw;
