@@ -17,6 +17,7 @@ import { Menu } from './navservice';
 export class PermissionsService {
   private tenantModules$ = new BehaviorSubject<string[]>([]);
   private roleModules$ = new BehaviorSubject<string[]>([]);
+  private userModules$ = new BehaviorSubject<string[]>([]);
   private usingFallback$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<UserRole | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
@@ -56,6 +57,7 @@ export class PermissionsService {
 
     const rol = payload.rol as string;
     const idTenant = payload.idTenant;
+    const idUsuario = payload.idUsuario;
 
     if (rol && VALID_ROLES.includes(rol as UserRole)) {
       this.userRole$.next(rol as UserRole);
@@ -101,6 +103,24 @@ export class PermissionsService {
               })
             )
         ),
+        // Fetch user-level module overrides
+        switchMap(() => {
+          if (!idUsuario) return of(undefined);
+          return this.http
+            .get<{ success: boolean; data: { modules: { module_name: string }[] } }>(
+              `${this.apiUrl}/v1/user-modules`,
+              { params: { idUsuario: String(idUsuario) } }
+            )
+            .pipe(
+              tap((res) => {
+                if (res?.success && res.data?.modules) {
+                  const names = res.data.modules.map((m: any) => m.module_name);
+                  this.userModules$.next(names);
+                }
+              }),
+              catchError(() => of(undefined))
+            );
+        }),
         tap(() => {
           this.initialized$.next(true);
         }),
@@ -112,6 +132,7 @@ export class PermissionsService {
   clear(): void {
     this.tenantModules$.next([]);
     this.roleModules$.next([]);
+    this.userModules$.next([]);
     this.usingFallback$.next(false);
     this.userRole$.next(null);
     this.initialized$.next(false);
@@ -135,9 +156,10 @@ export class PermissionsService {
     return this.tenantModules$.getValue().includes(module);
   }
 
-  /** Check if a role has access to a module using dynamic role modules. */
+  /** Check if a role has access to a module using dynamic role modules + user overrides. */
   roleHasModule(role: UserRole, module: ModuleName): boolean {
-    return this.roleModules$.getValue().includes(module);
+    return this.roleModules$.getValue().includes(module) ||
+           this.userModules$.getValue().includes(module);
   }
 
   /**
@@ -176,7 +198,10 @@ export class PermissionsService {
     }
 
     // Fallback: find first accessible route from the role's allowed modules
-    const allowedModules = this.roleModules$.getValue();
+    const allowedModules = [...new Set([
+      ...this.roleModules$.getValue(),
+      ...this.userModules$.getValue()
+    ])];
     for (const mod of allowedModules) {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];

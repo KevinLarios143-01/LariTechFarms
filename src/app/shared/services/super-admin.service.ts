@@ -161,4 +161,22 @@ export class SuperAdminService {
   bulkUpdateRoleModules(data: { role: string; id_tenant: number; module_ids: number[] }): Observable<any> {
     return this.http.put(`${this.apiUrl}/role-modules/bulk`, data);
   }
+
+  // --- User Modules (Matriz de Acceso por Usuario) ---
+
+  getUserModules(idUsuario: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/user-modules`, { params: { idUsuario: idUsuario.toString() } });
+  }
+
+  assignUserModule(data: { id_usuario: number; id_module: number }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user-modules`, data);
+  }
+
+  revokeUserModule(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/user-modules/${id}`);
+  }
+
+  bulkUpdateUserModules(data: { id_usuario: number; module_ids: number[] }): Observable<any> {
+    return this.http.put(`${this.apiUrl}/user-modules/bulk`, data);
+  }
 }

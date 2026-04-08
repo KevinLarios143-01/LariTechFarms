@@ -1,0 +1,109 @@
+<app-hr-dashboard-page-header [title]="'Matriz de Acceso por Usuario'" [title2]="''" [class]="'d-none'" [class1]="''" [path]="''">
+</app-hr-dashboard-page-header>
+
+<!-- Selectores -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Seleccionar Usuario</h3>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Empresa</label>
+            <ng-select class="form-control custom-select p-0" placeholder="Seleccione una empresa"
+              [(ngModel)]="selectedTenantId" bindValue="id" bindLabel="name" [items]="tenants"
+              (ngModelChange)="onTenantChange($event)">
+            </ng-select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Usuario</label>
+            <ng-select class="form-control custom-select p-0" placeholder="Seleccione un usuario"
+              [(ngModel)]="selectedUsuarioId" bindValue="id" [items]="usuarios"
+              [loading]="loadingUsuarios" [disabled]="!selectedTenantId"
+              (ngModelChange)="onUsuarioChange($event)">
+              <ng-template ng-label-tmp let-item="item">
+                {{ item.nombre }} {{ item.apellido || '' }} - {{ item.rol }}
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <span>{{ item.nombre }} {{ item.apellido || '' }}</span>
+                  <span class="badge {{ getRolBadgeClass(item.rol) }} ms-2">{{ item.rol }}</span>
+                </div>
+                <small class="text-muted">{{ item.email }}</small>
+              </ng-template>
+            </ng-select>
+          </div>
+          @if (selectedUsuario) {
+            <div class="col-md-4 d-flex align-items-end">
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge {{ getRolBadgeClass(selectedUsuario.rol) }} fs-12">{{ selectedUsuario.rol }}</span>
+                <span class="text-muted">{{ selectedUsuario.email }}</span>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+@if (loading) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Matrix Table -->
+@if (selectedUsuarioId && !loading && modules.length > 0) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <h3 class="card-title">
+          Módulos de {{ selectedUsuario?.nombre }} {{ selectedUsuario?.apellido || '' }}
+        </h3>
+        <span class="badge {{ getRolBadgeClass(selectedUsuario?.rol) }}">Rol base: {{ selectedUsuario?.rol }}</span>
+      </div>
+      <div class="card-body">
+        <p class="text-muted mb-3">
+          Estos módulos son asignaciones individuales para este usuario. Se suman a los módulos que ya tiene por su rol.
+        </p>
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">Módulo</th>
+                <th scope="col">Descripción</th>
+                <th scope="col" class="text-center">Acceso</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (mod of modules; track mod.id_module) {
+              <tr class="border-bottom">
+                <td><strong>{{ mod.name }}</strong></td>
+                <td><small class="text-muted">{{ mod.description || '-' }}</small></td>
+                <td class="text-center">
+                  <div class="form-check d-flex justify-content-center mb-0">
+                    <input class="form-check-input" type="checkbox"
+                      [checked]="matrix[mod.id_module]?.assigned"
+                      [disabled]="isCheckboxDisabled(mod.id_module)"
+                      (change)="toggleAccess(mod.id_module)">
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
