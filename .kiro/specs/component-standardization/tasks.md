@@ -199,7 +199,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
   - Asegurar que `task-list`, `project-list` y `job-lists` están completamente migrados con datos dinámicos, paginador funcional y textos en español, preguntar al usuario si hay dudas.
 
 
-- [ ] 10. Estandarizar módulos de producción: `galera-list`, `gasto-list`, `vehiculo-list`, `inventario-list`
+- [x] 10. Estandarizar módulos de producción: `galera-list`, `gasto-list`, `vehiculo-list`, `inventario-list`
   - [x] 10.1 Migrar header y estandarizar `galera-list`
     - Reemplazar el bloque `<div class="card custom-card"><div class="card-header justify-content-between">` por `<app-hr-dashboard-page-header [title]="'Galeras'" [title2]="'Nueva Galera'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/production-dashboard/galeras/add'">`
     - Cambiar clases de tabla de `table text-nowrap table-hover` a `table mb-0 text-nowrap text-md-nowrap table-bordered border`
@@ -214,12 +214,12 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `production-dashboard/gastos-operacion/gasto-list/gasto-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 4.1, 5.1_
-  - [ ] 10.3 Migrar header y estandarizar `vehiculo-list`
+  - [x] 10.3 Migrar header y estandarizar `vehiculo-list`
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Vehículos'" [title2]="'Agregar Vehículo'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/production-dashboard/vehiculos/add'">`
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `production-dashboard/vehiculos/vehiculo-list/vehiculo-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 4.1, 5.1_
-  - [ ] 10.4 Migrar header y estandarizar `inventario-list`
+  - [x] 10.4 Migrar header y estandarizar `inventario-list`
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Inventario'" [title2]="'Agregar Item'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/production-dashboard/inventario/add'">`
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `production-dashboard/inventario/inventario-list/inventario-list.component.html` y `.ts`
@@ -230,11 +230,11 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que no existen botones `btn-group btn-sm`
     - _Requisitos: 1.1, 2.1, 3.1_
 
-- [ ] 11. Checkpoint - Verificar módulos de producción
+- [x] 11. Checkpoint - Verificar módulos de producción
   - Asegurar que `galera-list`, `gasto-list`, `vehiculo-list` e `inventario-list` están estandarizados, preguntar al usuario si hay dudas.
 
-- [ ] 12. Estandarizar módulos de negocio: `cliente-list`, `venta-list`, `tickets/ticket-list`, `ingreso-list`
-  - [ ] 12.1 Migrar header y estandarizar `cliente-list` (bussiness/clientes)
+- [x] 12. Estandarizar módulos de negocio: `cliente-list`, `venta-list`, `tickets/ticket-list`, `ingreso-list`
+  - [x] 12.1 Migrar header y estandarizar `cliente-list` (bussiness/clientes)
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Gestión de Clientes'" [title2]="'Agregar Cliente'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/business-dashboard/clientes/add'">`
     - Cambiar clases de tabla de `table text-nowrap table-hover` a las estándar
     - Reemplazar botones `btn-group btn-sm` por `btn btn-icon` estándar
@@ -242,17 +242,17 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar selector de `<select>` nativo a `ng-select` estándar, cambiar "entradas" → "registros"
     - Archivos: `bussiness-dashboard/clientes/cliente-list/cliente-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 4.1, 4.9, 5.1, 5.2, 5.5_
-  - [ ] 12.2 Migrar header y estandarizar `venta-list` (bussiness/ventas)
+  - [x] 12.2 Migrar header y estandarizar `venta-list` (bussiness/ventas)
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Gestión de Ventas'" [title2]="'Nueva Venta'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/business-dashboard/ventas/add'">`
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `bussiness-dashboard/ventas/venta-list/venta-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 4.1, 5.1_
-  - [ ] 12.3 Migrar header y estandarizar `tickets/ticket-list` (bussiness/tickets)
+  - [x] 12.3 Migrar header y estandarizar `tickets/ticket-list` (bussiness/tickets)
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Gestión de Tickets'" [title2]="'Generar Tickets'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/business-dashboard/ventas/list'">`
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `bussiness-dashboard/tickets/ticket-list/ticket-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 4.1, 5.1_
-  - [ ] 12.4 Migrar header y estandarizar `ingreso-list` (bussiness/inventario)
+  - [x] 12.4 Migrar header y estandarizar `ingreso-list` (bussiness/inventario)
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Clasificación de Inventario'" [title2]="'Nueva Clasificación'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/business-dashboard/inventario/add'">`
     - Cambiar clases de tabla, reemplazar botón suelto por `btn btn-icon` estándar, estandarizar paginador, agregar Selector_Registros
     - Archivos: `bussiness-dashboard/inventario/ingreso-list/ingreso-list.component.html` y `.ts`
@@ -263,12 +263,12 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que el texto "entradas" fue reemplazado por "registros" en `cliente-list`
     - _Requisitos: 1.1, 2.1, 5.5_
 
-- [ ] 13. Checkpoint - Verificar módulos de negocio
+- [x] 13. Checkpoint - Verificar módulos de negocio
   - Asegurar que `cliente-list`, `venta-list`, `tickets/ticket-list` e `ingreso-list` están estandarizados, preguntar al usuario si hay dudas.
 
 
-- [ ] 14. Estandarizar módulos con ajustes parciales
-  - [ ] 14.1 Estandarizar `huevo-list` (production/huevos)
+- [x] 14. Estandarizar módulos con ajustes parciales
+  - [x] 14.1 Estandarizar `huevo-list` (production/huevos)
     - Header ya usa `app-hr-dashboard-page-header` ✅
     - Cambiar clases de tabla de `table table-vcenter text-nowrap table-bordered border-bottom` a las estándar
     - Agregar `<tr class="border-bottom">` en thead y `<th scope="col">` en cada columna
@@ -278,7 +278,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar "entradas" → "registros" en el selector
     - Archivos: `production-dashboard/huevos/huevo-list/huevo-list.component.html` y `.ts`
     - _Requisitos: 2.1, 2.2, 2.3, 2.5, 3.1, 3.2, 4.2, 4.3, 5.1, 5.5_
-  - [ ] 14.2 Activar paginador funcional en `producto-list` (production/productos)
+  - [x] 14.2 Activar paginador funcional en `producto-list` (production/productos)
     - Header ✅, tabla ✅, botones ✅
     - Reemplazar paginador estático (Prev/1/2/3/Next) por Paginador_Estándar funcional
     - Agregar lógica de paginación en TypeScript (`currentPage`, `pageSize`, `totalItems`, `totalPages`, `onPageChange`, `onPageSizeChange`)
@@ -286,7 +286,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar "Prev" → "Anterior" y "Next" → "Siguiente"
     - Archivos: `production-dashboard/productos/producto-list/producto-list.component.html` y `.ts`
     - _Requisitos: 4.1, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 5.3, 7.2_
-  - [ ] 14.3 Activar paginador funcional en `lote-list` (bussiness/lotes)
+  - [x] 14.3 Activar paginador funcional en `lote-list` (bussiness/lotes)
     - Header ✅, tabla ✅, botones ✅
     - Reemplazar paginador estático por Paginador_Estándar funcional
     - Agregar lógica de paginación en TypeScript
@@ -294,7 +294,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar "Prev" → "Anterior" y "Next" → "Siguiente"
     - Archivos: `bussiness-dashboard/lotes/lote-list/lote-list.component.html` y `.ts`
     - _Requisitos: 4.1, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 5.3, 7.2_
-  - [ ] 14.4 Activar paginador funcional en `ticket-list` (bussiness-dashboard)
+  - [x] 14.4 Activar paginador funcional en `ticket-list` (bussiness-dashboard)
     - Header ✅, tabla ✅, botones ✅
     - Reemplazar paginador estático por Paginador_Estándar funcional
     - Agregar lógica de paginación en TypeScript
@@ -302,7 +302,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Cambiar "Prev" → "Anterior" y "Next" → "Siguiente"
     - Archivos: `bussiness-dashboard/ticket-list/ticket-list.component.html` y `.ts`
     - _Requisitos: 4.1, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 5.3, 7.2_
-  - [ ] 14.5 Agregar paginador y selector a `ingreso-inventario-list` (production)
+  - [x] 14.5 Agregar paginador y selector a `ingreso-inventario-list` (production)
     - Header ✅, tabla ✅, botones ✅
     - Agregar Selector_Registros con `ng-select` (10/25/50/100) y texto "Mostrar N registros"
     - Agregar Paginador_Estándar funcional
@@ -315,18 +315,18 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que todos los paginadores muestran "Anterior"/"Siguiente"
     - _Requisitos: 3.1, 4.1, 7.2_
 
-- [ ] 15. Checkpoint - Verificar módulos con ajustes parciales
+- [x] 15. Checkpoint - Verificar módulos con ajustes parciales
   - Asegurar que todos los módulos con ajustes parciales están estandarizados, preguntar al usuario si hay dudas.
 
-- [ ] 16. Verificación final y limpieza
-  - [ ] 16.1 Auditoría global de consistencia
+- [x] 16. Verificación final y limpieza
+  - [x] 16.1 Auditoría global de consistencia
     - Buscar en todo el proyecto la clase `action-btns1` y verificar que no existe en ningún módulo migrado
     - Buscar la clase `table-vcenter` y verificar que fue reemplazada en todos los módulos
     - Buscar textos "Prev", "Next", "Show", "entries", "entradas" y verificar que fueron traducidos/reemplazados
     - Buscar `mat-table` y `MatTableDataSource` y verificar que fueron eliminados de los módulos migrados
     - Verificar que todos los módulos importan `SharedModule` para usar `app-hr-dashboard-page-header`
     - _Requisitos: 1.1, 2.1, 2.5, 3.1, 7.1, 7.2, 7.3_
-  - [ ] 16.2 Verificar que todos los paginadores son funcionales
+  - [x] 16.2 Verificar que todos los paginadores son funcionales
     - Confirmar que ningún módulo tiene paginadores estáticos (Prev/1/2/3/Next sin funcionalidad)
     - Verificar que todos los selectores de registros están conectados con `(ngModelChange)` y valores numéricos
     - _Requisitos: 4.1, 4.2, 4.10, 5.1, 5.3_
@@ -335,7 +335,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que los componentes ejecutan `ngOnInit` y `ngOnDestroy` correctamente
     - _Requisitos: 6.1, 6.3_
 
-- [ ] 17. Checkpoint final - Asegurar que todos los tests pasan
+- [x] 17. Checkpoint final - Asegurar que todos los tests pasan
   - Asegurar que todos los tests pasan y que la aplicación funciona correctamente con todos los módulos estandarizados, preguntar al usuario si hay dudas.
 
 ## Notas

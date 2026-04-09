@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
@@ -13,13 +13,15 @@ import { Lote, UpdateLoteDTO } from '../interfaces/lote.interface';
 @Component({
   selector: 'app-lote-list',
   standalone: true,
-  imports: [CommonModule,SharedModule,NgSelectModule,RouterModule,ReactiveFormsModule,NgbModule],
+  imports: [CommonModule,SharedModule,NgSelectModule,RouterModule,ReactiveFormsModule,FormsModule,NgbModule],
   templateUrl: './lote-list.component.html',
   styleUrls: ['./lote-list.component.scss']
 })
 export class LoteListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   lotes: Lote[] = [];
+  filteredLotes: Lote[] = [];
+  paginatedLotes: Lote[] = [];
   loading = false;
   editForm: FormGroup;
   selectedLote: Lote | null = null;
@@ -29,6 +31,13 @@ export class LoteListComponent implements OnInit {
   lotesActivos = 0;
   lotesPonedoras = 0;
   lotesEngorde = 0;
+
+  // Paginación
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     private readonly modalService: NgbModal,
@@ -50,8 +59,17 @@ export class LoteListComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    // Implementar filtro local simple
-    // En una implementación real, esto se haría en el servidor
+    if (!filterValue) {
+      this.filteredLotes = [...this.lotes];
+    } else {
+      this.filteredLotes = this.lotes.filter(lote =>
+        (lote.galeraRelacion?.nombre || lote.galera || '').toLowerCase().includes(filterValue) ||
+        lote.tipo?.toLowerCase().includes(filterValue) ||
+        lote.estado?.toLowerCase().includes(filterValue)
+      );
+    }
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
   toggleLoteStatus(lote: Lote) {
@@ -176,12 +194,16 @@ export class LoteListComponent implements OnInit {
           this.lotes = [];
         }
         
+        this.filteredLotes = [...this.lotes];
         this.calculateStats();
+        this.updatePagination();
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
         this.lotes = [];
+        this.filteredLotes = [];
+        this.paginatedLotes = [];
         this.loading = false;
         this.cdr.detectChanges();
       }
@@ -226,5 +248,30 @@ export class LoteListComponent implements OnInit {
     if (isNaN(date.getTime())) return '';
     
     return date.toISOString().split('T')[0];
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  private updatePagination(): void {
+    this.totalItems = this.filteredLotes.length;
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedLotes = this.filteredLotes.slice(startIndex, endIndex);
+    this.cdr.detectChanges();
   }
 }

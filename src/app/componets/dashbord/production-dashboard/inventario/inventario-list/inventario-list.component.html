@@ -1,19 +1,8 @@
 <div class="container-fluid">
   <!-- Page Header -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header justify-content-between">
-          <div class="card-title">Inventario de Granja</div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-primary btn-sm" routerLink="../add">
-              <i class="ri-add-line"></i> Agregar Item
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-hr-dashboard-page-header [title]="'Inventario'" [title2]="'Agregar Item'" [class]="'btn btn-primary'"
+    [class1]="''" [path]="'/dashboard/production-dashboard/inventario/add'">
+  </app-hr-dashboard-page-header>
 
   <!-- Estadísticas -->
   <div class="row">
@@ -113,39 +102,57 @@
 
   <!-- Tabla -->
   <div class="row">
-    <div class="col-xl-12">
+    <div class="col-md-12">
       <div class="card custom-card">
+        <div class="card-header">
+          <h3 class="card-title">Inventario ({{ totalItems }})</h3>
+        </div>
         <div class="card-body">
-          <div class="table-responsive">
-            <table class="table text-nowrap table-hover">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Cantidad</th>
-                  <th>Unidad</th>
-                  <th>Categoría</th>
-                  <th>Stock Mínimo</th>
-                  <th>Estado</th>
-                  <th>Proveedor</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                @if (isLoading) {
-                  <tr>
-                    <td colspan="8" class="text-center">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                      </div>
-                    </td>
+          <div class="row mb-2 gap-2 gap-lg-0">
+            <div class="col-lg-6">
+              <div class="d-flex align-items-center">
+                <span>Mostrar</span>
+                <div class="d-flex ms-2 mx-2">
+                  <div class="form-group mb-0">
+                    <ng-select name="quantity" [ngModel]="pageSize"
+                      (ngModelChange)="onPageSizeChange($any($event))"
+                      class="form-control wd-150 p-0">
+                      <ng-option [value]="10">10</ng-option>
+                      <ng-option [value]="25">25</ng-option>
+                      <ng-option [value]="50">50</ng-option>
+                      <ng-option [value]="100">100</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+                <span>registros</span>
+              </div>
+            </div>
+          </div>
+
+          @if (isLoading) {
+            <div class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+                <thead>
+                  <tr class="border-bottom">
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Unidad</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Stock Mínimo</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Acciones</th>
                   </tr>
-                } @else if (filteredInventario.length === 0) {
-                  <tr>
-                    <td colspan="8" class="text-center">No hay items en el inventario</td>
-                  </tr>
-                } @else {
+                </thead>
+                <tbody>
                   @for (item of filteredInventario; track item.id) {
-                    <tr>
+                    <tr class="border-bottom">
                       <td>
                         <div class="fw-semibold">{{ item.nombre }}</div>
                         @if (item.observaciones) {
@@ -173,51 +180,59 @@
                       </td>
                       <td>{{ item.proveedor || '-' }}</td>
                       <td>
-                        <div class="btn-group" role="group">
-                          <button class="btn btn-sm btn-info" [routerLink]="['../view', item.id]" 
-                                  title="Ver detalles">
-                            <i class="ri-eye-line"></i>
-                          </button>
-                          <button class="btn btn-sm btn-primary" [routerLink]="['../edit', item.id]" 
-                                  title="Editar">
-                            <i class="ri-edit-line"></i>
-                          </button>
-                          <button class="btn btn-sm btn-danger" (click)="deleteItem(item.id)" 
-                                  title="Eliminar">
-                            <i class="ri-delete-bin-line"></i>
-                          </button>
+                        <div class="d-flex gap-2">
+                          <a class="btn btn-primary btn-icon"
+                            [routerLink]="['/dashboard/production-dashboard/inventario/view', item.id]"
+                            data-bs-toggle="tooltip" title="Ver">
+                            <i class="fe fe-eye"></i>
+                          </a>
+                          <a class="btn btn-success btn-icon"
+                            [routerLink]="['/dashboard/production-dashboard/inventario/edit', item.id]"
+                            data-bs-toggle="tooltip" title="Editar">
+                            <i class="fe fe-edit-2"></i>
+                          </a>
+                          <a class="btn btn-danger btn-icon"
+                            (click)="deleteItem(item.id)"
+                            data-bs-toggle="tooltip" title="Eliminar">
+                            <i class="fe fe-trash-2"></i>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="8" class="text-center py-4">
+                        <div class="text-muted">
+                          <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                          <p>No hay registros disponibles</p>
                         </div>
                       </td>
                     </tr>
                   }
-                }
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Paginación -->
-          @if (totalPages > 1) {
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <div>
-                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
-                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} items
-              </div>
-              <nav>
-                <ul class="pagination mb-0">
-                  <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
-                  </li>
-                  @for (page of pages; track page) {
-                    <li class="page-item" [class.active]="page === currentPage">
-                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
-                    </li>
-                  }
-                  <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
-                  </li>
-                </ul>
-              </nav>
+                </tbody>
+              </table>
             </div>
+
+            <!-- Start::pagination -->
+            <nav class="mt-4">
+              <ul class="pagination justify-content-end mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" href="javascript:void(0);"
+                     (click)="onPageChange(currentPage - 1)">Anterior</a>
+                </li>
+                @for (page of [].constructor(totalPages); track $index) {
+                  <li class="page-item" [class.active]="currentPage === $index + 1">
+                    <a class="page-link" href="javascript:void(0);"
+                       (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+                  </li>
+                }
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" href="javascript:void(0);"
+                     (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                </li>
+              </ul>
+            </nav>
+            <!-- End::pagination -->
           }
         </div>
       </div>

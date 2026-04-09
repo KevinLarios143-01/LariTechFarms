@@ -28,7 +28,7 @@ export class InventarioListComponent implements OnInit {
 
   // Paginación
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
@@ -58,7 +58,7 @@ export class InventarioListComponent implements OnInit {
     this.isLoading = true;
     const params: any = {
       page: this.currentPage,
-      limit: this.itemsPerPage
+      limit: this.pageSize
     };
 
     if (this.searchTerm) {
@@ -177,12 +177,16 @@ export class InventarioListComponent implements OnInit {
     return 'Normal';
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadInventario();
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadInventario();
+    }
   }
 
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadInventario();
   }
 }

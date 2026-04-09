@@ -19,6 +19,7 @@ export class ProductoListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   productos: Producto[] = []
   filteredProductos: Producto[] = []
+  paginatedProductos: Producto[] = []
   categorias: string[] = []
   isLoading = false
   searchTerm = ''
@@ -28,6 +29,13 @@ export class ProductoListComponent implements OnInit {
     { value: 'true', label: 'Activo' },
     { value: 'false', label: 'Inactivo' }
   ]
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     private productosService: ProductosService,
@@ -57,6 +65,7 @@ export class ProductoListComponent implements OnInit {
           this.productos = []
         }
         this.filteredProductos = [...this.productos]
+        this.updatePagination()
         this.isLoading = false
         this.cdr.detectChanges()
       },
@@ -97,6 +106,8 @@ export class ProductoListComponent implements OnInit {
       
       return matchesSearch && matchesCategoria && matchesActivo
     })
+    this.currentPage = 1
+    this.updatePagination()
     this.cdr.detectChanges()
   }
 
@@ -137,6 +148,8 @@ export class ProductoListComponent implements OnInit {
     this.selectedCategoria = ''
     this.selectedActivo = ''
     this.filteredProductos = [...this.productos]
+    this.currentPage = 1
+    this.updatePagination()
     this.cdr.detectChanges()
   }
 
@@ -163,5 +176,30 @@ export class ProductoListComponent implements OnInit {
     if (stock <= 50) return 'danger'
     if (stock <= 100) return 'warning'
     return 'success'
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  private updatePagination(): void {
+    this.totalItems = this.filteredProductos.length;
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedProductos = this.filteredProductos.slice(startIndex, endIndex);
+    this.cdr.detectChanges();
   }
 }

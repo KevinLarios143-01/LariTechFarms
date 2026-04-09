@@ -25,7 +25,7 @@ export class VentaListComponent implements OnInit {
   fechaHasta = '';
 
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
@@ -57,7 +57,7 @@ export class VentaListComponent implements OnInit {
     this.isLoading = true;
     const params = {
       page: this.currentPage,
-      limit: this.itemsPerPage,
+      limit: this.pageSize,
       estado: this.estadoFilter || undefined,
       fechaDesde: this.fechaDesde || undefined,
       fechaHasta: this.fechaHasta || undefined
@@ -161,13 +161,17 @@ export class VentaListComponent implements OnInit {
     return classes[estado] || 'bg-secondary';
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadVentas();
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadVentas();
+    }
   }
 
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadVentas();
   }
 
   generarTickets(venta: Venta) {

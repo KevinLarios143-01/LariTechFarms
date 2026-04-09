@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { RouterModule } from '@angular/router';
@@ -15,13 +15,15 @@ import { Ticket, UpdateTicketRequest } from '../../../../shared/interfaces/ticke
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [CommonModule, SharedModule, NgSelectModule, RouterModule, ReactiveFormsModule, NgbModule],
+  imports: [CommonModule, SharedModule, NgSelectModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
   templateUrl: './ticket-list.component.html',
   styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
+  paginatedTickets: Ticket[] = [];
   loading = false;
   editForm: FormGroup;
   filterForm: FormGroup;
@@ -32,6 +34,13 @@ export class TicketListComponent implements OnInit {
   ticketsPendientes = 0;
   ticketsAutorizados = 0;
   ticketsDespachados = 0;
+
+  // Paginación
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     private readonly modalService: NgbModal,
@@ -59,8 +68,19 @@ export class TicketListComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.toLowerCase();
-    // Implementar filtro local simple
-    // En una implementación real, esto se haría en el servidor
+    if (!filterValue) {
+      this.filteredTickets = [...this.tickets];
+    } else {
+      this.filteredTickets = this.tickets.filter(ticket =>
+        (ticket.venta?.cliente?.nombre || '').toLowerCase().includes(filterValue) ||
+        (ticket.producto?.nombre || '').toLowerCase().includes(filterValue) ||
+        (ticket.lote?.galera || '').toLowerCase().includes(filterValue) ||
+        ticket.estado?.toLowerCase().includes(filterValue) ||
+        String(ticket.id).includes(filterValue)
+      );
+    }
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
   edit(editContent: any, ticket: Ticket) {
@@ -160,12 +180,16 @@ export class TicketListComponent implements OnInit {
           this.tickets = [];
         }
         
+        this.filteredTickets = [...this.tickets];
         this.calculateStats();
+        this.updatePagination();
         this.loading = false;
         this.cdr.detectChanges();
       },
       error: (error) => {
         this.tickets = [];
+        this.filteredTickets = [];
+        this.paginatedTickets = [];
         this.loading = false;
         this.cdr.detectChanges();
       }
@@ -226,5 +250,30 @@ export class TicketListComponent implements OnInit {
 
   trackByTicketId(index: number, ticket: Ticket): number {
     return ticket.id;
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  private updatePagination(): void {
+    this.totalItems = this.filteredTickets.length;
+    this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+    if (this.currentPage > this.totalPages && this.totalPages > 0) {
+      this.currentPage = this.totalPages;
+    }
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedTickets = this.filteredTickets.slice(startIndex, endIndex);
+    this.cdr.detectChanges();
   }
 }

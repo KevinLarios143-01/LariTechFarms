@@ -22,7 +22,7 @@ export class IngresoListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   ingresos: IngresoInventario[] = [];
   isLoading = false;
-  
+
   // Filtros
   loteFilter: number | null = null;
   productoFilter: number | null = null;
@@ -31,16 +31,14 @@ export class IngresoListComponent implements OnInit {
 
   // Paginación
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
+  Math = Math;
 
   // Datos para filtros
   lotes: any[] = [];
   productos: any[] = [];
-
-  // Expose Math to template
-  Math = Math;
 
   stats = {
     totalIngresos: 0,
@@ -89,7 +87,7 @@ export class IngresoListComponent implements OnInit {
     this.isLoading = true;
     const params: any = {
       page: this.currentPage,
-      limit: this.itemsPerPage
+      limit: this.pageSize
     };
 
     if (this.loteFilter) params.idLote = this.loteFilter;
@@ -167,12 +165,16 @@ export class IngresoListComponent implements OnInit {
     }
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadIngresos();
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadIngresos();
+    }
   }
 
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadIngresos();
   }
 }

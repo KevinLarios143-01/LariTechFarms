@@ -1,13 +1,9 @@
-import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { NgbDateStruct, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { MaterialModuleModule } from '../../../../material-module/material-module.module';
 import flatpickr from 'flatpickr';
 import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
@@ -16,21 +12,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Cliente, UpdateClienteRequest } from '../../../../shared/interfaces/cliente';
 import { ClienteService } from '../cliente.service';
 
-interface ClienteDisplay {
-  id: number;
-  No: string;
-  name: string;
-  img: string;
-  email: string;
-  project: number;
-  statusText: string;
-  status: string;
-}
-
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
+  imports: [SharedModule, NgSelectModule, FlatpickrModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss'],
   providers: [
@@ -43,8 +28,6 @@ export class ClientListComponent implements OnInit {
   model1!: NgbDateStruct;
   model2!: NgbDateStruct;
   model3!: NgbDateStruct;
-  displayedColumns: string[] = ['ID', 'Name', 'Email', 'Projects', 'Status', 'Action'];
-  dataSource: MatTableDataSource<ClienteDisplay>;
   clientes: Cliente[] = [];
   filteredClientes: Cliente[] = [];
   loading = false;
@@ -58,16 +41,12 @@ export class ClientListComponent implements OnInit {
   totalPages = 0;
   Math = Math;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
   constructor(
     private readonly modalService: NgbModal,
     private readonly clienteService: ClienteService,
     private readonly fb: FormBuilder,
     private readonly toastr: ToastrService
   ) {
-    this.dataSource = new MatTableDataSource<ClienteDisplay>([]);
     this.editForm = this.fb.group({
       nombre: ['', Validators.required],
       telefono: ['', Validators.required],
@@ -78,19 +57,6 @@ export class ClientListComponent implements OnInit {
   }
 
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
-  }
   toggleClienteStatus(cliente: Cliente) {
     const isActive = cliente.estado;
     const action = isActive ? 'desactivar' : 'activar';
@@ -232,23 +198,6 @@ export class ClientListComponent implements OnInit {
     this.pageSize = newSize;
     this.currentPage = 1;
     this.loadClientes();
-  }
-
-  private mapClientesToDisplay(clientes: Cliente[]): ClienteDisplay[] {
-    if (!clientes || !Array.isArray(clientes)) {
-      console.warn('Clientes is not an array:', clientes);
-      return [];
-    }
-    return clientes.map((cliente, index) => ({
-      id: cliente.id,
-      No: `#CLT-${String(cliente.id).padStart(3, '0')}`,
-      name: cliente.nombre || 'Sin nombre',
-      img: cliente.img || './assets/images/laritechfarms/2.jpg',
-      email: cliente.correo || cliente.email || '',
-      project: cliente.proyectos || cliente._count?.proyectos || 0,
-      statusText: cliente.estado ? 'Activo' : 'Inactivo',
-      status: cliente.estado ? 'success' : 'danger'
-    }));
   }
 
   private initializeFlatpickr(): void {

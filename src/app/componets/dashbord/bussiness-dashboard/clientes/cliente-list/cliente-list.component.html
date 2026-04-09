@@ -1,221 +1,217 @@
-<div class="container-fluid">
-  <!-- Page Header -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header justify-content-between">
-          <div class="card-title">Gestión de Clientes</div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-primary btn-sm" routerLink="../add">
-              <i class="ri-add-line"></i> Agregar Cliente
+<app-hr-dashboard-page-header [title]="'Gestión de Clientes'" [title2]="'Agregar Cliente'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/clientes/add'">
+</app-hr-dashboard-page-header>
+
+<!-- Estadísticas -->
+<div class="row">
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+              <i class="ri-user-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalClientes }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Total Clientes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-success-transparent">
+              <i class="ri-user-check-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.clientesActivos }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Clientes Activos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+              <i class="ri-user-unfollow-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.clientesInactivos }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Clientes Inactivos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-xl-4 col-lg-4 col-md-6">
+            <input type="text" class="form-control" placeholder="Buscar por nombre, teléfono, correo..."
+              [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <select class="form-select" [(ngModel)]="estadoFilter" (change)="applyFilters()">
+              <option value="">Todos los estados</option>
+              <option value="activo">Activos</option>
+              <option value="inactivo">Inactivos</option>
+            </select>
+          </div>
+          <div class="col-xl-2 col-lg-4 col-md-6">
+            <button class="btn btn-secondary w-100" (click)="clearFilters()">
+              <i class="ri-refresh-line"></i> Limpiar
             </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Estadísticas -->
-  <div class="row">
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
-                <i class="ri-user-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalClientes }}</h5>
+<!-- Tabla -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <!-- Selector de cantidad por página -->
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" [ngModel]="pageSize"
+                    (ngModelChange)="onPageSizeChange($event)"
+                    class="form-control wd-150 p-0">
+                    <ng-option [value]="10">10</ng-option>
+                    <ng-option [value]="25">25</ng-option>
+                    <ng-option [value]="50">50</ng-option>
+                    <ng-option [value]="100">100</ng-option>
+                  </ng-select>
+                </div>
               </div>
-              <p class="mb-0 fs-12 text-muted">Total Clientes</p>
+              <span>registros</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-success-transparent">
-                <i class="ri-user-check-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">{{ stats.clientesActivos }}</h5>
-              </div>
-              <p class="mb-0 fs-12 text-muted">Clientes Activos</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
-                <i class="ri-user-unfollow-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">{{ stats.clientesInactivos }}</h5>
-              </div>
-              <p class="mb-0 fs-12 text-muted">Clientes Inactivos</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Filtros -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-xl-4 col-lg-4 col-md-6">
-              <input type="text" class="form-control" placeholder="Buscar por nombre, teléfono, correo..."
-                [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()">
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-              <select class="form-select" [(ngModel)]="estadoFilter" (change)="applyFilters()">
-                <option value="">Todos los estados</option>
-                <option value="activo">Activos</option>
-                <option value="inactivo">Inactivos</option>
-              </select>
-            </div>
-            <div class="col-xl-2 col-lg-4 col-md-6">
-              <button class="btn btn-secondary w-100" (click)="clearFilters()">
-                <i class="ri-refresh-line"></i> Limpiar
-              </button>
+        @if (isLoading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tabla -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <!-- Selector de cantidad por página -->
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex align-items-center gap-2">
-              <label class="mb-0">Mostrar</label>
-              <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="itemsPerPage" (change)="onPageSizeChange()">
-                <option [value]="10">10</option>
-                <option [value]="25">25</option>
-                <option [value]="50">50</option>
-                <option [value]="100">100</option>
-              </select>
-              <label class="mb-0">entradas</label>
-            </div>
-            <div>
-              <input type="text" class="form-control form-control-sm" placeholder="Buscar..." 
-                [(ngModel)]="searchTerm" (ngModelChange)="applyFilters()" style="width: 200px;">
-            </div>
-          </div>
-
+        } @else {
           <div class="table-responsive">
-            <table class="table text-nowrap table-hover">
+            <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
               <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Teléfono</th>
-                  <th>Correo</th>
-                  <th>NIT</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+                <tr class="border-bottom">
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Teléfono</th>
+                  <th scope="col">Correo</th>
+                  <th scope="col">NIT</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                @if (isLoading) {
-                <tr>
-                  <td colspan="6" class="text-center">
-                    <div class="spinner-border text-primary" role="status">
-                      <span class="visually-hidden">Cargando...</span>
-                    </div>
-                  </td>
-                </tr>
-                } @else if (clientes.length === 0) {
-                <tr>
-                  <td colspan="6" class="text-center">No hay clientes registrados</td>
-                </tr>
-                } @else {
                 @for (cliente of clientes; track cliente.id) {
-                <tr>
-                  <td>
-                    <div class="fw-semibold">{{ cliente.nombre }}</div>
-                    @if (cliente.direccion) {
-                    <small class="text-muted">{{ cliente.direccion }}</small>
-                    }
-                  </td>
-                  <td>{{ cliente.telefono || '-' }}</td>
-                  <td>{{ cliente.correo || '-' }}</td>
-                  <td>{{ cliente.nit || '-' }}</td>
-                  <td>
-                    <span [class]="'badge ' + (cliente.estado ? 'bg-success' : 'bg-danger')">
-                      {{ cliente.estado ? 'Activo' : 'Inactivo' }}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="btn-group" role="group">
-                      <button class="btn btn-sm btn-info" [routerLink]="['../view', cliente.id]" title="Ver detalles">
-                        <i class="ri-eye-line"></i>
-                      </button>
-                      <button class="btn btn-sm btn-primary" [routerLink]="['../edit', cliente.id]" title="Editar">
-                        <i class="ri-edit-line"></i>
-                      </button>
-                      <button class="btn btn-sm" [class.btn-success]="!cliente.estado"
-                        [class.btn-warning]="cliente.estado" (click)="toggleEstado(cliente)"
-                        [title]="cliente.estado ? 'Desactivar' : 'Activar'">
-                        <i [class]="cliente.estado ? 'ri-close-circle-line' : 'ri-check-line'"></i>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                }
+                  <tr class="border-bottom">
+                    <td>
+                      <div class="fw-semibold">{{ cliente.nombre }}</div>
+                      @if (cliente.direccion) {
+                        <small class="text-muted">{{ cliente.direccion }}</small>
+                      }
+                    </td>
+                    <td>{{ cliente.telefono || '-' }}</td>
+                    <td>{{ cliente.correo || '-' }}</td>
+                    <td>{{ cliente.nit || '-' }}</td>
+                    <td>
+                      <span [class]="'badge ' + (cliente.estado ? 'bg-success' : 'bg-danger')">
+                        {{ cliente.estado ? 'Activo' : 'Inactivo' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a class="btn btn-primary btn-icon"
+                          [routerLink]="['../view', cliente.id]"
+                          data-bs-toggle="tooltip" title="Ver">
+                          <i class="fe fe-eye"></i>
+                        </a>
+                        <a class="btn btn-success btn-icon"
+                          [routerLink]="['../edit', cliente.id]"
+                          data-bs-toggle="tooltip" title="Editar">
+                          <i class="fe fe-edit-2"></i>
+                        </a>
+                        <a class="btn btn-icon"
+                          [class.btn-warning]="cliente.estado"
+                          [class.btn-info]="!cliente.estado"
+                          (click)="toggleEstado(cliente)"
+                          data-bs-toggle="tooltip"
+                          [title]="cliente.estado ? 'Desactivar' : 'Activar'">
+                          <i [class]="cliente.estado ? 'fe fe-user-x' : 'fe fe-user-check'"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="6" class="text-center py-4">
+                      <div class="text-muted">
+                        <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                        <p>No hay registros disponibles</p>
+                      </div>
+                    </td>
+                  </tr>
                 }
               </tbody>
             </table>
           </div>
 
-          <!-- Paginación -->
-          @if (totalPages > 1) {
-          <div class="d-flex justify-content-between align-items-center mt-3">
-            <div>
-              Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a
-              {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} clientes
-            </div>
-            <nav>
-              <ul class="pagination mb-0">
-                <li class="page-item" [class.disabled]="currentPage === 1">
-                  <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
+          <!-- Start::pagination -->
+          <nav class="mt-4">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              @for (page of [].constructor(totalPages); track $index) {
+                <li class="page-item" [class.active]="currentPage === $index + 1">
+                  <a class="page-link" href="javascript:void(0);"
+                     (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
                 </li>
-                @for (page of pages; track page) {
-                <li class="page-item" [class.active]="page === currentPage">
-                  <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
-                </li>
-                }
-                <li class="page-item" [class.disabled]="currentPage === totalPages">
-                  <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
-          }
-        </div>
+              }
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+            </ul>
+          </nav>
+          <!-- End::pagination -->
+        }
       </div>
     </div>
   </div>

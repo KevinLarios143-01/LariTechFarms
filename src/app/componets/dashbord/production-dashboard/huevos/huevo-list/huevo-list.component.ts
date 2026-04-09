@@ -21,15 +21,22 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
 })
 export class HuevoListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
-  controles: ControlHuevos[] = []
-  filteredControles: ControlHuevos[] = []
-  lotes: Lote[] = []
-  isLoading = false
-  searchTerm = ''
-  selectedLote = ''
-  selectedCalidad = ''
-  selectedFecha = ''
-  calidades = ['Excelente', 'Buena', 'Regular', 'Mala']
+  controles: ControlHuevos[] = [];
+  filteredControles: ControlHuevos[] = [];
+  lotes: Lote[] = [];
+  isLoading = false;
+  searchTerm = '';
+  selectedLote = '';
+  selectedCalidad = '';
+  selectedFecha = '';
+  calidades = ['Excelente', 'Buena', 'Regular', 'Mala'];
+
+  // Paginación
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     private huevosService: HuevosService,
@@ -39,42 +46,68 @@ export class HuevoListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadControles()
-    this.loadLotes()
+    this.loadControles();
+    this.loadLotes();
   }
 
   loadControles() {
-    this.isLoading = true
-    this.huevosService.getControles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+    this.isLoading = true;
+
+    const params: any = {
+      page: this.currentPage,
+      limit: this.pageSize
+    };
+
+    if (this.searchTerm) {
+      params.search = this.searchTerm;
+    }
+
+    if (this.selectedLote) {
+      params.idLote = this.selectedLote;
+    }
+
+    if (this.selectedCalidad) {
+      params.calidad = this.selectedCalidad;
+    }
+
+    if (this.selectedFecha) {
+      params.fecha = this.selectedFecha;
+    }
+
+    this.huevosService.getControles(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         // Manejo robusto de diferentes estructuras de respuesta
         if (response?.data?.data && Array.isArray(response.data.data)) {
-          this.controles = response.data.data
+          this.controles = response.data.data;
         } else if (response?.data?.items && Array.isArray(response.data.items)) {
-          this.controles = response.data.items
+          this.controles = response.data.items;
         } else if (response?.data && Array.isArray(response.data)) {
-          this.controles = response.data
+          this.controles = response.data;
         } else if (Array.isArray(response)) {
-          this.controles = response
+          this.controles = response;
         } else {
-          this.controles = []
+          this.controles = [];
         }
 
-        this.filteredControles = [...this.controles]
-        this.isLoading = false
-        this.cdr.detectChanges()
+        this.totalItems = response?.data?.pagination?.total || this.controles.length;
+        this.totalPages = response?.data?.pagination?.totalPages || Math.ceil(this.totalItems / this.pageSize);
+        this.filteredControles = [...this.controles];
+        this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        this.controles = []
-        this.filteredControles = []
+        this.controles = [];
+        this.filteredControles = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
         this.toastr.error('Error al cargar controles de huevos', 'Error', {
           progressBar: true,
           closeButton: true
-        })
-        this.isLoading = false
-        this.cdr.detectChanges()
+        });
+        this.isLoading = false;
+        this.cdr.detectChanges();
       }
-    })
+    });
   }
 
   loadLotes() {
@@ -104,21 +137,21 @@ export class HuevoListComponent implements OnInit {
   }
 
   applyFilters() {
-    this.filteredControles = this.controles.filter(control => {
-      const matchesSearch = !this.searchTerm || 
-        control.lote?.galera.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        control.usuario?.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        control.usuario?.apellido.toLowerCase().includes(this.searchTerm.toLowerCase())
-      
-      const matchesLote = !this.selectedLote || control.idLote.toString() === this.selectedLote
-      const matchesCalidad = !this.selectedCalidad || control.calidad === this.selectedCalidad
-      
-      const matchesFecha = !this.selectedFecha || 
-        new Date(control.fecha).toDateString() === new Date(this.selectedFecha).toDateString()
-      
-      return matchesSearch && matchesLote && matchesCalidad && matchesFecha
-    })
-    this.cdr.detectChanges()
+    this.currentPage = 1;
+    this.loadControles();
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadControles();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadControles();
   }
 
   deleteControl(id: number) {
@@ -168,12 +201,12 @@ export class HuevoListComponent implements OnInit {
   }
 
   clearFilters() {
-    this.searchTerm = ''
-    this.selectedLote = ''
-    this.selectedCalidad = ''
-    this.selectedFecha = ''
-    this.filteredControles = [...this.controles]
-    this.cdr.detectChanges()
+    this.searchTerm = '';
+    this.selectedLote = '';
+    this.selectedCalidad = '';
+    this.selectedFecha = '';
+    this.currentPage = 1;
+    this.loadControles();
   }
 
   trackByControlId(index: number, control: ControlHuevos): number {

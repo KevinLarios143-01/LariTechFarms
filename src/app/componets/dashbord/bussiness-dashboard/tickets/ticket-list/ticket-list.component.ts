@@ -25,7 +25,7 @@ export class TicketListComponent implements OnInit {
   fechaFin = '';
 
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
@@ -67,7 +67,7 @@ export class TicketListComponent implements OnInit {
 
     const params = {
       page: this.currentPage,
-      limit: this.itemsPerPage,
+      limit: this.pageSize,
       estado: estadoFilter,
       fechaInicio: this.fechaInicio || undefined,
       fechaFin: this.fechaFin || undefined
@@ -170,8 +170,16 @@ export class TicketListComponent implements OnInit {
     return classes[estado] || 'bg-secondary';
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadTickets();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
     this.loadTickets();
   }
 

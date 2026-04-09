@@ -24,12 +24,10 @@ export class ClienteListComponent implements OnInit {
   estadoFilter = '';
 
   currentPage = 1;
-  itemsPerPage = 100;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
-
-  // Exponer Math para usar en el template
-  protected readonly Math = Math;
+  Math = Math;
 
   stats = {
     totalClientes: 0,
@@ -51,13 +49,12 @@ export class ClienteListComponent implements OnInit {
   loadClientes() {
     this.isLoading = true;
     this.clienteService.page = this.currentPage;
-    this.clienteService.pageSize = this.itemsPerPage;
+    this.clienteService.pageSize = this.pageSize;
     this.clienteService.searchTerm = this.searchTerm;
 
-    // Construir parámetros adicionales para el filtro de estado
     let params: any = {
       page: this.currentPage,
-      limit: this.itemsPerPage
+      limit: this.pageSize
     };
 
     if (this.searchTerm) {
@@ -68,12 +65,11 @@ export class ClienteListComponent implements OnInit {
       params.estado = this.estadoFilter === 'activo' ? 'true' : 'false';
     }
 
-    // Hacer la petición directamente con los parámetros
     this.clienteService.getClientesWithParams(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.clientes = response.data.data;
         this.totalItems = response.data.pagination.total;
-        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+        this.totalPages = Math.ceil(this.totalItems / this.pageSize);
         this.isLoading = false;
         this.cdr.detectChanges();
       },
@@ -119,12 +115,12 @@ export class ClienteListComponent implements OnInit {
   toggleEstado(cliente: Cliente) {
     const nuevoEstado = !cliente.estado;
     const mensaje = nuevoEstado ? 'activar' : 'desactivar';
-    
+
     if (confirm(`¿Está seguro de ${mensaje} este cliente?`)) {
-      const action = nuevoEstado ? 
-        this.clienteService.activateCliente(cliente.id) : 
+      const action = nuevoEstado ?
+        this.clienteService.activateCliente(cliente.id) :
         this.clienteService.deactivateCliente(cliente.id);
-      
+
       action.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Cliente ${nuevoEstado ? 'activado' : 'desactivado'} exitosamente`, 'Éxito');
@@ -139,17 +135,16 @@ export class ClienteListComponent implements OnInit {
     }
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadClientes();
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadClientes();
+    }
   }
 
-  onPageSizeChange() {
-    this.currentPage = 1; // Resetear a la primera página
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
     this.loadClientes();
-  }
-
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }

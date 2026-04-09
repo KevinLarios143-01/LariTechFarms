@@ -84,12 +84,11 @@
               <span>Mostrar</span>
               <div class="d-flex ms-2 mx-2">
                 <div class="form-group mb-0">
-                  <ng-select name="quantity" id="select-countries17" placeholder="10" class="form-control  wd-150 p-0"
-                    data-trigger>
-                    <ng-option value="1" selected="">10</ng-option>
-                    <ng-option value="2">25</ng-option>
-                    <ng-option value="3">50</ng-option>
-                    <ng-option value="4">100</ng-option>
+                  <ng-select name="quantity" [ngModel]="pageSize" (ngModelChange)="onPageSizeChange($event)" class="form-control  wd-150 p-0">
+                    <ng-option [value]="10">10</ng-option>
+                    <ng-option [value]="25">25</ng-option>
+                    <ng-option [value]="50">50</ng-option>
+                    <ng-option [value]="100">100</ng-option>
                   </ng-select>
                 </div>
               </div>
@@ -132,7 +131,7 @@
                   </td>
                 </tr>
               } @else {
-                @for (producto of filteredProductos; track producto.id) {
+                @for (producto of paginatedProductos; track producto.id) {
                   <tr class="border-bottom">
                     <th scope="row">{{producto.id}}</th>
                     <td>
@@ -183,11 +182,17 @@
         <!-- Start::pagination -->
         <nav class="mt-4">
           <ul class="pagination justify-content-end mb-0">
-            <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
-            <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-            <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" href="javascript:void(0);" (click)="onPageChange(currentPage - 1)">Anterior</a>
+            </li>
+            @for (page of [].constructor(totalPages); track $index) {
+              <li class="page-item" [class.active]="currentPage === $index + 1">
+                <a class="page-link" href="javascript:void(0);" (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+              </li>
+            }
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" href="javascript:void(0);" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+            </li>
           </ul>
         </nav>
         <!-- End::pagination -->
