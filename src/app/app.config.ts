@@ -23,10 +23,15 @@ import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthInterceptor } from './shared/services/auth-interceptor.service';
 import { UserSessionService } from './shared/services/user-session.service';
-import { firstValueFrom } from 'rxjs';
+import { PermissionsService } from './shared/services/permissions.service';
+import { firstValueFrom, switchMap } from 'rxjs';
 
-function initializeUserSession(userSessionService: UserSessionService): () => Promise<void> {
-  return () => firstValueFrom(userSessionService.initSession());
+function initializeApp(userSessionService: UserSessionService, permissionsService: PermissionsService): () => Promise<void> {
+  return () => firstValueFrom(
+    userSessionService.initSession().pipe(
+      switchMap(() => permissionsService.init())
+    )
+  );
 }
 
 export const appConfig: ApplicationConfig = {
@@ -35,8 +40,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([AuthInterceptor])),
     {
       provide: APP_INITIALIZER,
-      useFactory: initializeUserSession,
-      deps: [UserSessionService],
+      useFactory: initializeApp,
+      deps: [UserSessionService, PermissionsService],
       multi: true
     },
     AngularFireModule,
