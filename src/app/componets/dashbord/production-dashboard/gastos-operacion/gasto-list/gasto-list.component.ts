@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { GastoOperacionService } from '../../../../../shared/services/gasto-operacion.service';
 import { GastoOperacion } from '../../../../../shared/interfaces/gasto-operacion';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-gasto-list',
@@ -16,6 +18,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./gasto-list.component.scss']
 })
 export class GastoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   gastos: GastoOperacion[] = [];
   isLoading = false;
   searchTerm = '';
@@ -27,12 +30,13 @@ export class GastoListComponent implements OnInit {
   categorias = ['Mantenimiento', 'Servicios', 'Insumos', 'Personal', 'Transporte', 'Limpieza', 'Combustible', 'Medicamentos'];
   metodosPago = ['Efectivo', 'Transferencia', 'Tarjeta', 'Cheque'];
 
+  // Paginación
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
-  // Expose Math to template
+  // Para usar Math en el template
   Math = Math;
 
   stats = {
@@ -54,16 +58,25 @@ export class GastoListComponent implements OnInit {
 
   loadGastos() {
     this.isLoading = true;
-    const params = {
+    const params: any = {
       page: this.currentPage,
-      limit: this.itemsPerPage,
-      categoria: this.selectedCategoria || undefined,
-      metodoPago: this.selectedMetodoPago || undefined,
-      fechaInicio: this.fechaInicio || undefined,
-      fechaFin: this.fechaFin || undefined
+      limit: this.pageSize,
     };
 
-    this.gastoService.getGastos(params).subscribe({
+    if (this.selectedCategoria) {
+      params.categoria = this.selectedCategoria;
+    }
+    if (this.selectedMetodoPago) {
+      params.metodoPago = this.selectedMetodoPago;
+    }
+    if (this.fechaInicio) {
+      params.fechaInicio = this.fechaInicio;
+    }
+    if (this.fechaFin) {
+      params.fechaFin = this.fechaFin;
+    }
+
+    this.gastoService.getGastos(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data?.items) {
           this.gastos = response.data.items;
@@ -82,12 +95,15 @@ export class GastoListComponent implements OnInit {
   }
 
   loadStats() {
-    const params = {
-      fechaInicio: this.fechaInicio || undefined,
-      fechaFin: this.fechaFin || undefined
-    };
+    const params: any = {};
+    if (this.fechaInicio) {
+      params.fechaInicio = this.fechaInicio;
+    }
+    if (this.fechaFin) {
+      params.fechaFin = this.fechaFin;
+    }
 
-    this.gastoService.getStats(params).subscribe({
+    this.gastoService.getStats(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data) {
           this.stats = {
@@ -121,20 +137,44 @@ export class GastoListComponent implements OnInit {
     this.loadStats();
   }
 
-  deleteGasto(id: number) {
-    if (confirm('¿Está seguro de eliminar este gasto?')) {
-      this.gastoService.deleteGasto(id).subscribe({
-        next: () => {
-          this.toastr.success('Gasto eliminado exitosamente', 'Éxito');
-          this.loadGastos();
-          this.loadStats();
-        },
-        error: (error) => {
-          const errorMsg = error?.error?.message || 'Error al eliminar gasto';
-          this.toastr.error(errorMsg, 'Error');
-        }
-      });
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadGastos();
     }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadGastos();
+  }
+
+  deleteGasto(id: number) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas eliminar este gasto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.gastoService.deleteGasto(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+          next: () => {
+            this.toastr.success('Gasto eliminado exitosamente', 'Éxito');
+            this.loadGastos();
+            this.loadStats();
+          },
+          error: (error) => {
+            const errorMsg = error?.error?.message || 'Error al eliminar gasto';
+            this.toastr.error(errorMsg, 'Error');
+          }
+        });
+      }
+    });
   }
 
   getCategoriaBadgeClass(categoria: string): string {
@@ -149,14 +189,5 @@ export class GastoListComponent implements OnInit {
       'Medicamentos': 'bg-purple text-white'
     };
     return classes[categoria] || 'bg-secondary';
-  }
-
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadGastos();
-  }
-
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }

@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgbDateStruct, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MaterialModuleModule } from '../../../../material-module/material-module.module';
@@ -29,7 +30,7 @@ interface ClienteDisplay {
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule],
+  imports: [SharedModule, NgSelectModule, MaterialModuleModule, FlatpickrModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
   templateUrl: './client-list.component.html',
   styleUrls: ['./client-list.component.scss'],
   providers: [
@@ -37,6 +38,7 @@ interface ClienteDisplay {
   ],
 })
 export class ClientListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   model!: NgbDateStruct;
   model1!: NgbDateStruct;
   model2!: NgbDateStruct;
@@ -48,6 +50,13 @@ export class ClientListComponent implements OnInit {
   loading = false;
   editForm: FormGroup;
   selectedCliente: Cliente | null = null;
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -91,7 +100,7 @@ export class ClientListComponent implements OnInit {
         ? this.clienteService.deactivateCliente(cliente.id)
         : this.clienteService.activateCliente(cliente.id);
 
-      serviceCall.subscribe({
+      serviceCall.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito', {
             timeOut: 3000,
@@ -138,7 +147,7 @@ export class ClientListComponent implements OnInit {
       this.loading = true;
       const updateData: UpdateClienteRequest = this.editForm.value;
 
-      this.clienteService.updateCliente(this.selectedCliente.id, updateData).subscribe({
+      this.clienteService.updateCliente(this.selectedCliente.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (response) => {
           this.toastr.success('Cliente actualizado exitosamente', 'Éxito', {
             timeOut: 3000,
@@ -182,20 +191,47 @@ export class ClientListComponent implements OnInit {
 
   private loadClientes(): void {
     this.loading = true;
-    this.clienteService.getClientes().subscribe({
+    this.clienteService.getClientes(this.currentPage, this.pageSize).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         const clientesData = response?.data?.data || response?.data || response || [];
         this.clientes = Array.isArray(clientesData) ? clientesData : [];
         this.filteredClientes = [...this.clientes];
+
+        // Extract pagination metadata
+        const pagination = response?.data?.pagination;
+        if (pagination) {
+          this.totalItems = pagination.total || 0;
+          this.totalPages = pagination.totalPages || Math.ceil(this.totalItems / this.pageSize);
+        } else {
+          // Fallback: if no pagination metadata, calculate from total array length
+          this.totalItems = this.clientes.length;
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        }
+
         this.loading = false;
       },
       error: (error) => {
         console.error('Error loading clientes:', error);
         this.clientes = [];
         this.filteredClientes = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
         this.loading = false;
       }
     });
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadClientes();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadClientes();
   }
 
   private mapClientesToDisplay(clientes: Cliente[]): ClienteDisplay[] {

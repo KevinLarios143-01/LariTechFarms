@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -19,6 +20,7 @@ import { Ticket, UpdateTicketRequest } from '../../../../shared/interfaces/ticke
   styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   tickets: Ticket[] = [];
   loading = false;
   editForm: FormGroup;
@@ -76,7 +78,7 @@ export class TicketListComponent implements OnInit {
       this.loading = true;
       const updateData: UpdateTicketRequest = this.editForm.value;
       
-      this.ticketService.updateTicket(this.selectedTicket.id, updateData).subscribe({
+      this.ticketService.updateTicket(this.selectedTicket.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Ticket actualizado exitosamente', 'Éxito', {
             timeOut: 3000,
@@ -113,7 +115,7 @@ export class TicketListComponent implements OnInit {
     if (confirm(`¿Está seguro de que desea ${action} este ticket?`)) {
       const updateData: UpdateTicketRequest = { estado: newStatus };
         
-      this.ticketService.updateTicket(ticket.id, updateData).subscribe({
+      this.ticketService.updateTicket(ticket.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Ticket ${action}do exitosamente`, 'Éxito', {
             timeOut: 3000,
@@ -143,7 +145,7 @@ export class TicketListComponent implements OnInit {
   private loadTickets(): void {
     this.loading = true;
     
-    this.ticketService.getTickets().subscribe({
+    this.ticketService.getTickets().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         // Manejar diferentes estructuras de respuesta
         if (response?.data?.data) {
@@ -192,7 +194,7 @@ export class TicketListComponent implements OnInit {
 
   deleteTicket(id: number): void {
     if (confirm('¿Está seguro de que desea eliminar este ticket?')) {
-      this.ticketService.deleteTicket(id).subscribe({
+      this.ticketService.deleteTicket(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Ticket eliminado exitosamente', 'Éxito', {
             timeOut: 3000,

@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./ticket-list.component.scss']
 })
 export class TicketListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   tickets: Ticket[] = [];
   isLoading = false;
   activeTab: 'activos' | 'despachados' | 'anulados' = 'activos';
@@ -71,7 +73,7 @@ export class TicketListComponent implements OnInit {
       fechaFin: this.fechaFin || undefined
     };
 
-    this.ticketService.getTickets(params).subscribe({
+    this.ticketService.getTickets(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data) {
           let ticketsData = response.data;
@@ -104,7 +106,7 @@ export class TicketListComponent implements OnInit {
       fechaFin: this.fechaFin || undefined
     };
 
-    this.ticketService.getTicketsStats(params).subscribe({
+    this.ticketService.getTicketsStats(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data) {
           this.stats.totalTickets = response.data.totalTickets;
@@ -144,7 +146,7 @@ export class TicketListComponent implements OnInit {
 
   cambiarEstado(ticket: Ticket, nuevoEstado: string) {
     if (confirm(`¿Está seguro de cambiar el estado a "${nuevoEstado}"?`)) {
-      this.ticketService.updateTicketEstado(ticket.id, { estado: nuevoEstado as any }).subscribe({
+      this.ticketService.updateTicketEstado(ticket.id, { estado: nuevoEstado as any }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Estado actualizado exitosamente', 'Éxito');
           this.loadTickets();
@@ -187,7 +189,7 @@ export class TicketListComponent implements OnInit {
       : `Este ticket está en estado "${ticket.estado}". ¿Está seguro de eliminarlo? El inventario será restaurado.`;
     
     if (confirm(mensaje)) {
-      this.ticketService.deleteTicket(ticket.id).subscribe({
+      this.ticketService.deleteTicket(ticket.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Ticket eliminado exitosamente. Inventario restaurado.', 'Éxito');
           this.loadTickets();

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./puesto-list.component.scss']
 })
 export class PuestoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   puestos: Puesto[] = [];
   isLoading = false;
   currentPage = 1;
@@ -39,7 +41,7 @@ export class PuestoListComponent implements OnInit {
       ...(this.searchTerm && { search: this.searchTerm })
     };
 
-    this.puestoService.getPuestos(params).subscribe({
+    this.puestoService.getPuestos(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response.success) {
           this.puestos = response.data.data;
@@ -78,7 +80,7 @@ export class PuestoListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.puestoService.deletePuesto(puesto.id).subscribe({
+        this.puestoService.deletePuesto(puesto.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
           next: (response) => {
             Swal.fire('Eliminado', response.message, 'success');
             this.loadPuestos();
@@ -94,7 +96,7 @@ export class PuestoListComponent implements OnInit {
 
   toggleActivo(puesto: Puesto) {
     const newStatus = !puesto.activo;
-    this.puestoService.updatePuesto(puesto.id, { activo: newStatus }).subscribe({
+    this.puestoService.updatePuesto(puesto.id, { activo: newStatus }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         puesto.activo = newStatus;
         Swal.fire(

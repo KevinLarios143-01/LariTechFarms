@@ -1,4 +1,6 @@
-<app-task-dashboard-page-header [title]="'Task List'" [title3]="'Task'"></app-task-dashboard-page-header>
+<app-hr-dashboard-page-header [title]="'Tareas'" [title2]="'Nueva Tarea'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/task-dashboard/new-task'">
+</app-hr-dashboard-page-header>
 <!-- Row -->
 <div class="row">
     <div class="col-xl-3 col-lg-6 col-md-12">
@@ -8,12 +10,12 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="mt-0 text-start">
-                                <span class="fs-16 fw-semibold">All Task's</span>
-                                <h3 class="mb-0 mt-1 text-danger  fs-25">1254</h3>
+                                <span class="fs-16 fw-semibold">Todas las Tareas</span>
+                                <h3 class="mb-0 mt-1 text-danger fs-25">1254</h3>
                             </div>
                         </div>
                         <div class="col-5">
-                            <div class="icon1 bg-danger-transparent my-auto  float-end"> <i class="fe fe-briefcase"></i>
+                            <div class="icon1 bg-danger-transparent my-auto float-end"> <i class="fe fe-briefcase"></i>
                             </div>
                         </div>
                     </div>
@@ -28,12 +30,12 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="mt-0 text-start">
-                                <span class="fs-16 fw-semibold">My Task</span>
-                                <h3 class="mb-0 mt-1 text-primary  fs-25">42</h3>
+                                <span class="fs-16 fw-semibold">Mis Tareas</span>
+                                <h3 class="mb-0 mt-1 text-primary fs-25">42</h3>
                             </div>
                         </div>
                         <div class="col-5">
-                            <div class="icon1 bg-primary-transparent my-auto  float-end"> <i
+                            <div class="icon1 bg-primary-transparent my-auto float-end"> <i
                                     class="fe fe-clipboard"></i> </div>
                         </div>
                     </div>
@@ -48,12 +50,12 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="mt-0 text-start">
-                                <span class="fs-16 fw-semibold">Pending Tasks</span>
+                                <span class="fs-16 fw-semibold">Tareas Pendientes</span>
                                 <h3 class="mb-0 mt-1 text-secondary fs-25">11</h3>
                             </div>
                         </div>
                         <div class="col-5">
-                            <div class="icon1 bg-secondary-transparent my-auto  float-end"> <i class="fe fe-info"></i>
+                            <div class="icon1 bg-secondary-transparent my-auto float-end"> <i class="fe fe-info"></i>
                             </div>
                         </div>
                     </div>
@@ -68,12 +70,12 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="mt-0 text-start">
-                                <span class="fs-16 fw-semibold">Completed Tasks</span>
+                                <span class="fs-16 fw-semibold">Tareas Completadas</span>
                                 <h3 class="mb-0 mt-1 text-success fs-25">38</h3>
                             </div>
                         </div>
                         <div class="col-5">
-                            <div class="icon1 bg-success-transparent my-auto  float-end"> <i class="fe fe-check"></i>
+                            <div class="icon1 bg-success-transparent my-auto float-end"> <i class="fe fe-check"></i>
                             </div>
                         </div>
                     </div>
@@ -89,10 +91,10 @@
     <div class="col-xl-12 col-md-12 col-lg-12">
         <div class="card custom-card">
             <div class="card-header d-flex justify-content-between border-bottom-0">
-                <h4 class="card-title">Recent Task Summary</h4>
+                <h4 class="card-title">Resumen de Tareas Recientes</h4>
                 <div class="float-end">
                     <div class="input-group">
-                        <input class="form-control" placeholder="Search....." type="text">
+                        <input class="form-control" placeholder="Buscar....." type="text">
                         <button class="btn btn-light br-ts-0 br-bs-0">
                             <i class="fa fa-search"></i>
                         </button>
@@ -105,7 +107,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">From:</label>
+                                    <label class="form-label">Desde:</label>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i>
@@ -118,7 +120,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label">To:</label>
+                                    <label class="form-label">Hasta:</label>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i>
@@ -133,10 +135,10 @@
                     </div>
                     <div class="col-xl-3 col-lg-6">
                         <div class="form-group">
-                            <label class="form-label">Assign To:</label>
+                            <label class="form-label">Asignar A:</label>
                             <ng-select class="form-control custom-select p-0" data-trigger
-                                placeholder="Select Employee">
-                                <ng-option value="">Select Employee</ng-option>
+                                placeholder="Seleccionar Empleado">
+                                <ng-option value="">Seleccionar Empleado</ng-option>
                                 <ng-option value="1">Faith Harris</ng-option>
                                 <ng-option value="2">Austin Bell</ng-option>
                                 <ng-option value="3">Maria Bower</ng-option>
@@ -154,18 +156,18 @@
                     </div>
                     <div class="col-xl-3 col-lg-6">
                         <div class="form-group">
-                            <label class="form-label">Select Priority:</label>
-                            <ng-select class="form-control custom-select p-0" data-trigger placeholder="High">
-                                <ng-option value="">High</ng-option>
-                                <ng-option value="1">Medium</ng-option>
-                                <ng-option value="2">Low</ng-option>
+                            <label class="form-label">Seleccionar Prioridad:</label>
+                            <ng-select class="form-control custom-select p-0" data-trigger placeholder="Alta">
+                                <ng-option value="">Alta</ng-option>
+                                <ng-option value="1">Media</ng-option>
+                                <ng-option value="2">Baja</ng-option>
                             </ng-select>
                         </div>
                     </div>
                     <div class="col-xxl-1 col-xl-3 ps-xxl-0">
                         <div class="form-group mt-2">
                             <label class="form-label"></label>
-                            <a href="javascript:void(0);" class="btn btn-primary d-grid">Search</a>
+                            <a href="javascript:void(0);" class="btn btn-primary d-grid">Buscar</a>
                         </div>
                     </div>
                 </div>
@@ -174,154 +176,129 @@
                 <div class="row mb-3 gap-1 gap-lg-0">
                     <div class="col-lg-6">
                         <div class="d-flex align-items-center">
-                            <span>Show</span>
+                            <span>Mostrar</span>
                             <div class="d-flex ms-2 mx-2">
                                 <div class="form-group mb-0">
-                                    <ng-select name="quantity" id="select-countries17" class="form-control w-5rem p-0"
-                                        data-trigger placeholder="1">
-                                        <ng-option value="1" selected="">1</ng-option>
-                                        <ng-option value="2">2</ng-option>
-                                        <ng-option value="3">3</ng-option>
-                                        <ng-option value="4">4</ng-option>
+                                    <ng-select name="quantity" [ngModel]="pageSize"
+                                        (ngModelChange)="onPageSizeChange($any($event))"
+                                        class="form-control wd-150 p-0">
+                                        <ng-option [value]="10">10</ng-option>
+                                        <ng-option [value]="25">25</ng-option>
+                                        <ng-option [value]="50">50</ng-option>
+                                        <ng-option [value]="100">100</ng-option>
                                     </ng-select>
                                 </div>
                             </div>
-                            <span>entries</span>
+                            <span>registros</span>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="float-end">
-                            <input type="text" matInput (keyup)="applyFilter($event)" class="form-control"
-                                placeholder="search" #input>
+                            <input type="text" class="form-control" placeholder="Buscar">
                         </div>
                     </div>
                 </div>
                 <div class="table-responsive">
-
-
-                    <!-- <div class=""> -->
-                    <table mat-table [dataSource]="dataSource" matSort id="task-list"
-                        class="table table-vcenter text-nowrap table-bordered border-bottom">
-
-                        <!-- ID Column -->
-                        <ng-container matColumnDef="No">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header class="border-bottom-0 text-center">
-                                No </th>
-                            <td class="text-center" mat-cell *matCellDef="let row"> {{row.No}} </td>
-                        </ng-container>
-
-                        <!-- Title Column -->
-                        <ng-container matColumnDef="Task">
-                            <th class="border-bottom-0" mat-header-cell *matHeaderCellDef mat-sort-header> Task </th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex">
-                                    <span class="bg-{{row.badge}} dot-label1 me-2 mt-1"></span>
-                                    <span>{{row.Task}}</span>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <!-- Purchase from Column -->
-                        <ng-container matColumnDef="Department">
-                            <th class="border-bottom-0" mat-header-cell *matHeaderCellDef mat-sort-header> Department
-                            </th>
-                            <td mat-cell *matCellDef="let row"> {{row.Department}} </td>
-                        </ng-container>
-
-                        <!-- Date Salary Column -->
-                        <ng-container matColumnDef="AssignTo">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> AssignTo </th>
-                            <td mat-cell *matCellDef="let row">
-                                <a routerLink="/dashboard/task-dashboard/user-profile" class="d-flex">
-                                    <div class="avatar avatar-sm me-2 avatar-rounded">
-                                        <img [src]="row.img" alt="img">
+                    <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+                        <thead>
+                            <tr class="border-bottom">
+                                <th scope="col">No</th>
+                                <th scope="col">Tarea</th>
+                                <th scope="col">Departamento</th>
+                                <th scope="col">Asignado A</th>
+                                <th scope="col">Prioridad</th>
+                                <th scope="col">Fecha Inicio</th>
+                                <th scope="col">Fecha Límite</th>
+                                <th scope="col">Progreso</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (row of tasks; track row.No) {
+                            <tr class="border-bottom">
+                                <td class="text-center">{{row.No}}</td>
+                                <td>
+                                    <div class="d-flex">
+                                        <span class="bg-{{row.badge}} dot-label1 me-2 mt-1"></span>
+                                        <span>{{row.Task}}</span>
                                     </div>
-                                    <div class="me-3 mt-0 mt-sm-2 d-block">
-                                        <h6 class="mb-1 fs-14">{{row.AssignTo}}</h6>
+                                </td>
+                                <td>{{row.Department}}</td>
+                                <td>
+                                    <a routerLink="/dashboard/task-dashboard/user-profile" class="d-flex">
+                                        <div class="avatar avatar-sm me-2 avatar-rounded">
+                                            <img [src]="row.img" alt="img">
+                                        </div>
+                                        <div class="me-3 mt-0 mt-sm-2 d-block">
+                                            <h6 class="mb-1 fs-14">{{row.AssignTo}}</h6>
+                                        </div>
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{row.PriorityStatus}}-transparent">{{row.Priority}}</span>
+                                </td>
+                                <td>{{row.StartDate}}</td>
+                                <td>{{row.Deadline}}</td>
+                                <td>
+                                    <ngb-progressbar class="me-3" type="{{row.PriorityStatus}}" height="0.5rem"
+                                        [value]="row.progress"></ngb-progressbar>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{row.worksStatus}} me-1">{{row.worksText}}</span>
+                                    @if (row.worksStatusIcon) {
+                                    <span class="fe fe-{{row.worksStatusIcon}} text-danger" data-bs-toggle="tooltip"
+                                        data-bs-placement="top" title="Retrasada por 99 días"></span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a routerLink="/dashboard/task-dashboard/view-tasks"
+                                            class="btn btn-primary btn-icon" data-bs-toggle="tooltip"
+                                            title="Ver Tarea">
+                                            <i class="fe fe-eye"></i>
+                                        </a>
+                                        <a (click)="edit(editContent)" class="btn btn-success btn-icon"
+                                            data-bs-toggle="tooltip" title="Editar">
+                                            <i class="fe fe-edit-2"></i>
+                                        </a>
+                                        <a (click)="removeData(row.No)" class="btn btn-danger btn-icon"
+                                            data-bs-toggle="tooltip" title="Eliminar">
+                                            <i class="fe fe-trash-2"></i>
+                                        </a>
                                     </div>
-                                </a>
-
-                            </td>
-                        </ng-container>
-
-                        <!-- Amount Date Column -->
-                        <ng-container matColumnDef="Priority">
-                            <th class="border-bottom-0" mat-header-cell *matHeaderCellDef mat-sort-header> Priority
-                            </th>
-                            <td mat-cell *matCellDef="let row">
-                                <span class="badge bg-{{row.PriorityStatus}}-transparent"> {{row.Priority}}</span>
-                            </td>
-                        </ng-container>
-
-                        <!-- PaidBy Date Column -->
-                        <ng-container matColumnDef="StartDate">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> StartDate </th>
-                            <td mat-cell *matCellDef="let row"> {{row.StartDate}} </td>
-                        </ng-container>
-
-                        <!-- approval Date Column -->
-                        <ng-container matColumnDef="Deadline">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Deadline </th>
-                            <td mat-cell *matCellDef="let row">{{row.Deadline}}</td>
-                        </ng-container>
-                        <ng-container matColumnDef="Progress">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> Progress </th>
-                            <td mat-cell *matCellDef="let row">
-
-                                <ngb-progressbar class="me-3" type="{{row.PriorityStatus}}" height="0.5rem"
-                                    [value]="row.progress"></ngb-progressbar>
-
-                            </td>
-                        </ng-container>
-                        <ng-container matColumnDef="WorkStatus">
-                            <th mat-header-cell *matHeaderCellDef mat-sort-header> WorkStatus </th>
-                            <td mat-cell *matCellDef="let row">
-                                <span class="badge bg-{{row.worksStatus}} me-1">{{row.worksText}}</span>
-                                <span class="fe fe-{{row.worksStatusIcon}} text-danger" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" aria-label="Dealy by 99 days"
-                                    data-bs-original-title="Dealy by 99 days"></span>
-                            </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="Action">
-                            <th mat-header-cell *matHeaderCellDef> Action </th>
-                            <td mat-cell *matCellDef="let row">
-                                <div class="d-flex">
-                                    <a routerLink="/dashboard/task-dashboard/view-tasks" class="action-btns1"
-                                        placement="top" ngbTooltip="View Task"><i
-                                            class="fe fe-eye text-primary"></i></a>
-                                    <a (click)="edit(editContent)"  class="action-btns1"
-                                        placement="top" ngbTooltip="View">
-                                        <i class="fe fe-edit-2  text-success"></i>
-                                    </a>
-                                    <a (click)="removeData(row.No)" class="action-btns1"
-                                        placement="top" ngbTooltip="Delete">
-                                        <i class="fe fe-trash-2 text-danger"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </ng-container>
-
-                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-                        <!-- Row shown when there is no matching data. -->
-                        <tr class="mat-row" *matNoDataRow>
-                            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-                        </tr>
+                                </td>
+                            </tr>
+                            } @empty {
+                            <tr>
+                                <td colspan="10" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                                        <p>No hay registros disponibles</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
                     </table>
-
-
-                    <!-- </div> -->
                 </div>
                 <!-- Start::pagination -->
                 <nav class="mt-4">
                     <ul class="pagination justify-content-end mb-0">
-                        <li class="page-item disabled"><a class="page-link" href="javascript:void(0);">Prev</a></li>
-                        <li class="page-item active"><a class="page-link" href="javascript:void(0);">1</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">2</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">3</a></li>
-                        <li class="page-item"><a class="page-link" href="javascript:void(0);">Next</a></li>
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" href="javascript:void(0);"
+                                (click)="onPageChange(currentPage - 1)">Anterior</a>
+                        </li>
+                        @for (page of [].constructor(totalPages); track $index) {
+                        <li class="page-item" [class.active]="currentPage === $index + 1">
+                            <a class="page-link" href="javascript:void(0);"
+                                (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+                        </li>
+                        }
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" href="javascript:void(0);"
+                                (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- End::pagination -->
@@ -329,13 +306,12 @@
         </div>
     </div>
 </div>
-<!-- Start::row-2 -->
+<!-- End::row-2 -->
 
 <ng-template #editContent let-modal>
     <div class="modal-content">
-
         <div class="modal-header">
-            <h5 class="modal-title">Edit Task</h5>
+            <h5 class="modal-title">Editar Tarea</h5>
             <button type="button" class="btn-close" (click)="modal.dismiss('Cross click')">
                 <span class="nav-link">&times;</span>
             </button>
@@ -344,23 +320,23 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Task ID</label>
-                        <input class="form-control" placeholder="Text" value="001">
+                        <label class="form-label">ID Tarea</label>
+                        <input class="form-control" placeholder="Texto" value="001">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Task Title</label>
-                        <input class="form-control" placeholder="Text" value="Design Updated">
+                        <label class="form-label">Título Tarea</label>
+                        <input class="form-control" placeholder="Texto" value="Design Updated">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Department:</label>
+                        <label class="form-label">Departamento:</label>
                         <ng-select name="attendance" class="form-control custom-select p-0"
-                            placeholder="Select Department">
+                            placeholder="Seleccionar Departamento">
                             <ng-option value="1" selected>Designing Department</ng-option>
                             <ng-option value="2">Development Department</ng-option>
                             <ng-option value="3">Marketing Department</ng-option>
@@ -376,9 +352,9 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="form-label">Assign To:</label>
+                        <label class="form-label">Asignar A:</label>
                         <ng-select name="attendance" class="form-control custom-select p-0"
-                            placeholder="Select Employee">
+                            placeholder="Seleccionar Empleado">
                             <ng-option value="1" selected>Faith Harris</ng-option>
                             <ng-option value="2">Austin Bell</ng-option>
                             <ng-option value="3">Maria Bower</ng-option>
@@ -399,18 +375,18 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Task Priority:</label>
-                <ng-select name="attendance" class="form-control custom-select p-0" placeholder="Select Priority">
-                    <ng-option value="1" selected>High</ng-option>
-                    <ng-option value="2">Medium</ng-option>
-                    <ng-option value="3">Low</ng-option>
+                <label class="form-label">Prioridad de Tarea:</label>
+                <ng-select name="attendance" class="form-control custom-select p-0" placeholder="Seleccionar Prioridad">
+                    <ng-option value="1" selected>Alta</ng-option>
+                    <ng-option value="2">Media</ng-option>
+                    <ng-option value="3">Baja</ng-option>
                 </ng-select>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="leave-content active mb-3 mb-md-0" id="single">
                         <div class="form-group">
-                            <label class="form-label">From:</label>
+                            <label class="form-label">Desde:</label>
                             <div class="input-group">
                                 <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
                                 <input mwlFlatpickr type="text" class="form-control choose-date"
@@ -422,7 +398,7 @@
                 <div class="col-md-6">
                     <div class="leave-content active" id="single1">
                         <div class="form-group">
-                            <label class="form-label">TO:</label>
+                            <label class="form-label">Hasta:</label>
                             <div class="input-group">
                                 <div class="input-group-text text-muted"> <i class="ri-calendar-line"></i> </div>
                                 <input mwlFlatpickr type="text" class="form-control choose-date"
@@ -433,32 +409,31 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label">Description:</label>
+                <label class="form-label">Descripción:</label>
                 <angular-editor [(ngModel)]="htmlContent" [config]="config1">
                 </angular-editor>
-                <!-- <textarea class="form-control" id="text-area" rows="3"></textarea> -->
             </div>
             <div class="form-group">
-                <label for="form-label" class="form-label">Attachment:</label>
+                <label for="form-label" class="form-label">Adjunto:</label>
                 <input class="form-control" type="file">
             </div>
-            <div class="custom-controls-stacked d-md-flex"> <label class="form-label me-5">Work Status :</label>
+            <div class="custom-controls-stacked d-md-flex"> <label class="form-label me-5">Estado de Trabajo:</label>
                 <div class="form-check mb-0 me-4"> <input class="form-check-input" type="radio" name="flexRadioDefault1"
-                        id="flexRadioDefault11"> <label class="form-check-label" for="flexRadioDefault11"> Completed
+                        id="flexRadioDefault11"> <label class="form-check-label" for="flexRadioDefault11"> Completada
                     </label> </div>
                 <div class="form-check mb-0 me-4"> <input class="form-check-input" type="radio" name="flexRadioDefault1"
-                        id="flexRadioDefault12"> <label class="form-check-label" for="flexRadioDefault12"> On Hold
+                        id="flexRadioDefault12"> <label class="form-check-label" for="flexRadioDefault12"> En Espera
                     </label> </div>
                 <div class="form-check mb-0"> <input class="form-check-input" type="radio" name="flexRadioDefault1"
-                        id="flexRadioDefault13"> <label class="form-check-label" for="flexRadioDefault13"> On Progress
+                        id="flexRadioDefault13"> <label class="form-check-label" for="flexRadioDefault13"> En Progreso
                     </label> </div>
             </div>
         </div>
         <div class="modal-footer">
             <div class="ms-auto">
                 <a href="javascript:;" class="btn btn-outline-primary me-2" (click)="modal.dismiss('Cross click')"
-                    data-bs-dismiss="modal">Close</a>
-                <a href="javascript:;" class="btn btn-success" (click)="modal.dismiss('Cross click')">Update</a>
+                    data-bs-dismiss="modal">Cerrar</a>
+                <a href="javascript:;" class="btn btn-success" (click)="modal.dismiss('Cross click')">Actualizar</a>
             </div>
         </div>
     </div>

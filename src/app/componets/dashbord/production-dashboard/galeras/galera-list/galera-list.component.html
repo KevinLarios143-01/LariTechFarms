@@ -1,204 +1,203 @@
-<div class="container-fluid">
-  <!-- Header -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header justify-content-between">
-          <div class="card-title">Gestión de Galeras</div>
-          <div class="d-flex gap-2">
-            <a routerLink="/dashboard/production-dashboard/galeras/add" class="btn btn-primary btn-sm">
-              <i class="ri-add-line"></i> Nueva Galera
-            </a>
+<app-hr-dashboard-page-header [title]="'Galeras'" [title2]="'Nueva Galera'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/galeras/add'">
+</app-hr-dashboard-page-header>
+
+<!-- Filtros -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <div class="card-title">Filtros</div>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Buscar</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="searchTerm" 
+              (keyup.enter)="onSearch()"
+              placeholder="Buscar por nombre o ubicación">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Estado</label>
+            <select class="form-select" [(ngModel)]="estadoFilter" (change)="onFilterChange()">
+              <option value="">Todos</option>
+              <option value="Activa">Activa</option>
+              <option value="Inactiva">Inactiva</option>
+              <option value="Mantenimiento">Mantenimiento</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Tipo</label>
+            <select class="form-select" [(ngModel)]="tipoFilter" (change)="onFilterChange()">
+              <option value="">Todos</option>
+              <option value="Ponedoras">Ponedoras</option>
+              <option value="Pollos">Pollos</option>
+              <option value="Mixta">Mixta</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-flex align-items-end gap-2">
+            <button class="btn btn-primary" (click)="onSearch()">
+              <i class="ri-search-line"></i> Buscar
+            </button>
+            <button class="btn btn-secondary" (click)="clearFilters()">
+              <i class="ri-refresh-line"></i>
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Filtros -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header">
-          <div class="card-title">Filtros</div>
-        </div>
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">Buscar</label>
-              <input 
-                type="text" 
-                class="form-control" 
-                [(ngModel)]="searchTerm" 
-                (keyup.enter)="onSearch()"
-                placeholder="Buscar por nombre o ubicación">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Estado</label>
-              <select class="form-select" [(ngModel)]="estadoFilter" (change)="onFilterChange()">
-                <option value="">Todos</option>
-                <option value="Activa">Activa</option>
-                <option value="Inactiva">Inactiva</option>
-                <option value="Mantenimiento">Mantenimiento</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">Tipo</label>
-              <select class="form-select" [(ngModel)]="tipoFilter" (change)="onFilterChange()">
-                <option value="">Todos</option>
-                <option value="Ponedoras">Ponedoras</option>
-                <option value="Pollos">Pollos</option>
-                <option value="Mixta">Mixta</option>
-              </select>
-            </div>
-            <div class="col-md-2 d-flex align-items-end gap-2">
-              <button class="btn btn-primary" (click)="onSearch()">
-                <i class="ri-search-line"></i> Buscar
-              </button>
-              <button class="btn btn-secondary" (click)="clearFilters()">
-                <i class="ri-refresh-line"></i>
-              </button>
-            </div>
-          </div>
-        </div>
+<!-- Lista de Galeras -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Galeras ({{ totalItems }})</h3>
       </div>
-    </div>
-  </div>
-
-  <!-- Lista de Galeras -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header">
-          <div class="card-title">
-            Galeras ({{ totalItems }})
-          </div>
-        </div>
-        <div class="card-body">
-          @if (isLoading) {
-            <div class="text-center py-5">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Cargando...</span>
-              </div>
-            </div>
-          } @else if (galeras.length === 0) {
-            <div class="text-center py-5">
-              <i class="ri-inbox-line fs-1 text-muted"></i>
-              <p class="text-muted mt-2">No se encontraron galeras</p>
-              <a routerLink="/dashboard/production-dashboard/galeras/add" class="btn btn-primary btn-sm">
-                <i class="ri-add-line"></i> Crear Primera Galera
-              </a>
-            </div>
-          } @else {
-            <div class="table-responsive">
-              <table class="table text-nowrap table-hover">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Tipo</th>
-                    <th>Capacidad</th>
-                    <th>Ubicación</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (galera of galeras; track galera.id) {
-                    <tr>
-                      <td>{{ galera.id }}</td>
-                      <td>
-                        <div class="fw-semibold">{{ galera.nombre }}</div>
-                        @if (galera.observaciones) {
-                          <small class="text-muted">{{ galera.observaciones }}</small>
-                        }
-                      </td>
-                      <td>
-                        @if (galera.tipo) {
-                          <span [class]="'badge ' + getTipoBadge(galera.tipo)">
-                            {{ galera.tipo }}
-                          </span>
-                        } @else {
-                          <span class="text-muted">-</span>
-                        }
-                      </td>
-                      <td>
-                        @if (galera.capacidad) {
-                          <span class="badge bg-light text-dark">
-                            <i class="ri-group-line"></i> {{ galera.capacidad | number }}
-                          </span>
-                        } @else {
-                          <span class="text-muted">-</span>
-                        }
-                      </td>
-                      <td>
-                        @if (galera.ubicacion) {
-                          <small>
-                            <i class="ri-map-pin-line"></i> {{ galera.ubicacion }}
-                          </small>
-                        } @else {
-                          <span class="text-muted">-</span>
-                        }
-                      </td>
-                      <td>
-                        <span [class]="'badge ' + getEstadoBadge(galera.estado || 'Activa')">
-                          {{ galera.estado || 'Activa' }}
-                        </span>
-                      </td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <a 
-                            [routerLink]="['/dashboard/production-dashboard/galeras/view', galera.id]" 
-                            class="btn btn-sm btn-info"
-                            title="Ver detalles">
-                            <i class="ri-eye-line"></i>
-                          </a>
-                          <a 
-                            [routerLink]="['/dashboard/production-dashboard/galeras/edit', galera.id]" 
-                            class="btn btn-sm btn-warning"
-                            title="Editar">
-                            <i class="ri-edit-line"></i>
-                          </a>
-                          <button 
-                            (click)="deleteGalera(galera.id, galera.nombre)" 
-                            class="btn btn-sm btn-danger"
-                            title="Eliminar">
-                            <i class="ri-delete-bin-line"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Paginación -->
-            @if (totalPages > 1) {
-              <div class="d-flex justify-content-between align-items-center mt-3">
-                <div>
-                  Mostrando {{ (currentPage - 1) * pageSize + 1 }} - 
-                  {{ Math.min(currentPage * pageSize, totalItems) }} de {{ totalItems }}
+      <div class="card-body">
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" [ngModel]="pageSize"
+                    (ngModelChange)="onPageSizeChange($any($event))"
+                    class="form-control wd-150 p-0">
+                    <ng-option [value]="10">10</ng-option>
+                    <ng-option [value]="25">25</ng-option>
+                    <ng-option [value]="50">50</ng-option>
+                    <ng-option [value]="100">100</ng-option>
+                  </ng-select>
                 </div>
-                <nav>
-                  <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item" [class.disabled]="currentPage === 1">
-                      <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
-                    </li>
-                    @for (page of [].constructor(totalPages); track $index; let i = $index) {
-                      <li class="page-item" [class.active]="currentPage === i + 1">
-                        <a class="page-link" (click)="onPageChange(i + 1)">{{ i + 1 }}</a>
-                      </li>
-                    }
-                    <li class="page-item" [class.disabled]="currentPage === totalPages">
-                      <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
-                    </li>
-                  </ul>
-                </nav>
               </div>
-            }
-          }
+              <span>registros</span>
+            </div>
+          </div>
         </div>
+
+        @if (isLoading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        } @else {
+          <div class="table-responsive">
+            <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+              <thead>
+                <tr class="border-bottom">
+                  <th scope="col">ID</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Capacidad</th>
+                  <th scope="col">Ubicación</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (galera of galeras; track galera.id) {
+                  <tr class="border-bottom">
+                    <td>{{ galera.id }}</td>
+                    <td>
+                      <div class="fw-semibold">{{ galera.nombre }}</div>
+                      @if (galera.observaciones) {
+                        <small class="text-muted">{{ galera.observaciones }}</small>
+                      }
+                    </td>
+                    <td>
+                      @if (galera.tipo) {
+                        <span [class]="'badge ' + getTipoBadge(galera.tipo)">
+                          {{ galera.tipo }}
+                        </span>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+                    <td>
+                      @if (galera.capacidad) {
+                        <span class="badge bg-light text-dark">
+                          <i class="ri-group-line"></i> {{ galera.capacidad | number }}
+                        </span>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+                    <td>
+                      @if (galera.ubicacion) {
+                        <small>
+                          <i class="ri-map-pin-line"></i> {{ galera.ubicacion }}
+                        </small>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+                    <td>
+                      <span [class]="'badge ' + getEstadoBadge(galera.estado || 'Activa')">
+                        {{ galera.estado || 'Activa' }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a class="btn btn-primary btn-icon"
+                          [routerLink]="['/dashboard/production-dashboard/galeras/view', galera.id]"
+                          data-bs-toggle="tooltip" title="Ver">
+                          <i class="fe fe-eye"></i>
+                        </a>
+                        <a class="btn btn-success btn-icon"
+                          [routerLink]="['/dashboard/production-dashboard/galeras/edit', galera.id]"
+                          data-bs-toggle="tooltip" title="Editar">
+                          <i class="fe fe-edit-2"></i>
+                        </a>
+                        <a class="btn btn-danger btn-icon"
+                          (click)="deleteGalera(galera.id, galera.nombre)"
+                          data-bs-toggle="tooltip" title="Eliminar">
+                          <i class="fe fe-trash-2"></i>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                } @empty {
+                  <tr>
+                    <td colspan="7" class="text-center py-4">
+                      <div class="text-muted">
+                        <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                        <p>No hay registros disponibles</p>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Start::pagination -->
+          <nav class="mt-4">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              @for (page of [].constructor(totalPages); track $index) {
+                <li class="page-item" [class.active]="currentPage === $index + 1">
+                  <a class="page-link" href="javascript:void(0);"
+                     (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+                </li>
+              }
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+            </ul>
+          </nav>
+          <!-- End::pagination -->
+        }
       </div>
     </div>
   </div>

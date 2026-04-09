@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -19,6 +20,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./huevo-list.component.scss']
 })
 export class HuevoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   controles: ControlHuevos[] = []
   filteredControles: ControlHuevos[] = []
   lotes: Lote[] = []
@@ -43,7 +45,7 @@ export class HuevoListComponent implements OnInit {
 
   loadControles() {
     this.isLoading = true
-    this.huevosService.getControles().subscribe({
+    this.huevosService.getControles().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         // Manejo robusto de diferentes estructuras de respuesta
         if (response?.data?.data && Array.isArray(response.data.data)) {
@@ -76,7 +78,7 @@ export class HuevoListComponent implements OnInit {
   }
 
   loadLotes() {
-    this.lotesService.getLotes().subscribe({
+    this.lotesService.getLotes().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         let allLotes: Lote[] = []
         
@@ -121,7 +123,7 @@ export class HuevoListComponent implements OnInit {
 
   deleteControl(id: number) {
     if (confirm('¿Está seguro de eliminar este control?')) {
-      this.huevosService.deleteControl(id).subscribe({
+      this.huevosService.deleteControl(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Control eliminado exitosamente', 'Éxito', {
             progressBar: true,

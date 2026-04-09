@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./cliente-list.component.scss']
 })
 export class ClienteListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   clientes: Cliente[] = [];
   isLoading = false;
   searchTerm = '';
@@ -67,7 +69,7 @@ export class ClienteListComponent implements OnInit {
     }
 
     // Hacer la petición directamente con los parámetros
-    this.clienteService.getClientesWithParams(params).subscribe({
+    this.clienteService.getClientesWithParams(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.clientes = response.data.data;
         this.totalItems = response.data.pagination.total;
@@ -87,7 +89,7 @@ export class ClienteListComponent implements OnInit {
   }
 
   loadStats() {
-    this.clienteService.getClienteStats().subscribe({
+    this.clienteService.getClienteStats().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (stats) => {
         this.stats = {
           totalClientes: stats.totalClientes,
@@ -123,7 +125,7 @@ export class ClienteListComponent implements OnInit {
         this.clienteService.activateCliente(cliente.id) : 
         this.clienteService.deactivateCliente(cliente.id);
       
-      action.subscribe({
+      action.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Cliente ${nuevoEstado ? 'activado' : 'desactivado'} exitosamente`, 'Éxito');
           this.loadClientes();

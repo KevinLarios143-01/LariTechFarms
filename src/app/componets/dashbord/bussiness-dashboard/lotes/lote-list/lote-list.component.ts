@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { Lote, UpdateLoteDTO } from '../interfaces/lote.interface';
   styleUrls: ['./lote-list.component.scss']
 })
 export class LoteListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   lotes: Lote[] = [];
   loading = false;
   editForm: FormGroup;
@@ -60,7 +62,7 @@ export class LoteListComponent implements OnInit {
     if (confirm(`¿Está seguro de que desea ${action} este lote?`)) {
       const updateData: UpdateLoteDTO = { estado: newStatus as any };
         
-      this.lotesService.updateLote(lote.id, updateData).subscribe({
+      this.lotesService.updateLote(lote.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Lote ${action}do exitosamente`, 'Éxito', {
             timeOut: 3000,
@@ -112,7 +114,7 @@ export class LoteListComponent implements OnInit {
       this.loading = true;
       const updateData: UpdateLoteDTO = this.editForm.value;
       
-      this.lotesService.updateLote(this.selectedLote.id, updateData).subscribe({
+      this.lotesService.updateLote(this.selectedLote.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: (response) => {
           this.toastr.success('Lote actualizado exitosamente', 'Éxito', {
             timeOut: 3000,
@@ -159,7 +161,7 @@ export class LoteListComponent implements OnInit {
   private loadLotes(): void {
     this.loading = true;
     
-    this.lotesService.getLotes().subscribe({
+    this.lotesService.getLotes().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         // Manejar diferentes estructuras de respuesta como en ClienteService
         if (response?.data?.data) {

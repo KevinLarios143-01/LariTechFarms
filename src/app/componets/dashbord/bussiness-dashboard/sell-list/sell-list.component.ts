@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
@@ -14,18 +15,26 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-sell-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, FlatpickrModule, RouterModule, ReactiveFormsModule, NgbModule, DatePipe, DecimalPipe],
+  imports: [SharedModule, NgSelectModule, FlatpickrModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule, DatePipe, DecimalPipe],
   templateUrl: './sell-list.component.html',
   styleUrls: ['./sell-list.component.scss'],
   providers: [FlatpickrDefaults]
 })
 export class SellListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   ventas: Venta[] = [];
   filteredVentas: Venta[] = [];
   loading = false;
   editForm: FormGroup;
   filterForm: FormGroup;
   selectedVenta: Venta | null = null;
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     private readonly modalService: NgbModal,
@@ -55,6 +64,19 @@ export class SellListComponent implements OnInit {
 
 
 
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadVentas();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadVentas();
+  }
+
   edit(editContent: any, venta: Venta) {
     this.selectedVenta = venta;
     this.editForm.patchValue({
@@ -71,7 +93,7 @@ export class SellListComponent implements OnInit {
       this.loading = true;
       const updateData: UpdateVentaRequest = this.editForm.value;
       
-      this.ventaService.updateVenta(this.selectedVenta.id, updateData).subscribe({
+      this.ventaService.updateVenta(this.selectedVenta.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Venta actualizada exitosamente', 'Éxito', {
             timeOut: 3000,
@@ -106,7 +128,7 @@ export class SellListComponent implements OnInit {
 
   deleteVenta(id: number): void {
     if (confirm('¿Está seguro de que desea eliminar esta venta?')) {
-      this.ventaService.deleteVenta(id).subscribe({
+      this.ventaService.deleteVenta(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Venta eliminada exitosamente', 'Éxito', {
             timeOut: 3000,
@@ -137,12 +159,23 @@ export class SellListComponent implements OnInit {
 
   private loadVentas(): void {
     this.loading = true;
-    this.ventaService.getVentas().subscribe({
+    this.ventaService.getVentas({ page: this.currentPage, limit: this.pageSize }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         console.log('API Response:', response);
         const ventasData = response?.data?.data || response?.data || response || [];
         this.ventas = Array.isArray(ventasData) ? ventasData : [];
         this.filteredVentas = [...this.ventas];
+
+        // Extract pagination metadata
+        const pagination = response?.data?.pagination;
+        if (pagination) {
+          this.totalItems = pagination.total || 0;
+          this.totalPages = pagination.totalPages || Math.ceil(this.totalItems / this.pageSize);
+        } else {
+          this.totalItems = this.ventas.length;
+          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
+        }
+
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -150,6 +183,8 @@ export class SellListComponent implements OnInit {
         console.error('Error loading ventas:', error);
         this.ventas = [];
         this.filteredVentas = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
         this.loading = false;
         this.cdr.detectChanges();
       }

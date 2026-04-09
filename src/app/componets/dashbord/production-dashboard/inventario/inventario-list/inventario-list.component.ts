@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./inventario-list.component.scss']
 })
 export class InventarioListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   inventario: InventarioGranja[] = [];
   filteredInventario: InventarioGranja[] = [];
   categorias: string[] = [];
@@ -67,7 +69,7 @@ export class InventarioListComponent implements OnInit {
       params.categoria = this.selectedCategoria;
     }
 
-    this.inventarioService.getInventario(params).subscribe({
+    this.inventarioService.getInventario(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response: any) => {
         if (response?.data?.data) {
           this.inventario = response.data.data;
@@ -87,7 +89,7 @@ export class InventarioListComponent implements OnInit {
   }
 
   loadCategorias() {
-    this.inventarioService.getCategorias().subscribe({
+    this.inventarioService.getCategorias().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response: any) => {
         this.categorias = response.data?.map((c: any) => c.categoria).filter((c: string) => c) || [];
         this.cdr.detectChanges();
@@ -99,7 +101,7 @@ export class InventarioListComponent implements OnInit {
   }
 
   loadStats() {
-    this.inventarioService.getEstadisticas().subscribe({
+    this.inventarioService.getEstadisticas().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response: any) => {
         if (response?.data) {
           this.stats = {
@@ -131,7 +133,7 @@ export class InventarioListComponent implements OnInit {
 
   deleteItem(id: number) {
     if (confirm('¿Está seguro de eliminar este item del inventario?')) {
-      this.inventarioService.deleteInventario(id).subscribe({
+      this.inventarioService.deleteInventario(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Item eliminado exitosamente', 'Éxito');
           this.loadInventario();

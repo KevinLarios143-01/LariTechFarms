@@ -1,25 +1,7 @@
 <!-- Page Header -->
-<div class="page-header d-lg-flex d-block">
-    <div class="page-leftheader">
-        <div class="page-title">Lista de Ventas</div>
-    </div>
-    <div class="page-rightheader">
-        <div class="btn-list d-flex gap-1">
-            <a routerLink="/dashboard/business-dashboard/new-sell" class="btn btn-primary">
-                <i class="fe fe-plus fs-12 my-auto me-2"></i>Agregar Venta
-            </a>
-            <button class="btn btn-light3" data-bs-toggle="tooltip" data-bs-placement="top" title="E-mail">
-                <i class="fe fe-mail"></i>
-            </button>
-            <button class="btn btn-light3" data-bs-placement="top" data-bs-toggle="tooltip" title="Contact">
-                <i class="fe fe-phone-call"></i>
-            </button>
-            <button class="btn btn-primary" data-bs-placement="top" data-bs-toggle="tooltip" title="Info">
-                <i class="fe fe-info"></i>
-            </button>
-        </div>
-    </div>
-</div>
+<app-hr-dashboard-page-header [title]="'Ventas'" [title2]="'Agregar Venta'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/business-dashboard/new-sell'">
+</app-hr-dashboard-page-header>
 <!-- Page Header Close -->
 
 <div class="row">
@@ -94,15 +76,17 @@
                             <span>Mostrar</span>
                             <div class="d-flex ms-2 mx-2">
                                 <div class="form-group">
-                                    <ng-select name="quantity" placeholder="10" class="form-control wd-150 p-0" data-trigger>
-                                        <ng-option value="10" selected>10</ng-option>
-                                        <ng-option value="25">25</ng-option>
-                                        <ng-option value="50">50</ng-option>
-                                        <ng-option value="100">100</ng-option>
+                                    <ng-select name="quantity" [ngModel]="pageSize"
+                                        (ngModelChange)="onPageSizeChange($any($event))"
+                                        class="form-control wd-150 p-0" data-trigger>
+                                        <ng-option [value]="10">10</ng-option>
+                                        <ng-option [value]="25">25</ng-option>
+                                        <ng-option [value]="50">50</ng-option>
+                                        <ng-option [value]="100">100</ng-option>
                                     </ng-select>
                                 </div>
                             </div>
-                            <span>entradas</span>
+                            <span>registros</span>
                         </div>
                     </div>
                     <div class="col-sm-6 mb-1">
@@ -119,15 +103,15 @@
                     </div>
                 } @else {
                     <div class="table-responsive">
-                        <table class="table table-vcenter text-nowrap table-bordered border-bottom">
+                        <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
                             <thead>
-                                <tr>
-                                    <th>#ID</th>
-                                    <th>Cliente</th>
-                                    <th>Fecha</th>
-                                    <th>Total</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
+                                <tr class="border-bottom">
+                                    <th scope="col">#ID</th>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -161,19 +145,19 @@
                                                 <span class="badge bg-{{getStatusClass(venta.estado)}}-transparent">{{venta.estado}}</span>
                                             </td>
                                             <td>
-                                                <div class="d-flex">
+                                                <div class="d-flex gap-2">
                                                     <a routerLink="/dashboard/business-dashboard/view-sell/{{venta.id}}" 
-                                                       class="action-btns1" placement="top" ngbTooltip="Ver Venta">
-                                                        <i class="fe fe-eye text-primary"></i>
+                                                       class="btn btn-primary btn-icon" data-bs-toggle="tooltip" title="Ver Venta">
+                                                        <i class="fe fe-eye"></i>
                                                     </a>
-                                                    <a (click)="generateTicket(venta.id)" class="action-btns1" placement="top" ngbTooltip="Generar Ticket">
-                                                        <i class="fe fe-file-plus text-info"></i>
+                                                    <a (click)="generateTicket(venta.id)" class="btn btn-info btn-icon" data-bs-toggle="tooltip" title="Generar Ticket">
+                                                        <i class="fe fe-file-plus"></i>
                                                     </a>
-                                                    <a (click)="edit(editContent, venta)" class="action-btns1" placement="top" ngbTooltip="Editar">
-                                                        <i class="fe fe-edit-2 text-success"></i>
+                                                    <a (click)="edit(editContent, venta)" class="btn btn-success btn-icon" data-bs-toggle="tooltip" title="Editar">
+                                                        <i class="fe fe-edit-2"></i>
                                                     </a>
-                                                    <a (click)="deleteVenta(venta.id)" class="action-btns1" placement="top" ngbTooltip="Eliminar">
-                                                        <i class="fe fe-trash-2 text-danger"></i>
+                                                    <a (click)="deleteVenta(venta.id)" class="btn btn-danger btn-icon" data-bs-toggle="tooltip" title="Eliminar">
+                                                        <i class="fe fe-trash-2"></i>
                                                     </a>
                                                 </div>
                                             </td>
@@ -184,6 +168,23 @@
                         </table>
                     </div>
                 }
+                <!-- Start::pagination -->
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-end mb-0">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" href="javascript:void(0);" (click)="onPageChange(currentPage - 1)">Anterior</a>
+                        </li>
+                        @for (page of [].constructor(totalPages); track $index) {
+                            <li class="page-item" [class.active]="currentPage === $index + 1">
+                                <a class="page-link" href="javascript:void(0);" (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+                            </li>
+                        }
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" href="javascript:void(0);" (click)="onPageChange(currentPage + 1)">Siguiente</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End::pagination -->
             </div>
         </div>
     </div>

@@ -1,216 +1,228 @@
-<div class="container-fluid">
-  <!-- Page Header -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-header justify-content-between">
-          <div class="card-title">Gastos de Operación</div>
-          <div class="d-flex gap-2">
-            <button class="btn btn-primary btn-sm" routerLink="../add">
-              <i class="ri-add-line"></i> Registrar Gasto
+<app-hr-dashboard-page-header [title]="'Gastos de Operación'" [title2]="'Registrar Gasto'" [class]="'btn btn-primary'"
+  [class1]="''" [path]="'/dashboard/production-dashboard/gastos-operacion/add'">
+</app-hr-dashboard-page-header>
+
+<!-- Estadísticas -->
+<div class="row">
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
+              <i class="ri-money-dollar-circle-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.totalGastos | number:'1.2-2' }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Total Gastos</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
+              <i class="ri-file-list-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalRegistros }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Total Registros</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="d-flex align-items-top">
+          <div class="me-3">
+            <span class="avatar avatar-md avatar-rounded bg-info-transparent">
+              <i class="ri-bar-chart-line fs-18"></i>
+            </span>
+          </div>
+          <div class="flex-fill">
+            <div class="d-flex mb-1 align-items-top justify-content-between">
+              <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.promedioGasto | number:'1.2-2' }}</h5>
+            </div>
+            <p class="mb-0 fs-12 text-muted">Promedio por Gasto</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Filtros -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <ng-select [items]="categorias" [(ngModel)]="selectedCategoria" 
+                       placeholder="Categoría" (change)="applyFilters()" [clearable]="true">
+            </ng-select>
+          </div>
+          <div class="col-xl-3 col-lg-4 col-md-6">
+            <ng-select [items]="metodosPago" [(ngModel)]="selectedMetodoPago" 
+                       placeholder="Método de Pago" (change)="applyFilters()" [clearable]="true">
+            </ng-select>
+          </div>
+          <div class="col-xl-2 col-lg-4 col-md-6">
+            <input type="date" class="form-control" placeholder="Fecha Inicio" 
+                   [(ngModel)]="fechaInicio" (ngModelChange)="applyFilters()">
+          </div>
+          <div class="col-xl-2 col-lg-4 col-md-6">
+            <input type="date" class="form-control" placeholder="Fecha Fin" 
+                   [(ngModel)]="fechaFin" (ngModelChange)="applyFilters()">
+          </div>
+          <div class="col-xl-2 col-lg-4 col-md-6">
+            <button class="btn btn-secondary w-100" (click)="clearFilters()">
+              <i class="ri-refresh-line"></i> Limpiar
             </button>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Estadísticas -->
-  <div class="row">
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-danger-transparent">
-                <i class="ri-money-dollar-circle-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.totalGastos | number:'1.2-2' }}</h5>
+<!-- Lista de Gastos -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Gastos ({{ totalItems }})</h3>
+      </div>
+      <div class="card-body">
+        <div class="row mb-2 gap-2 gap-lg-0">
+          <div class="col-lg-6">
+            <div class="d-flex align-items-center">
+              <span>Mostrar</span>
+              <div class="d-flex ms-2 mx-2">
+                <div class="form-group mb-0">
+                  <ng-select name="quantity" [ngModel]="pageSize"
+                    (ngModelChange)="onPageSizeChange($any($event))"
+                    class="form-control wd-150 p-0">
+                    <ng-option [value]="10">10</ng-option>
+                    <ng-option [value]="25">25</ng-option>
+                    <ng-option [value]="50">50</ng-option>
+                    <ng-option [value]="100">100</ng-option>
+                  </ng-select>
+                </div>
               </div>
-              <p class="mb-0 fs-12 text-muted">Total Gastos</p>
+              <span>registros</span>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-primary-transparent">
-                <i class="ri-file-list-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">{{ stats.totalRegistros }}</h5>
-              </div>
-              <p class="mb-0 fs-12 text-muted">Total Registros</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="d-flex align-items-top">
-            <div class="me-3">
-              <span class="avatar avatar-md avatar-rounded bg-info-transparent">
-                <i class="ri-bar-chart-line fs-18"></i>
-              </span>
-            </div>
-            <div class="flex-fill">
-              <div class="d-flex mb-1 align-items-top justify-content-between">
-                <h5 class="fw-semibold mb-0 lh-1">Q{{ stats.promedioGasto | number:'1.2-2' }}</h5>
-              </div>
-              <p class="mb-0 fs-12 text-muted">Promedio por Gasto</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Filtros -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-xl-3 col-lg-4 col-md-6">
-              <ng-select [items]="categorias" [(ngModel)]="selectedCategoria" 
-                         placeholder="Categoría" (change)="applyFilters()" [clearable]="true">
-              </ng-select>
-            </div>
-            <div class="col-xl-3 col-lg-4 col-md-6">
-              <ng-select [items]="metodosPago" [(ngModel)]="selectedMetodoPago" 
-                         placeholder="Método de Pago" (change)="applyFilters()" [clearable]="true">
-              </ng-select>
-            </div>
-            <div class="col-xl-2 col-lg-4 col-md-6">
-              <input type="date" class="form-control" placeholder="Fecha Inicio" 
-                     [(ngModel)]="fechaInicio" (ngModelChange)="applyFilters()">
-            </div>
-            <div class="col-xl-2 col-lg-4 col-md-6">
-              <input type="date" class="form-control" placeholder="Fecha Fin" 
-                     [(ngModel)]="fechaFin" (ngModelChange)="applyFilters()">
-            </div>
-            <div class="col-xl-2 col-lg-4 col-md-6">
-              <button class="btn btn-secondary w-100" (click)="clearFilters()">
-                <i class="ri-refresh-line"></i> Limpiar
-              </button>
+        @if (isLoading) {
+          <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Tabla -->
-  <div class="row">
-    <div class="col-xl-12">
-      <div class="card custom-card">
-        <div class="card-body">
+        } @else {
           <div class="table-responsive">
-            <table class="table text-nowrap table-hover">
+            <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
               <thead>
-                <tr>
-                  <th>Fecha</th>
-                  <th>Descripción</th>
-                  <th>Categoría</th>
-                  <th>Monto</th>
-                  <th>Método de Pago</th>
-                  <th>Acciones</th>
+                <tr class="border-bottom">
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Monto</th>
+                  <th scope="col">Método de Pago</th>
+                  <th scope="col">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                @if (isLoading) {
-                  <tr>
-                    <td colspan="6" class="text-center">
-                      <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Cargando...</span>
+                @for (gasto of gastos; track gasto.id) {
+                  <tr class="border-bottom">
+                    <td>{{ gasto.fecha | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                      <div class="fw-semibold">{{ gasto.descripcion }}</div>
+                    </td>
+                    <td>
+                      <span [class]="'badge ' + getCategoriaBadgeClass(gasto.categoria)">
+                        {{ gasto.categoria }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="fw-semibold text-danger">Q{{ gasto.monto | number:'1.2-2' }}</span>
+                    </td>
+                    <td>
+                      @if (gasto.metodoPago) {
+                        <span class="badge bg-light text-dark">{{ gasto.metodoPago }}</span>
+                      } @else {
+                        <span class="text-muted">-</span>
+                      }
+                    </td>
+                    <td>
+                      <div class="d-flex gap-2">
+                        <a class="btn btn-primary btn-icon"
+                          [routerLink]="['/dashboard/production-dashboard/gastos-operacion/view', gasto.id]"
+                          data-bs-toggle="tooltip" title="Ver">
+                          <i class="fe fe-eye"></i>
+                        </a>
+                        <a class="btn btn-success btn-icon"
+                          [routerLink]="['/dashboard/production-dashboard/gastos-operacion/edit', gasto.id]"
+                          data-bs-toggle="tooltip" title="Editar">
+                          <i class="fe fe-edit-2"></i>
+                        </a>
+                        <a class="btn btn-danger btn-icon"
+                          (click)="deleteGasto(gasto.id)"
+                          data-bs-toggle="tooltip" title="Eliminar">
+                          <i class="fe fe-trash-2"></i>
+                        </a>
                       </div>
                     </td>
                   </tr>
-                } @else if (gastos.length === 0) {
+                } @empty {
                   <tr>
-                    <td colspan="6" class="text-center">No hay gastos registrados</td>
+                    <td colspan="6" class="text-center py-4">
+                      <div class="text-muted">
+                        <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                        <p>No hay registros disponibles</p>
+                      </div>
+                    </td>
                   </tr>
-                } @else {
-                  @for (gasto of gastos; track gasto.id) {
-                    <tr>
-                      <td>{{ gasto.fecha | date:'dd/MM/yyyy' }}</td>
-                      <td>
-                        <div class="fw-semibold">{{ gasto.descripcion }}</div>
-                      </td>
-                      <td>
-                        <span [class]="'badge ' + getCategoriaBadgeClass(gasto.categoria)">
-                          {{ gasto.categoria }}
-                        </span>
-                      </td>
-                      <td>
-                        <span class="fw-semibold text-danger">Q{{ gasto.monto | number:'1.2-2' }}</span>
-                      </td>
-                      <td>
-                        @if (gasto.metodoPago) {
-                          <span class="badge bg-light text-dark">{{ gasto.metodoPago }}</span>
-                        } @else {
-                          <span class="text-muted">-</span>
-                        }
-                      </td>
-                      <td>
-                        <div class="btn-group" role="group">
-                          <button class="btn btn-sm btn-info" [routerLink]="['../view', gasto.id]" 
-                                  title="Ver detalles">
-                            <i class="ri-eye-line"></i>
-                          </button>
-                          <button class="btn btn-sm btn-primary" [routerLink]="['../edit', gasto.id]" 
-                                  title="Editar">
-                            <i class="ri-edit-line"></i>
-                          </button>
-                          <button class="btn btn-sm btn-danger" (click)="deleteGasto(gasto.id)" 
-                                  title="Eliminar">
-                            <i class="ri-delete-bin-line"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  }
                 }
               </tbody>
             </table>
           </div>
 
-          <!-- Paginación -->
-          @if (totalPages > 1) {
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <div>
-                Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} a 
-                {{ Math.min(currentPage * itemsPerPage, totalItems) }} de {{ totalItems }} gastos
-              </div>
-              <nav>
-                <ul class="pagination mb-0">
-                  <li class="page-item" [class.disabled]="currentPage === 1">
-                    <a class="page-link" (click)="onPageChange(currentPage - 1)">Anterior</a>
-                  </li>
-                  @for (page of pages; track page) {
-                    <li class="page-item" [class.active]="page === currentPage">
-                      <a class="page-link" (click)="onPageChange(page)">{{ page }}</a>
-                    </li>
-                  }
-                  <li class="page-item" [class.disabled]="currentPage === totalPages">
-                    <a class="page-link" (click)="onPageChange(currentPage + 1)">Siguiente</a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          }
-        </div>
+          <!-- Start::pagination -->
+          <nav class="mt-4">
+            <ul class="pagination justify-content-end mb-0">
+              <li class="page-item" [class.disabled]="currentPage === 1">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage - 1)">Anterior</a>
+              </li>
+              @for (page of [].constructor(totalPages); track $index) {
+                <li class="page-item" [class.active]="currentPage === $index + 1">
+                  <a class="page-link" href="javascript:void(0);"
+                     (click)="onPageChange($index + 1)">{{ $index + 1 }}</a>
+                </li>
+              }
+              <li class="page-item" [class.disabled]="currentPage === totalPages">
+                <a class="page-link" href="javascript:void(0);"
+                   (click)="onPageChange(currentPage + 1)">Siguiente</a>
+              </li>
+            </ul>
+          </nav>
+          <!-- End::pagination -->
+        }
       </div>
     </div>
   </div>

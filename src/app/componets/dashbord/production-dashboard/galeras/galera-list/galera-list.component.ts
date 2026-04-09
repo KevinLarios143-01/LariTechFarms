@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { GaleraService, Galera } from '../../../../../shared/services/galera.service';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { ToastrService } from 'ngx-toastr';
@@ -10,11 +12,12 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-galera-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule, SharedModule],
+  imports: [CommonModule, RouterModule, FormsModule, NgSelectModule, SharedModule],
   templateUrl: './galera-list.component.html',
   styleUrls: ['./galera-list.component.scss']
 })
 export class GaleraListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   galeras: Galera[] = [];
   isLoading = false;
   
@@ -62,7 +65,7 @@ export class GaleraListComponent implements OnInit {
       params.tipo = this.tipoFilter;
     }
     
-    this.galeraService.getGaleras(params).subscribe({
+    this.galeraService.getGaleras(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.galeras = response.data?.data || [];
         this.totalItems = response.data?.pagination?.total || 0;
@@ -100,8 +103,16 @@ export class GaleraListComponent implements OnInit {
     this.loadGaleras();
   }
 
-  onPageChange(page: number) {
-    this.currentPage = page;
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadGaleras();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
     this.loadGaleras();
   }
 
@@ -117,7 +128,7 @@ export class GaleraListComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.galeraService.deleteGalera(id).subscribe({
+        this.galeraService.deleteGalera(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
           next: () => {
             this.toastr.success('La galera ha sido eliminada', 'Galera Eliminada', {
               timeOut: 3000,

@@ -1,5 +1,7 @@
 import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
@@ -13,18 +15,26 @@ import { Empleado, EmpleadoResponse2 } from '../../../../../shared/interfaces/em
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [SharedModule,RouterModule,RouterModule,NgSelectModule, AsyncPipe, DatePipe],
+  imports: [SharedModule, RouterModule, NgSelectModule, FormsModule, AsyncPipe, DatePipe],
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.scss'],
   providers: [EmployeeService, DecimalPipe]
 })
 export class EmployeeListComponent implements OnInit {
   // @ViewChildren(SortableHeader) headers!: QueryList<SortableHeader>;
+  private readonly destroyRef = inject(DestroyRef);
 
   employeeList$!: Observable<Empleado[]>;
   total$!: Observable<number>;
   loading$!: Observable<boolean>;
   stats$!: Observable<EmpleadoResponse2>;
+
+  // Pagination properties
+  currentPage = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 0;
+  Math = Math;
 
   constructor(
     public empleadoService: EmployeeService,
@@ -38,6 +48,28 @@ export class EmployeeListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.total$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(total => {
+      this.totalItems = total;
+      this.totalPages = Math.ceil(total / this.pageSize);
+    });
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadData();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.empleadoService.page = this.currentPage;
+    this.empleadoService.pageSize = this.pageSize;
   }
 
 
@@ -50,7 +82,7 @@ export class EmployeeListComponent implements OnInit {
         ? this.empleadoApiService.deactivateEmpleado(empleado.id)
         : this.empleadoApiService.activateEmpleado(empleado.id);
         
-      serviceCall.subscribe({
+      serviceCall.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success(`Empleado ${action}do exitosamente`, 'Éxito', {
             timeOut: 3000,

@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./venta-list.component.scss']
 })
 export class VentaListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   ventas: Venta[] = [];
   isLoading = false;
   estadoFilter = '';
@@ -61,7 +63,7 @@ export class VentaListComponent implements OnInit {
       fechaHasta: this.fechaHasta || undefined
     };
 
-    this.ventaService.getVentas(params).subscribe({
+    this.ventaService.getVentas(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data?.data) {
           this.ventas = response.data.data;
@@ -85,7 +87,7 @@ export class VentaListComponent implements OnInit {
       fechaHasta: this.fechaHasta || undefined
     };
 
-    this.ventaService.getVentasEstadisticas(params).subscribe({
+    this.ventaService.getVentasEstadisticas(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         console.log('Respuesta de estadísticas:', response);
         if (response?.data) {
@@ -136,7 +138,7 @@ export class VentaListComponent implements OnInit {
     if (confirm('¿Está seguro de anular esta venta? Esta acción restaurará el stock de los productos.')) {
       const payload = motivo && motivo.trim() ? { motivoAnulacion: motivo.trim() } : {};
       
-      this.ventaService.anularVenta(venta.id, payload).subscribe({
+      this.ventaService.anularVenta(venta.id, payload).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Venta anulada exitosamente', 'Éxito');
           this.loadVentas();

@@ -1,5 +1,6 @@
 import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { RouterModule } from '@angular/router';
@@ -16,6 +17,7 @@ import { IngresoInventario, InventarioStats } from '../../../../../shared/interf
   styleUrls: ['./ingreso-inventario-list.component.scss']
 })
 export class IngresoInventarioListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   ingresoList$!: Observable<IngresoInventario[]>;
   total$!: Observable<number>;
   loading$!: Observable<boolean>;
@@ -34,7 +36,7 @@ export class IngresoInventarioListComponent implements OnInit {
 
   obtenerStats() {
     this.stats$ = this.ingresoService.getIngresoStats();
-    this.stats$.subscribe({
+    this.stats$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (stats: InventarioStats) => {
         this.stats = stats;
       },
@@ -50,7 +52,7 @@ export class IngresoInventarioListComponent implements OnInit {
 
   eliminarIngreso(ingreso: IngresoInventario) {
     if (confirm(`¿Está seguro de que desea eliminar este ingreso de inventario?`)) {
-      this.ingresoService.deleteIngreso(ingreso.id).subscribe({
+      this.ingresoService.deleteIngreso(ingreso.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Ingreso eliminado exitosamente', 'Éxito', {
             timeOut: 3000,

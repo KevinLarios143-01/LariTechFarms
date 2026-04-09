@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./producto-list.component.scss']
 })
 export class ProductoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   productos: Producto[] = []
   filteredProductos: Producto[] = []
   categorias: string[] = []
@@ -40,7 +42,7 @@ export class ProductoListComponent implements OnInit {
 
   loadProductos() {
     this.isLoading = true
-    this.productosService.getProductos().subscribe({
+    this.productosService.getProductos().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         // Manejo robusto de diferentes estructuras de respuesta
         if (response?.data?.data && Array.isArray(response.data.data)) {
@@ -72,7 +74,7 @@ export class ProductoListComponent implements OnInit {
   }
 
   loadCategorias() {
-    this.productosService.getCategorias().subscribe({
+    this.productosService.getCategorias().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.categorias = Array.isArray(response.data) ? response.data.map((item: any) => item.categoria) : []
         this.cdr.detectChanges()
@@ -100,7 +102,7 @@ export class ProductoListComponent implements OnInit {
 
   deleteProducto(id: number) {
     if (confirm('¿Está seguro de eliminar este producto?')) {
-      this.productosService.deleteProducto(id).subscribe({
+      this.productosService.deleteProducto(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Producto eliminado exitosamente', 'Éxito', {
             progressBar: true,

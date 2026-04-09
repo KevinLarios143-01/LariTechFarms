@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { IngresoInventario } from '../../../../../shared/interfaces/inventario';
   styleUrls: ['./ingreso-list.component.scss']
 })
 export class IngresoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   ingresos: IngresoInventario[] = [];
   isLoading = false;
   
@@ -62,7 +64,7 @@ export class IngresoListComponent implements OnInit {
   }
 
   loadLotes() {
-    this.loteService.getLotes({ activo: true, limit: 1000 }).subscribe({
+    this.loteService.getLotes({ activo: true, limit: 1000 }).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.lotes = response.data.data;
       },
@@ -73,7 +75,7 @@ export class IngresoListComponent implements OnInit {
   }
 
   loadProductos() {
-    this.productoService.getProductos().subscribe({
+    this.productoService.getProductos().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (productos) => {
         this.productos = productos;
       },
@@ -95,7 +97,7 @@ export class IngresoListComponent implements OnInit {
     if (this.fechaInicio) params.fechaInicio = this.fechaInicio;
     if (this.fechaFin) params.fechaFin = this.fechaFin;
 
-    this.inventarioService.getIngresos(params).subscribe({
+    this.inventarioService.getIngresos(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.ingresos = response.data;
         this.totalItems = response.pagination.total;
@@ -116,7 +118,7 @@ export class IngresoListComponent implements OnInit {
     if (this.fechaInicio) params.fechaInicio = this.fechaInicio;
     if (this.fechaFin) params.fechaFin = this.fechaFin;
 
-    this.inventarioService.getEstadisticas(params).subscribe({
+    this.inventarioService.getEstadisticas(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data) {
           this.stats = {
@@ -151,7 +153,7 @@ export class IngresoListComponent implements OnInit {
 
   deleteIngreso(ingreso: IngresoInventario) {
     if (confirm(`¿Está seguro de eliminar este ingreso? Se ajustará el stock automáticamente.`)) {
-      this.inventarioService.deleteIngreso(ingreso.id).subscribe({
+      this.inventarioService.deleteIngreso(ingreso.id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Ingreso eliminado exitosamente', 'Éxito');
           this.loadIngresos();

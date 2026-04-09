@@ -1,4 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -16,8 +17,8 @@ import { SharedModule } from '../../../../../shared/common/sharedmodule';
   styleUrls: ['./vehiculo-list.component.scss']
 })
 export class VehiculoListComponent implements OnInit {
+  private readonly destroyRef = inject(DestroyRef);
   vehiculos: Vehiculo[] = [];
-  filteredVehiculos: Vehiculo[] = [];
   tipos: string[] = [];
   isLoading = false;
   searchTerm = '';
@@ -33,11 +34,11 @@ export class VehiculoListComponent implements OnInit {
 
   // Paginación
   currentPage = 1;
-  itemsPerPage = 10;
+  pageSize = 10;
   totalItems = 0;
   totalPages = 0;
 
-  // Expose Math to template
+  // Para usar Math en el template
   Math = Math;
 
   // Estadísticas
@@ -66,17 +67,16 @@ export class VehiculoListComponent implements OnInit {
     this.isLoading = true;
     const params = {
       page: this.currentPage,
-      limit: this.itemsPerPage,
+      limit: this.pageSize,
       search: this.searchTerm || undefined,
       tipo: this.selectedTipo || undefined,
       estado: this.selectedEstado || undefined
     };
 
-    this.vehiculoService.getVehiculos(params).subscribe({
+    this.vehiculoService.getVehiculos(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data?.items) {
           this.vehiculos = response.data.items;
-          this.filteredVehiculos = [...this.vehiculos];
           this.totalItems = response.data.pagination.total;
           this.totalPages = response.data.pagination.totalPages;
         }
@@ -92,7 +92,7 @@ export class VehiculoListComponent implements OnInit {
   }
 
   loadTipos() {
-    this.vehiculoService.getTipos().subscribe({
+    this.vehiculoService.getTipos().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         this.tipos = response.data || [];
         this.cdr.detectChanges();
@@ -104,7 +104,7 @@ export class VehiculoListComponent implements OnInit {
   }
 
   loadStats() {
-    this.vehiculoService.getStats().subscribe({
+    this.vehiculoService.getStats().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (response) => {
         if (response?.data) {
           this.stats = {
@@ -137,9 +137,22 @@ export class VehiculoListComponent implements OnInit {
     this.loadVehiculos();
   }
 
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadVehiculos();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadVehiculos();
+  }
+
   deleteVehiculo(id: number) {
     if (confirm('¿Está seguro de eliminar este vehículo?')) {
-      this.vehiculoService.deleteVehiculo(id).subscribe({
+      this.vehiculoService.deleteVehiculo(id).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
           this.toastr.success('Vehículo eliminado exitosamente', 'Éxito');
           this.loadVehiculos();
@@ -171,15 +184,6 @@ export class VehiculoListComponent implements OnInit {
       'Vendido': 'ri-shopping-cart-line'
     };
     return icons[estado] || 'ri-question-line';
-  }
-
-  onPageChange(page: number) {
-    this.currentPage = page;
-    this.loadVehiculos();
-  }
-
-  get pages(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   getVehiculosPorEstado(estado: string): number {

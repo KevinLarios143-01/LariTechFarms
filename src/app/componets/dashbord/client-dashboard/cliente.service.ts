@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 
@@ -36,8 +36,15 @@ export class ClienteService {
   }
 
 
-  getClientes(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/clientes`);
+  getClientes(page?: number, limit?: number): Observable<any> {
+    let params = new HttpParams();
+    if (page != null) {
+      params = params.set('page', page.toString());
+    }
+    if (limit != null) {
+      params = params.set('limit', limit.toString());
+    }
+    return this.http.get<any>(`${this.apiUrl}/clientes`, { params });
   }
 
   createCliente(cliente: any): Observable<any> {

@@ -29,17 +29,17 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
 
 ## Tareas
 
-- [ ] 1. Corrección del problema de navegación con página en blanco
-  - [ ] 1.1 Investigar y diagnosticar la causa raíz del bug de navegación en blanco
+- [x] 1. Corrección del problema de navegación con página en blanco
+  - [x] 1.1 Investigar y diagnosticar la causa raíz del bug de navegación en blanco
     - Revisar si existe un `RouteReuseStrategy` personalizado en `app.config.ts` o `app.routes.ts`
     - Verificar componentes standalone que no implementan `ngOnDestroy` con desuscripción de observables
     - Probar navegación ida y vuelta entre rutas para reproducir el problema
     - _Requisitos: 6.1, 6.2_
-  - [ ] 1.2 Implementar corrección de la estrategia de reutilización de rutas
+  - [x] 1.2 Implementar corrección de la estrategia de reutilización de rutas
     - Si existe `RouteReuseStrategy` personalizado, corregirlo o reemplazarlo con el comportamiento por defecto
     - Si no existe, verificar que los componentes ejecuten correctamente `ngOnInit`/`ngOnDestroy` al navegar
     - _Requisitos: 6.2, 6.3_
-  - [ ] 1.3 Agregar `takeUntilDestroyed()` o patrón de desuscripción en componentes con observables
+  - [x] 1.3 Agregar `takeUntilDestroyed()` o patrón de desuscripción en componentes con observables
     - Revisar todos los componentes de listado que usan suscripciones manuales a observables
     - Implementar `DestroyRef` + `takeUntilDestroyed()` de Angular 18 en componentes afectados
     - Asegurar que componentes con parámetros dinámicos (`ActivatedRoute.params`) reaccionen a cambios
@@ -49,19 +49,19 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que no hay fugas de memoria por observables no desuscritos
     - _Requisitos: 6.1, 6.3, 6.4_
 
-- [ ] 2. Checkpoint - Verificar corrección de navegación
+- [x] 2. Checkpoint - Verificar corrección de navegación
   - Asegurar que la navegación entre rutas funciona correctamente sin páginas en blanco, preguntar al usuario si hay dudas.
 
 
-- [ ] 3. Estandarizar el módulo de referencia `employee-list` (paginador y selector funcionales)
-  - [ ] 3.1 Implementar lógica de paginación funcional en `employee-list.component.ts`
+- [x] 3. Estandarizar el módulo de referencia `employee-list` (paginador y selector funcionales)
+  - [x] 3.1 Implementar lógica de paginación funcional en `employee-list.component.ts`
     - Agregar propiedades: `currentPage`, `pageSize`, `totalItems`, `totalPages`, `Math = Math`
     - Implementar métodos `onPageChange(page)` y `onPageSizeChange(newSize)`
     - Conectar el selector `ng-select` con `[ngModel]="pageSize"` y `(ngModelChange)="onPageSizeChange($event)"` con valores numéricos reales (10, 25, 50, 100)
     - Conectar la paginación con el servicio `EmployeeService` para cargar datos paginados
     - Archivo: `hrmdashboards/employess/employee-list/employee-list.component.ts`
     - _Requisitos: 4.3, 4.4, 4.10, 5.3, 5.4_
-  - [ ] 3.2 Reemplazar paginador estático por paginador dinámico en `employee-list.component.html`
+  - [x] 3.2 Reemplazar paginador estático por paginador dinámico en `employee-list.component.html`
     - Reemplazar el bloque `<nav>` estático (Prev/1/2/3/Next) por el Paginador_Estándar con `@for`, `[class.disabled]`, `[class.active]` y `(click)="onPageChange()"`
     - Cambiar "Prev" → "Anterior" y "Next" → "Siguiente"
     - Archivo: `hrmdashboards/employess/employee-list/employee-list.component.html`
@@ -82,40 +82,40 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - **Propiedad 5: Los datos mostrados corresponden a la página actual**
     - **Valida: Requisitos 4.4**
 
-- [ ] 4. Checkpoint - Verificar módulo de referencia
+- [x] 4. Checkpoint - Verificar módulo de referencia
   - Asegurar que el paginador y selector del módulo `employee-list` funcionan correctamente con datos reales, preguntar al usuario si hay dudas.
 
-- [ ] 5. Estandarizar módulos con header inline: `client-list` y `sell-list`
-  - [ ] 5.1 Migrar header de `client-list` (client-dashboard) al componente estándar
+- [x] 5. Estandarizar módulos con header inline: `client-list` y `sell-list`
+  - [x] 5.1 Migrar header de `client-list` (client-dashboard) al componente estándar
     - Reemplazar el bloque `<div class="page-header d-lg-flex d-block">` por `<app-hr-dashboard-page-header [title]="'Clientes'" [title2]="'Agregar Cliente'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/client-dashboard/new-client'">`
     - Agregar import de `SharedModule` si no existe
     - Archivo: `client-dashboard/client-list/client-list.component.html` y `.ts`
     - _Requisitos: 1.1, 1.2, 1.4_
-  - [ ] 5.2 Estandarizar tabla y botones de `client-list`
+  - [x] 5.2 Estandarizar tabla y botones de `client-list`
     - Cambiar clases de tabla de `table table-vcenter text-nowrap table-bordered border-bottom` a `table mb-0 text-nowrap text-md-nowrap table-bordered border`
     - Agregar `<tr class="border-bottom">` en thead y `<th scope="col">` en cada columna
     - Reemplazar botones `action-btns1` por `btn btn-icon` con variantes de color dentro de `<div class="d-flex gap-2">`
     - Cambiar "entradas" → "registros" en el selector
     - Archivo: `client-dashboard/client-list/client-list.component.html`
     - _Requisitos: 2.1, 2.2, 2.3, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 5.5_
-  - [ ] 5.3 Agregar paginador funcional a `client-list`
+  - [x] 5.3 Agregar paginador funcional a `client-list`
     - Agregar propiedades de paginación en el componente TypeScript (`currentPage`, `pageSize`, `totalItems`, `totalPages`)
     - Implementar `onPageChange()` y `onPageSizeChange()` conectados al servicio de clientes
     - Agregar el bloque HTML del Paginador_Estándar con "Anterior"/"Siguiente"
     - Conectar el selector `ng-select` existente con la lógica de paginación
     - Archivos: `client-dashboard/client-list/client-list.component.html` y `.ts`
     - _Requisitos: 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 5.1, 5.2, 5.3, 5.4_
-  - [ ] 5.4 Migrar header de `sell-list` (bussiness-dashboard) al componente estándar
+  - [x] 5.4 Migrar header de `sell-list` (bussiness-dashboard) al componente estándar
     - Reemplazar el bloque `<div class="page-header d-lg-flex d-block">` por `<app-hr-dashboard-page-header [title]="'Ventas'" [title2]="'Agregar Venta'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/business-dashboard/new-sell'">`
     - Archivo: `bussiness-dashboard/sell-list/sell-list.component.html` y `.ts`
     - _Requisitos: 1.1, 1.2, 1.4_
-  - [ ] 5.5 Estandarizar tabla y botones de `sell-list`
+  - [x] 5.5 Estandarizar tabla y botones de `sell-list`
     - Cambiar clases de tabla a las estándar
     - Reemplazar botones `action-btns1` por `btn btn-icon` con variantes de color
     - Cambiar "entradas" → "registros"
     - Archivo: `bussiness-dashboard/sell-list/sell-list.component.html`
     - _Requisitos: 2.1, 2.2, 2.3, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 5.5_
-  - [ ] 5.6 Agregar paginador funcional a `sell-list`
+  - [x] 5.6 Agregar paginador funcional a `sell-list`
     - Implementar lógica de paginación en TypeScript y agregar Paginador_Estándar en HTML
     - Conectar con el servicio de ventas
     - Archivos: `bussiness-dashboard/sell-list/sell-list.component.html` y `.ts`
@@ -126,12 +126,12 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que el texto "entradas" fue reemplazado por "registros"
     - _Requisitos: 1.1, 3.1, 5.5_
 
-- [ ] 6. Checkpoint - Verificar módulos client-list y sell-list
+- [x] 6. Checkpoint - Verificar módulos client-list y sell-list
   - Asegurar que ambos módulos muestran el header estándar, tabla estándar, botones estándar y paginador funcional, preguntar al usuario si hay dudas.
 
 
-- [ ] 7. Estandarizar módulos con `mat-table`: `task-list` y `project-list`
-  - [ ] 7.1 Migrar `task-list` de `mat-table` a tabla HTML estándar
+- [x] 7. Estandarizar módulos con `mat-table`: `task-list` y `project-list`
+  - [x] 7.1 Migrar `task-list` de `mat-table` a tabla HTML estándar
     - Reemplazar `<app-task-dashboard-page-header>` por `<app-hr-dashboard-page-header [title]="'Tareas'" [title2]="'Nueva Tarea'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/task-dashboard/new-tasks'">`
     - Eliminar `mat-table`, `MatTableDataSource`, `MatSort`, `MatPaginator` del componente
     - Crear tabla HTML estándar con clases `table mb-0 text-nowrap text-md-nowrap table-bordered border`
@@ -141,7 +141,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Traducir todos los textos en inglés al español (ver mapeo en diseño)
     - Archivos: `task-dashboard/task-list/task-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 4.10, 5.1, 5.2, 5.3, 5.4, 7.1, 7.2, 7.3, 7.4_
-  - [ ] 7.2 Traducir textos de las tarjetas de estadísticas y filtros de `task-list`
+  - [x] 7.2 Traducir textos de las tarjetas de estadísticas y filtros de `task-list`
     - "All Task's" → "Todas las Tareas", "My Task" → "Mis Tareas", "Pending Tasks" → "Tareas Pendientes", "Completed Tasks" → "Tareas Completadas"
     - "Recent Task Summary" → "Resumen de Tareas Recientes", "From:" → "Desde:", "To:" → "Hasta:"
     - "Assign To:" → "Asignar A:", "Select Employee" → "Seleccionar Empleado", "Select Priority:" → "Seleccionar Prioridad:"
@@ -150,7 +150,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Encabezados de tabla: "Task" → "Tarea", "Department" → "Departamento", "Priority" → "Prioridad", "StartDate" → "Fecha Inicio", "Deadline" → "Fecha Límite", "Progress" → "Progreso", "WorkStatus" → "Estado", "Action" → "Acciones"
     - Archivo: `task-dashboard/task-list/task-list.component.html`
     - _Requisitos: 7.1, 7.2, 7.3, 7.4_
-  - [ ] 7.3 Traducir textos del modal de edición de `task-list`
+  - [x] 7.3 Traducir textos del modal de edición de `task-list`
     - "Edit Task" → "Editar Tarea", "Task ID" → "ID Tarea", "Task Title" → "Título Tarea"
     - "Department:" → "Departamento:", "Task Priority:" → "Prioridad de Tarea:"
     - "Description:" → "Descripción:", "Attachment:" → "Adjunto:", "Work Status:" → "Estado de Trabajo:"
@@ -158,7 +158,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - "Close" → "Cerrar", "Update" → "Actualizar"
     - Archivo: `task-dashboard/task-list/task-list.component.html`
     - _Requisitos: 7.1_
-  - [ ] 7.4 Migrar `project-list` de `mat-table` a tabla HTML estándar
+  - [x] 7.4 Migrar `project-list` de `mat-table` a tabla HTML estándar
     - Reemplazar `<app-task-dashboard-page-header>` por `<app-hr-dashboard-page-header [title]="'Proyectos'" [title2]="'Nuevo Proyecto'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/project-dashboard/new-project'">`
     - Eliminar `mat-table`, `MatTableDataSource`, `MatSort`, `mat-paginator` del componente
     - Crear tabla HTML estándar con datos dinámicos
@@ -167,7 +167,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Traducir todos los textos en inglés al español
     - Archivos: `project-dashboard/project-list/project-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.4, 3.1, 4.1, 4.3, 5.1, 7.1, 7.4_
-  - [ ] 7.5 Traducir textos de filtros, estadísticas y modal de `project-list`
+  - [x] 7.5 Traducir textos de filtros, estadísticas y modal de `project-list`
     - "Total Projects" → "Total Proyectos", "Pending Projects" → "Proyectos Pendientes", etc.
     - "Recent project Summary" → "Resumen de Proyectos Recientes"
     - "From:" → "Desde:", "To:" → "Hasta:", "Assign To:" → "Asignar A:", "Select Employee" → "Seleccionar Empleado"
@@ -181,8 +181,8 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar que el paginador muestra "Anterior"/"Siguiente"
     - _Requisitos: 2.4, 7.1, 7.2_
 
-- [ ] 8. Estandarizar `job-lists` (job-dashboard)
-  - [ ] 8.1 Migrar header y estandarizar tabla de `job-lists`
+- [x] 8. Estandarizar `job-lists` (job-dashboard)
+  - [x] 8.1 Migrar header y estandarizar tabla de `job-lists`
     - Reemplazar `<app-job-dashboard-page-header>` por `<app-hr-dashboard-page-header [title]="'Trabajos'" [title2]="'Nuevo Trabajo'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/job-dashboard/new-job'">`
     - Cambiar clases de tabla de `table table-vcenter text-nowrap table-bordered border-bottom` a las estándar
     - Reemplazar botones `action-btns1` por `btn btn-icon` estándar
@@ -195,12 +195,12 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Verificar header estándar, tabla estándar, botones estándar, textos en español
     - _Requisitos: 1.1, 7.1_
 
-- [ ] 9. Checkpoint - Verificar módulos con mat-table y job-lists
+- [x] 9. Checkpoint - Verificar módulos con mat-table y job-lists
   - Asegurar que `task-list`, `project-list` y `job-lists` están completamente migrados con datos dinámicos, paginador funcional y textos en español, preguntar al usuario si hay dudas.
 
 
 - [ ] 10. Estandarizar módulos de producción: `galera-list`, `gasto-list`, `vehiculo-list`, `inventario-list`
-  - [ ] 10.1 Migrar header y estandarizar `galera-list`
+  - [x] 10.1 Migrar header y estandarizar `galera-list`
     - Reemplazar el bloque `<div class="card custom-card"><div class="card-header justify-content-between">` por `<app-hr-dashboard-page-header [title]="'Galeras'" [title2]="'Nueva Galera'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/production-dashboard/galeras/add'">`
     - Cambiar clases de tabla de `table text-nowrap table-hover` a `table mb-0 text-nowrap text-md-nowrap table-bordered border`
     - Agregar `<tr class="border-bottom">` en thead y `<th scope="col">` en cada columna
@@ -209,7 +209,7 @@ Estandarizar todos los módulos de listado de LariTechFarms siguiendo el patrón
     - Agregar Selector_Registros con `ng-select` (10/25/50/100) y texto "Mostrar N registros"
     - Archivos: `production-dashboard/galeras/galera-list/galera-list.component.html` y `.ts`
     - _Requisitos: 1.1, 2.1, 2.2, 2.3, 2.5, 2.6, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 4.1, 4.9, 5.1, 5.2_
-  - [ ] 10.2 Migrar header y estandarizar `gasto-list`
+  - [x] 10.2 Migrar header y estandarizar `gasto-list`
     - Reemplazar header card-header por `<app-hr-dashboard-page-header [title]="'Gastos de Operación'" [title2]="'Registrar Gasto'" [class]="'btn btn-primary'" [class1]="''" [path]="'/dashboard/production-dashboard/gastos-operacion/add'">`
     - Cambiar clases de tabla, reemplazar botones `btn-group btn-sm`, estandarizar paginador, agregar Selector_Registros
     - Archivos: `production-dashboard/gastos-operacion/gasto-list/gasto-list.component.html` y `.ts`
