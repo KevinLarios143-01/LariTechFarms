@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgbDateStruct, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -40,6 +40,8 @@ export class ClientListComponent implements OnInit {
   totalItems = 0;
   totalPages = 0;
   Math = Math;
+
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     private readonly modalService: NgbModal,
@@ -175,6 +177,7 @@ export class ClientListComponent implements OnInit {
         }
 
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading clientes:', error);
@@ -183,6 +186,7 @@ export class ClientListComponent implements OnInit {
         this.totalItems = 0;
         this.totalPages = 0;
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

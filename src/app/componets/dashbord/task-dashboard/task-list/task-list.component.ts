@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -34,6 +34,8 @@ export class TaskListComponent implements OnInit {
 
   flatpickrOptions: any = { inline: true };
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor(
     private readonly modalService: NgbModal,
     private readonly taskService: TaskService
@@ -43,6 +45,7 @@ export class TaskListComponent implements OnInit {
     this.taskService.total$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(total => {
       this.totalItems = total;
       this.totalPages = Math.ceil(total / this.pageSize);
+      this.cdr.detectChanges();
     });
 
     this.taskService.tasks$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(tasks => {

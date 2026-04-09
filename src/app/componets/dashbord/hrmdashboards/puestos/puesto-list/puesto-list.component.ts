@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -27,6 +27,8 @@ export class PuestoListComponent implements OnInit {
   Math = Math;
   Number = Number;
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor(private puestoService: PuestoService) {}
 
   ngOnInit() {
@@ -49,11 +51,13 @@ export class PuestoListComponent implements OnInit {
           this.totalPages = response.data.pagination.totalPages;
         }
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar puestos:', error);
         Swal.fire('Error', 'No se pudieron cargar los puestos', 'error');
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

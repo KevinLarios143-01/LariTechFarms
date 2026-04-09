@@ -1,5 +1,5 @@
 import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -36,6 +36,8 @@ export class EmployeeListComponent implements OnInit {
   totalPages = 0;
   Math = Math;
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor(
     public empleadoService: EmployeeService,
     private readonly empleadoApiService: EmpleadoService,
@@ -51,6 +53,7 @@ export class EmployeeListComponent implements OnInit {
     this.total$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(total => {
       this.totalItems = total;
       this.totalPages = Math.ceil(total / this.pageSize);
+      this.cdr.detectChanges();
     });
   }
 

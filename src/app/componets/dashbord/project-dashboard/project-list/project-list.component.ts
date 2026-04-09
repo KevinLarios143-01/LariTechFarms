@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -32,6 +32,8 @@ export class ProjectListComponent implements OnInit {
 
   flatpickrOptions: any = { inline: true };
 
+  private readonly cdr = inject(ChangeDetectorRef);
+
   constructor(
     private readonly modalService: NgbModal,
     private readonly projectService: ProjectService
@@ -41,6 +43,7 @@ export class ProjectListComponent implements OnInit {
     this.projectService.total$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(total => {
       this.totalItems = total;
       this.totalPages = Math.ceil(total / this.pageSize);
+      this.cdr.detectChanges();
     });
 
     this.projectService.projects$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(projects => {
