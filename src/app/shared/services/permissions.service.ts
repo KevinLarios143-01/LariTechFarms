@@ -179,14 +179,17 @@ export class PermissionsService {
     return this.tenantModules$.getValue().includes(module);
   }
 
-  /** Check if a role has access to a module using dynamic role modules or user overrides. */
+  /** Check if a role has access to a module using dynamic role modules and user restrictions. */
   roleHasModule(role: UserRole, module: ModuleName): boolean {
-    // If user has custom config, use that; otherwise use role modules
+    const roleMods = this.roleModules$.getValue();
     const userMods = this.userModules$.getValue();
+    // Role must always grant the module
+    if (!roleMods.includes(module)) return false;
+    // If user-level config exists, it can only further restrict
     if (userMods.length > 0) {
       return userMods.includes(module);
     }
-    return this.roleModules$.getValue().includes(module);
+    return true;
   }
 
   /**
@@ -210,27 +213,33 @@ export class PermissionsService {
   }
 
   /**
-   * Three-layer access check: module enabled + role/user has module + route permissions.
-   * User route permissions override role route permissions.
-   * If no route permissions exist for the module, access is permissive (all routes allowed).
+   * Four-layer access check: tenant module + role module + user module + route permissions.
+   * Each layer can only restrict further, never expand access.
    */
   hasRouteAccess(route: string): boolean {
-    // First check module access (layers 1 and 2)
+    // First check module access (layers 1, 2, and 3)
     if (!this.hasAccess(route)) return false;
 
     const module = this.getModuleForRoute(route);
     if (!module) return false;
 
-    // Check user route permissions (override)
-    const userRoutes = this.userRoutePermissions$.getValue();
-    if (userRoutes[module] && userRoutes[module].length > 0) {
-      return userRoutes[module].some(p => route.startsWith(p));
-    }
-
-    // Check role route permissions
+    // Layer 4: Route-level permissions (intersection logic)
     const roleRoutes = this.roleRoutePermissions$.getValue();
-    if (roleRoutes[module] && roleRoutes[module].length > 0) {
+    const userRoutes = this.userRoutePermissions$.getValue();
+    const hasRoleRoutes = roleRoutes[module] && roleRoutes[module].length > 0;
+    const hasUserRoutes = userRoutes[module] && userRoutes[module].length > 0;
+
+    if (hasRoleRoutes && hasUserRoutes) {
+      // Intersection: route must be allowed by BOTH layers
+      return roleRoutes[module].some(p => route.startsWith(p))
+          && userRoutes[module].some(p => route.startsWith(p));
+    }
+    if (hasRoleRoutes) {
       return roleRoutes[module].some(p => route.startsWith(p));
+    }
+    if (hasUserRoutes) {
+      // User routes alone still apply as restriction
+      return userRoutes[module].some(p => route.startsWith(p));
     }
 
     // No route restrictions → permissive access
@@ -252,9 +261,12 @@ export class PermissionsService {
       return defaultRoute;
     }
 
-    // Fallback: find first accessible route from allowed modules
+    // Fallback: find first accessible route from effective (intersected) modules
+    const roleMods = this.roleModules$.getValue();
     const userMods = this.userModules$.getValue();
-    const allowedModules = userMods.length > 0 ? userMods : this.roleModules$.getValue();
+    const allowedModules = userMods.length > 0
+      ? roleMods.filter(m => userMods.includes(m))
+      : roleMods;
     for (const mod of allowedModules) {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];
