@@ -162,7 +162,7 @@
                     <input class="form-check-input" type="checkbox"
                       [checked]="isRoleRouteChecked(role, route.id_route)"
                       [disabled]="isRoleModuleDisabled(role, group.moduleName) || saving || !route.activo"
-                      (change)="toggleRoleRoute(role, route.id_route, group.moduleName)">
+                      (click)="toggleRoleRoute(role, route.id_route, group.moduleName)">
                   </div>
                 </td>
                 }
@@ -275,7 +275,7 @@
                     <input class="form-check-input" type="checkbox"
                       [checked]="isUserRouteChecked(route.id_route)"
                       [disabled]="saving || !route.activo"
-                      (change)="toggleUserRoute(route.id_route)">
+                      (click)="toggleUserRoute(route.id_route)">
                   </div>
                 </td>
                 <td class="text-center">
