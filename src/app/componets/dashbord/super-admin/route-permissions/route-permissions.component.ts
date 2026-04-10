@@ -209,8 +209,10 @@ export class RoutePermissionsComponent implements OnInit {
     // Optimistic update
     if (wasChecked) {
       delete this.roleMatrix[role][routeId];
+      this.toastr.info('Ruta deseleccionada', 'Permiso');
     } else {
       this.roleMatrix[role][routeId] = true;
+      this.toastr.info('Ruta seleccionada', 'Permiso');
     }
 
     // Collect all checked route_ids for this role
@@ -225,7 +227,6 @@ export class RoutePermissionsComponent implements OnInit {
       route_ids: routeIds
     }).subscribe({
       next: () => {
-        this.toastr.success('Permisos actualizados', 'Éxito');
         this.saving = false;
       },
       error: () => {
@@ -296,8 +297,10 @@ export class RoutePermissionsComponent implements OnInit {
     const wasChecked = this.isUserRouteChecked(routeId);
     if (wasChecked) {
       delete this.userRouteChecked[routeId];
+      this.toastr.info('Ruta deseleccionada', 'Permiso');
     } else {
       this.userRouteChecked[routeId] = true;
+      this.toastr.info('Ruta seleccionada', 'Permiso');
     }
 
     const routeIds = Object.keys(this.userRouteChecked)
@@ -310,7 +313,6 @@ export class RoutePermissionsComponent implements OnInit {
       route_ids: routeIds
     }).subscribe({
       next: () => {
-        this.toastr.success('Permisos del usuario actualizados', 'Éxito');
         this.saving = false;
       },
       error: () => {
