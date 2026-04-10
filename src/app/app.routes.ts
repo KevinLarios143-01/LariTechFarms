@@ -13,6 +13,14 @@ export const App_Route: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth/login', loadComponent: () => import('../app/authentication/login/login.component').then((m) => m.LoginComponent) },
   { path: 'access-denied', loadComponent: () => import('./componets/custom-pages/access-denied/access-denied.component').then(m => m.AccessDeniedComponent) },
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'home', loadComponent: () => import('./componets/custom-pages/home/home.component').then(m => m.HomeComponent) }
+    ]
+  },
   { path: '', component: MainLayoutComponent, canActivate: [AuthGuard], canActivateChild: [roleModuleGuard], children: content },
   { path: '', component: AuthenticationLayoutComponent, children: authen },
 ];

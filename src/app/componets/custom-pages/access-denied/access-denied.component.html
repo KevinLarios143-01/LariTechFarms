@@ -6,9 +6,15 @@
       <div class="card-body text-center">
         <i class="fe fe-lock fs-1 text-danger mb-3 d-block"></i>
         <h4 class="mb-3">No tienes permisos para acceder a esta pantalla</h4>
-        <button class="btn btn-primary" (click)="goHome()">
-          <i class="fe fe-home me-1"></i> Ir al inicio
-        </button>
+        <p class="text-muted mb-4">Comunícate con el administrador del sistema para solicitar los accesos necesarios.</p>
+        <div class="d-flex justify-content-center gap-2">
+          <button class="btn btn-primary" (click)="goHome()">
+            <i class="fe fe-home me-1"></i> Ir al inicio
+          </button>
+          <button class="btn btn-outline-danger" (click)="logout()">
+            <i class="fe fe-log-out me-1"></i> Cerrar sesión
+          </button>
+        </div>
       </div>
     </div>
   </div>

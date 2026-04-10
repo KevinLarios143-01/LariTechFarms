@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/common/sharedmodule';
 import { PermissionsService } from '../../../shared/services/permissions.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-access-denied',
@@ -13,11 +14,18 @@ import { PermissionsService } from '../../../shared/services/permissions.service
 export class AccessDeniedComponent {
   constructor(
     private permissionsService: PermissionsService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   goHome(): void {
-    const redirect = this.permissionsService.getDefaultRedirect();
-    this.router.navigate([redirect]);
+    this.router.navigate(['/home']);
+  }
+
+  logout(): void {
+    this.permissionsService.clear();
+    this.authService.singout();
+    this.authService.removeToken();
+    this.router.navigate(['/auth/login']);
   }
 }

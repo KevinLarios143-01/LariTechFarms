@@ -266,7 +266,7 @@ export class PermissionsService {
   getDefaultRedirect(): string {
     const role = this.userRole$.getValue();
     if (!role) {
-      return '/access-denied';
+      return '/home';
     }
 
     // Check default route with full 4-layer validation (Req 6.1)
@@ -293,7 +293,7 @@ export class PermissionsService {
       }
     }
 
-    return '/access-denied';
+    return '/home';
   }
 
   /**

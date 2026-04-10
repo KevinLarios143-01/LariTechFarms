@@ -1,0 +1,24 @@
+<app-hr-dashboard-page-header [title]="'Inicio'"></app-hr-dashboard-page-header>
+
+<div class="row">
+  <div class="col-md-12" *ngIf="accessibleModules.length === 0">
+    <div class="card custom-card">
+      <div class="card-body text-center" style="padding: 3rem 1rem;">
+        <i class="fe fe-alert-circle fs-1 text-warning mb-3 d-block"></i>
+        <h4 class="mb-3">No tienes módulos asignados</h4>
+        <p class="text-muted">Comunícate con el administrador del sistema para solicitar los accesos necesarios.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 col-sm-6" *ngFor="let mod of accessibleModules">
+    <div class="card custom-card" style="cursor: pointer;" (click)="navigateTo(mod.route)">
+      <div class="card-body text-center" style="padding: 2rem 1rem;">
+        <h5 class="mb-2">{{ mod.name }}</h5>
+        <button class="btn btn-primary btn-sm">
+          <i class="fe fe-arrow-right me-1"></i> Ir al módulo
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
