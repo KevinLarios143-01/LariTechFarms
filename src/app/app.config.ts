@@ -58,7 +58,12 @@ export const appConfig: ApplicationConfig = {
         useFactory: adapterFactory,
       }),
       AngularFireModule.initializeApp(environment.firebase),
-      ToastrModule.forRoot({ positionClass: 'top' }),
+      ToastrModule.forRoot({
+        positionClass: 'toast-top-right',
+        timeOut: 3000,
+        preventDuplicates: true,
+        closeButton: true
+      }),
       NgCircleProgressModule.forRoot({ "responsive": true }),
       NgbNavModule,
       FlatpickrModule.forRoot(),

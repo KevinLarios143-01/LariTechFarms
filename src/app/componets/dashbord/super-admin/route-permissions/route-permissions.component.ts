@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { RouterModule } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrService, ToastrModule } from 'ngx-toastr';
 import { SuperAdminService } from '../../../../shared/services/super-admin.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
@@ -27,7 +27,7 @@ interface ModuleGroup {
 @Component({
   selector: 'app-route-permissions',
   standalone: true,
-  imports: [SharedModule, RouterModule, FormsModule, NgSelectModule],
+  imports: [SharedModule, RouterModule, FormsModule, NgSelectModule, ToastrModule],
   templateUrl: './route-permissions.component.html',
   styleUrls: ['./route-permissions.component.scss']
 })
@@ -148,9 +148,12 @@ export class RoutePermissionsComponent implements OnInit {
   private loadRoleView(): void {
     if (!this.selectedTenantId) return;
 
+    console.log('loadRoleView: starting for tenant', this.selectedTenantId);
+
     // First load role-module access for all roles
     this.superAdminService.getRoleModules(this.selectedTenantId).subscribe({
       next: (rmRes) => {
+        console.log('getRoleModules response:', rmRes);
         this.roleModuleAccess = {};
         const data = rmRes?.data || {};
         for (const role of this.roles) {
@@ -162,6 +165,7 @@ export class RoutePermissionsComponent implements OnInit {
             }
           }
         }
+        console.log('roleModuleAccess built:', this.roleModuleAccess);
 
         // Now load route permissions for each role
         this.roleMatrix = {};
@@ -172,12 +176,17 @@ export class RoutePermissionsComponent implements OnInit {
           this.roleMatrix[role] = {};
           this.superAdminService.getRoleRoutePermissions(role, this.selectedTenantId!).subscribe({
             next: (permRes) => {
+              console.log(`getRoleRoutePermissions for ${role}:`, permRes);
               const routeIds: number[] = permRes?.data?.route_ids || [];
+              console.log(`route_ids for ${role}:`, routeIds);
               for (const id of routeIds) {
                 this.roleMatrix[role][id] = true;
               }
               completed++;
-              if (completed === total) this.loading = false;
+              if (completed === total) {
+                console.log('All roles loaded, roleMatrix:', this.roleMatrix);
+                this.loading = false;
+              }
             },
             error: () => {
               completed++;
@@ -202,16 +211,28 @@ export class RoutePermissionsComponent implements OnInit {
   }
 
   toggleRoleRoute(role: string, routeId: number, moduleName: string): void {
-    if (!this.selectedTenantId || this.saving) return;
-    if (this.isRoleModuleDisabled(role, moduleName)) return;
+    console.log('toggleRoleRoute called', { role, routeId, moduleName, saving: this.saving, selectedTenantId: this.selectedTenantId });
+    
+    if (!this.selectedTenantId || this.saving) {
+      console.log('Early return: no tenant or saving');
+      return;
+    }
+    if (this.isRoleModuleDisabled(role, moduleName)) {
+      console.log('Early return: module disabled');
+      return;
+    }
 
     const wasChecked = this.isRoleRouteChecked(role, routeId);
+    console.log('wasChecked:', wasChecked);
+    
     // Optimistic update
     if (wasChecked) {
       delete this.roleMatrix[role][routeId];
+      console.log('Calling toastr.info for deselect');
       this.toastr.info('Ruta deseleccionada', 'Permiso');
     } else {
       this.roleMatrix[role][routeId] = true;
+      console.log('Calling toastr.info for select');
       this.toastr.info('Ruta seleccionada', 'Permiso');
     }
 
@@ -292,14 +313,23 @@ export class RoutePermissionsComponent implements OnInit {
   }
 
   toggleUserRoute(routeId: number): void {
-    if (!this.selectedUsuarioId || this.saving) return;
+    console.log('toggleUserRoute called', { routeId, saving: this.saving, selectedUsuarioId: this.selectedUsuarioId });
+    
+    if (!this.selectedUsuarioId || this.saving) {
+      console.log('Early return: no user or saving');
+      return;
+    }
 
     const wasChecked = this.isUserRouteChecked(routeId);
+    console.log('wasChecked:', wasChecked);
+    
     if (wasChecked) {
       delete this.userRouteChecked[routeId];
+      console.log('Calling toastr.info for deselect');
       this.toastr.info('Ruta deseleccionada', 'Permiso');
     } else {
       this.userRouteChecked[routeId] = true;
+      console.log('Calling toastr.info for select');
       this.toastr.info('Ruta seleccionada', 'Permiso');
     }
 
