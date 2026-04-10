@@ -1,5 +1,7 @@
 import {
   Component,
+  OnInit,
+  OnDestroy,
   Renderer2,
   HostListener,
   ElementRef,
@@ -18,7 +20,7 @@ import { UserData } from '../../interfaces/login-response.interface';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit, OnDestroy {
   //////
   eventTriggered: boolean = false;
   screenWidth!: number;

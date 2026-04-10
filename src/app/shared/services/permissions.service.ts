@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
-import { catchError, filter, first, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { catchError, filter, first, map, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import {
   UserRole,
@@ -36,7 +36,7 @@ export class PermissionsService {
 
   /**
    * Initialize permissions by extracting role/tenant from JWT
-   * and fetching enabled modules from the backend.
+   * and fetching all 4 layers from endpoints in parallel with forkJoin.
    */
   init(): Observable<void> {
     const token = localStorage.getItem('auth_token');
@@ -67,14 +67,15 @@ export class PermissionsService {
       this.userRole$.next(null);
     }
 
-    return this.http
+    // Layer 1: Tenant modules
+    const tenantModules$ = this.http
       .get<{ success: boolean; data: { modules: string[] } }>(
         `${this.apiUrl}/v1/modules/enabled`,
         { params: { idTenant: String(idTenant) } }
       )
       .pipe(
         tap((res) => {
-          if (res && res.success && res.data && res.data.modules) {
+          if (res?.success && res.data?.modules) {
             this.tenantModules$.next(res.data.modules);
           } else {
             this.tenantModules$.next([]);
@@ -83,70 +84,79 @@ export class PermissionsService {
         catchError(() => {
           this.tenantModules$.next([]);
           return of(undefined);
+        })
+      );
+
+    // Layer 2: Role modules (with fallback to ROLE_ACCESS_MATRIX)
+    const roleModules$ = this.http
+      .get<{ success: boolean; data: { modules: string[] } }>(
+        `${this.apiUrl}/v1/role-modules/by-role`,
+        { params: { role: rol, idTenant: String(idTenant) } }
+      )
+      .pipe(
+        tap((res) => {
+          if (res?.success && res.data?.modules && res.data.modules.length > 0) {
+            this.roleModules$.next(res.data.modules);
+            this.usingFallback$.next(false);
+          } else {
+            this.useFallback(rol);
+          }
         }),
-        switchMap(() =>
-          this.http
-            .get<{ success: boolean; data: { modules: string[] } }>(
-              `${this.apiUrl}/v1/role-modules/by-role`,
-              { params: { role: rol, idTenant: String(idTenant) } }
-            )
-            .pipe(
-              tap((res) => {
-                if (res?.success && res.data?.modules && res.data.modules.length > 0) {
-                  this.roleModules$.next(res.data.modules);
-                  this.usingFallback$.next(false);
-                } else {
-                  this.useFallback(rol);
-                }
-              }),
-              catchError(() => {
-                this.useFallback(rol);
-                return of(undefined);
-              })
-            )
-        ),
-        // Fetch user-level module overrides
-        switchMap(() => {
-          if (!idUsuario) return of(undefined);
-          return this.http
-            .get<{ success: boolean; data: { modules: { module_name: string }[] } }>(
-              `${this.apiUrl}/v1/user-modules`,
-              { params: { idUsuario: String(idUsuario) } }
-            )
-            .pipe(
-              tap((res) => {
-                if (res?.success && res.data?.modules) {
-                  const names = res.data.modules.map((m: any) => m.module_name);
-                  this.userModules$.next(names);
-                }
-              }),
-              catchError(() => of(undefined))
-            );
-        }),
-        // Fetch route-level permissions (layer 3)
-        switchMap(() =>
-          this.http.get<{ success: boolean; data: { role_routes: Record<string, string[]>; user_routes: Record<string, string[]> } }>(
-            `${this.apiUrl}/v1/route-permissions/me`
-          ).pipe(
+        catchError(() => {
+          this.useFallback(rol);
+          return of(undefined);
+        })
+      );
+
+    // Layer 3: User modules
+    const userModules$ = idUsuario
+      ? this.http
+          .get<{ success: boolean; data: { modules: { module_name: string }[] } }>(
+            `${this.apiUrl}/v1/user-modules`,
+            { params: { idUsuario: String(idUsuario) } }
+          )
+          .pipe(
             tap((res) => {
-              if (res?.success && res.data) {
-                this.roleRoutePermissions$.next(res.data.role_routes || {});
-                this.userRoutePermissions$.next(res.data.user_routes || {});
+              if (res?.success && res.data?.modules) {
+                const names = res.data.modules.map((m: any) => m.module_name);
+                this.userModules$.next(names);
+              } else {
+                this.userModules$.next([]);
               }
             }),
             catchError(() => {
-              // Permissive fallback: no route restrictions
-              this.roleRoutePermissions$.next({});
-              this.userRoutePermissions$.next({});
+              this.userModules$.next([]);
               return of(undefined);
             })
           )
-        ),
-        tap(() => {
-          this.initialized$.next(true);
+      : of(undefined);
+
+    // Layer 4: Route permissions
+    const routePermissions$ = this.http
+      .get<{ success: boolean; data: { role_routes: Record<string, string[]>; user_routes: Record<string, string[]> } }>(
+        `${this.apiUrl}/v1/route-permissions/me`
+      )
+      .pipe(
+        tap((res) => {
+          if (res?.success && res.data) {
+            this.roleRoutePermissions$.next(res.data.role_routes || {});
+            this.userRoutePermissions$.next(res.data.user_routes || {});
+          }
         }),
-        map(() => undefined)
+        catchError(() => {
+          this.roleRoutePermissions$.next({});
+          this.userRoutePermissions$.next({});
+          return of(undefined);
+        })
       );
+
+    // Execute all 4 layers in parallel
+    return forkJoin([tenantModules$, roleModules$, userModules$, routePermissions$]).pipe(
+      tap(() => {
+        this.initialized$.next(true);
+      }),
+      map(() => undefined)
+    );
   }
 
   /** Reset all state (call on logout). */
@@ -180,7 +190,9 @@ export class PermissionsService {
   }
 
   /** Check if a role has access to a module using dynamic role modules and user restrictions. */
-  roleHasModule(role: UserRole, module: ModuleName): boolean {
+  roleHasModule(role: UserRole | string, module: ModuleName): boolean {
+    // Invalid role → deny all access (Property 8)
+    if (!role || !VALID_ROLES.includes(role as UserRole)) return false;
     const roleMods = this.roleModules$.getValue();
     const userMods = this.userModules$.getValue();
     // Role must always grant the module
@@ -248,6 +260,7 @@ export class PermissionsService {
 
   /**
    * Return the post-login redirect route for the current role.
+   * Uses full 4-layer validation (hasRouteAccess) for consistency with guards.
    * Falls back to the first accessible route, or /access-denied.
    */
   getDefaultRedirect(): string {
@@ -256,12 +269,13 @@ export class PermissionsService {
       return '/access-denied';
     }
 
+    // Check default route with full 4-layer validation (Req 6.1)
     const defaultRoute = DEFAULT_REDIRECTS[role];
-    if (defaultRoute && this.hasAccess(defaultRoute)) {
+    if (defaultRoute && this.hasRouteAccess(defaultRoute)) {
       return defaultRoute;
     }
 
-    // Fallback: find first accessible route from effective (intersected) modules
+    // Fallback: find first accessible route from effective (intersected) modules (Req 6.2, 6.4)
     const roleMods = this.roleModules$.getValue();
     const userMods = this.userModules$.getValue();
     const allowedModules = userMods.length > 0
@@ -271,7 +285,10 @@ export class PermissionsService {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];
         if (prefixes && prefixes.length > 0) {
-          return prefixes[0];
+          // Verify the fallback route also passes full 4-layer check
+          if (this.hasRouteAccess(prefixes[0])) {
+            return prefixes[0];
+          }
         }
       }
     }
