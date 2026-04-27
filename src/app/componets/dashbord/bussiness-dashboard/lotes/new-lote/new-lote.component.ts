@@ -118,7 +118,7 @@ export class NewLoteComponent implements OnInit {
               timeOut: 3000,
               positionClass: 'toast-top-right',
             });
-            this.router.navigate(['/dashboard/business-dashboard/lotes']);
+            this.router.navigate(['/dashboard/business-dashboard/lotes/list']);
             this.loading = false;
             this.cdr.detectChanges();
           },
@@ -139,7 +139,7 @@ export class NewLoteComponent implements OnInit {
               timeOut: 3000,
               positionClass: 'toast-top-right',
             });
-            this.router.navigate(['/dashboard/business-dashboard/lotes']);
+            this.router.navigate(['/dashboard/business-dashboard/lotes/list']);
             this.loading = false;
             this.cdr.detectChanges();
           },
@@ -164,7 +164,7 @@ export class NewLoteComponent implements OnInit {
   }
 
   onCancel(): void {
-    this.router.navigate(['/dashboard/business-dashboard/lotes']);
+    this.router.navigate(['/dashboard/business-dashboard/lotes/list']);
   }
 
   private markFormGroupTouched(): void {

@@ -126,6 +126,11 @@ const routes: Routes = [
           import('./lotes/lote-list/lote-list.component').then((m) => m.LoteListComponent),
       },
       {
+        path: 'lotes/list',
+        loadComponent: () =>
+          import('./lotes/lote-list/lote-list.component').then((m) => m.LoteListComponent),
+      },
+      {
         path: 'lotes/new-lote',
         loadComponent: () =>
           import('./lotes/new-lote/new-lote.component').then((m) => m.NewLoteComponent),

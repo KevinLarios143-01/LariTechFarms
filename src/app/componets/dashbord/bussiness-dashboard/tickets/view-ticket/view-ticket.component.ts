@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,7 +22,8 @@ export class ViewTicketComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private ticketService: TicketService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -35,13 +36,15 @@ export class ViewTicketComponent implements OnInit {
   loadTicket() {
     this.isLoading = true;
     this.ticketService.getTicketById(this.idTicket).subscribe({
-      next: (response) => {
-        this.ticket = response.data;
+      next: (response: any) => {
+        this.ticket = response?.data?.data || response?.data || response;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.toastr.error('Error al cargar el ticket', 'Error');
         this.isLoading = false;
+        this.cdr.detectChanges();
         this.router.navigate(['/dashboard/business-dashboard/tickets/list']);
       }
     });

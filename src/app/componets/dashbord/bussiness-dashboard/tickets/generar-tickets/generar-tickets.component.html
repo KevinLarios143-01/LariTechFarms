@@ -1,384 +1,352 @@
-<div class="container-fluid">
-  @if (isLoading) {
-    <div class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
-    </div>
-  } @else {
-    <!-- Header -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-header">
-            <div class="card-title">Generar Tickets de Despacho</div>
-          </div>
-          <div class="card-body">
-            @if (venta) {
-              <div class="row">
-                <div class="col-md-6">
-                  <p class="mb-1"><strong>Venta:</strong> #{{ venta.id }}</p>
-                  <p class="mb-1"><strong>Cliente:</strong> {{ venta.cliente?.nombre }}</p>
-                  <p class="mb-1"><strong>Fecha:</strong> {{ venta.fecha | date:'dd/MM/yyyy' }}</p>
-                </div>
-                <div class="col-md-6 text-end">
-                  <p class="mb-1"><strong>Total:</strong> <span class="text-success fs-4">Q{{ venta.total | number:'1.2-2' }}</span></p>
-                  <p class="mb-1"><strong>Estado:</strong> <span class="badge bg-warning">{{ venta.estado }}</span></p>
-                </div>
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
+<app-hr-dashboard-page-header [title]="'Generar Tickets de Despacho'" [title2]="'Volver'" 
+  [class]="'btn btn-secondary'" [class1]="''" [path]="'/dashboard/business-dashboard/ventas/list'">
+</app-hr-dashboard-page-header>
 
-    <!-- Productos de la Venta -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-header">
-            <div class="card-title">Productos a Despachar</div>
-          </div>
-          <div class="card-body">
+@if (isLoading && !venta) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+} @else {
+
+<!-- Info de la Venta -->
+@if (venta) {
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información de la Venta</h3>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12">
             <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Producto</th>
-                    <th class="text-center">Vendido</th>
-                    <th class="text-center">Asignado</th>
-                    <th class="text-center">Pendiente</th>
-                    <th class="text-center">Estado</th>
-                  </tr>
-                </thead>
+              <table class="table mb-0 text-nowrap table-bordered border">
                 <tbody>
-                  @for (producto of productos; track producto.idProducto) {
-                    <tr>
-                      <td>
-                        <strong>{{ producto.nombre }}</strong>
-                        @if (producto.tamanio) {
-                          <small class="text-muted d-block">{{ producto.tamanio }}</small>
-                        }
-                      </td>
-                      <td class="text-center">{{ producto.cantidadVendida }}</td>
-                      <td class="text-center">
-                        <span [class]="producto.cantidadAsignada > 0 ? 'text-primary fw-bold' : ''">
-                          {{ producto.cantidadAsignada }}
-                        </span>
-                      </td>
-                      <td class="text-center">
-                        <span [class]="producto.cantidadPendiente > 0 ? 'text-danger fw-bold' : 'text-success'">
-                          {{ producto.cantidadPendiente }}
-                        </span>
-                      </td>
-                      <td class="text-center">
-                        @if (producto.cantidadPendiente === 0) {
-                          <span class="badge bg-success">Completo</span>
-                        } @else if (producto.cantidadAsignada > 0) {
-                          <span class="badge bg-warning">Parcial</span>
-                        } @else {
-                          <span class="badge bg-secondary">Pendiente</span>
-                        }
-                      </td>
-                    </tr>
-                  }
+                  <tr class="border-bottom">
+                    <td class="fw-semibold" style="width:30%">Venta</td>
+                    <td>#{{ venta.id }}</td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td class="fw-semibold">Cliente</td>
+                    <td>{{ venta.cliente?.nombre }}</td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td class="fw-semibold">Fecha</td>
+                    <td>{{ venta.fecha | date:'dd/MM/yyyy' }}</td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td class="fw-semibold">Total</td>
+                    <td><span class="text-success fw-semibold">Q{{ venta.total | number:'1.2-2' }}</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-semibold">Estado</td>
+                    <td><span class="badge bg-warning">{{ venta.estado }}</span></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
-            
-            <!-- Leyenda -->
-            <div class="mt-3">
-              <small class="text-muted">
-                <i class="ri-information-line"></i> 
-                <strong>Nota:</strong> Selecciona una galera en cada ticket para ver el stock disponible específico.
-              </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Productos a Despachar -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Productos a Despachar</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">Producto</th>
+                <th scope="col" class="text-center">Vendido</th>
+                <th scope="col" class="text-center">Asignado</th>
+                <th scope="col" class="text-center">Pendiente</th>
+                <th scope="col" class="text-center">Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (producto of productos; track producto.idProducto) {
+              <tr class="border-bottom">
+                <td>
+                  <div class="fw-semibold">{{ producto.nombre }}</div>
+                  @if (producto.tamanio) {
+                    <small class="text-muted">{{ producto.tamanio }}</small>
+                  }
+                </td>
+                <td class="text-center">{{ producto.cantidadVendida }}</td>
+                <td class="text-center">
+                  <span [class]="producto.cantidadAsignada > 0 ? 'text-primary fw-semibold' : ''">
+                    {{ producto.cantidadAsignada }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span [class]="producto.cantidadPendiente > 0 ? 'text-danger fw-semibold' : 'text-success'">
+                    {{ producto.cantidadPendiente }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  @if (producto.cantidadPendiente === 0) {
+                    <span class="badge bg-success">Completo</span>
+                  } @else if (producto.cantidadAsignada > 0) {
+                    <span class="badge bg-warning">Parcial</span>
+                  } @else {
+                    <span class="badge bg-secondary">Pendiente</span>
+                  }
+                </td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="5" class="text-center py-4">
+                  <div class="text-muted">
+                    <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                    <p>No hay productos</p>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <small class="text-muted mt-2 d-block">
+          <i class="ri-information-line"></i> Selecciona una galera en cada ticket para ver el stock disponible.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tickets -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header justify-content-between">
+        <h3 class="card-title">Tickets de Despacho</h3>
+        <button class="btn btn-primary btn-sm" (click)="agregarTicket()">
+          <i class="fe fe-plus me-1"></i>Agregar Ticket
+        </button>
+      </div>
+      <div class="card-body">
+        @if (tickets.length === 0) {
+          <div class="text-center py-4">
+            <div class="text-muted">
+              <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+              <p>Haga clic en "Agregar Ticket" para comenzar a asignar productos a lotes.</p>
             </div>
           </div>
-          <br>
-          <br>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tickets -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-header justify-content-between">
-            <div class="card-title">Tickets de Despacho</div>
-            <button class="btn btn-primary btn-sm" (click)="agregarTicket()">
-              <i class="ri-add-line"></i> Agregar Ticket
-            </button>
-          </div>
-          <div class="card-body">
-            @if (tickets.length === 0) {
-              <div class="alert alert-info">
-                <i class="ri-information-line"></i> 
-                Haga clic en "Agregar Ticket" para comenzar a asignar productos a lotes.
+        } @else {
+          @for (ticket of tickets; track $index) {
+          <div class="card custom-card mb-3 border">
+            <div class="card-header justify-content-between">
+              <div>
+                <h3 class="card-title mb-0">Ticket {{ $index + 1 }}</h3>
+                @if (ticket.nombreLote) {
+                  <small class="text-muted">{{ ticket.nombreLote }}</small>
+                }
               </div>
-            } @else {
-              @for (ticket of tickets; track $index) {
-                <div class="card mb-3 border">
-                  <div class="card-header bg-light">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h6 class="mb-0">Ticket {{ $index + 1 }}</h6>
-                        @if (ticket.nombreLote) {
-                          <small class="text-muted">{{ ticket.nombreLote }}</small>
-                        }
-                      </div>
-                      <button class="btn btn-sm btn-danger" 
-                              (click)="eliminarTicket($index)"
-                              title="Eliminar ticket completo y restaurar inventario">
-                        <i class="ri-delete-bin-line"></i> Eliminar
-                      </button>
-                    </div>
-                  </div>
-                  <div class="card-body">
-                    <!-- Seleccionar Lote -->
-                    <div class="row mb-3">
-                      <div class="col-md-6">
-                        <label class="form-label">Lote / Galera <span class="text-danger">*</span></label>
-                        <ng-select 
-                          [items]="lotes"
-                          bindLabel="galera"
-                          bindValue="id"
-                          [(ngModel)]="ticket.idLote"
-                          (change)="onLoteChange(ticket)"
-                          [disabled]="ticket.detalles.length > 0"
-                          placeholder="Seleccione un lote"
-                          [loading]="isLoadingLotes">
-                          <ng-template ng-option-tmp let-item="item">
-                            <div>
-                              <strong>{{ item.galera }}</strong>
-                              <small class="text-muted d-block">{{ item.tipo }}</small>
-                            </div>
-                          </ng-template>
-                        </ng-select>
-                        @if (ticket.idLote) {
-                          <small class="text-info">
-                            <i class="ri-information-line"></i> 
-                            Solo se mostrarán productos con stock en este lote
-                          </small>
-                        }
-                        @if (ticket.detalles.length > 0) {
-                          <small class="text-warning d-block mt-1">
-                            <i class="ri-lock-line"></i> 
-                            No se puede cambiar la galera porque ya hay productos asignados
-                          </small>
-                        }
-                      </div>
-                    </div>
-
-                    <!-- Productos del Ticket -->
-                    @if (ticket.detalles.length > 0) {
-                      <div class="table-responsive mb-3">
-                        <table class="table table-sm table-bordered">
-                          <thead>
-                            <tr>
-                              <th>Producto</th>
-                              <th class="text-center">Cantidad</th>
-                              <th class="text-center">Acciones</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @for (detalle of ticket.detalles; track $index) {
-                              <tr>
-                                <td>{{ getProductoNombre(detalle.idProducto) }}</td>
-                                <td class="text-center">{{ detalle.cantidad }}</td>
-                                <td class="text-center">
-                                  <button class="btn btn-sm btn-danger" 
-                                          (click)="eliminarDetalleTicket(ticket, $index)"
-                                          title="Eliminar producto y restaurar inventario">
-                                    <i class="ri-close-line"></i> Quitar
-                                  </button>
-                                </td>
-                              </tr>
-                            }
-                          </tbody>
-                        </table>
-                      </div>
-                    }
-
-                    <!-- Agregar Producto -->
-                    <div class="row">
-                      <div class="col-md-6">
-                        <label class="form-label">Producto</label>
-                        <ng-select 
-                          [items]="getProductosDisponiblesParaTicket($index)"
-                          bindLabel="nombre"
-                          bindValue="idProducto"
-                          [(ngModel)]="tempProductoId[$index]"
-                          [clearable]="true"
-                          [searchable]="true"
-                          [disabled]="!ticket.idLote"
-                          placeholder="Seleccione un producto"
-                          notFoundText="No hay productos disponibles en esta galera"
-                          appendTo="body">
-                        </ng-select>
-                        @if (!ticket.idLote) {
-                          <small class="text-warning">
-                            <i class="ri-alert-line"></i> 
-                            Primero seleccione una galera
-                          </small>
-                        }
-                        @if (tempProductoId[$index]) {
-                          @if (getProductoSeleccionado($index); as producto) {
-                            <div class="mt-2">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                  <i class="ri-shopping-cart-line"></i> Pendiente venta: 
-                                  <strong class="text-primary">{{ producto.cantidadPendiente }}</strong>
-                                </small>
-                                <small class="text-muted">
-                                  <i class="ri-store-line"></i> En galera: 
-                                  <strong [class]="(producto.stockEnLote || 0) >= producto.cantidadPendiente ? 'text-success' : 'text-warning'">
-                                    {{ producto.stockEnLote || 0 }}
-                                  </strong>
-                                </small>
-                              </div>
-                              @if ((producto.stockEnLote || 0) < producto.cantidadPendiente) {
-                                <div class="alert alert-warning mt-2 py-1 px-2 mb-0">
-                                  <small>
-                                    <i class="ri-alert-line"></i> 
-                                    Stock insuficiente en esta galera. Máximo: <strong>{{ producto.stockEnLote || 0 }}</strong>
-                                  </small>
-                                </div>
-                              }
-                            </div>
-                          }
-                        }
-                      </div>
-                      <div class="col-md-4">
-                        <label class="form-label">Cantidad</label>
-                        <input 
-                          type="number" 
-                          class="form-control" 
-                          [class.is-invalid]="tempCantidad[$index] > getCantidadDisponible($index)"
-                          min="1" 
-                          [max]="getCantidadDisponible($index)"
-                          placeholder="1" 
-                          [(ngModel)]="tempCantidad[$index]">
-                        @if (tempCantidad[$index] > getCantidadDisponible($index)) {
-                          <div class="invalid-feedback d-block">
-                            Máximo disponible: {{ getCantidadDisponible($index) }}
-                          </div>
-                        }
-                      </div>
-                      <div class="col-md-2">
-                        <label class="form-label">&nbsp;</label>
-                        <button class="btn btn-success w-100" 
-                                (click)="agregarProductoATicket($index)"
-                                [disabled]="!tempProductoId[$index] || !tempCantidad[$index] || tempCantidad[$index] <= 0 || tempCantidad[$index] > getCantidadDisponible($index)">
-                          <i class="ri-add-line"></i> Agregar
-                        </button>
-                      </div>
-                    </div>
-                    <br>
-                  </div>
-                </div>
-              }
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-    <br>
-
-    <!-- Resumen -->
-    @if (tickets.length > 0) {
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card custom-card border-primary">
-            <div class="card-header bg-primary-transparent">
-              <div class="card-title text-primary">
-                <i class="ri-file-list-3-line"></i> Resumen de Asignación
-              </div>
+              <button class="btn btn-danger btn-sm" (click)="eliminarTicket($index)">
+                <i class="fe fe-trash-2 me-1"></i>Eliminar
+              </button>
             </div>
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-3">
-                  <div class="text-center">
-                    <h4 class="mb-1 text-primary">{{ getResumenTickets().totalTickets }}</h4>
-                    <small class="text-muted">Tickets Creados</small>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="text-center">
-                    <h4 class="mb-1 text-success">{{ getResumenTickets().totalProductosAsignados }}</h4>
-                    <small class="text-muted">Productos Asignados</small>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="text-center">
-                    <h4 class="mb-1 text-info">{{ getResumenTickets().totalProductosVendidos }}</h4>
-                    <small class="text-muted">Total Vendidos</small>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <div class="text-center">
-                    <h4 class="mb-1" [class]="getResumenTickets().productosPendientes > 0 ? 'text-danger' : 'text-success'">
-                      {{ getResumenTickets().productosPendientes }}
-                    </h4>
-                    <small class="text-muted">Productos Pendientes</small>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Progreso -->
-              <div class="mt-3">
-                <div class="d-flex justify-content-between mb-1">
-                  <small class="text-muted">Progreso de Asignación</small>
-                  <small class="text-muted">
-                    {{ getResumenTickets().totalProductosAsignados }} / {{ getResumenTickets().totalProductosVendidos }}
-                  </small>
-                </div>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar" 
-                       [class]="getResumenTickets().productosPendientes === 0 ? 'bg-success' : 'bg-warning'"
-                       role="progressbar" 
-                       [style.width.%]="(getResumenTickets().totalProductosAsignados / getResumenTickets().totalProductosVendidos) * 100">
-                  </div>
+              <!-- Seleccionar Lote -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="form-label">Lote / Galera <span class="text-danger">*</span></label>
+                  <ng-select 
+                    [items]="lotes" bindLabel="galera" bindValue="id"
+                    [(ngModel)]="ticket.idLote" (change)="onLoteChange(ticket)"
+                    [disabled]="ticket.detalles.length > 0"
+                    placeholder="Seleccione un lote" [loading]="isLoadingLotes">
+                    <ng-template ng-option-tmp let-item="item">
+                      <div>
+                        <span class="fw-semibold">{{ item.galera }}</span>
+                        <small class="text-muted d-block">{{ item.tipo }}</small>
+                      </div>
+                    </ng-template>
+                  </ng-select>
+                  @if (ticket.idLote) {
+                    <small class="text-info mt-1 d-block">
+                      <i class="ri-information-line"></i> Solo se mostrarán productos con stock en este lote
+                    </small>
+                  }
+                  @if (ticket.detalles.length > 0) {
+                    <small class="text-warning d-block mt-1">
+                      <i class="ri-lock-line"></i> No se puede cambiar la galera con productos asignados
+                    </small>
+                  }
                 </div>
               </div>
-              
-              <!-- Alertas -->
-              @if (getResumenTickets().productosPendientes > 0) {
-                <div class="alert alert-warning mt-3 mb-0">
-                  <i class="ri-alert-line"></i> 
-                  Aún hay <strong>{{ getResumenTickets().productosPendientes }}</strong> tipo(s) de producto(s) sin asignar completamente.
-                </div>
-              } @else if (getResumenTickets().totalProductosAsignados > 0) {
-                <div class="alert alert-success mt-3 mb-0">
-                  <i class="ri-checkbox-circle-line"></i> 
-                  Todos los productos han sido asignados correctamente.
-                </div>
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    }
 
-    <!-- Botones de Acción -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-end gap-2">
-              <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isLoading">
-                <i class="ri-close-line"></i> Cancelar
-              </button>
-              <button class="btn btn-primary" (click)="generarTickets()" [disabled]="isLoading || tickets.length === 0">
-                @if (isLoading) {
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                }
-                <i class="ri-ticket-line"></i> Generar Tickets
-              </button>
+              <!-- Productos del Ticket -->
+              @if (ticket.detalles.length > 0) {
+              <div class="table-responsive mb-3">
+                <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+                  <thead>
+                    <tr class="border-bottom">
+                      <th scope="col">Producto</th>
+                      <th scope="col" class="text-center">Cantidad</th>
+                      <th scope="col" class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (detalle of ticket.detalles; track $index) {
+                    <tr class="border-bottom">
+                      <td>{{ getProductoNombre(detalle.idProducto) }}</td>
+                      <td class="text-center">{{ detalle.cantidad }}</td>
+                      <td class="text-center">
+                        <a class="btn btn-danger btn-icon btn-sm" (click)="eliminarDetalleTicket(ticket, $index)"
+                          data-bs-toggle="tooltip" title="Quitar producto">
+                          <i class="fe fe-x"></i>
+                        </a>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              }
+
+              <!-- Agregar Producto -->
+              <div class="row g-2 align-items-end">
+                <div class="col-md-5">
+                  <label class="form-label">Producto</label>
+                  <ng-select 
+                    [items]="getProductosDisponiblesParaTicket($index)"
+                    bindLabel="nombre" bindValue="idProducto"
+                    [(ngModel)]="tempProductoId[$index]" [clearable]="true" [searchable]="true"
+                    [disabled]="!ticket.idLote"
+                    placeholder="Seleccione un producto"
+                    notFoundText="No hay productos disponibles en esta galera"
+                    appendTo="body">
+                  </ng-select>
+                  @if (!ticket.idLote) {
+                    <small class="text-warning"><i class="ri-alert-line"></i> Primero seleccione una galera</small>
+                  }
+                  @if (tempProductoId[$index]) {
+                    @if (getProductoSeleccionado($index); as producto) {
+                    <div class="mt-1 d-flex justify-content-between">
+                      <small class="text-muted">Pendiente: <span class="fw-semibold text-primary">{{ producto.cantidadPendiente }}</span></small>
+                      <small class="text-muted">En galera: 
+                        <span [class]="(producto.stockEnLote || 0) >= producto.cantidadPendiente ? 'fw-semibold text-success' : 'fw-semibold text-warning'">
+                          {{ producto.stockEnLote || 0 }}
+                        </span>
+                      </small>
+                    </div>
+                    @if ((producto.stockEnLote || 0) < producto.cantidadPendiente) {
+                      <small class="text-warning"><i class="ri-alert-line"></i> Stock insuficiente. Máximo: {{ producto.stockEnLote || 0 }}</small>
+                    }
+                    }
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Cantidad</label>
+                  <input type="number" class="form-control" min="1" [max]="getCantidadDisponible($index)"
+                    [class.is-invalid]="tempCantidad[$index] > getCantidadDisponible($index)"
+                    placeholder="1" [(ngModel)]="tempCantidad[$index]">
+                  @if (tempCantidad[$index] > getCantidadDisponible($index)) {
+                    <div class="invalid-feedback d-block">Máximo: {{ getCantidadDisponible($index) }}</div>
+                  }
+                </div>
+                <div class="col-md-3">
+                  <button class="btn btn-success w-100" (click)="agregarProductoATicket($index)"
+                    [disabled]="!tempProductoId[$index] || !tempCantidad[$index] || tempCantidad[$index] <= 0 || tempCantidad[$index] > getCantidadDisponible($index)">
+                    <i class="fe fe-plus me-1"></i>Agregar
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+          }
+        }
       </div>
     </div>
-  }
+  </div>
 </div>
+
+<!-- Resumen -->
+@if (tickets.length > 0) {
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Resumen de Asignación</h3>
+      </div>
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-md-3">
+            <h4 class="mb-1 text-primary">{{ getResumenTickets().totalTickets }}</h4>
+            <small class="text-muted">Tickets Creados</small>
+          </div>
+          <div class="col-md-3">
+            <h4 class="mb-1 text-success">{{ getResumenTickets().totalProductosAsignados }}</h4>
+            <small class="text-muted">Productos Asignados</small>
+          </div>
+          <div class="col-md-3">
+            <h4 class="mb-1 text-info">{{ getResumenTickets().totalProductosVendidos }}</h4>
+            <small class="text-muted">Total Vendidos</small>
+          </div>
+          <div class="col-md-3">
+            <h4 class="mb-1" [class]="getResumenTickets().productosPendientes > 0 ? 'text-danger' : 'text-success'">
+              {{ getResumenTickets().productosPendientes }}
+            </h4>
+            <small class="text-muted">Productos Pendientes</small>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="d-flex justify-content-between mb-1">
+            <small class="text-muted">Progreso de Asignación</small>
+            <small class="text-muted">{{ getResumenTickets().totalProductosAsignados }} / {{ getResumenTickets().totalProductosVendidos }}</small>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar" 
+              [class]="getResumenTickets().productosPendientes === 0 ? 'bg-success' : 'bg-warning'"
+              role="progressbar" 
+              [style.width.%]="(getResumenTickets().totalProductosAsignados / getResumenTickets().totalProductosVendidos) * 100">
+            </div>
+          </div>
+        </div>
+        @if (getResumenTickets().productosPendientes > 0) {
+          <div class="alert alert-warning mt-3 mb-0">
+            <i class="ri-alert-line me-1"></i>Aún hay {{ getResumenTickets().productosPendientes }} tipo(s) de producto(s) sin asignar.
+          </div>
+        } @else if (getResumenTickets().totalProductosAsignados > 0) {
+          <div class="alert alert-success mt-3 mb-0">
+            <i class="ri-checkbox-circle-line me-1"></i>Todos los productos han sido asignados correctamente.
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Botones -->
+<div class="row">
+  <div class="col-xl-12">
+    <div class="d-flex justify-content-end gap-2 mb-3">
+      <button class="btn btn-secondary" (click)="cancelar()" [disabled]="isLoading">
+        Cancelar
+      </button>
+      <button class="btn btn-primary" (click)="generarTickets()" [disabled]="isLoading || tickets.length === 0">
+        @if (isLoading) {
+          <span class="spinner-border spinner-border-sm me-2"></span>
+        }
+        Generar Tickets
+      </button>
+    </div>
+  </div>
+</div>
+
+}

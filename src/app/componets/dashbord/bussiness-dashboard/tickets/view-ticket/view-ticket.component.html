@@ -1,155 +1,152 @@
-<div class="container-fluid">
-  @if (isLoading) {
-    <div class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Cargando...</span>
-      </div>
-    </div>
-  } @else if (ticket) {
-    <!-- Header -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-header justify-content-between">
-            <div class="card-title">Detalle del Ticket #{{ ticket.id }}</div>
-            <button class="btn btn-secondary btn-sm" (click)="volver()">
-              <i class="ri-arrow-left-line"></i> Volver
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+<app-hr-dashboard-page-header [title]="'Detalle del Ticket #' + idTicket" [title2]="'Volver'" 
+  [class]="'btn btn-secondary'" [class1]="''" [path]="'/dashboard/business-dashboard/tickets/list'">
+</app-hr-dashboard-page-header>
 
-    <!-- Información General -->
-    <div class="row">
-      <div class="col-xl-6">
-        <div class="card custom-card">
-          <div class="card-header">
-            <div class="card-title">Información General</div>
-          </div>
-          <div class="card-body">
-            <table class="table table-borderless">
-              <tbody>
-                <tr>
-                  <td class="fw-semibold">Fecha:</td>
-                  <td>{{ ticket.fecha | date:'dd/MM/yyyy' }}</td>
-                </tr>
-                <tr>
-                  <td class="fw-semibold">Estado:</td>
-                  <td>
-                    <span [class]="'badge ' + getEstadoBadgeClass(ticket.estado)">
-                      {{ ticket.estado }}
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td class="fw-semibold">Lote / Galera:</td>
-                  <td>
-                    @if (ticket.lote) {
-                      <span class="badge bg-light text-dark">{{ ticket.lote.galera }}</span>
-                      <small class="text-muted d-block">{{ ticket.lote.tipo }}</small>
-                    } @else {
-                      <span class="text-muted">-</span>
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td class="fw-semibold">Cantidad Total:</td>
-                  <td><strong>{{ getTotalCantidad() }}</strong></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-xl-6">
-        <div class="card custom-card">
-          <div class="card-header">
-            <div class="card-title">Información de Venta</div>
-          </div>
-          <div class="card-body">
-            @if (ticket.venta) {
-              <table class="table table-borderless">
-                <tbody>
-                  <tr>
-                    <td class="fw-semibold">Venta #:</td>
-                    <td>{{ ticket.idVenta }}</td>
-                  </tr>
-                  <tr>
-                    <td class="fw-semibold">Cliente:</td>
-                    <td>{{ ticket.venta.cliente.nombre }}</td>
-                  </tr>
-                  <tr>
-                    <td class="fw-semibold">Fecha Venta:</td>
-                    <td>{{ ticket.venta.fecha | date:'dd/MM/yyyy' }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            } @else {
-              <p class="text-muted">No hay información de venta asociada</p>
-            }
-          </div>
-        </div>
-      </div>
+@if (isLoading) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
     </div>
-
-    <!-- Productos -->
-    <div class="row">
-      <div class="col-xl-12">
-        <div class="card custom-card">
-          <div class="card-header">
-            <div class="card-title">Productos del Ticket</div>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Producto</th>
-                    <th class="text-center">Cantidad</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @if (ticket.detalles && ticket.detalles.length > 0) {
-                    @for (detalle of ticket.detalles; track detalle.id) {
-                      <tr>
-                        <td>
-                          <strong>{{ detalle.producto?.nombre }}</strong>
-                          @if (detalle.producto?.tamanio) {
-                            <small class="text-muted d-block">{{ detalle.producto?.tamanio }}</small>
-                          }
-                        </td>
-                        <td class="text-center">{{ detalle.cantidad }}</td>
-                      </tr>
-                    }
-                  } @else {
-                    <tr>
-                      <td colspan="2" class="text-center text-muted">No hay productos en este ticket</td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Observaciones -->
-    @if (ticket.observaciones) {
-      <div class="row">
-        <div class="col-xl-12">
-          <div class="card custom-card">
-            <div class="card-header">
-              <div class="card-title">Observaciones</div>
-            </div>
-            <div class="card-body">
-              <p class="mb-0">{{ ticket.observaciones }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    }
-  }
+  </div>
 </div>
+} @else if (ticket) {
+
+<!-- Información General + Venta -->
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información General</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <tbody>
+              <tr class="border-bottom">
+                <td class="fw-semibold" style="width:40%">Fecha</td>
+                <td>{{ ticket.fecha | date:'dd/MM/yyyy' }}</td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="fw-semibold">Estado</td>
+                <td>
+                  <span [class]="'badge ' + getEstadoBadgeClass(ticket.estado)">{{ ticket.estado }}</span>
+                </td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="fw-semibold">Lote / Galera</td>
+                <td>
+                  @if (ticket.lote) {
+                    <span class="badge bg-light text-dark">{{ ticket.lote.galera }}</span>
+                    <small class="text-muted ms-1">{{ ticket.lote.tipo }}</small>
+                  } @else {
+                    <span class="text-muted">-</span>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Cantidad Total</td>
+                <td><strong>{{ getTotalCantidad() }}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Información de Venta</h3>
+      </div>
+      <div class="card-body">
+        @if (ticket.venta) {
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap table-bordered border">
+            <tbody>
+              <tr class="border-bottom">
+                <td class="fw-semibold" style="width:40%">Venta #</td>
+                <td>{{ ticket.idVenta }}</td>
+              </tr>
+              <tr class="border-bottom">
+                <td class="fw-semibold">Cliente</td>
+                <td>{{ ticket.venta.cliente.nombre }}</td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Fecha Venta</td>
+                <td>{{ ticket.venta.fecha | date:'dd/MM/yyyy' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        } @else {
+          <p class="text-muted mb-0">No hay información de venta asociada</p>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Productos -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Productos del Ticket</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table mb-0 text-nowrap text-md-nowrap table-bordered border">
+            <thead>
+              <tr class="border-bottom">
+                <th scope="col">Producto</th>
+                <th scope="col" class="text-center">Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (detalle of ticket.detalles; track detalle.id) {
+              <tr class="border-bottom">
+                <td>
+                  <div class="fw-semibold">{{ detalle.producto?.nombre }}</div>
+                  @if (detalle.producto?.tamanio) {
+                    <small class="text-muted">{{ detalle.producto?.tamanio }}</small>
+                  }
+                </td>
+                <td class="text-center">{{ detalle.cantidad }}</td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="2" class="text-center py-4">
+                  <div class="text-muted">
+                    <i class="fe fe-inbox fs-24 mb-2 d-block"></i>
+                    <p>No hay productos en este ticket</p>
+                  </div>
+                </td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Observaciones -->
+@if (ticket.observaciones) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header">
+        <h3 class="card-title">Observaciones</h3>
+      </div>
+      <div class="card-body">
+        <p class="mb-0">{{ ticket.observaciones }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+}

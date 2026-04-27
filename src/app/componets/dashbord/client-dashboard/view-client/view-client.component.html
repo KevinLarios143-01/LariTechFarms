@@ -1,275 +1,225 @@
-<!--Page header-->
-<div class="page-header d-xl-flex d-block">
-    <div class="page-leftheader">
-        <h4 class="page-title">Ver Cliente</h4>
-    </div>
-    <div class="page-rightheader ms-md-auto">
-        <div class="d-flex align-items-end flex-wrap my-auto end-content breadcrumb-end">
-            <div class="btn-list d-flex gap-2">
-                @if (cliente?.correo) {
-                    <button class="btn btn-light3" data-bs-toggle="tooltip" placement="top" ngbTooltip="E-mail"> <i class="fe fe-mail"></i> </button>
-                }
-                @if (cliente?.telefono) {
-                    <button class="btn btn-light3" placement="top" data-bs-toggle="tooltip" ngbTooltip="Contact"> <i class="fe fe-phone-call"></i> </button>
-                }
-            </div>
-        </div>
-    </div>
-</div>
-<!--End Page header-->
+<app-hr-dashboard-page-header [title]="'Ver Cliente'" [title2]="'Volver'" 
+  [class]="'btn btn-secondary'" [class1]="''" [path]="'/dashboard/client-dashboard/client-list'">
+</app-hr-dashboard-page-header>
 
 <!-- Loading State -->
 @if (loading) {
-    <div class="text-center p-4">
-        <div class="spinner-border" role="status">
-            <span class="visually-hidden">Cargando...</span>
-        </div>
-    </div>
+<div class="text-center p-4">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+</div>
 }
 
 <!-- Error State -->
 @if (error) {
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
-    </div>
+<div class="alert alert-danger" role="alert">{{ error }}</div>
 }
 
 <!-- Client Data -->
 @if (cliente && !loading) {
 <div class="row">
-    <div class="col-xxl-4 col-md-12 col-lg-12">
-        <div class="card user-pro-list overflow-hidden">
-            <div class="card-body">
-                <div class="text-center">
-                    <div class="widget-user-image mx-auto text-center">
-                        <div class="avatar avatar-xxl me-2 avatar-rounded">
-                            <img src="./assets/images/users/3.jpg" alt="img">
-                        </div>
-                    </div>
-                    <div class="pro-user mt-3">
-                        <h5 class="pro-user-username text-dark mb-1 fs-16">{{ cliente.nombre }}</h5>
-                        <h6 class="pro-user-desc text-muted fs-12">Cliente</h6>
-                    </div>
-                </div>
-                <h5 class="mb-2 mt-4 fw-semibold">Detalles Básicos</h5>
-                <div class="table-responsive">
-                    <table class="table text-nowrap table-borderless">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <span class="w-50">Client ID</span>
-                                </td>
-                                <td>:</td>
-                                <td>
-                                    <span>#{{ cliente.id }}</span>
-                                </td>
-                            </tr>
-                            @if (cliente.correo) {
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Email ID</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span>{{ cliente.correo }}</span>
-                                    </td>
-                                </tr>
-                            }
-                            @if (cliente.telefono) {
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Contact No</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span>{{ cliente.telefono }}</span>
-                                    </td>
-                                </tr>
-                            }
-                            @if (cliente.direccion) {
-                                <tr>
-                                    <td>
-                                        <span class="w-50">Address</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span>{{ cliente.direccion }}</span>
-                                    </td>
-                                </tr>
-                            }
-                            <tr>
-                                <td>
-                                    <span class="w-50">Status</span>
-                                </td>
-                                <td>:</td>
-                                <td>
-                                    <span class="badge" [ngClass]="cliente.estado ? 'bg-success-transparent' : 'bg-danger-transparent'">
-                                        {{ cliente.estado ? 'Active' : 'Inactive' }}
-                                    </span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <h5 class="mb-2 mt-4 fw-semibold">Información Adicional</h5>
-                <div class="table-responsive">
-                    <table class="table text-nowrap  table-borderless mb-0">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <span class="w-50">Name</span>
-                                </td>
-                                <td>:</td>
-                                <td>
-                                    <span>{{ cliente.nombre }}</span>
-                                </td>
-                            </tr>
-                            @if (cliente.nit) {
-                                <tr>
-                                    <td>
-                                        <span class="w-50">NIT</span>
-                                    </td>
-                                    <td>:</td>
-                                    <td>
-                                        <span>{{ cliente.nit }}</span>
-                                    </td>
-                                </tr>
-                            }
-                            <tr>
-                                <td>
-                                    <span class="w-50">Fecha Registro</span>
-                                </td>
-                                <td>:</td>
-                                <td>
-                                    <span>{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+  <div class="col-xxl-4 col-md-12 col-lg-12">
+    <div class="card user-pro-list overflow-hidden">
+      <div class="card-body">
+        <div class="text-center">
+          <div class="widget-user-image mx-auto text-center">
+            <div class="avatar avatar-xxl me-2 avatar-rounded">
+              <img src="./assets/images/users/3.jpg" alt="img">
             </div>
+          </div>
+          <div class="pro-user mt-3">
+            <h5 class="pro-user-username text-dark mb-1 fs-16">{{ cliente.nombre }}</h5>
+            <h6 class="pro-user-desc text-muted fs-12">Cliente</h6>
+          </div>
         </div>
+        <h5 class="mb-2 mt-4 fw-semibold">Detalles Básicos</h5>
+        <div class="table-responsive">
+          <table class="table text-nowrap table-borderless">
+            <tbody>
+              <tr>
+                <td><span class="w-50">Client ID</span></td>
+                <td>:</td>
+                <td><span>#{{ cliente.id }}</span></td>
+              </tr>
+              @if (cliente.correo) {
+              <tr>
+                <td><span class="w-50">Email</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.correo }}</span></td>
+              </tr>
+              }
+              @if (cliente.telefono) {
+              <tr>
+                <td><span class="w-50">Teléfono</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.telefono }}</span></td>
+              </tr>
+              }
+              @if (cliente.direccion) {
+              <tr>
+                <td><span class="w-50">Dirección</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.direccion }}</span></td>
+              </tr>
+              }
+              <tr>
+                <td><span class="w-50">Estado</span></td>
+                <td>:</td>
+                <td>
+                  <span class="badge" [ngClass]="cliente.estado ? 'bg-success-transparent' : 'bg-danger-transparent'">
+                    {{ cliente.estado ? 'Activo' : 'Inactivo' }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h5 class="mb-2 mt-4 fw-semibold">Información Adicional</h5>
+        <div class="table-responsive">
+          <table class="table text-nowrap table-borderless mb-0">
+            <tbody>
+              <tr>
+                <td><span class="w-50">Nombre</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.nombre }}</span></td>
+              </tr>
+              @if (cliente.nit) {
+              <tr>
+                <td><span class="w-50">NIT</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.nit }}</span></td>
+              </tr>
+              }
+              <tr>
+                <td><span class="w-50">Fecha Registro</span></td>
+                <td>:</td>
+                <td><span>{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="col-xxl-8 col-md-12 col-lg-12 mb-4">
-        <div class="tab-menu-heading hremp-tabs p-0 border-0">
-            <div class="tabs-menu1">
-                <!-- Tabs -->
-                <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav panel-tabs">
-                    <li class="ms-md-4 me-0" [ngbNavItem]="1">
-                      <a  ngbNavLink>Overview</a>
-                      <ng-template ngbNavContent>
-                        <div class="">
-                            <h5 class="mb-4 fw-semibold">Información del Cliente</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Nombre:</label>
-                                        <p class="form-control-static">{{ cliente.nombre || 'No disponible' }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">ID Cliente:</label>
-                                        <p class="form-control-static">#{{ cliente.id }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Email:</label>
-                                        <p class="form-control-static">{{ cliente.correo || 'No disponible' }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Teléfono:</label>
-                                        <p class="form-control-static">{{ cliente.telefono || 'No disponible' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Dirección:</label>
-                                        <p class="form-control-static">{{ cliente.direccion || 'No disponible' }}</p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">NIT:</label>
-                                        <p class="form-control-static">{{ cliente.nit || 'No disponible' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Estado:</label>
-                                        <p class="form-control-static">
-                                            <span class="badge" [ngClass]="cliente.estado ? 'bg-success' : 'bg-danger'">
-                                                {{ cliente.estado ? 'Activo' : 'Inactivo' }}
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label">Fecha de Registro:</label>
-                                        <p class="form-control-static">{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="2" class="me-0">
-                      <a ngbNavLink>Ventas</a>
-                      <ng-template ngbNavContent>
-                        <div class="p-0 border-0">
-                            <div class="text-center p-4">
-                                <p class="text-muted">Las ventas del cliente se mostrarán aquí cuando estén disponibles.</p>
-                            </div>
-                        </div>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="3" class="me-0">
-                      <a ngbNavLink>Historial</a>
-                      <ng-template ngbNavContent>
-                        <div class="p-0 border-0">
-                            <div class="text-center p-4">
-                                <p class="text-muted">El historial de transacciones del cliente se mostrará aquí.</p>
-                            </div>
-                        </div>
-                      </ng-template>
-                    </li>
-                    <li [ngbNavItem]="4" class="me-0">
-                      <a ngbNavLink>Notas</a>
-                      <ng-template ngbNavContent>
-                        <div class="card-body">
-                            <div class="note-content">
-                                <div class="form-group">
-                                    <label class="form-label">Título</label>
-                                    <input class="form-control" placeholder="Ingrese título">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Nota:</label>
-                                    <angular-editor class="editor" [placeholder]="'Ingrese texto aquí...'" [config]="config"></angular-editor>
-                                </div>
-                                <div>
-                                    <a href="javascript:;" class="btn btn-primary">Guardar</a>
-                                </div>
-                            </div>
-                        </div>
-                      </ng-template>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
-            <div [ngbNavOutlet]="nav"></div>
-        </div>
+  </div>
+  <div class="col-xxl-8 col-md-12 col-lg-12 mb-4">
+    <div class="tab-menu-heading hremp-tabs p-0 border-0">
+      <div class="tabs-menu1">
+        <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav panel-tabs">
+          <li class="ms-md-4 me-0" [ngbNavItem]="1">
+            <a ngbNavLink>Información</a>
+            <ng-template ngbNavContent>
+              <div>
+                <h5 class="mb-4 fw-semibold">Información del Cliente</h5>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Nombre:</label>
+                      <p class="form-control-static">{{ cliente.nombre || 'No disponible' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">ID Cliente:</label>
+                      <p class="form-control-static">#{{ cliente.id }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Email:</label>
+                      <p class="form-control-static">{{ cliente.correo || 'No disponible' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Teléfono:</label>
+                      <p class="form-control-static">{{ cliente.telefono || 'No disponible' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Dirección:</label>
+                      <p class="form-control-static">{{ cliente.direccion || 'No disponible' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">NIT:</label>
+                      <p class="form-control-static">{{ cliente.nit || 'No disponible' }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Estado:</label>
+                      <p class="form-control-static">
+                        <span class="badge" [ngClass]="cliente.estado ? 'bg-success' : 'bg-danger'">
+                          {{ cliente.estado ? 'Activo' : 'Inactivo' }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="form-label">Fecha de Registro:</label>
+                      <p class="form-control-static">{{ cliente.fechaRegistro | date:'dd/MM/yyyy' }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2" class="me-0">
+            <a ngbNavLink>Ventas</a>
+            <ng-template ngbNavContent>
+              <div class="p-0 border-0">
+                <div class="text-center p-4">
+                  <p class="text-muted">Las ventas del cliente se mostrarán aquí cuando estén disponibles.</p>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="3" class="me-0">
+            <a ngbNavLink>Historial</a>
+            <ng-template ngbNavContent>
+              <div class="p-0 border-0">
+                <div class="text-center p-4">
+                  <p class="text-muted">El historial de transacciones del cliente se mostrará aquí.</p>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="4" class="me-0">
+            <a ngbNavLink>Notas</a>
+            <ng-template ngbNavContent>
+              <div class="card-body">
+                <div class="note-content">
+                  <div class="form-group">
+                    <label class="form-label">Título</label>
+                    <input class="form-control" placeholder="Ingrese título">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Nota:</label>
+                    <angular-editor [(ngModel)]="notaContenido" [config]="editorConfig"></angular-editor>
+                  </div>
+                  <div>
+                    <a href="javascript:;" class="btn btn-primary">Guardar</a>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+        </ul>
+      </div>
     </div>
+    <div class="panel-body tabs-menu-body hremp-tabs1 p-0">
+      <div [ngbNavOutlet]="nav"></div>
+    </div>
+  </div>
 </div>
 }
-<!-- End Row-->

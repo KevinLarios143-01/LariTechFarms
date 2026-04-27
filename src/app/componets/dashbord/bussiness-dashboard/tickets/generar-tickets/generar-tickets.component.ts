@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -60,7 +60,8 @@ export class GenerarTicketsComponent implements OnInit {
     private ticketService: TicketService,
     private loteService: LoteService,
     private ingresoInventarioService: IngresoInventarioService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -78,10 +79,12 @@ export class GenerarTicketsComponent implements OnInit {
         this.venta = response.data;
         this.initProductos();
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.toastr.error('Error al cargar la venta', 'Error');
         this.isLoading = false;
+        this.cdr.detectChanges();
         this.router.navigate(['/dashboard/business-dashboard/ventas/list']);
       }
     });
@@ -93,10 +96,12 @@ export class GenerarTicketsComponent implements OnInit {
       next: (response) => {
         this.lotes = response.data.data;
         this.isLoadingLotes = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.toastr.error('Error al cargar lotes', 'Error');
         this.isLoadingLotes = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -187,34 +192,23 @@ export class GenerarTicketsComponent implements OnInit {
     this.ingresoInventarioService.getStockPorLote(ticket.idLote).subscribe({
       next: (response) => {
         console.log('📦 Stock del lote para ticket:', response.data);
-        console.log('📋 Productos base:', this.productos);
         
-        // Crear una copia de productos con el stock específico de este lote
         ticket.productosDisponibles = this.productos
           .map(producto => {
             const stockLote = response.data.find(s => s.idProducto === producto.idProducto);
             const stockEnLote = stockLote?.cantidad || 0;
-            
-            console.log(`Producto ${producto.nombre}: pendiente=${producto.cantidadPendiente}, stockEnLote=${stockEnLote}`);
-            
-            return {
-              ...producto,
-              stockEnLote: stockEnLote
-            };
+            return { ...producto, stockEnLote };
           })
-          .filter(p => {
-            const incluir = p.cantidadPendiente > 0 && (p.stockEnLote || 0) > 0;
-            console.log(`${p.nombre}: incluir=${incluir} (pendiente=${p.cantidadPendiente}, stock=${p.stockEnLote})`);
-            return incluir;
-          });
+          .filter(p => p.cantidadPendiente > 0 && (p.stockEnLote || 0) > 0);
         
-        console.log('✅ Productos disponibles para este ticket:', ticket.productosDisponibles);
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar stock del lote:', error);
         this.toastr.error('Error al cargar stock del lote', 'Error');
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }

@@ -214,16 +214,15 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '3', selected: false, active: false, children: [
+          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '2', selected: false, active: false, children: [
             { path: '/dashboard/business-dashboard/ventas/list', title: 'Ventas', type: 'link', selected: false },
             { path: '/dashboard/business-dashboard/tickets/list', title: 'Tickets', type: 'link', selected: false },
-            { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas (Legacy)', type: 'link', selected: false },
           ]
         },
         {
           title: 'Lotes Dashboard', type: 'sub', badgeType: 'warning', badgeValue: '3', selected: false, active: false, children: [
             { path: '/dashboard/business-dashboard/lotes/estadisticas', title: 'Dashboard', type: 'link', selected: false },
-            { path: '/dashboard/business-dashboard/lotes', title: 'Lista de Lotes', type: 'link', selected: false },
+            { path: '/dashboard/business-dashboard/lotes/list', title: 'Lista de Lotes', type: 'link', selected: false },
             { path: '/dashboard/business-dashboard/lotes/new-lote', title: 'Nuevo Lote', type: 'link', selected: false },
           ]
         },

@@ -50,7 +50,7 @@ export class ViewLoteComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dashboard/business-dashboard/lotes']);
+    this.router.navigate(['/dashboard/business-dashboard/lotes/list']);
   }
 
   editLote(): void {
