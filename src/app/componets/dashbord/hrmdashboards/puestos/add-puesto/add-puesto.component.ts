@@ -4,11 +4,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { ToastrService } from 'ngx-toastr';
 import { PuestoService } from '../puesto-list/puesto.service';
+import { AngularEditorConfig, AngularEditorModule } from '@wfpena/angular-wysiwyg';
 
 @Component({
   selector: 'app-add-puesto',
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule],
+  imports: [SharedModule, ReactiveFormsModule, AngularEditorModule],
   templateUrl: './add-puesto.component.html',
   styleUrls: ['./add-puesto.component.scss']
 })
@@ -17,6 +18,20 @@ export class AddPuestoComponent implements OnInit {
   isLoading = false;
   isEditMode = false;
   puestoId?: number;
+
+  editorConfig: AngularEditorConfig = {
+    editable: true,
+    spellcheck: true,
+    height: '15rem',
+    minHeight: '5rem',
+    placeholder: 'Descripción del puesto, responsabilidades, requisitos...',
+    translate: 'no',
+    defaultParagraphSeparator: 'p',
+    defaultFontName: 'Arial',
+    toolbarHiddenButtons: [
+      ['insertImage', 'insertVideo', 'insertHorizontalRule', 'toggleEditorMode']
+    ]
+  };
 
   constructor(
     private readonly fb: FormBuilder,

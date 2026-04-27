@@ -44,8 +44,7 @@
 
             <div class="col-xl-12">
               <label class="form-label">Descripción</label>
-              <textarea class="form-control" formControlName="descripcion" rows="4" 
-                        placeholder="Descripción del puesto, responsabilidades, etc."></textarea>
+              <angular-editor formControlName="descripcion" [config]="editorConfig"></angular-editor>
             </div>
           </div>
 

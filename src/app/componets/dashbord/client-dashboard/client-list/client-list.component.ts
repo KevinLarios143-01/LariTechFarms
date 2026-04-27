@@ -1,47 +1,41 @@
 import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NgbDateStruct, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared/common/sharedmodule';
 import { NgSelectModule } from '@ng-select/ng-select';
-import flatpickr from 'flatpickr';
-import { FlatpickrDefaults, FlatpickrModule } from 'angularx-flatpickr';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-
+import { ClienteService } from '../../../../shared/services/cliente.service';
 import { Cliente, UpdateClienteRequest } from '../../../../shared/interfaces/cliente';
-import { ClienteService } from '../cliente.service';
 
 @Component({
   selector: 'app-client-list',
   standalone: true,
-  imports: [SharedModule, NgSelectModule, FlatpickrModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
+  imports: [SharedModule, NgSelectModule, RouterModule, ReactiveFormsModule, FormsModule, NgbModule],
   templateUrl: './client-list.component.html',
-  styleUrls: ['./client-list.component.scss'],
-  providers: [
-    FlatpickrDefaults,
-  ],
+  styleUrls: ['./client-list.component.scss']
 })
 export class ClientListComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
-  model!: NgbDateStruct;
-  model1!: NgbDateStruct;
-  model2!: NgbDateStruct;
-  model3!: NgbDateStruct;
+  private readonly cdr = inject(ChangeDetectorRef);
+
   clientes: Cliente[] = [];
-  filteredClientes: Cliente[] = [];
   loading = false;
   editForm: FormGroup;
   selectedCliente: Cliente | null = null;
+  searchTerm = '';
+  estadoFilter = '';
 
-  // Pagination properties
+  // Pagination
   currentPage = 1;
   pageSize = 10;
   totalItems = 0;
   totalPages = 0;
   Math = Math;
 
-  private readonly cdr = inject(ChangeDetectorRef);
+  // Stats
+  stats = { totalClientes: 0, clientesActivos: 0, clientesInactivos: 0 };
 
   constructor(
     private readonly modalService: NgbModal,
@@ -58,8 +52,84 @@ export class ClientListComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.loadClientes();
+    this.loadStats();
+  }
 
-  toggleClienteStatus(cliente: Cliente) {
+  private loadClientes(): void {
+    this.loading = true;
+    const params: any = { page: this.currentPage, limit: this.pageSize };
+    if (this.searchTerm) params.search = this.searchTerm;
+    if (this.estadoFilter) params.estado = this.estadoFilter === 'activo' ? 'true' : 'false';
+
+    this.clienteService.getClientesWithParams(params).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (response: any) => {
+        console.log('loadClientes response:', response);
+        // Handle both formats: { success, data: { data, pagination } } and { data, pagination }
+        const nested = response?.data?.data;
+        const direct = response?.data;
+        this.clientes = Array.isArray(nested) ? nested : (Array.isArray(direct) ? direct : []);
+        console.log('clientes parsed:', this.clientes.length);
+
+        const pagination = response?.data?.pagination || response?.pagination;
+        this.totalItems = pagination?.total || 0;
+        this.totalPages = pagination?.totalPages || Math.ceil(this.totalItems / this.pageSize);
+        console.log('pagination:', this.totalItems, 'pages:', this.totalPages);
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('loadClientes error:', err);
+        this.clientes = [];
+        this.totalItems = 0;
+        this.totalPages = 0;
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private loadStats(): void {
+    this.clienteService.getClienteStats().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (stats) => {
+        this.stats = {
+          totalClientes: stats.totalClientes || 0,
+          clientesActivos: stats.clientesActivos || 0,
+          clientesInactivos: stats.clientesInactivos || 0
+        };
+        this.cdr.detectChanges();
+      },
+      error: () => {}
+    });
+  }
+
+  applyFilters(): void {
+    this.currentPage = 1;
+    this.loadClientes();
+  }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.estadoFilter = '';
+    this.currentPage = 1;
+    this.loadClientes();
+  }
+
+  onPageChange(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.loadClientes();
+    }
+  }
+
+  onPageSizeChange(newSize: number): void {
+    this.pageSize = newSize;
+    this.currentPage = 1;
+    this.loadClientes();
+  }
+
+  toggleClienteStatus(cliente: Cliente): void {
     const isActive = cliente.estado;
     const action = isActive ? 'desactivar' : 'activar';
 
@@ -70,35 +140,19 @@ export class ClientListComponent implements OnInit {
 
       serviceCall.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
         next: () => {
-          this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-          });
+          this.toastr.success(`Cliente ${action}do exitosamente`, 'Éxito');
           this.loadClientes();
+          this.loadStats();
         },
         error: (error: any) => {
-          console.error('Error response:', error);
-          let errorMessage = 'Error desconocido';
-
-          if (error.error?.message) {
-            errorMessage = error.error.message;
-          } else if (error.error?.error) {
-            errorMessage = error.error.error;
-          } else if (error.message) {
-            errorMessage = error.message;
-          } else if (typeof error.error === 'string') {
-            errorMessage = error.error;
-          }
-
-          this.toastr.error(`Error al ${action} el cliente: ${errorMessage}`, 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-          });
+          const errorMessage = error.error?.message || error.error?.error || 'Error desconocido';
+          this.toastr.error(`Error al ${action} el cliente: ${errorMessage}`, 'Error');
         }
       });
     }
   }
-  edit(editContent: any, cliente: Cliente) {
+
+  edit(editContent: any, cliente: Cliente): void {
     this.selectedCliente = cliente;
     this.editForm.patchValue({
       nombre: cliente.nombre,
@@ -115,118 +169,21 @@ export class ClientListComponent implements OnInit {
       this.loading = true;
       const updateData: UpdateClienteRequest = this.editForm.value;
 
-      this.clienteService.updateCliente(this.selectedCliente.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-        next: (response) => {
-          this.toastr.success('Cliente actualizado exitosamente', 'Éxito', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-          });
+      this.clienteService.actualizarCliente(this.selectedCliente.id, updateData).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        next: () => {
+          this.toastr.success('Cliente actualizado exitosamente', 'Éxito');
           this.loadClientes();
           this.modalService.dismissAll();
           this.loading = false;
         },
         error: (error) => {
-          this.toastr.error('Error al actualizar el cliente: ' + (error.error?.message || 'Error desconocido'), 'Error', {
-            timeOut: 3000,
-            positionClass: 'toast-top-right',
-          });
+          this.toastr.error('Error al actualizar: ' + (error.error?.message || 'Error desconocido'), 'Error');
           this.loading = false;
         }
       });
     } else {
-      this.toastr.warning('Por favor, complete todos los campos requeridos', 'Advertencia', {
-        timeOut: 3000,
-        positionClass: 'toast-top-right',
-      });
-      this.markFormGroupTouched();
+      this.toastr.warning('Complete todos los campos requeridos', 'Advertencia');
+      Object.keys(this.editForm.controls).forEach(key => this.editForm.get(key)?.markAsTouched());
     }
   }
-
-  private markFormGroupTouched(): void {
-    Object.keys(this.editForm.controls).forEach(key => {
-      const control = this.editForm.get(key);
-      control?.markAsTouched();
-    });
-  }
-  open(content: any) {
-    this.modalService.open(content, { windowClass: 'modalCusSty', size: 'lg' })
-  }
-
-  ngOnInit(): void {
-    this.loadClientes();
-    this.initializeFlatpickr();
-  }
-
-  private loadClientes(): void {
-    this.loading = true;
-    this.clienteService.getClientes(this.currentPage, this.pageSize).pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (response) => {
-        const clientesData = response?.data?.data || response?.data || response || [];
-        this.clientes = Array.isArray(clientesData) ? clientesData : [];
-        this.filteredClientes = [...this.clientes];
-
-        // Extract pagination metadata
-        const pagination = response?.data?.pagination;
-        if (pagination) {
-          this.totalItems = pagination.total || 0;
-          this.totalPages = pagination.totalPages || Math.ceil(this.totalItems / this.pageSize);
-        } else {
-          // Fallback: if no pagination metadata, calculate from total array length
-          this.totalItems = this.clientes.length;
-          this.totalPages = Math.ceil(this.totalItems / this.pageSize);
-        }
-
-        this.loading = false;
-        this.cdr.detectChanges();
-      },
-      error: (error) => {
-        console.error('Error loading clientes:', error);
-        this.clientes = [];
-        this.filteredClientes = [];
-        this.totalItems = 0;
-        this.totalPages = 0;
-        this.loading = false;
-        this.cdr.detectChanges();
-      }
-    });
-  }
-
-  onPageChange(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.loadClientes();
-    }
-  }
-
-  onPageSizeChange(newSize: number): void {
-    this.pageSize = newSize;
-    this.currentPage = 1;
-    this.loadClientes();
-  }
-
-  private initializeFlatpickr(): void {
-    this.flatpickrOptions = {
-      enableTime: true,
-      noCalendar: true,
-      dateFormat: 'H:i',
-    };
-
-    flatpickr('#inlinetime', this.flatpickrOptions);
-
-    this.flatpickrOptions = {
-      enableTime: true,
-      dateFormat: 'Y-m-d H:i',
-      defaultDate: '2023-11-07 14:30',
-    };
-
-    flatpickr('#pretime', this.flatpickrOptions);
-  }
-
-  inlineDatePicker: boolean = false;
-  weekNumbers!: true
-  // selectedDate: Date | null = null;
-  flatpickrOptions: any = {
-    inline: true,
-
-  };
 }

@@ -214,8 +214,7 @@ export class NavService implements OnDestroy {
           ]
         },
         {
-          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '4', selected: false, active: false, children: [
-            { path: '/dashboard/business-dashboard/clientes/list', title: 'Clientes', type: 'link', selected: false },
+          title: 'Business Dashboard', type: 'sub', badgeType: 'info', badgeValue: '3', selected: false, active: false, children: [
             { path: '/dashboard/business-dashboard/ventas/list', title: 'Ventas', type: 'link', selected: false },
             { path: '/dashboard/business-dashboard/tickets/list', title: 'Tickets', type: 'link', selected: false },
             { path: '/dashboard/business-dashboard/sell-list', title: 'Lista de Ventas (Legacy)', type: 'link', selected: false },

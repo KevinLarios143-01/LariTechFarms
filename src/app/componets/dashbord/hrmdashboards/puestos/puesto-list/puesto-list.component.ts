@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, inject, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SharedModule } from '../../../../../shared/common/sharedmodule';
 import { PuestoService, Puesto } from './puesto.service';
 import Swal from 'sweetalert2';
@@ -26,10 +27,13 @@ export class PuestoListComponent implements OnInit {
   searchTerm = '';
   Math = Math;
   Number = Number;
+  selectedPuesto: Puesto | null = null;
+
+  @ViewChild('descripcionModal') descripcionModal!: TemplateRef<any>;
 
   private readonly cdr = inject(ChangeDetectorRef);
 
-  constructor(private puestoService: PuestoService) {}
+  constructor(private puestoService: PuestoService, private modalService: NgbModal) {}
 
   ngOnInit() {
     this.loadPuestos();
@@ -113,5 +117,10 @@ export class PuestoListComponent implements OnInit {
         Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
       }
     });
+  }
+
+  openDescripcion(puesto: Puesto) {
+    this.selectedPuesto = puesto;
+    this.modalService.open(this.descripcionModal, { centered: true, size: 'lg' });
   }
 }

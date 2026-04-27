@@ -6,36 +6,6 @@ const routes: Routes = [
     path: 'dashboard/business-dashboard',
     children: [
       {
-        path: 'clientes',
-        children: [
-          {
-            path: '',
-            redirectTo: 'list',
-            pathMatch: 'full'
-          },
-          {
-            path: 'list',
-            loadComponent: () =>
-              import('./clientes/cliente-list/cliente-list.component').then((m) => m.ClienteListComponent)
-          },
-          {
-            path: 'add',
-            loadComponent: () =>
-              import('./clientes/add-cliente/add-cliente.component').then((m) => m.AddClienteComponent)
-          },
-          {
-            path: 'edit/:id',
-            loadComponent: () =>
-              import('./clientes/edit-cliente/edit-cliente.component').then((m) => m.EditClienteComponent)
-          },
-          {
-            path: 'view/:id',
-            loadComponent: () =>
-              import('./clientes/view-cliente/view-cliente.component').then((m) => m.ViewClienteComponent)
-          }
-        ]
-      },
-      {
         path: 'ventas',
         children: [
           {
