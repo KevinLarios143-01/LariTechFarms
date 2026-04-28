@@ -44,7 +44,7 @@ export const DEFAULT_REDIRECTS: Record<UserRole, string> = {
   superadmin:  '/dashboard/hrmdashboards/dashboard',
   admin:       '/dashboard/hrmdashboards/dashboard',
   gerente:     '/dashboard/hrmdashboards/dashboard',
-  supervisor:  '/dashboard/production-dashboard/huevos',
-  vendedor:    '/dashboard/business-dashboard/ventas/list',
-  operador: '/dashboard/production-dashboard/huevos',
+  supervisor:  '/dashboard/hrmdashboards/dashboard',
+  vendedor:    '/dashboard/hrmdashboards/dashboard',
+  operador:    '/dashboard/hrmdashboards/dashboard',
 };

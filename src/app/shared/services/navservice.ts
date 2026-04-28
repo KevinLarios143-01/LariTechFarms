@@ -274,7 +274,6 @@ export class NavService implements OnDestroy {
             { path: '/dashboard/super-admin/modules', title: 'Gestión de Módulos', type: 'link', selected: false },
             { path: '/dashboard/super-admin/module-catalog', title: 'Catálogo de Módulos', type: 'link', selected: false },
             { path: '/dashboard/super-admin/role-access-matrix', title: 'Matriz de Acceso', type: 'link', selected: false },
-            { path: '/dashboard/super-admin/user-access-matrix', title: 'Acceso por Usuario', type: 'link', selected: false },
             { path: '/dashboard/super-admin/route-permissions', title: 'Permisos de Ruta', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/invoices', title: 'Facturas', type: 'link', selected: false },
             //{ path: '/dashboard/super-admin/super-admins', title: 'Super Administradores', type: 'link', selected: false },

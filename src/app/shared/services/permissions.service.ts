@@ -17,8 +17,6 @@ import { Menu } from './navservice';
 export class PermissionsService {
   private tenantModules$ = new BehaviorSubject<string[]>([]);
   private roleModules$ = new BehaviorSubject<string[]>([]);
-  private userModules$ = new BehaviorSubject<string[]>([]);
-  private usingFallback$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<UserRole | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
   private roleRoutePermissions$ = new BehaviorSubject<Record<string, string[]>>({});
@@ -35,8 +33,8 @@ export class PermissionsService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Initialize permissions by extracting role/tenant from JWT
-   * and fetching all 4 layers from endpoints in parallel with forkJoin.
+   * Initialize permissions: extract role/tenant from JWT,
+   * fetch tenant modules, role modules, and route permissions.
    */
   init(): Observable<void> {
     const token = localStorage.getItem('auth_token');
@@ -59,7 +57,6 @@ export class PermissionsService {
 
     const rol = payload.rol as string;
     const idTenant = payload.idTenant;
-    const idUsuario = payload.idUsuario;
 
     if (rol && VALID_ROLES.includes(rol as UserRole)) {
       this.userRole$.next(rol as UserRole);
@@ -75,16 +72,9 @@ export class PermissionsService {
       )
       .pipe(
         tap((res) => {
-          if (res?.success && res.data?.modules) {
-            this.tenantModules$.next(res.data.modules);
-          } else {
-            this.tenantModules$.next([]);
-          }
+          this.tenantModules$.next(res?.success && res.data?.modules ? res.data.modules : []);
         }),
-        catchError(() => {
-          this.tenantModules$.next([]);
-          return of(undefined);
-        })
+        catchError(() => { this.tenantModules$.next([]); return of(undefined); })
       );
 
     // Layer 2: Role modules (with fallback to ROLE_ACCESS_MATRIX)
@@ -97,41 +87,17 @@ export class PermissionsService {
         tap((res) => {
           if (res?.success && res.data?.modules && res.data.modules.length > 0) {
             this.roleModules$.next(res.data.modules);
-            this.usingFallback$.next(false);
           } else {
-            this.useFallback(rol);
+            this.roleModules$.next(ROLE_ACCESS_MATRIX[rol as UserRole] || []);
           }
         }),
         catchError(() => {
-          this.useFallback(rol);
+          this.roleModules$.next(ROLE_ACCESS_MATRIX[rol as UserRole] || []);
           return of(undefined);
         })
       );
 
-    // Layer 3: User modules
-    const userModules$ = idUsuario
-      ? this.http
-          .get<{ success: boolean; data: { modules: { module_name: string }[] } }>(
-            `${this.apiUrl}/v1/user-modules`,
-            { params: { idUsuario: String(idUsuario) } }
-          )
-          .pipe(
-            tap((res) => {
-              if (res?.success && res.data?.modules) {
-                const names = res.data.modules.map((m: any) => m.module_name);
-                this.userModules$.next(names);
-              } else {
-                this.userModules$.next([]);
-              }
-            }),
-            catchError(() => {
-              this.userModules$.next([]);
-              return of(undefined);
-            })
-          )
-      : of(undefined);
-
-    // Layer 4: Route permissions
+    // Route permissions (role + user)
     const routePermissions$ = this.http
       .get<{ success: boolean; data: { role_routes: Record<string, string[]>; user_routes: Record<string, string[]> } }>(
         `${this.apiUrl}/v1/route-permissions/me`
@@ -150,11 +116,8 @@ export class PermissionsService {
         })
       );
 
-    // Execute all 4 layers in parallel
-    return forkJoin([tenantModules$, roleModules$, userModules$, routePermissions$]).pipe(
-      tap(() => {
-        this.initialized$.next(true);
-      }),
+    return forkJoin([tenantModules$, roleModules$, routePermissions$]).pipe(
+      tap(() => this.initialized$.next(true)),
       map(() => undefined)
     );
   }
@@ -163,8 +126,6 @@ export class PermissionsService {
   clear(): void {
     this.tenantModules$.next([]);
     this.roleModules$.next([]);
-    this.userModules$.next([]);
-    this.usingFallback$.next(false);
     this.userRole$.next(null);
     this.initialized$.next(false);
     this.roleRoutePermissions$.next({});
@@ -176,9 +137,7 @@ export class PermissionsService {
     const entries = Object.entries(MODULE_ROUTE_MAP) as [ModuleName, string[]][];
     for (const [moduleName, prefixes] of entries) {
       for (const prefix of prefixes) {
-        if (route.startsWith(prefix)) {
-          return moduleName;
-        }
+        if (route.startsWith(prefix)) return moduleName;
       }
     }
     return null;
@@ -189,106 +148,81 @@ export class PermissionsService {
     return this.tenantModules$.getValue().includes(module);
   }
 
-  /** Check if a role has access to a module using dynamic role modules and user restrictions. */
-  roleHasModule(role: UserRole | string, module: ModuleName): boolean {
-    // Invalid role → deny all access (Property 8)
-    if (!role || !VALID_ROLES.includes(role as UserRole)) return false;
-    const roleMods = this.roleModules$.getValue();
-    const userMods = this.userModules$.getValue();
-    // Role must always grant the module
-    if (!roleMods.includes(module)) return false;
-    // If user-level config exists, it can only further restrict
-    if (userMods.length > 0) {
-      return userMods.includes(module);
-    }
-    return true;
+  /** Whether the user has individual route permissions configured. */
+  private hasUserRoutes(): boolean {
+    const userRoutes = this.userRoutePermissions$.getValue();
+    return Object.values(userRoutes).some(routes => routes.length > 0);
   }
 
   /**
-   * Combined two-layer access check.
-   * Returns true only if the route maps to a module that is both
-   * enabled for the tenant AND accessible by the user's role.
-   */
-  hasAccess(route: string): boolean {
-    const module = this.getModuleForRoute(route);
-    if (!module) {
-      return false;
-    }
-    if (!this.isModuleEnabled(module)) {
-      return false;
-    }
-    const role = this.userRole$.getValue();
-    if (!role) {
-      return false;
-    }
-    return this.roleHasModule(role, module);
-  }
-
-  /**
-   * Four-layer access check: tenant module + role module + user module + route permissions.
-   * Each layer can only restrict further, never expand access.
+   * Access check with two modes:
+   *
+   * Mode A — User has user_route_permissions:
+   *   Only check Tenant modules + user's assigned routes.
+   *   The role/module layers are bypassed — the user sees exactly what was configured.
+   *
+   * Mode B — User has NO user_route_permissions:
+   *   Check Tenant modules + Role modules + Role route permissions (if any).
+   *   Permissive fallback if no role routes are configured.
    */
   hasRouteAccess(route: string): boolean {
-    // First check module access (layers 1, 2, and 3)
-    if (!this.hasAccess(route)) return false;
-
     const module = this.getModuleForRoute(route);
     if (!module) return false;
 
-    // Layer 4: Route-level permissions (intersection logic)
-    const roleRoutes = this.roleRoutePermissions$.getValue();
+    // Layer 1: Tenant must have the module enabled
+    if (!this.isModuleEnabled(module)) return false;
+
     const userRoutes = this.userRoutePermissions$.getValue();
-    const hasRoleRoutes = roleRoutes[module] && roleRoutes[module].length > 0;
-    const hasUserRoutes = userRoutes[module] && userRoutes[module].length > 0;
+    const roleRoutes = this.roleRoutePermissions$.getValue();
 
-    if (hasRoleRoutes && hasUserRoutes) {
-      // Intersection: route must be allowed by BOTH layers
-      return roleRoutes[module].some(p => route.startsWith(p))
-          && userRoutes[module].some(p => route.startsWith(p));
-    }
-    if (hasRoleRoutes) {
-      return roleRoutes[module].some(p => route.startsWith(p));
-    }
-    if (hasUserRoutes) {
-      // User routes alone still apply as restriction
-      return userRoutes[module].some(p => route.startsWith(p));
+    // Mode A: User has individual route permissions — they define access
+    if (this.hasUserRoutes()) {
+      const userModuleRoutes = userRoutes[module];
+      if (userModuleRoutes && userModuleRoutes.length > 0) {
+        return userModuleRoutes.some(p => route.startsWith(p));
+      }
+      // User has routes configured but none for this module → no access
+      return false;
     }
 
-    // No route restrictions → permissive access
+    // Mode B: No user routes — use role-based access
+    const role = this.userRole$.getValue();
+    if (!role || !VALID_ROLES.includes(role)) return false;
+
+    // Check role has the module
+    const roleMods = this.roleModules$.getValue();
+    if (!roleMods.includes(module)) return false;
+
+    // Check role route permissions (if configured)
+    const roleModuleRoutes = roleRoutes[module];
+    if (roleModuleRoutes && roleModuleRoutes.length > 0) {
+      return roleModuleRoutes.some(p => route.startsWith(p));
+    }
+
+    // No role route restrictions → permissive
     return true;
   }
 
   /**
    * Return the post-login redirect route for the current role.
-   * Uses full 4-layer validation (hasRouteAccess) for consistency with guards.
-   * Falls back to the first accessible route, or /access-denied.
    */
   getDefaultRedirect(): string {
     const role = this.userRole$.getValue();
-    if (!role) {
-      return '/home';
-    }
+    if (!role) return '/home';
 
-    // Check default route with full 4-layer validation (Req 6.1)
     const defaultRoute = DEFAULT_REDIRECTS[role];
-    if (defaultRoute && this.hasRouteAccess(defaultRoute)) {
-      return defaultRoute;
-    }
+    if (defaultRoute && this.hasRouteAccess(defaultRoute)) return defaultRoute;
 
-    // Fallback: find first accessible route from effective (intersected) modules (Req 6.2, 6.4)
-    const roleMods = this.roleModules$.getValue();
-    const userMods = this.userModules$.getValue();
-    const allowedModules = userMods.length > 0
-      ? roleMods.filter(m => userMods.includes(m))
-      : roleMods;
-    for (const mod of allowedModules) {
+    // Fallback: find first accessible route
+    const modules = this.hasUserRoutes()
+      ? Object.keys(this.userRoutePermissions$.getValue())
+      : this.roleModules$.getValue();
+
+    for (const mod of modules) {
       if (this.isModuleEnabled(mod as ModuleName)) {
         const prefixes = MODULE_ROUTE_MAP[mod as ModuleName];
-        if (prefixes && prefixes.length > 0) {
-          // Verify the fallback route also passes full 4-layer check
-          if (this.hasRouteAccess(prefixes[0])) {
-            return prefixes[0];
-          }
+        if (prefixes?.length && this.hasRouteAccess(prefixes[0])) {
+          return prefixes[0];
         }
       }
     }
@@ -297,10 +231,7 @@ export class PermissionsService {
   }
 
   /**
-   * Recursively filter menu items based on both permission layers.
-   * - Items with `path` are checked against MODULE_ROUTE_MAP + both layers.
-   * - Items with `children` are filtered recursively; parents with no visible children are excluded.
-   * - headTitle items are excluded if their following section is empty.
+   * Filter menu items based on permissions.
    */
   getFilteredMenuItems(items: Menu[]): Menu[] {
     const result: Menu[] = [];
@@ -308,9 +239,7 @@ export class PermissionsService {
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
 
-      // headTitle items: include only if the next section has visible items
       if (item.headTitle) {
-        // Collect items until the next headTitle
         const sectionItems: Menu[] = [];
         let j = i + 1;
         while (j < items.length && !items[j].headTitle) {
@@ -322,11 +251,10 @@ export class PermissionsService {
           result.push(item);
           result.push(...filteredSection);
         }
-        i = j - 1; // skip processed items
+        i = j - 1;
         continue;
       }
 
-      // Items with children: filter recursively
       if (item.children && item.children.length > 0) {
         const filteredChildren = this.filterMenuChildren(item.children);
         if (filteredChildren.length > 0) {
@@ -335,43 +263,26 @@ export class PermissionsService {
         continue;
       }
 
-      // Items with path: check access
       if (item.path) {
-        if (this.hasRouteAccess(item.path)) {
-          result.push(item);
-        }
+        if (this.hasRouteAccess(item.path)) result.push(item);
         continue;
       }
 
-      // Items without path and without children (e.g., empty type): include as-is
       result.push(item);
     }
 
     return result;
   }
 
-  /** Whether init() has completed. */
   isInitialized(): boolean {
     return this.initialized$.getValue();
   }
 
-  /** Observable that emits true once init() completes. Useful for guards. */
   waitForInit(): Observable<boolean> {
     return this.initialized$.asObservable().pipe(
       filter((init) => init === true),
       first()
     );
-  }
-
-  // ---- Private helpers ----
-
-  private useFallback(role: string): void {
-    if (VALID_ROLES.includes(role as UserRole)) {
-      this.roleModules$.next(ROLE_ACCESS_MATRIX[role as UserRole] || []);
-    } else {
-      this.roleModules$.next([]);
-    }
-    this.usingFallback$.next(true);
   }
 
   private filterMenuChildren(children: Menu[]): Menu[] {
@@ -383,11 +294,8 @@ export class PermissionsService {
           result.push({ ...child, children: filteredChildren });
         }
       } else if (child.path) {
-        if (this.hasRouteAccess(child.path)) {
-          result.push(child);
-        }
+        if (this.hasRouteAccess(child.path)) result.push(child);
       } else {
-        // Items without path and without children: include
         result.push(child);
       }
     }
