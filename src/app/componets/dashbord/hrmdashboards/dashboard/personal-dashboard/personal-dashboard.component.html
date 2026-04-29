@@ -1,0 +1,377 @@
+<!-- Header -->
+<div class="page-header d-xl-flex d-block">
+  <div class="page-leftheader">
+    <div class="page-title">Mi Dashboard<span class="fw-normal text-muted ms-2">Personal</span></div>
+  </div>
+  <div class="page-rightheader mt-2 mt-xl-0">
+    <div class="d-flex flex-wrap gap-2">
+      <div class="input-group" style="width:auto">
+        <div class="input-group-text"><i class="fe fe-calendar"></i></div>
+        <div class="form-control">{{ currentDate }}</div>
+      </div>
+      <div class="input-group" style="width:auto">
+        <div class="input-group-text"><i class="fe fe-clock"></i></div>
+        <div class="form-control">{{ currentTime }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading -->
+@if (isLoading) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+}
+
+<!-- No employee linked -->
+@else if (!hasEmployee) {
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-body text-center py-5">
+        <div class="mb-3">
+          <i class="fe fe-alert-circle text-warning" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="text-muted">{{ errorMessage }}</h4>
+        <p class="text-muted mb-0">Solicita a un administrador que vincule tu usuario con un perfil de empleado.</p>
+      </div>
+    </div>
+  </div>
+</div>
+}
+
+<!-- Dashboard content -->
+@else {
+
+<!-- Row 1: Welcome card -->
+<div class="row">
+  <div class="col-xl-8 col-md-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <div class="avatar avatar-xl bg-primary-transparent rounded-circle">
+              <i class="fe fe-user fs-24"></i>
+            </div>
+          </div>
+          <div class="col">
+            <h3 class="mb-1">¡Bienvenido, {{ getFullName() }}!</h3>
+            <div class="d-flex flex-wrap gap-3 text-muted">
+              <span><i class="fe fe-shield me-1"></i>{{ getRolLabel() }}</span>
+              <span><i class="fe fe-calendar me-1"></i>Contratado: {{ formatDate(empleadoFechaContratacion) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4 col-md-12">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <span class="fs-14 fw-medium">Antigüedad Laboral</span>
+            <h3 class="mb-0 mt-1 mb-2">
+              @if (seniorityYears > 0) {
+                {{ seniorityYears }} {{ seniorityYears === 1 ? 'año' : 'años' }}
+              }
+              {{ seniorityMonths }} {{ seniorityMonths === 1 ? 'mes' : 'meses' }}
+            </h3>
+            <span class="text-muted">Tiempo en la empresa</span>
+          </div>
+          <div class="col-4">
+            <div class="icon1 bg-primary my-auto float-end"><i class="fe fe-award"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: Position info + Personal data -->
+<div class="row">
+  <!-- Position info -->
+  @if (puestoNombre) {
+  <div class="col-xl-6 col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-briefcase me-2"></i>Mi Puesto</h4>
+      </div>
+      <div class="card-body pt-0">
+        <h5 class="mb-2">{{ puestoNombre }}</h5>
+        @if (puestoDescripcion) {
+        <div class="text-muted" [innerHTML]="puestoDescripcion"></div>
+        } @else {
+        <p class="text-muted mb-0">Sin descripción disponible.</p>
+        }
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- Personal data -->
+  <div [class]="puestoNombre ? 'col-xl-6 col-md-12' : 'col-xl-12 col-md-12'">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-user me-2"></i>Datos Personales</h4>
+      </div>
+      <div class="card-body pt-0">
+        <div class="list-group list-group-flush">
+          <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <div class="d-flex align-items-center">
+              <span class="avatar avatar-sm bg-primary-transparent rounded-2 me-3"><i class="fe fe-phone fs-16"></i></span>
+              <span class="fw-medium">Teléfono</span>
+            </div>
+            <span class="text-muted">{{ empleadoTelefono }}</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+            <div class="d-flex align-items-center">
+              <span class="avatar avatar-sm bg-info-transparent rounded-2 me-3"><i class="fe fe-mail fs-16"></i></span>
+              <span class="fw-medium">Correo</span>
+            </div>
+            <span class="text-muted">{{ empleadoCorreo }}</span>
+          </div>
+          <div class="list-group-item d-flex justify-content-between align-items-center px-0 border-0">
+            <div class="d-flex align-items-center">
+              <span class="avatar avatar-sm bg-success-transparent rounded-2 me-3"><i class="fe fe-layers fs-16"></i></span>
+              <span class="fw-medium">Departamento</span>
+            </div>
+            <span class="text-muted">{{ empleadoPuesto }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 3: Attendance marking section -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-check-circle me-2"></i>Marcaje de Asistencia</h4>
+        @if (estadoMarcaje === 'salida_registrada') {
+          <span class="badge bg-success-transparent ms-auto">Jornada completa</span>
+        }
+      </div>
+      <div class="card-body pt-0">
+        <div class="d-flex flex-wrap gap-3 justify-content-center">
+          <!-- Marcar Entrada -->
+          <button
+            class="btn btn-primary btn-lg"
+            [disabled]="isMarking || estadoMarcaje !== 'sin_marcar'"
+            (click)="marcarEntrada()">
+            @if (isMarking && estadoMarcaje === 'sin_marcar') {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            } @else {
+              <i class="fe fe-log-in me-2"></i>
+            }
+            Marcar Entrada
+          </button>
+
+          <!-- Marcar Almuerzo / Fin Almuerzo -->
+          <button
+            class="btn btn-lg"
+            [class.btn-info]="estadoMarcaje !== 'almuerzo_inicio'"
+            [class.btn-warning]="estadoMarcaje === 'almuerzo_inicio'"
+            [disabled]="isMarking || !isAlmuerzoEnabled()"
+            (click)="marcarAlmuerzo()">
+            @if (isMarking && isAlmuerzoEnabled()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            } @else {
+              <i class="fe fe-coffee me-2"></i>
+            }
+            {{ getAlmuerzoButtonText() }}
+          </button>
+
+          <!-- Marcar Salida -->
+          <span
+            [attr.title]="getSalidaTooltip()"
+            [class.cursor-not-allowed]="estadoMarcaje === 'almuerzo_inicio'">
+            <button
+              class="btn btn-danger btn-lg"
+              [disabled]="isMarking || !isSalidaEnabled()"
+              (click)="marcarSalida()">
+              @if (isMarking && isSalidaEnabled()) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              } @else {
+                <i class="fe fe-log-out me-2"></i>
+              }
+              Marcar Salida
+            </button>
+          </span>
+        </div>
+
+        <!-- Current state indicator -->
+        <div class="text-center mt-3">
+          @switch (estadoMarcaje) {
+            @case ('sin_marcar') {
+              <span class="text-muted"><i class="fe fe-clock me-1"></i>Sin marcaje registrado hoy</span>
+            }
+            @case ('entrada_registrada') {
+              <span class="text-success"><i class="fe fe-check me-1"></i>Entrada registrada a las {{ formatTimeFromISO(asistenciaHoy?.horaEntrada ?? null) }}</span>
+            }
+            @case ('almuerzo_inicio') {
+              <span class="text-warning"><i class="fe fe-coffee me-1"></i>En almuerzo desde las {{ extractAlmuerzoTimePublic(asistenciaHoy?.observaciones ?? null, 'almuerzo_inicio') }}</span>
+            }
+            @case ('almuerzo_fin') {
+              <span class="text-info"><i class="fe fe-check me-1"></i>Almuerzo finalizado. Entrada: {{ formatTimeFromISO(asistenciaHoy?.horaEntrada ?? null) }}</span>
+            }
+            @case ('salida_registrada') {
+              <span class="text-success"><i class="fe fe-check-circle me-1"></i>Jornada completa. Salida: {{ formatTimeFromISO(asistenciaHoy?.horaSalida ?? null) }}</span>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 4: Attendance Timeline -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-activity me-2"></i>Estado de la Jornada</h4>
+      </div>
+      <div class="card-body pt-0">
+        <app-attendance-timeline [estadoMarcaje]="estadoMarcaje" [asistenciaHoy]="asistenciaHoy" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Row 5: Attendance History -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-list me-2"></i>Historial de Asistencia</h4>
+      </div>
+      <div class="card-body pt-0">
+
+        <!-- Monthly Summary Cards -->
+        <div class="row mb-4">
+          <div class="col-md-4">
+            <div class="card bg-primary-transparent mb-0">
+              <div class="card-body py-3 text-center">
+                <h5 class="mb-1">{{ resumenDiasTrabajados }}</h5>
+                <span class="text-muted fs-13">Días Trabajados</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-success-transparent mb-0">
+              <div class="card-body py-3 text-center">
+                <h5 class="mb-1">{{ resumenPromedioHoras }}</h5>
+                <span class="text-muted fs-13">Promedio Horas Diarias</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card bg-info-transparent mb-0">
+              <div class="card-body py-3 text-center">
+                <h5 class="mb-1">{{ resumenTotalHoras }}</h5>
+                <span class="text-muted fs-13">Total Horas del Mes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Date Range Filter -->
+        <div class="d-flex flex-wrap gap-2 align-items-end mb-3">
+          <div>
+            <label class="form-label mb-1 fs-13">Fecha Inicio</label>
+            <input type="date" class="form-control" [(ngModel)]="filtroFechaInicio">
+          </div>
+          <div>
+            <label class="form-label mb-1 fs-13">Fecha Fin</label>
+            <input type="date" class="form-control" [(ngModel)]="filtroFechaFin">
+          </div>
+          <div class="d-flex gap-2">
+            <button class="btn btn-primary btn-sm" (click)="aplicarFiltroFechas()">
+              <i class="fe fe-search me-1"></i>Filtrar
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" (click)="limpiarFiltroFechas()">
+              <i class="fe fe-x me-1"></i>Limpiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Loading -->
+        @if (historialLoading) {
+        <div class="text-center py-4">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+        </div>
+        } @else {
+
+        <!-- History Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover text-nowrap">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora Entrada</th>
+                <th>Almuerzo Inicio</th>
+                <th>Almuerzo Fin</th>
+                <th>Hora Salida</th>
+                <th>Horas Trabajadas</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (record of historialRecords; track record.id) {
+              <tr>
+                <td>{{ formatDateShort(record.fecha) }}</td>
+                <td>{{ formatTimeFromISO(record.horaEntrada) }}</td>
+                <td>{{ record.almuerzoInicio || '--:--' }}</td>
+                <td>{{ record.almuerzoFin || '--:--' }}</td>
+                <td>{{ formatTimeFromISO(record.horaSalida ?? null) }}</td>
+                <td>{{ formatHorasTrabajadas(record.horasTrabajadas) }}</td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="6" class="text-center text-muted py-3">No se encontraron registros de asistencia.</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        @if (historialTotalPages > 1) {
+        <nav class="d-flex justify-content-between align-items-center mt-3">
+          <span class="text-muted fs-13">Mostrando página {{ historialPage }} de {{ historialTotalPages }} ({{ historialTotal }} registros)</span>
+          <ul class="pagination mb-0">
+            <li class="page-item" [class.disabled]="historialPage === 1">
+              <a class="page-link" (click)="historialPageChange(historialPage - 1)" role="button">
+                <i class="fe fe-chevron-left"></i>
+              </a>
+            </li>
+            @for (p of getPageNumbers(); track p) {
+            <li class="page-item" [class.active]="p === historialPage">
+              <a class="page-link" (click)="historialPageChange(p)" role="button">{{ p }}</a>
+            </li>
+            }
+            <li class="page-item" [class.disabled]="historialPage === historialTotalPages">
+              <a class="page-link" (click)="historialPageChange(historialPage + 1)" role="button">
+                <i class="fe fe-chevron-right"></i>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        }
+
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
+}

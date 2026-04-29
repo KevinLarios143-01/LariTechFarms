@@ -1,0 +1,9 @@
+/* PersonalDashboardComponent styles */
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+
+  button {
+    pointer-events: none;
+  }
+}

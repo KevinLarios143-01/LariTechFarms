@@ -1,0 +1,299 @@
+<!-- Loading -->
+@if (isLoadingResumen) {
+<div class="row">
+  <div class="col-md-12 text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+</div>
+} @else {
+
+<!-- Summary Cards -->
+<div class="row">
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <span class="fs-14 fw-medium">Total Empleados Activos</span>
+            <h3 class="mb-0 mt-1 mb-2">{{ totalEmpleados }}</h3>
+            <span class="text-muted">Empleados registrados</span>
+          </div>
+          <div class="col-4">
+            <div class="icon1 bg-primary my-auto float-end"><i class="fe fe-users"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <span class="fs-14 fw-medium">Presentes Hoy</span>
+            <h3 class="mb-0 mt-1 mb-2">{{ presentes }}</h3>
+            <span class="text-muted">
+              <span class="text-success fs-12 me-1"><i class="fe fe-check-circle me-1"></i></span>
+              Con entrada registrada
+            </span>
+          </div>
+          <div class="col-4">
+            <div class="icon1 bg-success my-auto float-end"><i class="fe fe-user-check"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <span class="fs-14 fw-medium">Ausentes Hoy</span>
+            <h3 class="mb-0 mt-1 mb-2">{{ ausentes }}</h3>
+            <span class="text-muted">
+              <span class="text-danger fs-12 me-1"><i class="fe fe-x-circle me-1"></i></span>
+              Sin marcaje
+            </span>
+          </div>
+          <div class="col-4">
+            <div class="icon1 bg-danger my-auto float-end"><i class="fe fe-user-x"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-6 col-md-6">
+    <div class="card custom-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            <span class="fs-14 fw-medium">En Almuerzo</span>
+            <h3 class="mb-0 mt-1 mb-2">{{ enAlmuerzo }}</h3>
+            <span class="text-muted">
+              <span class="text-warning fs-12 me-1"><i class="fe fe-coffee me-1"></i></span>
+              En pausa
+            </span>
+          </div>
+          <div class="col-4">
+            <div class="icon1 bg-warning my-auto float-end"><i class="fe fe-coffee"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Table by Category -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-list me-2"></i>Empleados por Estado</h4>
+      </div>
+      <div class="card-body pt-0">
+        <!-- Category Tabs -->
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeCategory === 'presentes'" (click)="setActiveCategory('presentes')" role="button">
+              <i class="fe fe-user-check me-1"></i>Presentes
+              <span class="badge bg-success-transparent ms-1">{{ empleadosPresentes.length }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeCategory === 'almuerzo'" (click)="setActiveCategory('almuerzo')" role="button">
+              <i class="fe fe-coffee me-1"></i>En Almuerzo
+              <span class="badge bg-warning-transparent ms-1">{{ empleadosEnAlmuerzo.length }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeCategory === 'completa'" (click)="setActiveCategory('completa')" role="button">
+              <i class="fe fe-check-circle me-1"></i>Jornada Completa
+              <span class="badge bg-primary-transparent ms-1">{{ empleadosJornadaCompleta.length }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeCategory === 'sin_marcar'" (click)="setActiveCategory('sin_marcar')" role="button">
+              <i class="fe fe-user-x me-1"></i>Sin Marcar
+              <span class="badge bg-secondary-transparent ms-1">{{ empleadosSinMarcar.length }}</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Employee Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover text-nowrap">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Puesto</th>
+                <th>Estado</th>
+                <th>Hora Entrada</th>
+                <th>Hora Salida</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (emp of getActiveEmployees(); track emp.id) {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm me-2 avatar-rounded bg-primary-transparent">
+                      <span class="fs-12">{{ emp.nombre.charAt(0) }}{{ emp.apellido.charAt(0) }}</span>
+                    </div>
+                    <span>{{ emp.nombre }} {{ emp.apellido }}</span>
+                  </div>
+                </td>
+                <td>{{ emp.puesto || 'Sin asignar' }}</td>
+                <td><span class="badge {{ getEstadoBadgeClass(emp.estadoMarcaje) }}">{{ getEstadoLabel(emp.estadoMarcaje) }}</span></td>
+                <td>{{ formatTime(emp.horaEntrada) }}</td>
+                <td>{{ formatTime(emp.horaSalida) }}</td>
+              </tr>
+              } @empty {
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">No hay empleados en esta categoría.</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reports Section -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="card custom-card">
+      <div class="card-header border-0">
+        <h4 class="card-title"><i class="fe fe-bar-chart-2 me-2"></i>Reportes de Asistencia</h4>
+      </div>
+      <div class="card-body pt-0">
+
+        <!-- Report Filters -->
+        <div class="d-flex flex-wrap gap-3 align-items-end mb-4">
+          <div>
+            <label class="form-label mb-1 fs-13">Tipo de Reporte</label>
+            <select class="form-select" [(ngModel)]="reporteTipo">
+              <option value="semanal">Semanal</option>
+              <option value="mensual">Mensual</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label mb-1 fs-13">Fecha Inicio</label>
+            <input type="date" class="form-control" [(ngModel)]="reporteFechaInicio">
+          </div>
+          <div>
+            <label class="form-label mb-1 fs-13">Fecha Fin</label>
+            <input type="date" class="form-control" [(ngModel)]="reporteFechaFin">
+          </div>
+          <div>
+            <button class="btn btn-primary" (click)="generarReporte()" [disabled]="isLoadingReporte">
+              @if (isLoadingReporte) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+              } @else {
+                <i class="fe fe-file-text me-2"></i>
+              }
+              Generar Reporte
+            </button>
+          </div>
+        </div>
+
+        <!-- Report Loading -->
+        @if (isLoadingReporte) {
+        <div class="text-center py-4">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Generando reporte...</span>
+          </div>
+        </div>
+        }
+
+        <!-- Report Results -->
+        @else if (reporteGenerated) {
+
+        @if (reporteMessage && reporteData.length === 0) {
+        <div class="text-center py-4">
+          <i class="fe fe-info text-muted" style="font-size: 2rem;"></i>
+          <p class="text-muted mt-2 mb-0">{{ reporteMessage }}</p>
+        </div>
+        } @else if (reporteData.length > 0) {
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover text-nowrap">
+            <thead>
+              <tr>
+                <th class="sortable-header" (click)="sortBy('nombre')" role="button">
+                  Nombre <i class="{{ getSortIcon('nombre') }} ms-1"></i>
+                </th>
+                <th class="sortable-header" (click)="sortBy('puesto')" role="button">
+                  Puesto <i class="{{ getSortIcon('puesto') }} ms-1"></i>
+                </th>
+                <th class="sortable-header" (click)="sortBy('diasTrabajados')" role="button">
+                  Días Trabajados <i class="{{ getSortIcon('diasTrabajados') }} ms-1"></i>
+                </th>
+                <th class="sortable-header" (click)="sortBy('diasAusentes')" role="button">
+                  Días Ausentes <i class="{{ getSortIcon('diasAusentes') }} ms-1"></i>
+                </th>
+                <th class="sortable-header" (click)="sortBy('totalHoras')" role="button">
+                  Total Horas <i class="{{ getSortIcon('totalHoras') }} ms-1"></i>
+                </th>
+                <th class="sortable-header" (click)="sortBy('promedioHorasDiarias')" role="button">
+                  Promedio Hrs/Día <i class="{{ getSortIcon('promedioHorasDiarias') }} ms-1"></i>
+                </th>
+                @if (reporteTipo === 'semanal') {
+                <th>Prom. Entrada</th>
+                <th>Prom. Salida</th>
+                }
+                @if (reporteTipo === 'mensual') {
+                <th class="sortable-header" (click)="sortBy('porcentajeAsistencia')" role="button">
+                  % Asistencia <i class="{{ getSortIcon('porcentajeAsistencia') }} ms-1"></i>
+                </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of reporteData; track item.empleado.id) {
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-sm me-2 avatar-rounded bg-primary-transparent">
+                      <span class="fs-12">{{ item.empleado.nombre.charAt(0) }}{{ item.empleado.apellido.charAt(0) }}</span>
+                    </div>
+                    <span>{{ item.empleado.nombre }} {{ item.empleado.apellido }}</span>
+                  </div>
+                </td>
+                <td>{{ item.empleado.puesto || 'Sin asignar' }}</td>
+                <td>{{ item.diasTrabajados }}</td>
+                <td>{{ item.diasAusentes }}</td>
+                <td>{{ item.totalHoras | number:'1.1-1' }}</td>
+                <td>{{ item.promedioHorasDiarias | number:'1.1-1' }}</td>
+                @if (reporteTipo === 'semanal') {
+                <td>{{ item.promedioEntrada || '--:--' }}</td>
+                <td>{{ item.promedioSalida || '--:--' }}</td>
+                }
+                @if (reporteTipo === 'mensual') {
+                <td>
+                  <div class="d-flex align-items-center">
+                    <div class="progress progress-sm flex-grow-1 me-2" style="width: 80px;">
+                      <div class="progress-bar bg-primary" [style.width.%]="item.porcentajeAsistencia ?? 0"></div>
+                    </div>
+                    <span class="fs-13">{{ (item.porcentajeAsistencia ?? 0) | number:'1.0-0' }}%</span>
+                  </div>
+                </td>
+                }
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        }
+
+        }
+
+      </div>
+    </div>
+  </div>
+</div>
+
+}

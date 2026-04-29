@@ -172,6 +172,10 @@ export class PermissionsService {
     // Layer 1: Tenant must have the module enabled
     if (!this.isModuleEnabled(module)) return false;
 
+    // Superadmin always has full access — skip route permission checks
+    const role = this.userRole$.getValue();
+    if (role === 'superadmin') return true;
+
     const userRoutes = this.userRoutePermissions$.getValue();
     const roleRoutes = this.roleRoutePermissions$.getValue();
 
@@ -186,7 +190,6 @@ export class PermissionsService {
     }
 
     // Mode B: No user routes — use role-based access
-    const role = this.userRole$.getValue();
     if (!role || !VALID_ROLES.includes(role)) return false;
 
     // Check role has the module
@@ -272,6 +275,11 @@ export class PermissionsService {
     }
 
     return result;
+  }
+
+  /** Return the current user role (synchronous snapshot). */
+  getUserRole(): UserRole | null {
+    return this.userRole$.getValue();
   }
 
   isInitialized(): boolean {

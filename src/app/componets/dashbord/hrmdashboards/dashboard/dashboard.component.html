@@ -1,3 +1,4 @@
+@if (isAdmin) {
 <!-- Header -->
 <div class="page-header d-xl-flex d-block">
   <div class="page-leftheader">
@@ -283,4 +284,10 @@
   </div>
 </div>
 
+<!-- Row 5: Asistencia del día -->
+<app-admin-attendance />
+
+}
+} @else {
+<app-personal-dashboard />
 }

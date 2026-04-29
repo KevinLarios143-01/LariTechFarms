@@ -1,0 +1,26 @@
+<div class="attendance-timeline">
+  <div class="timeline-track">
+    @for (stage of stages; track stage.label; let i = $index; let last = $last) {
+      <div class="timeline-step" [class.completed]="stage.status === 'completed'" [class.in-progress]="stage.status === 'in-progress'" [class.pending]="stage.status === 'pending'">
+        <div class="step-indicator">
+          @if (stage.status === 'completed') {
+            <i class="fe fe-check"></i>
+          } @else if (stage.status === 'in-progress') {
+            <i class="fe {{ stage.icon }}"></i>
+          } @else {
+            <i class="fe {{ stage.icon }}"></i>
+          }
+        </div>
+        <div class="step-content">
+          <span class="step-label">{{ stage.label }}</span>
+          @if (stage.time) {
+            <span class="step-time">{{ stage.time }}</span>
+          }
+        </div>
+      </div>
+      @if (!last) {
+        <div class="timeline-connector" [class.active]="stage.status === 'completed'"></div>
+      }
+    }
+  </div>
+</div>

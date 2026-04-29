@@ -7,6 +7,9 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
+import { PermissionsService } from '../../../../shared/services/permissions.service';
+import { PersonalDashboardComponent } from './personal-dashboard/personal-dashboard.component';
+import { AdminAttendanceComponent } from './admin-attendance/admin-attendance.component';
 
 interface DashboardData {
   cards: {
@@ -30,15 +33,17 @@ interface DashboardData {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SharedModule, NgApexchartsModule, NgbModule, RouterModule, CommonModule, DatePipe, DecimalPipe],
+  imports: [SharedModule, NgApexchartsModule, NgbModule, RouterModule, CommonModule, DatePipe, DecimalPipe, PersonalDashboardComponent, AdminAttendanceComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly permissionsService = inject(PermissionsService);
   private apiUrl = `${environment.apiUrl}/v1`;
 
+  isAdmin = false;
   data: DashboardData | null = null;
   isLoading = true;
   currentDate = '';
@@ -51,9 +56,15 @@ export class DashboardComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    const role = this.permissionsService.getUserRole();
+    this.isAdmin = role === 'superadmin' || role === 'admin';
+
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 1000);
-    this.loadDashboard();
+
+    if (this.isAdmin) {
+      this.loadDashboard();
+    }
   }
 
   updateDateTime(): void {
