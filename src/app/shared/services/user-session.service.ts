@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { UserData } from '../interfaces/login-response.interface';
 import { MeResponse } from '../interfaces/me-response.interface';
-import { JwtPayload } from '../interfaces/jwt-payload.interface';
+import { TokenService } from './token.service';
 
 @Injectable({ providedIn: 'root' })
 export class UserSessionService {
@@ -20,7 +20,8 @@ export class UserSessionService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
   ) {}
 
   get currentUser(): UserData | null {
@@ -36,25 +37,44 @@ export class UserSessionService {
   }
 
   initSession(): Observable<void> {
-    const token = localStorage.getItem('auth_token');
-    if (!token || token.trim() === '') {
-      return of(undefined);
+    const token = this.tokenService.getAccessToken();
+
+    // If token exists and not expired → proceed with /auth/me call
+    if (token && token.trim() !== '' && !this.tokenService.isTokenExpired()) {
+      return this.fetchMe();
     }
 
-    // Check if token is expired before making the request
-    try {
-      const payload = this.decodeToken(token);
-      if (!payload || (payload.exp && payload.exp < Math.floor(Date.now() / 1000))) {
-        this.clearSession();
-        this.router.navigate(['/auth/login']);
-        return of(undefined);
-      }
-    } catch {
-      this.clearSession();
-      this.router.navigate(['/auth/login']);
-      return of(undefined);
-    }
+    // No token in memory (page reload) or token expired → attempt silent refresh
+    return this.http
+      .post<{ data: { accessToken: string } }>(
+        `${this.apiUrl}/v1/auth/refresh`,
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        switchMap((response) => {
+          const newAccessToken = response?.data?.accessToken;
+          if (!newAccessToken) {
+            // Unexpected response shape — treat as failure
+            this.clearSession();
+            return of(undefined);
+          }
+          // Store the new access token and proceed with /auth/me
+          this.tokenService.setAccessToken(newAccessToken);
+          return this.fetchMe();
+        }),
+        catchError(() => {
+          // Refresh failed — clear session, don't redirect (interceptor handles it)
+          this.clearSession();
+          return of(undefined);
+        })
+      );
+  }
 
+  /**
+   * Fetches the current user profile from /auth/me and updates session state.
+   */
+  private fetchMe(): Observable<void> {
     this.loadingSubject.next(true);
 
     return this.http.get<MeResponse>(`${this.apiUrl}/v1/auth/me`).pipe(
@@ -93,31 +113,22 @@ export class UserSessionService {
   }
 
   extractFromToken(): Partial<UserData> | null {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
+    const payload = this.tokenService.decodePayload();
+    if (!payload) {
       return null;
     }
 
-    try {
-      const payload = this.decodeToken(token);
-      if (!payload) {
-        return null;
+    return {
+      id_usuario: payload.idUsuario,
+      email: payload.email,
+      rol: payload.rol,
+      nombre: '',
+      apellido: '',
+      tenant: {
+        id_tenant: payload.idTenant,
+        nombre: ''
       }
-
-      return {
-        id_usuario: payload.idUsuario,
-        email: payload.email,
-        rol: payload.rol,
-        nombre: '',
-        apellido: '',
-        tenant: {
-          id_tenant: payload.idTenant,
-          nombre: ''
-        }
-      };
-    } catch {
-      return null;
-    }
+    };
   }
 
   private mapMeToUserData(me: MeResponse['data']): UserData {
@@ -132,18 +143,5 @@ export class UserSessionService {
         nombre: me.tenant.nombre
       }
     };
-  }
-
-  private decodeToken(token: string): JwtPayload | null {
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) {
-        return null;
-      }
-      const payload = JSON.parse(atob(parts[1]));
-      return payload as JwtPayload;
-    } catch {
-      return null;
-    }
   }
 }

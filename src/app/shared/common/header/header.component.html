@@ -485,17 +485,8 @@
               }
             </div>
           </Li>
-          <!--<li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" href="javascript:void(0);"><i
-                class="fe fe-user me-2"></i>Profile</a></li>
-          <li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" href="javascript:void(0);"><i
-                class="fe fe-mail me-2"></i>Inbox <span class="badge bg-success-transparent ms-auto">25</span></a></li>
-          <li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" href="javascript:void(0);"><i
-                class="fe fe-settings me-2"></i>Settings</a></li>
-          <li><a ngbDropdownItem (click)="openModal(content)" class="dropdown-item d-flex align-items-center"
-              data-bs-toggle="modal" data-bs-target="#changepasswordnmodal"><i class="fe fe-edit-3 me-2"></i>Change
-              Password</a></li>
-          <li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" href="javascript:void(0);"><i
-                class="fe fe-headphones me-2"></i>Support</a></li>-->
+          <li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" routerLink="/auth/change-password"><i
+                class="fe fe-lock me-2"></i>Cambiar Contraseña</a></li>
           <li><a ngbDropdownItem class="dropdown-item d-flex align-items-center" (click)="logout()"
               href="javascript:void(0);"><i class="fe fe-power me-2"></i>Cerrar Sesión</a></li>
         </ul>

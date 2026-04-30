@@ -15,6 +15,7 @@ export interface UserData {
 export interface LoginData {
   token: string;
   user: UserData;
+  mustChangePassword?: boolean;
 }
 
 export interface LoginResponse {

@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, DestroyRef, inject } from '@angul
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { AsistenciaService, DashboardPersonalResponse, EstadoMarcaje, HistorialRecord } from '../../../../../shared/services/asistencia.service';
 import { AttendanceTimelineComponent } from './attendance-timeline/attendance-timeline.component';
@@ -18,6 +19,7 @@ export class PersonalDashboardComponent implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly asistenciaService = inject(AsistenciaService);
   private readonly toastr = inject(ToastrService);
+  private readonly sanitizer = inject(DomSanitizer);
 
   isLoading = true;
   hasEmployee = true;
@@ -34,7 +36,7 @@ export class PersonalDashboardComponent implements OnInit {
 
   // Position detail
   puestoNombre = '';
-  puestoDescripcion: string | null = null;
+  puestoDescripcion: SafeHtml | null = null;
 
   // User data
   usuarioRol = '';
@@ -107,7 +109,9 @@ export class PersonalDashboardComponent implements OnInit {
             // Position detail
             if (empleado.puestoDetalle) {
               this.puestoNombre = empleado.puestoDetalle.nombre;
-              this.puestoDescripcion = empleado.puestoDetalle.descripcion;
+              this.puestoDescripcion = empleado.puestoDetalle.descripcion
+                ? this.sanitizer.bypassSecurityTrustHtml(this.formatDescripcionPuesto(empleado.puestoDetalle.descripcion))
+                : null;
             }
 
             // User data
@@ -184,6 +188,53 @@ export class PersonalDashboardComponent implements OnInit {
     if (!dateStr) return '';
     const date = new Date(dateStr);
     return date.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  /**
+   * Convierte texto plano de descripción de puesto a HTML con formato.
+   * Detecta separadores como //, • y FUNCIONES: para crear estructura legible.
+   */
+  private formatDescripcionPuesto(text: string): string {
+    if (!text) return '';
+
+    // Si ya contiene HTML, retornar tal cual
+    if (text.includes('<') && text.includes('>')) return text;
+
+    // Separar por "//" como secciones
+    const secciones = text.split('//').map(s => s.trim()).filter(Boolean);
+
+    if (secciones.length <= 1) {
+      // Sin separadores //, intentar con bullets •
+      const items = text.split('•').map(s => s.trim()).filter(Boolean);
+      if (items.length > 1) {
+        const first = items.shift();
+        return `<p>${first}</p><ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+      }
+      return `<p>${text}</p>`;
+    }
+
+    // Primera sección es la descripción general
+    let html = `<p><strong>${secciones[0]}</strong></p>`;
+
+    for (let i = 1; i < secciones.length; i++) {
+      const seccion = secciones[i];
+      // Separar bullets dentro de cada sección
+      const items = seccion.split('•').map(s => s.trim()).filter(Boolean);
+      if (items.length > 1) {
+        // Primer item puede ser un título (ej: "FUNCIONES:")
+        const titulo = items.shift()!;
+        if (titulo.endsWith(':')) {
+          html += `<p class="fw-semibold mb-1 mt-2">${titulo}</p>`;
+        } else {
+          html += `<p class="mb-1 mt-2">${titulo}</p>`;
+        }
+        html += `<ul class="mb-2">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+      } else {
+        html += `<p class="mb-1">${seccion}</p>`;
+      }
+    }
+
+    return html;
   }
 
   // --- Marking methods ---

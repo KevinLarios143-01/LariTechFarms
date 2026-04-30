@@ -3,6 +3,7 @@ export interface JwtPayload {
   idTenant: number;
   email: string;
   rol: string;
+  mustChangePassword?: boolean;
   exp: number;
   iat: number;
 }

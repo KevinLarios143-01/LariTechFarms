@@ -12,6 +12,7 @@ import {
   DEFAULT_REDIRECTS,
 } from './permissions.config';
 import { Menu } from './navservice';
+import { TokenService } from './token.service';
 
 @Injectable({ providedIn: 'root' })
 export class PermissionsService {
@@ -30,25 +31,15 @@ export class PermissionsService {
     this.userRole$.asObservable(),
   ]);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   /**
    * Initialize permissions: extract role/tenant from JWT,
    * fetch tenant modules, role modules, and route permissions.
    */
   init(): Observable<void> {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      this.tenantModules$.next([]);
-      this.userRole$.next(null);
-      this.initialized$.next(true);
-      return of(undefined);
-    }
-
-    let payload: any;
-    try {
-      payload = JSON.parse(atob(token.split('.')[1]));
-    } catch {
+    const payload = this.tokenService.decodePayload();
+    if (!payload) {
       this.tenantModules$.next([]);
       this.userRole$.next(null);
       this.initialized$.next(true);

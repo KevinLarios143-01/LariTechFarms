@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import firebase from 'firebase/compat/app';
 import { PermissionsService } from './permissions.service';
+import { TokenService } from './token.service';
+import { UserSessionService } from './user-session.service';
 export interface User {
   uid: string;
   email: string;
@@ -36,6 +38,8 @@ export class AuthService {
     private cookieService: CookieService,
     private http: HttpClient,
     private permissionsService: PermissionsService,
+    private tokenService: TokenService,
+    private userSessionService: UserSessionService,
   ) {
     this.afu.authState.subscribe((auth: any) => {
       this.authState = auth;
@@ -52,7 +56,7 @@ export class AuthService {
    */
 
   backendLogin(email: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/v1/auth/login`, { email, password });
+    return this.http.post<LoginResponse>(`${this.apiUrl}/v1/auth/login`, { email, password }, { withCredentials: true });
   }
 
   /**
@@ -63,7 +67,7 @@ export class AuthService {
    */
 
   backendRegister(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/v1/auth/register`, { email, password });
+    return this.http.post(`${this.apiUrl}/v1/auth/register`, { email, password }, { withCredentials: true });
   }
 
   /**
@@ -72,52 +76,62 @@ export class AuthService {
   exchangeFirebaseToken(firebaseToken: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/v1/auth/firebase-login`, { 
       firebaseToken 
-    });
+    }, { withCredentials: true });
   }
 
   /**
-   * Guardar token en localStorage
+   * Guardar token en memoria via TokenService (ya no usa localStorage)
    */
   saveToken(token: string) {
-    localStorage.setItem('auth_token', token);
+    this.tokenService.setAccessToken(token);
   }
 
   /**
-   * Obtener token de localStorage
+   * Obtener token de memoria via TokenService
    */
   getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    return this.tokenService.getAccessToken();
   }
 
   /**
-   * Eliminar token de localStorage
+   * Eliminar token de memoria via TokenService
    */
   removeToken() {
-    localStorage.removeItem('auth_token');
+    this.tokenService.clearAccessToken();
   }
 
   /**
    * Verificar si el usuario está autenticado (Firebase o Backend)
    */
   isAuthenticated(): boolean {
-    // Verificar si hay token del backend
-    const backendToken = this.getToken();
+    // Verificar si hay token del backend válido (no expirado)
+    const backendToken = this.tokenService.getAccessToken();
+    const tokenValid = !!backendToken && !this.tokenService.isTokenExpired();
     // Verificar si hay usuario de Firebase
     const firebaseUser = this.isUserEmailLoggedIn;
     
-    return !!(backendToken || firebaseUser);
+    return tokenValid || firebaseUser;
   }
 
   /**
-   * Logout universal
+   * Logout universal — invalida refresh token en backend, limpia sesión local
    */
   universalLogout() {
-    // Limpiar permisos primero
+    // Fire-and-forget: call backend logout to invalidate refresh token cookie
+    this.http.post(`${this.apiUrl}/v1/auth/logout`, {}, { withCredentials: true }).subscribe({
+      error: () => {
+        // Silently ignore — the local cleanup below still runs
+      }
+    });
+
+    // Limpiar permisos
     this.permissionsService.clear();
-    // Cerrar sesión de Firebase
+    // Limpiar sesión de usuario
+    this.userSessionService.clearSession();
+    // Limpiar access token de memoria
+    this.tokenService.clearAccessToken();
+    // Cerrar sesión de Firebase y navegar a login
     this.singout();
-    // Remover token del backend
-    this.removeToken();
   }
 
   // all firebase getdata functions

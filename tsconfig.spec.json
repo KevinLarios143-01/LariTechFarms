@@ -9,7 +9,18 @@
     ]
   },
   "include": [
-    "src/**/*.spec.ts",
+    "src/app/shared/services/token.service.spec.ts",
+    "src/app/shared/services/token.service.ts",
+    "src/app/shared/services/auth-interceptor.service.spec.ts",
+    "src/app/shared/services/auth-interceptor.service.ts",
+    "src/app/shared/services/user-session.service.ts",
+    "src/app/shared/services/permissions.service.ts",
+    "src/app/shared/services/permissions.config.ts",
+    "src/app/shared/services/navservice.ts",
+    "src/app/shared/interfaces/jwt-payload.interface.ts",
+    "src/app/shared/interfaces/login-response.interface.ts",
+    "src/app/shared/interfaces/me-response.interface.ts",
+    "src/environments/environment.ts",
     "src/**/*.d.ts"
   ]
 }

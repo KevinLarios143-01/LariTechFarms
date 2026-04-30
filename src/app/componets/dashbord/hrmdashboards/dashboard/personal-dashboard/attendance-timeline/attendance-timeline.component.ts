@@ -23,7 +23,8 @@ export class AttendanceTimelineComponent {
   get stages(): TimelineStage[] {
     return [
       this.getEntradaStage(),
-      this.getAlmuerzoStage(),
+      this.getAlmuerzoInicioStage(),
+      this.getAlmuerzoFinStage(),
       this.getSalidaStage()
     ];
   }
@@ -38,7 +39,7 @@ export class AttendanceTimelineComponent {
     };
   }
 
-  private getAlmuerzoStage(): TimelineStage {
+  private getAlmuerzoInicioStage(): TimelineStage {
     let status: TimelineStage['status'] = 'pending';
     let time: string | null = null;
 
@@ -50,13 +51,28 @@ export class AttendanceTimelineComponent {
       this.estadoMarcaje === 'salida_registrada'
     ) {
       status = 'completed';
-      const inicio = this.extractAlmuerzoTime('almuerzo_inicio');
-      const fin = this.extractAlmuerzoTime('almuerzo_fin');
-      time = inicio && fin ? `${inicio} - ${fin}` : inicio;
+      time = this.extractAlmuerzoTime('almuerzo_inicio');
     }
 
     return {
-      label: 'Almuerzo',
+      label: 'Inicio Almuerzo',
+      icon: 'fe-coffee',
+      time,
+      status
+    };
+  }
+
+  private getAlmuerzoFinStage(): TimelineStage {
+    let status: TimelineStage['status'] = 'pending';
+    let time: string | null = null;
+
+    if (this.estadoMarcaje === 'almuerzo_fin' || this.estadoMarcaje === 'salida_registrada') {
+      status = 'completed';
+      time = this.extractAlmuerzoTime('almuerzo_fin');
+    }
+
+    return {
+      label: 'Fin Almuerzo',
       icon: 'fe-coffee',
       time,
       status

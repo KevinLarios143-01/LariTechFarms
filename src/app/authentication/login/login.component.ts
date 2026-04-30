@@ -196,6 +196,17 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (res && res.data && res.data.token) {
           this.authservice.saveToken(res.data.token);
           this.userSessionService.setUser(res.data.user);
+
+          // Check if user must change password before accessing the system
+          if (res.data.mustChangePassword) {
+            this.toastr.info('Debes cambiar tu contraseña antes de continuar', 'Cambio Obligatorio', {
+              timeOut: 4000,
+              positionClass: 'toast-top-right',
+            });
+            this.router.navigate(['/auth/change-password']);
+            return;
+          }
+
           this.permissionsService.init().subscribe(() => {
             const redirect = this.permissionsService.getDefaultRedirect();
             this.router.navigate([redirect]);
@@ -237,6 +248,17 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (response && response.data && response.data.token) {
             this.authservice.saveToken(response.data.token);
             this.userSessionService.setUser(response.data.user);
+
+            // Check if user must change password before accessing the system
+            if (response.data.mustChangePassword) {
+              this.toastr.info('Debes cambiar tu contraseña antes de continuar', 'Cambio Obligatorio', {
+                timeOut: 4000,
+                positionClass: 'toast-top-right',
+              });
+              this.router.navigate(['/auth/change-password']);
+              return;
+            }
+
             this.permissionsService.init().subscribe(() => {
               const redirect = this.permissionsService.getDefaultRedirect();
               this.router.navigate([redirect]);

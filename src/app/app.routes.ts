@@ -12,6 +12,9 @@ import { roleModuleGuard } from './core/role-module.guard';
 export const App_Route: Routes = [
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
   { path: 'auth/login', loadComponent: () => import('../app/authentication/login/login.component').then((m) => m.LoginComponent) },
+  { path: 'auth/forgot-password', loadComponent: () => import('./authentication/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent) },
+  { path: 'auth/reset-password', loadComponent: () => import('./authentication/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) },
+  { path: 'auth/change-password', canActivate: [AuthGuard], loadComponent: () => import('./authentication/change-password/change-password.component').then(m => m.ChangePasswordComponent) },
   { path: 'access-denied', loadComponent: () => import('./componets/custom-pages/access-denied/access-denied.component').then(m => m.AccessDeniedComponent) },
   {
     path: '',
