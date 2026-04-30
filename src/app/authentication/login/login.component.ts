@@ -193,8 +193,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     const password = this.loginForm.controls['password'].value;
     this.authservice.backendLogin(email, password).subscribe({
       next: (res) => {
-        if (res && res.data && res.data.token) {
-          this.authservice.saveToken(res.data.token);
+        if (res && res.data && res.data.accessToken) {
+          this.authservice.saveToken(res.data.accessToken);
           this.userSessionService.setUser(res.data.user);
 
           // Check if user must change password before accessing the system
@@ -245,8 +245,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     user.getIdToken().then((firebaseToken: string) => {
       this.authservice.exchangeFirebaseToken(firebaseToken).subscribe({
         next: (response: any) => {
-          if (response && response.data && response.data.token) {
-            this.authservice.saveToken(response.data.token);
+          if (response && response.data && response.data.accessToken) {
+            this.authservice.saveToken(response.data.accessToken);
             this.userSessionService.setUser(response.data.user);
 
             // Check if user must change password before accessing the system

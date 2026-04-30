@@ -13,7 +13,7 @@ export interface UserData {
 }
 
 export interface LoginData {
-  token: string;
+  accessToken: string;
   user: UserData;
   mustChangePassword?: boolean;
 }
