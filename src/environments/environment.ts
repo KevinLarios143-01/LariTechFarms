@@ -5,8 +5,9 @@ export const environment = {
   production: false,
 
 
-  apiUrl: 'https://laritechfarmsbackendnode-production.up.railway.app/api',
+  //apiUrl: 'https://laritechfarmsbackendnode-production.up.railway.app/api',
   //apiUrl: 'http://localhost:3001/api',
+  apiUrl: 'http://localhost:8080/api',
   pythonApiUrl: 'https://farmspb-production.up.railway.app',
 
   // firebase: {
